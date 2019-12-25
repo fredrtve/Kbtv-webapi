@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Sdk Name="Microsoft.Build.CentralPackageVersions" Version="2.0.46" />
+  
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20191121173149_init.cs" />
+    <Compile Remove="Data\Migrations\20191121173149_init.Designer.cs" />
+    <Compile Remove="Data\Migrations\20191126193929_Init.cs" />
+    <Compile Remove="Data\Migrations\20191126193929_Init.Designer.cs" />
+    <Compile Remove="Data\Migrations\20191127111212_init.cs" />
+    <Compile Remove="Data\Migrations\20191127111212_init.Designer.cs" />
+    <Compile Remove="Data\Migrations\20191128004013_init.cs" />
+    <Compile Remove="Data\Migrations\20191128004013_init.Designer.cs" />
+    <Compile Remove="Data\Migrations\20191128125454_init.cs" />
+    <Compile Remove="Data\Migrations\20191128125454_init.Designer.cs" />
+    <Compile Remove="Data\Migrations\20191128144650_init.cs" />
+    <Compile Remove="Data\Migrations\20191128144650_init.Designer.cs" />
+    <Compile Remove="Identity\Migrations\20191121173213_init.cs" />
+    <Compile Remove="Identity\Migrations\20191121173213_init.Designer.cs" />
+    <Compile Remove="Identity\Migrations\20191121173832_init.cs" />
+    <Compile Remove="Identity\Migrations\20191121173832_init.Designer.cs" />
+    <Compile Remove="Identity\Migrations\20191121174310_init.cs" />
+    <Compile Remove="Identity\Migrations\20191121174310_init.Designer.cs" />
+    <Compile Remove="Identity\Migrations\20191128004047_init.cs" />
+    <Compile Remove="Identity\Migrations\20191128004047_init.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" />
+    <PackageReference Include="Autofac" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" />
+    <PackageReference Include="Ardalis.EFCore.Extensions" />
+    <PackageReference Include="IdentityServer4.EntityFramework.Storage" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
+    <PackageReference Include="SQLite" />
+    <PackageReference Include="NETStandard.Library" />
+    <PackageReference Include="WindowsAzure.Storage" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\CleanArchitecture.Core\CleanArchitecture.Core.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Identity\Migrations\" />
+  </ItemGroup>
+</Project>
