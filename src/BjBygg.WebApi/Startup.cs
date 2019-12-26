@@ -19,6 +19,7 @@ using CleanArchitecture.Infrastructure.Api.FileStorage;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Collections.Generic;
 
 namespace BjBygg.WebApi
 {
@@ -116,8 +117,16 @@ namespace BjBygg.WebApi
             app.UseCors(AllowSpecificOrigins);
 
             app.UseHttpsRedirection();
+          
+            app.UseDefaultFiles(new DefaultFilesOptions
+            {
+                DefaultFileNames = new List<string> { "index.html" }
+            });
+
+            app.UseStaticFiles();
 
             app.UseSwagger();
+
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
