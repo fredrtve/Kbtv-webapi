@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BjBygg.Application.Queries.UserQueries.RoleList;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -19,6 +20,7 @@ namespace BjBygg.WebApi.Controllers
             _mediator = mediator;
         }
 
+        [Authorize]
         [HttpGet]
         [Route("api/[controller]")]
         public async Task<IActionResult> Index()

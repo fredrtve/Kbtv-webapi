@@ -9,6 +9,7 @@ using BjBygg.Application.Queries.UserQueries;
 using BjBygg.Application.Queries.UserQueries.List;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -24,12 +25,21 @@ namespace BjBygg.WebApi.Controllers.User
         }
 
         [HttpGet]
+        [Route("/")]
+        public IActionResult Home()
+        {
+            return Ok("Kbtv WebApi");
+        }
+
+        [Authorize]
+        [HttpGet]
         [Route("api/[controller]")]
         public IActionResult Index(string? role)
         {
             return Ok(_mediator.Send(new UserListQuery() { Role = role }));
         }
 
+        [Authorize]
         [HttpGet]
         [Route("api/[controller]/{UserName}")]
         public async Task<IActionResult> GetUser(UserByUserNameQuery query)
@@ -39,6 +49,7 @@ namespace BjBygg.WebApi.Controllers.User
             return Ok(result);
         }
 
+        [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]")]
         public async Task<IActionResult> Create([FromBody] CreateUserCommand command)
@@ -49,6 +60,7 @@ namespace BjBygg.WebApi.Controllers.User
             return Ok(await _mediator.Send(command));
         }
 
+        [Authorize(Roles = "Leder")]
         [HttpPut]
         [Route("api/[controller]/{UserName}")]
         public async Task<IActionResult> Update([FromBody] UpdateUserCommand command)
@@ -59,6 +71,7 @@ namespace BjBygg.WebApi.Controllers.User
             return Ok(await _mediator.Send(command));
         }
 
+        [Authorize(Roles = "Leder")]
         [HttpDelete]
         [Route("api/[controller]/{UserName}")]
         public async Task<IActionResult> Delete(DeleteUserCommand command)

@@ -6,12 +6,10 @@ using Microsoft.Extensions.Options;
 
 namespace CleanArchitecture.Infrastructure.Identity
 {
-    public class AppIdentityDbContext : ApiAuthorizationDbContext<ApplicationUser>
+    public class AppIdentityDbContext : IdentityDbContext<ApplicationUser>
     {
-        public AppIdentityDbContext(
-            DbContextOptions<AppIdentityDbContext> options,
-            IOptions<OperationalStoreOptions> operationalStoreOptions)
-            : base(options, operationalStoreOptions)
+        public AppIdentityDbContext(DbContextOptions<AppIdentityDbContext> options)
+            : base(options)
         {
         }
 

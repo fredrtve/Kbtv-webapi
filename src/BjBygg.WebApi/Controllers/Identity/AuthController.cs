@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using CleanArchitecture.Infrastructure.Identity;
+﻿using CleanArchitecture.Infrastructure.Identity;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace BjBygg.WebApi.Controllers.Identity
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class AuthController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -22,14 +22,16 @@ namespace BjBygg.WebApi.Controllers.Identity
             this._userManager = userManager;
         }
 
-        [HttpPost("login")]
-        public async Task<ActionResult> Login(LoginModel model)
+        [EnableCors]
+        [HttpPost]
+        [Route("api/[controller]/login")]
+        public async Task<ActionResult> Login([FromBody] LoginModel model)
         {
             var user = await this._userManager.FindByNameAsync(model.Username);
 
             if (user == null)
             {
-                return BadRequest(new { message = "Username or password is incorrect!" });
+                return Unauthorized(new { message = "Brukernavn eller passord er feil!" });
             }
 
             if (await this._userManager.CheckPasswordAsync(user, model.Password))
@@ -37,11 +39,15 @@ namespace BjBygg.WebApi.Controllers.Identity
                 var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("karlbredetvetesecretkey"));
                 var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
+                var roles = await _userManager.GetRolesAsync(user);
+
                 var token = new JwtSecurityToken(
-                    issuer: "https://localhost:44342",
-                    audience: "https://localhost:44342",
-                    claims: new List<Claim>(),
-                    expires: DateTime.Now.AddMinutes(5),
+                    issuer: "https://localhost:44379",
+                    audience: "https://localhost:44379",
+                    claims: new List<Claim>() {
+                        new Claim(ClaimTypes.Role, roles.FirstOrDefault())
+                    },
+                    expires: DateTime.Now.AddDays(10),
                     signingCredentials: signinCredentials
                 );
 
@@ -55,7 +61,7 @@ namespace BjBygg.WebApi.Controllers.Identity
                 });
             }
 
-            return Unauthorized();
+            return Unauthorized(new { message = "Brukernavn eller passord er feil!" });
         }
     }
 }

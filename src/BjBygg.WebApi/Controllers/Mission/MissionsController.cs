@@ -6,11 +6,12 @@ using BjBygg.Application.Queries.MissionQueries;
 using BjBygg.Application.Queries.MissionQueries.Detail;
 using BjBygg.Application.Queries.MissionQueries.List;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BjBygg.WebApi.Controllers.Mission
 {
-    public class MissionsController : Controller
+    public class MissionsController : ControllerBase
     {
         private readonly IMediator _mediator;
 
@@ -19,6 +20,7 @@ namespace BjBygg.WebApi.Controllers.Mission
             _mediator = mediator;
         }
 
+        [Authorize]
         [HttpGet]
         [Route("api/[controller]")]
         public IActionResult Index(string? searchString, int pageId = 0)
@@ -27,6 +29,7 @@ namespace BjBygg.WebApi.Controllers.Mission
             return Ok(_mediator.Send(query));
         }
 
+        [Authorize(Roles = "Leder, Mellomleder")]
         [HttpPost]
         [Route("api/[controller]")]
         public async Task<IActionResult> Create([FromBody] CreateMissionCommand command)
@@ -37,6 +40,7 @@ namespace BjBygg.WebApi.Controllers.Mission
             return Ok(await _mediator.Send(command));
         }
 
+        [Authorize]
         [HttpGet]
         [Route("api/[controller]/{Id}")]
         public async Task<IActionResult> GetMission(int Id)
@@ -46,6 +50,7 @@ namespace BjBygg.WebApi.Controllers.Mission
             return Ok(result);
         }
 
+        [Authorize]
         [HttpGet]
         [Route("api/[controller]/{Id}/Details")]
         public async Task<IActionResult> GetDetails(int Id)
@@ -55,6 +60,7 @@ namespace BjBygg.WebApi.Controllers.Mission
             return Ok(result);
         }
 
+        [Authorize(Roles = "Leder")]
         [HttpPut]
         [Route("api/[controller]/{Id}")]
         public async Task<IActionResult> Update([FromBody] UpdateMissionCommand command)
@@ -65,6 +71,7 @@ namespace BjBygg.WebApi.Controllers.Mission
             return Ok(await _mediator.Send(command));
         }
 
+        [Authorize(Roles = "Leder")]
         [HttpDelete]
         [Route("api/[controller]/{Id}")]
         public async Task<IActionResult> Delete(DeleteMissionCommand command)

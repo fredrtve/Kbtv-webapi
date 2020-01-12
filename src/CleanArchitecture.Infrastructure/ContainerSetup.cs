@@ -22,8 +22,7 @@ namespace CleanArchitecture.Infrastructure
 			var builder = new ContainerBuilder();
 
 			var coreAssembly = Assembly.GetAssembly(typeof(BaseEntity));
-			var infrastructureAssembly = Assembly.GetAssembly(typeof(EfRepository<BaseEntity>));
-			builder.RegisterAssemblyTypes(coreAssembly, infrastructureAssembly).AsImplementedInterfaces();
+			builder.RegisterAssemblyTypes(coreAssembly).AsImplementedInterfaces();
 
 			setupAction?.Invoke(builder);
 			return builder.Build();

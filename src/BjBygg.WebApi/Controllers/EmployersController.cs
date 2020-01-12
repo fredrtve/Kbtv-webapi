@@ -20,6 +20,7 @@ namespace BjBygg.WebApi.Controllers
             _mediator = mediator;
         }
 
+        [Authorize]
         [HttpGet]
         [Route("api/[controller]")]
         public async Task<IActionResult> Index()
@@ -27,6 +28,7 @@ namespace BjBygg.WebApi.Controllers
             return Ok(await _mediator.Send(new EmployerListQuery()));
         }
 
+        [Authorize(Roles = "Leder, Mellomleder")]
         [HttpPost]
         [Route("api/[controller]")]
         public async Task<IActionResult> Create([FromBody] CreateEmployerCommand command)
@@ -37,6 +39,7 @@ namespace BjBygg.WebApi.Controllers
             return Ok(await _mediator.Send(command));
         }
 
+        [Authorize(Roles = "Leder")]
         [HttpPut]
         [Route("api/[controller]/{Id}")]
         public async Task<IActionResult> Update([FromBody] UpdateEmployerCommand command)
@@ -47,6 +50,7 @@ namespace BjBygg.WebApi.Controllers
             return Ok(await _mediator.Send(command));
         }
 
+        [Authorize(Roles = "Leder")]
         [HttpDelete]
         [Route("api/[controller]/{Id}")]
         public async Task<IActionResult> Delete(DeleteEmployerCommand command)

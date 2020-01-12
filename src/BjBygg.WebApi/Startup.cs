@@ -13,7 +13,6 @@ using MediatR;
 using System.Reflection;
 using BjBygg.Application.Queries.MissionQueries;
 using CleanArchitecture.Core.Interfaces;
-using CleanArchitecture.Core.Services;
 using CleanArchitecture.Infrastructure.Data;
 using CleanArchitecture.Infrastructure.Api.FileStorage;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -32,18 +31,18 @@ namespace BjBygg.WebApi
 
         public IConfiguration Configuration { get; }
 
-        readonly string AllowSpecificOrigins = "_allowSpesificOrigins";
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors(options =>
             {
-                options.AddPolicy(AllowSpecificOrigins,
-                builder =>
-                {
-                    builder.WithOrigins("http://localhost:4200", "https://fredtvet.github.io");
-                });
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+                    });
             });
 
             services.AddIdentityDbContext();
@@ -76,8 +75,8 @@ namespace BjBygg.WebApi
                       ValidateLifetime = true,
                       ValidateIssuerSigningKey = true,
 
-                      ValidIssuer = "https://localhost:44342",
-                      ValidAudience = "https://localhost:44342",
+                      ValidIssuer = "https://localhost:44379",
+                      ValidAudience = "https://localhost:44379",
                       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("karlbredetvetesecretkey"))
                   };
                   options.SaveToken = true;
@@ -97,10 +96,6 @@ namespace BjBygg.WebApi
 
             services.AddMediatR(Assembly.GetAssembly(typeof(MissionByIdQuery)));
 
-            services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
-
-            services.AddScoped(typeof(IMissionImageUploader), typeof(MissionImageUploader));
-
             services.AddSingleton<IBlobStorageService, AzureBlobStorageService>();
 
         }
@@ -114,17 +109,10 @@ namespace BjBygg.WebApi
                 app.UseDatabaseErrorPage();
             }
 
-            app.UseCors(AllowSpecificOrigins);
+            app.UseCors();
 
             app.UseHttpsRedirection();
           
-            app.UseDefaultFiles(new DefaultFilesOptions
-            {
-                DefaultFileNames = new List<string> { "index.html" }
-            });
-
-            app.UseStaticFiles();
-
             app.UseSwagger();
 
             app.UseSwaggerUI(c =>

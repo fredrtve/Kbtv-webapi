@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BjBygg.Application.Commands.MissionCommands.Images.Delete;
 using BjBygg.Application.Commands.MissionCommands.Images.Upload;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +20,7 @@ namespace BjBygg.WebApi.Controllers.Mission
             _mediator = mediator;
         }
 
+        [Authorize]
         [HttpPost]
         [Route("api/Missions/{missionId}/[controller]")]
         public async Task<IActionResult> Upload(IFormCollection collection, int missionId)
@@ -32,6 +34,7 @@ namespace BjBygg.WebApi.Controllers.Mission
             return Ok(await _mediator.Send(command));
         }
 
+        [Authorize(Roles = "Leder")]
         [HttpDelete]
         [Route("api/Missions/{missionId}/[controller]/{id}")]
         public async Task<IActionResult> Delete(DeleteMissionImageCommand command)

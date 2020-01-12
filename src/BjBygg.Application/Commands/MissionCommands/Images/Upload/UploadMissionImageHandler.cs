@@ -15,21 +15,32 @@ namespace BjBygg.Application.Commands.MissionCommands.Images.Upload
 {
     public class UploadMissionImageHandler : IRequestHandler<UploadMissionImageCommand, IEnumerable<MissionImageDto>>
     {
-        private readonly IMissionImageUploader _imageUploader;
+        private readonly AppDbContext _dbContext;
+        private readonly IBlobStorageService _storageService;
         private readonly IMapper _mapper;
 
-        public UploadMissionImageHandler(IMissionImageUploader imageUploader, IMapper mapper)
+        public UploadMissionImageHandler(AppDbContext dbContext, IBlobStorageService storageService, IMapper mapper)
         {
-            _imageUploader = imageUploader;
+            _dbContext = dbContext;
+            _storageService = storageService;
             _mapper = mapper;
         }
 
         public async Task<IEnumerable<MissionImageDto>> Handle(UploadMissionImageCommand request, CancellationToken cancellationToken)
         {
-            IEnumerable<MissionImage> images = null;
+            var images = new List<MissionImage>();
 
             if(request.Files != null && request.Files.Count != 0)
-                images = await _imageUploader.UploadCollection(request.Files, request.MissionId);
+            {
+                var imageURIs = await _storageService.UploadAsync(request.Files);
+                foreach (var uri in imageURIs)
+                {
+                    images.Add(new MissionImage() { MissionId = request.MissionId, FileURL = uri });
+                }
+
+                _dbContext.Set<MissionImage>().AddRange(images);
+                await _dbContext.SaveChangesAsync();
+            }
 
             return images.Select(x => _mapper.Map<MissionImageDto>(x));
         }

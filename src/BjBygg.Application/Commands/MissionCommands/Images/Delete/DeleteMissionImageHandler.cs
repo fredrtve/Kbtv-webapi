@@ -13,16 +13,26 @@ namespace BjBygg.Application.Commands.MissionCommands.Images.Delete
 {
     public class DeleteMissionImageHandler : IRequestHandler<DeleteMissionImageCommand, bool>
     {
-        private readonly IMissionImageUploader _imageUploader;
+        private readonly AppDbContext _dbContext;
+        private readonly IBlobStorageService _storageService;
 
-        public DeleteMissionImageHandler(IMissionImageUploader imageUploader)
+        public DeleteMissionImageHandler(AppDbContext dbContext, IBlobStorageService storageService)
         {
-            _imageUploader = imageUploader;
+            _dbContext = dbContext;
+            _storageService = storageService;
         }
 
         public async Task<bool> Handle(DeleteMissionImageCommand request, CancellationToken cancellationToken)
         {
-            return await _imageUploader.DeleteImage(request.Id);
+            var missionImage =  await _dbContext.Set<MissionImage>().FindAsync(request.Id);
+            if (missionImage == null) return false;
+
+            _dbContext.Set<MissionImage>().Remove(missionImage);
+            await _dbContext.SaveChangesAsync();
+
+            await _storageService.DeleteAsync(missionImage.FileURL.ToString());
+
+            return true;
         }
     }
 }
