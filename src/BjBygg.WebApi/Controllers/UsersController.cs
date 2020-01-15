@@ -39,16 +39,6 @@ namespace BjBygg.WebApi.Controllers.User
             return Ok(_mediator.Send(new UserListQuery() { Role = role }));
         }
 
-        [Authorize]
-        [HttpGet]
-        [Route("api/[controller]/{UserName}")]
-        public async Task<IActionResult> GetUser(UserByUserNameQuery query)
-        {
-            var result = await _mediator.Send(query);
-            if (result == null) return NotFound($"User does not exist (username = {query.UserName})");
-            return Ok(result);
-        }
-
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]")]
@@ -58,6 +48,16 @@ namespace BjBygg.WebApi.Controllers.User
                 return BadRequest(ModelState.Values);
 
             return Ok(await _mediator.Send(command));
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("api/[controller]/{UserName}")]
+        public async Task<IActionResult> GetUser(UserByUserNameQuery query)
+        {
+            var result = await _mediator.Send(query);
+            if (result == null) return NotFound($"User does not exist (username = {query.UserName})");
+            return Ok(result);
         }
 
         [Authorize(Roles = "Leder")]

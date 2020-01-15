@@ -26,6 +26,10 @@
     <Compile Remove="Identity\Migrations\20191121174310_init.Designer.cs" />
     <Compile Remove="Identity\Migrations\20191128004047_init.cs" />
     <Compile Remove="Identity\Migrations\20191128004047_init.Designer.cs" />
+    <Compile Remove="Identity\Migrations\20200113191838_init.cs" />
+    <Compile Remove="Identity\Migrations\20200113191838_init.Designer.cs" />
+    <Compile Remove="Identity\Migrations\20200113191914_init.cs" />
+    <Compile Remove="Identity\Migrations\20200113191914_init.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

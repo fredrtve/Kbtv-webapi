@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Commands.EmployerCommands.Create
 {
-    public class CreateEmployerHandler : IRequestHandler<CreateEmployerCommand>
+    public class CreateEmployerHandler : IRequestHandler<CreateEmployerCommand, int>
     {
         private readonly AppDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -21,13 +21,15 @@ namespace BjBygg.Application.Commands.EmployerCommands.Create
             _mapper = mapper;
         }
 
-        public async Task<Unit> Handle(CreateEmployerCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(CreateEmployerCommand request, CancellationToken cancellationToken)
         {
+            var employer = _mapper.Map<Employer>(request);
+
             _dbContext.Set<Employer>()
-                .Add(_mapper.Map<Employer>(request));
+                .Add(employer);
 
             await _dbContext.SaveChangesAsync();
-            return Unit.Value;
+            return employer.Id;
         }
     }
 }

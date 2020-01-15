@@ -13,12 +13,10 @@ namespace BjBygg.Application.Commands.UserCommands.Update
         [Display(Name = "Brukernavn")]
         public string UserName { get; set; }
 
-        [Required(ErrorMessage = "{0} må fylles ut.")]
         [Display(Name = "Fornavn")]
         [StringLength(45, ErrorMessage = "{0} kan maks være på {1} tegn.")]
         public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "{0} må fylles ut.")]
         [Display(Name = "Etternavn")]
         [StringLength(45, ErrorMessage = "{0} kan maks være på {1} tegn.")]
         public string LastName { get; set; }
@@ -33,7 +31,6 @@ namespace BjBygg.Application.Commands.UserCommands.Update
         public string Email { get; set; }
 
         [Display(Name = "Rolle")]
-        [Required]
         public string Role { get; set; }
 
     }

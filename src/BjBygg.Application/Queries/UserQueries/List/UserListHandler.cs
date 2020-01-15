@@ -21,10 +21,11 @@ namespace BjBygg.Application.Queries.UserQueries.List
         private readonly IMapper _mapper;
         private readonly AppIdentityDbContext _dbContext;
 
-        public UserListHandler(UserManager<ApplicationUser> userManager, IMapper mapper)
+        public UserListHandler(UserManager<ApplicationUser> userManager, IMapper mapper, AppIdentityDbContext dbContext )
         {
             _userManager = userManager;
             _mapper = mapper;
+            _dbContext = dbContext;
         }
 
         public async Task<IEnumerable<UserListItemDto>> Handle(UserListQuery request, CancellationToken cancellationToken)
@@ -32,7 +33,28 @@ namespace BjBygg.Application.Queries.UserQueries.List
             if (!String.IsNullOrEmpty(request.Role))
                 return _mapper.Map<IEnumerable<UserListItemDto>>(await _userManager.GetUsersInRoleAsync(request.Role));
 
-            return _mapper.Map<IEnumerable<UserListItemDto>>(await _userManager.Users.ToListAsync());
+            var usersWithRoles = (from user in _dbContext.Users
+                                  select new
+                                  {
+                                      user.UserName,
+                                      user.FirstName,
+                                      user.LastName,
+                                      user.PhoneNumber,
+                                      Role = (from userRole in user.Roles
+                                              join role in _dbContext.Roles on userRole.RoleId
+                                              equals role.Id
+                                              select role.Name).ToList()
+                                  }).ToList().Select(p => new UserListItemDto()
+
+                                  {
+                                      UserName = p.UserName,
+                                      FirstName = p.FirstName,
+                                      LastName = p.LastName,
+                                      PhoneNumber = p.PhoneNumber,
+                                      Role = p.Role.FirstOrDefault()
+                                  });
+
+            return usersWithRoles;
         }
     }
 }

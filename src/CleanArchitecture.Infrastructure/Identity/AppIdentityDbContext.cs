@@ -16,7 +16,8 @@ namespace CleanArchitecture.Infrastructure.Identity
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
+            builder.Entity<ApplicationUser>().HasMany(p => p.Roles).WithOne().HasForeignKey(p => p.UserId).IsRequired();
+            builder.Entity<ApplicationUser>().Ignore(p => p.Role);
         }
     }
 

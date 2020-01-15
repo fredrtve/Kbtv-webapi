@@ -8,7 +8,10 @@ namespace BjBygg.Application.Queries.UserQueries.List
     {
         public UserListItemProfile()
         {
-            CreateMap<ApplicationUser, UserListItemDto>();
+            CreateMap<ApplicationUser, UserListItemDto>()
+                .ForMember(
+                    dest => dest.Role,
+                    act => act.MapFrom(x => x.Roles.FirstOrDefault()));
         }
     }
 }

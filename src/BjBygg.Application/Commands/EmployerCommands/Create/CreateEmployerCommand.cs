@@ -7,7 +7,7 @@ using System.Text;
 
 namespace BjBygg.Application.Commands.EmployerCommands.Create
 {
-    public class CreateEmployerCommand : IRequest
+    public class CreateEmployerCommand : IRequest<int>
     {
         [Required(ErrorMessage = "{0} må fylles ut.")]
         [Display(Name = "Navn")]

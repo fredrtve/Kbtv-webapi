@@ -7,5 +7,9 @@ namespace CleanArchitecture.Infrastructure.Identity
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+
+        public List<IdentityUserRole<string>> Roles { get; set; }
+
+        public IdentityRole Role { get; set; }
     }
 }

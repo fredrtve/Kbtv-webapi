@@ -32,11 +32,15 @@ namespace BjBygg.Application.Commands.UserCommands.Update
             var user = await _userManager.FindByNameAsync(request.UserName);
 
             if (user == null) return false;
+       
+            if(!String.IsNullOrEmpty(request.FirstName)) 
+                user.FirstName = request.FirstName;
 
-            user.Email = request.Email;
-            user.FirstName = request.FirstName;
-            user.LastName = request.LastName;
+            if (!String.IsNullOrEmpty(request.LastName))
+                user.LastName = request.LastName;
+
             user.PhoneNumber = request.PhoneNumber;
+            user.Email = request.Email;
 
             var result = await _userManager.UpdateAsync(user);
 
@@ -44,13 +48,13 @@ namespace BjBygg.Application.Commands.UserCommands.Update
 
             if (!result.Succeeded) return false;
 
-            if (currentRole != request.Role && currentRole != "Leder")
+            if (currentRole != request.Role && currentRole != "Leder" && !String.IsNullOrEmpty(request.Role))
             {
                 await _userManager.RemoveFromRoleAsync(user, currentRole);
                 await _userManager.AddToRoleAsync(user, request.Role);
                 return true;
             }
-
+            
             return true;
         }
     }

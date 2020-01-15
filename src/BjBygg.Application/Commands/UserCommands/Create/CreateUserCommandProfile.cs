@@ -15,7 +15,8 @@ namespace BjBygg.Application.Commands.UserCommands.Create
         {
             CreateMap<CreateUserCommand, ApplicationUser>()
                 .ForSourceMember(x => x.Password, opt => opt.DoNotValidate())
-                .ForSourceMember(x => x.Role, opt => opt.DoNotValidate());
+                .ForSourceMember(x => x.Role, opt => opt.DoNotValidate())
+                .ForMember(x => x.Role, opt => opt.Ignore());
 
             CreateMap<IdentityResult, CreateUserResponse>()
                 .ForMember(x => x.Errors, opt => opt.MapFrom(x => x.Errors.Select(a => a.Description)));
