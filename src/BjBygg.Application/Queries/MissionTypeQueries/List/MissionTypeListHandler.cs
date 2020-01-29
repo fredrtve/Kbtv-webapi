@@ -12,10 +12,11 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using BjBygg.Application.Queries.MissionTypeQueries.List;
 using BjBygg.Application.Queries.MissionTypeQueries;
+using BjBygg.Application.Shared;
 
 namespace BjBygg.Application.Queries.MissionQueries.List
 {
-    public class MissionTypeListHandler : IRequestHandler<MissionTypeListQuery, IEnumerable<MissionTypeListItemDto>>
+    public class MissionTypeListHandler : IRequestHandler<MissionTypeListQuery, IEnumerable<MissionTypeDto>>
     {
         private readonly AppDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -26,11 +27,11 @@ namespace BjBygg.Application.Queries.MissionQueries.List
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<MissionTypeListItemDto>> Handle(MissionTypeListQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<MissionTypeDto>> Handle(MissionTypeListQuery request, CancellationToken cancellationToken)
         {
             var missionTypes = await _dbContext.Set<MissionType>().ToListAsync();
 
-            return missionTypes.Select(x => _mapper.Map<MissionTypeListItemDto>(x));
+            return missionTypes.Select(x => _mapper.Map<MissionTypeDto>(x));
         }
     }
 

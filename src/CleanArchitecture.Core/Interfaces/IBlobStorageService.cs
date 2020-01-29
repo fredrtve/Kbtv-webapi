@@ -8,8 +8,9 @@ namespace CleanArchitecture.Core.Interfaces
 {
     public interface IBlobStorageService
     {
-        Task<IEnumerable<Uri>> ListAsync();
-        Task<IEnumerable<Uri>> UploadAsync(IFormFileCollection files);
-        Task DeleteAsync(string fileUri);
+        Task<IEnumerable<Uri>> ListAsync(string fileType = "image");
+        Task<IEnumerable<Uri>> UploadFilesAsync(IFormFileCollection files, string fileType = "image");
+        Task<Uri> UploadFileAsync(IFormFile file, string fileType = "image");
+        Task DeleteAsync(string fileUri, string fileType = "image");
     }
 }

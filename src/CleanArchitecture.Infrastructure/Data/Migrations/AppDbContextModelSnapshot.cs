@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CleanArchitecture.Infrastructure.Data.Migrations
+namespace CleanArchitecture.Infrastructure.data.migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
@@ -14,7 +14,7 @@ namespace CleanArchitecture.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.0.0");
+                .HasAnnotation("ProductVersion", "3.0.1");
 
             modelBuilder.Entity("CleanArchitecture.Core.Entities.Employer", b =>
                 {
@@ -81,6 +81,11 @@ namespace CleanArchitecture.Infrastructure.Data.Migrations
 
                     b.Property<int?>("EmployerId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Finished")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(false);
 
                     b.Property<int?>("MissionTypeId")
                         .HasColumnType("INTEGER");
@@ -187,6 +192,78 @@ namespace CleanArchitecture.Infrastructure.Data.Migrations
                     b.ToTable("MissionNotes");
                 });
 
+            modelBuilder.Entity("CleanArchitecture.Core.Entities.MissionReport", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("FileURL")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(400);
+
+                    b.Property<int>("MissionId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MissionReportTypeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MissionId");
+
+                    b.HasIndex("MissionReportTypeId");
+
+                    b.ToTable("MissionReports");
+                });
+
+            modelBuilder.Entity("CleanArchitecture.Core.Entities.MissionReportType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(45);
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MissionReportTypes");
+                });
+
             modelBuilder.Entity("CleanArchitecture.Core.Entities.MissionType", b =>
                 {
                     b.Property<int>("Id")
@@ -243,6 +320,21 @@ namespace CleanArchitecture.Infrastructure.Data.Migrations
                     b.HasOne("CleanArchitecture.Core.Entities.Mission", null)
                         .WithMany("MissionNotes")
                         .HasForeignKey("MissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CleanArchitecture.Core.Entities.MissionReport", b =>
+                {
+                    b.HasOne("CleanArchitecture.Core.Entities.Mission", "Mission")
+                        .WithMany("MissionReports")
+                        .HasForeignKey("MissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CleanArchitecture.Core.Entities.MissionReportType", "MissionReportType")
+                        .WithMany("MissionReports")
+                        .HasForeignKey("MissionReportTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

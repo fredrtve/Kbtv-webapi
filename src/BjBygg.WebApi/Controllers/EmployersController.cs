@@ -1,8 +1,11 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using BjBygg.Application.Commands.EmployerCommands.Create;
 using BjBygg.Application.Commands.EmployerCommands.Delete;
 using BjBygg.Application.Commands.EmployerCommands.Update;
 using BjBygg.Application.Queries.EmployerQueries.List;
+using BjBygg.Application.Shared;
+using CleanArchitecture.Core.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BjBygg.WebApi.Controllers
 {
-    public class EmployersController : Controller
+    public class EmployersController : BaseController
     {
         private readonly IMediator _mediator;
 
@@ -20,46 +23,42 @@ namespace BjBygg.WebApi.Controllers
             _mediator = mediator;
         }
 
-        [Authorize]
+        [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
         [HttpGet]
         [Route("api/[controller]")]
-        public async Task<IActionResult> Index()
+        public async Task<IEnumerable<EmployerDto>> Index()
         {
-            return Ok(await _mediator.Send(new EmployerListQuery()));
+            return await _mediator.Send(new EmployerListQuery());
         }
 
         [Authorize(Roles = "Leder, Mellomleder")]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<IActionResult> Create([FromBody] CreateEmployerCommand command)
+        public async Task<EmployerDto> Create([FromBody] CreateEmployerCommand command)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState.Values);
+                throw new BadRequestException(ModelState.Values.ToString());
 
-            return Ok(await _mediator.Send(command));
+            return await _mediator.Send(command);
         }
 
         [Authorize(Roles = "Leder")]
         [HttpPut]
         [Route("api/[controller]/{Id}")]
-        public async Task<IActionResult> Update([FromBody] UpdateEmployerCommand command)
+        public async Task<EmployerDto> Update([FromBody] UpdateEmployerCommand command)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState.Values);
+                throw new BadRequestException(ModelState.Values.ToString());
 
-            return Ok(await _mediator.Send(command));
+            return await _mediator.Send(command);
         }
 
         [Authorize(Roles = "Leder")]
         [HttpDelete]
         [Route("api/[controller]/{Id}")]
-        public async Task<IActionResult> Delete(DeleteEmployerCommand command)
+        public async Task<bool> Delete(DeleteEmployerCommand command)
         {
-            var result = await _mediator.Send(command);
-
-            if (!result) return NotFound($"Employer does not exist (Id = {command.Id})");
-
-            return Ok(result);
+            return await _mediator.Send(command);
         }
     }
 }

@@ -1,4 +1,5 @@
 using AutoMapper;
+using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
@@ -10,23 +11,26 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Commands.MissionTypeCommands.Create
 {
-    public class CreateMissionTypeHandler : IRequestHandler<CreateMissionTypeCommand>
+    public class CreateMissionTypeHandler : IRequestHandler<CreateMissionTypeCommand, MissionTypeDto>
     {
         private readonly AppDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public CreateMissionTypeHandler(AppDbContext dbContext)
+        public CreateMissionTypeHandler(AppDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
-        public async Task<Unit> Handle(CreateMissionTypeCommand request, CancellationToken cancellationToken)
+        public async Task<MissionTypeDto> Handle(CreateMissionTypeCommand request, CancellationToken cancellationToken)
         {
-            _dbContext.Set<MissionType>()
-                .Add(new MissionType() { Name = request.Name });
+            var missionType = new MissionType() { Name = request.Name };
+
+            _dbContext.Set<MissionType>().Add(missionType);
 
             await _dbContext.SaveChangesAsync();
 
-            return Unit.Value;
+            return _mapper.Map<MissionTypeDto>(missionType);
         }
     }
 }

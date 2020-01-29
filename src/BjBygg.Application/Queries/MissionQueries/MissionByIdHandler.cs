@@ -1,16 +1,17 @@
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
 using CleanArchitecture.Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using BjBygg.Application.Shared;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using CleanArchitecture.Core.Exceptions;
 
 namespace BjBygg.Application.Queries.MissionQueries
 {
-    public class MissionByIdHandler : IRequestHandler<MissionByIdQuery, MissionByIdResponse>
+    public class MissionByIdHandler : IRequestHandler<MissionByIdQuery, MissionDto>
     {
         private readonly AppDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -21,10 +22,17 @@ namespace BjBygg.Application.Queries.MissionQueries
             _mapper = mapper;
         }
 
-        public async Task<MissionByIdResponse> Handle(MissionByIdQuery request, CancellationToken cancellationToken)
+        public async Task<MissionDto> Handle(MissionByIdQuery request, CancellationToken cancellationToken)
         {
-            var mission = await _dbContext.Set<Mission>().FindAsync(request.Id);
-            return _mapper.Map<MissionByIdResponse>(mission);
+            var mission = await _dbContext.Set<Mission>()
+                .Where(x => x.Id == request.Id)
+                .Include(x => x.Employer)
+                .Include(x => x.MissionType)
+                .ToListAsync();
+
+            if (mission == null) throw new EntityNotFoundException($"Mission does not exist with id {request.Id}");
+
+            return _mapper.Map<MissionDto>(mission.FirstOrDefault());
         }
     }
 }

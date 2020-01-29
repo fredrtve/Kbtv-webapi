@@ -19,6 +19,9 @@ namespace CleanArchitecture.Infrastructure.Identity
             if (!roleManager.RoleExistsAsync("Leder").Result)
                 await roleManager.CreateAsync(new IdentityRole { Name = "Leder" });
 
+            if (!roleManager.RoleExistsAsync("Oppdragsgiver").Result)
+                await roleManager.CreateAsync(new IdentityRole { Name = "Oppdragsgiver" });
+
 
             if (userManager.FindByNameAsync("leder").Result == null)
             {
@@ -45,6 +48,15 @@ namespace CleanArchitecture.Infrastructure.Identity
 
                 if (result.Succeeded)
                     userManager.AddToRoleAsync(user, "Mellomleder").Wait();
+            }
+
+            if (userManager.FindByNameAsync("oppdragsgiver").Result == null)
+            {
+                var user = new ApplicationUser { UserName = "oppdragsgiver", SecurityStamp = Guid.NewGuid().ToString(), Email = "test@test.com", FirstName = "Oppdrags", LastName = "Giver", PhoneNumber = "94446434" };
+                var result = await userManager.CreateAsync(user, "passord1");
+
+                if (result.Succeeded)
+                    userManager.AddToRoleAsync(user, "Oppdragsgiver").Wait();
             }
 
         }

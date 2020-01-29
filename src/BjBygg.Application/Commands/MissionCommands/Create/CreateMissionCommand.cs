@@ -1,13 +1,12 @@
-using CleanArchitecture.Core.Entities;
+
+using BjBygg.Application.Shared;
 using MediatR;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
+
 
 namespace BjBygg.Application.Commands.MissionCommands.Create
 {
-    public class CreateMissionCommand : IRequest<int>
+    public class CreateMissionCommand : IRequest<MissionDto>
     {
         [Required(ErrorMessage = "{0} må fylles ut.")]
         [Display(Name = "Adresse")]
@@ -28,10 +27,9 @@ namespace BjBygg.Application.Commands.MissionCommands.Create
         [StringLength(400, ErrorMessage = "{0} kan maks være på {1} tegn.")]
         public string Description { get; set; }
 
-        [Display(Name = "Oppdragstype")]
-        public int MissionTypeId { get; set; }
+        public MissionTypeDto? MissionType { get; set; }
 
-        [Display(Name = "Oppdragsgiver")]
-        public int EmployerId { get; set; }
+        public EmployerDto? Employer { get; set; }
+
     }
 }

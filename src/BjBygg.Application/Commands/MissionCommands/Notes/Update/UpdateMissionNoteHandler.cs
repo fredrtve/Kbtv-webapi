@@ -1,5 +1,7 @@
 using AutoMapper;
+using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Entities;
+using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Commands.MissionCommands.Notes.Update
 {
-    public class UpdateMissionNoteHandler : IRequestHandler<UpdateMissionNoteCommand, bool>
+    public class UpdateMissionNoteHandler : IRequestHandler<UpdateMissionNoteCommand, MissionNoteDetailsDto>
     {
         private readonly AppDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -22,14 +24,24 @@ namespace BjBygg.Application.Commands.MissionCommands.Notes.Update
             _mapper = mapper;
         }
 
-        public async Task<bool> Handle(UpdateMissionNoteCommand request, CancellationToken cancellationToken)
+        public async Task<MissionNoteDetailsDto> Handle(UpdateMissionNoteCommand request, CancellationToken cancellationToken)
         {
             var note = _mapper.Map<MissionNote>(request);
-            _dbContext.Entry(note)
-                .State = EntityState.Modified;
-            _dbContext.Entry(note).Property(x => x.MissionId).IsModified = false;
-            await _dbContext.SaveChangesAsync();
-            return true;
+
+            try
+            {
+                _dbContext.Entry(note).State = EntityState.Modified;
+
+                _dbContext.Entry(note).Property(x => x.MissionId).IsModified = false;
+
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new EntityNotFoundException($"Entity does not exist with id {request.Id}");
+            }
+
+            return _mapper.Map<MissionNoteDetailsDto>(note);
         }
     }
 }

@@ -19,6 +19,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using BjBygg.Application.Shared;
 
 namespace BjBygg.WebApi
 {
@@ -34,16 +38,7 @@ namespace BjBygg.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(
-                    builder =>
-                    {
-                        builder.AllowAnyOrigin()
-                                .AllowAnyHeader()
-                                .AllowAnyMethod();
-                    });
-            });
+            services.AddCors();
 
             services.AddIdentityDbContext();
 
@@ -92,12 +87,13 @@ namespace BjBygg.WebApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Kbtv API", Version = "v1" });
             });
 
-            services.AddAutoMapper(Assembly.GetAssembly(typeof(MissionByIdProfile)));
+            services.AddAutoMapper(Assembly.GetAssembly(typeof(MissionDtoProfile)));
 
             services.AddMediatR(Assembly.GetAssembly(typeof(MissionByIdQuery)));
 
             services.AddSingleton<IBlobStorageService, AzureBlobStorageService>();
-
+            //services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            //services.AddScoped<IActionContextAccessor, ActionContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -109,7 +105,11 @@ namespace BjBygg.WebApi
                 app.UseDatabaseErrorPage();
             }
 
-            app.UseCors();
+            app.UseCors(options => options.WithOrigins(Configuration.GetValue<string>("CorsOrigin"))
+                                            .AllowAnyHeader()
+                                            .AllowAnyMethod()
+                                            .AllowCredentials()
+            );
 
             app.UseHttpsRedirection();
           
@@ -117,7 +117,7 @@ namespace BjBygg.WebApi
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "KBTV WebAPI V1");
             });
 
 

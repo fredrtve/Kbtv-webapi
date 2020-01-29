@@ -1,3 +1,4 @@
+using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Entities;
 using MediatR;
 using System;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace BjBygg.Application.Commands.MissionTypeCommands.Update
 {
-    public class UpdateMissionTypeCommand : IRequest
+    public class UpdateMissionTypeCommand : IRequest<MissionTypeDto>
     {
         [Required]
         public int Id { get; set; }

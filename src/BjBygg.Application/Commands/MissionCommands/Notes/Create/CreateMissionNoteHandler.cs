@@ -1,4 +1,5 @@
 using AutoMapper;
+using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Commands.MissionCommands.Notes.Create
 {
-    public class CreateMissionNoteHandler : IRequestHandler<CreateMissionNoteCommand, int>
+    public class CreateMissionNoteHandler : IRequestHandler<CreateMissionNoteCommand, MissionNoteDetailsDto>
     {
         private readonly AppDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -21,7 +22,7 @@ namespace BjBygg.Application.Commands.MissionCommands.Notes.Create
             _mapper = mapper;
         }
 
-        public async Task<int> Handle(CreateMissionNoteCommand request, CancellationToken cancellationToken)
+        public async Task<MissionNoteDetailsDto> Handle(CreateMissionNoteCommand request, CancellationToken cancellationToken)
         {
             var note = _mapper.Map<MissionNote>(request);
 
@@ -30,7 +31,7 @@ namespace BjBygg.Application.Commands.MissionCommands.Notes.Create
 
             await _dbContext.SaveChangesAsync();
             
-            return note.Id;
+            return _mapper.Map<MissionNoteDetailsDto>(note);
         }
     }
 }

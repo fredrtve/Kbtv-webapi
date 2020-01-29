@@ -1,3 +1,4 @@
+using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Entities;
 using MediatR;
 using System;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace BjBygg.Application.Commands.EmployerCommands.Update
 {
-    public class UpdateEmployerCommand : IRequest
+    public class UpdateEmployerCommand : IRequest<EmployerDto>
     {
         [Required]
         public int Id { get; set; }

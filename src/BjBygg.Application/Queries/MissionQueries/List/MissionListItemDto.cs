@@ -10,6 +10,8 @@ namespace BjBygg.Application.Queries.MissionQueries.List
 
         public string Address { get; set; }
 
+        public bool Finished { get; set; }
+
         public DateTime CreatedAt { get; set; }
     }
 }

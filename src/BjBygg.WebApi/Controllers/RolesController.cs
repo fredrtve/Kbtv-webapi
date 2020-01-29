@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BjBygg.WebApi.Controllers
 {
-    public class RolesController : Controller
+    public class RolesController : BaseController
     {
         private readonly IMediator _mediator;
 
@@ -23,9 +23,9 @@ namespace BjBygg.WebApi.Controllers
         [Authorize]
         [HttpGet]
         [Route("api/[controller]")]
-        public async Task<IActionResult> Index()
+        public async Task<IEnumerable<string>> Index()
         {
-            return Ok(await _mediator.Send(new RoleListQuery()));
+            return await _mediator.Send(new RoleListQuery());
         }
     }
 }

@@ -17,12 +17,18 @@ namespace CleanArchitecture.Infrastructure.Api.FileStorage
             _configuration = configuration;
         }
 
-        public async Task<CloudBlobContainer> GetBlobContainer()
+        public async Task<CloudBlobContainer> GetBlobContainer(string fileType = "image")
         {
             if (_blobContainer != null)
                 return _blobContainer;
 
-            var containerName = _configuration.GetValue<string>("ContainerName");
+            string containerName;
+
+            if(fileType == "report") 
+                containerName = _configuration.GetValue<string>("ReportContainerName");
+            else
+                containerName = _configuration.GetValue<string>("ImageContainerName");
+
             if (string.IsNullOrWhiteSpace(containerName))
             {
                 throw new ArgumentException("Configuration must contain ContainerName");

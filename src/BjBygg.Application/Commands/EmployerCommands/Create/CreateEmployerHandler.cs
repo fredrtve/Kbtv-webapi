@@ -1,4 +1,5 @@
 using AutoMapper;
+using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Commands.EmployerCommands.Create
 {
-    public class CreateEmployerHandler : IRequestHandler<CreateEmployerCommand, int>
+    public class CreateEmployerHandler : IRequestHandler<CreateEmployerCommand, EmployerDto>
     {
         private readonly AppDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -21,7 +22,7 @@ namespace BjBygg.Application.Commands.EmployerCommands.Create
             _mapper = mapper;
         }
 
-        public async Task<int> Handle(CreateEmployerCommand request, CancellationToken cancellationToken)
+        public async Task<EmployerDto> Handle(CreateEmployerCommand request, CancellationToken cancellationToken)
         {
             var employer = _mapper.Map<Employer>(request);
 
@@ -29,7 +30,8 @@ namespace BjBygg.Application.Commands.EmployerCommands.Create
                 .Add(employer);
 
             await _dbContext.SaveChangesAsync();
-            return employer.Id;
+
+            return _mapper.Map<EmployerDto>(employer);
         }
     }
 }

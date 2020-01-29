@@ -1,3 +1,5 @@
+using BjBygg.Application.Queries.MissionQueries;
+using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Entities;
 using MediatR;
 using System;
@@ -7,7 +9,7 @@ using System.Text;
 
 namespace BjBygg.Application.Commands.MissionCommands.Update
 {
-    public class UpdateMissionCommand : IRequest<bool>
+    public class UpdateMissionCommand : IRequest<MissionDto>
     {
         [Required]
         public int Id { get; set; }
@@ -31,10 +33,12 @@ namespace BjBygg.Application.Commands.MissionCommands.Update
         [StringLength(400, ErrorMessage = "{0} kan maks være på {1} tegn.")]
         public string? Description { get; set; }
 
-        [Display(Name = "Oppdragstype")]
-        public int? MissionTypeId { get; set; }
+        [Display(Name = "Ferdig?")]
+        public bool? Finished { get; set; }
 
-        [Display(Name = "Oppdragsgiver")]
-        public int? EmployerId { get; set; }
+        public MissionTypeDto MissionType { get; set; }
+
+        public EmployerDto Employer { get; set; }
+
     }
 }

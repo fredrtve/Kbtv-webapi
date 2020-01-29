@@ -1,5 +1,6 @@
 using AutoMapper;
 using CleanArchitecture.Core.Entities;
+using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
 using System;
@@ -22,7 +23,8 @@ namespace BjBygg.Application.Commands.MissionCommands.Notes.Delete
         public async Task<bool> Handle(DeleteMissionNoteCommand request, CancellationToken cancellationToken)
         {
             var missionNote = await _dbContext.Set<MissionNote>().FindAsync(request.Id);
-            if (missionNote == null) return false;
+
+            if (missionNote == null) throw new EntityNotFoundException($"Entity does not exist with id {request.Id}");
 
             _dbContext.Set<MissionNote>().Remove(missionNote);      
             await _dbContext.SaveChangesAsync();

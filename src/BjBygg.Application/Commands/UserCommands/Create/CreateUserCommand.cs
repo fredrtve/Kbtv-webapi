@@ -1,3 +1,4 @@
+using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Infrastructure.Identity;
 using MediatR;
@@ -8,7 +9,7 @@ using System.Text;
 
 namespace BjBygg.Application.Commands.UserCommands.Create
 {
-    public class CreateUserCommand : IRequest<CreateUserResponse>
+    public class CreateUserCommand : IRequest<UserDto>
     {
         [Required(ErrorMessage = "{0} må fylles ut.")]
         [Display(Name = "Brukernavn")]

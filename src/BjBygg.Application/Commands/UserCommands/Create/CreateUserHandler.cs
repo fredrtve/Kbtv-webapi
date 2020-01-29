@@ -1,5 +1,7 @@
 using AutoMapper;
+using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Entities;
+using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Infrastructure.Data;
 using CleanArchitecture.Infrastructure.Identity;
 using MediatR;
@@ -14,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Commands.UserCommands.Create
 {
-    public class CreateUserHandler : IRequestHandler<CreateUserCommand, CreateUserResponse>
+    public class CreateUserHandler : IRequestHandler<CreateUserCommand, UserDto>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
@@ -25,22 +27,25 @@ namespace BjBygg.Application.Commands.UserCommands.Create
             _mapper = mapper;
         }
 
-        public async Task<CreateUserResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<UserDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             //Not allowing new leaders
-            if (request.Role.ToLower() == "Leder") 
-                return new CreateUserResponse(false, $"It's forbidden to add users with the role {request.Role}");
+            if (request.Role.ToLower() == "Leder")
+                throw new ForbiddenException($"Creating users with role {request.Role} is forbidden.");
 
             var user = _mapper.Map<ApplicationUser>(request);                  
 
             var result = await _userManager.CreateAsync(user, request.Password);
 
             if (!result.Succeeded)
-                return _mapper.Map<CreateUserResponse>(result);
+                throw new BadRequestException(result.Errors.ToString());
 
             await _userManager.AddToRoleAsync(user, request.Role);
 
-            return _mapper.Map<CreateUserResponse>(result);
+            var response = _mapper.Map<UserDto>(user);
+            response.Role = request.Role;
+
+            return response;
         }
     }
 }

@@ -1,5 +1,6 @@
 using AutoMapper;
 using CleanArchitecture.Core.Entities;
+using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
 using System;
@@ -22,7 +23,8 @@ namespace BjBygg.Application.Commands.EmployerCommands.Delete
         public async Task<bool> Handle(DeleteEmployerCommand request, CancellationToken cancellationToken)
         {
             var employer = await _dbContext.Set<Employer>().FindAsync(request.Id);
-            if (employer == null) return false;
+
+            if (employer == null) throw new EntityNotFoundException($"Entity does not exist with id {request.Id}");
 
             _dbContext.Set<Employer>().Remove(employer);      
             await _dbContext.SaveChangesAsync();

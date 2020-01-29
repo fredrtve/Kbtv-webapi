@@ -1,8 +1,6 @@
 using AutoMapper;
+using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BjBygg.Application.Commands.MissionCommands.Create
 {
@@ -11,8 +9,11 @@ namespace BjBygg.Application.Commands.MissionCommands.Create
         public CreateMissionCommandProfile()
         {
             CreateMap<CreateMissionCommand, Mission>()
-                .ForMember(dest => dest.EmployerId, opt => opt.Condition(src => (src.EmployerId > 0)))
-                .ForMember(dest => dest.MissionTypeId, opt => opt.Condition(src => (src.MissionTypeId > 0)));
+                .ForMember(dest => dest.MissionType, opt => opt.MapFrom(src => src.MissionType))
+                .ForMember(dest => dest.Employer, opt => opt.MapFrom(src => src.Employer));
+
+            CreateMap<MissionTypeDto, MissionType>();
+            CreateMap<EmployerDto, Employer>();
         }
     }
 }

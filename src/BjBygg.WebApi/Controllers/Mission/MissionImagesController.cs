@@ -1,9 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BjBygg.Application.Commands.MissionCommands.Images.Delete;
 using BjBygg.Application.Commands.MissionCommands.Images.Upload;
+using BjBygg.Application.Shared;
+using CleanArchitecture.Core.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BjBygg.WebApi.Controllers.Mission
 {
-    public class MissionImagesController : Controller
+    public class MissionImagesController : BaseController
     {
         private readonly IMediator _mediator;
 
@@ -20,26 +21,27 @@ namespace BjBygg.WebApi.Controllers.Mission
             _mediator = mediator;
         }
 
-        [Authorize]
+        [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
         [HttpPost]
         [Route("api/Missions/{missionId}/[controller]")]
-        public async Task<IActionResult> Upload(IFormCollection collection, int missionId)
+        public async Task<IEnumerable<MissionImageDto>> Upload(int missionId)
         {
-            var command = new UploadMissionImageCommand();
-            command.Files = collection.Files;
-            command.MissionId = missionId;
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState.Values);
+            if (Request.Form.Files.Count() == 0)
+                throw new BadRequestException("No files received");
 
-            return Ok(await _mediator.Send(command));
+            var command = new UploadMissionImageCommand();
+            command.Files = Request.Form.Files;
+            command.MissionId = missionId;
+
+            return await _mediator.Send(command);
         }
 
         [Authorize(Roles = "Leder")]
         [HttpDelete]
         [Route("api/Missions/{missionId}/[controller]/{id}")]
-        public async Task<IActionResult> Delete(DeleteMissionImageCommand command)
+        public async Task<bool> Delete(DeleteMissionImageCommand command)
         {
-            return Ok(await _mediator.Send(command));
+            return await _mediator.Send(command);
         }
     }
 }

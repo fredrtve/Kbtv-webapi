@@ -1,5 +1,6 @@
 using AutoMapper;
 using CleanArchitecture.Core.Entities;
+using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
@@ -25,12 +26,13 @@ namespace BjBygg.Application.Commands.MissionCommands.Images.Delete
         public async Task<bool> Handle(DeleteMissionImageCommand request, CancellationToken cancellationToken)
         {
             var missionImage =  await _dbContext.Set<MissionImage>().FindAsync(request.Id);
-            if (missionImage == null) return false;
+
+            if (missionImage == null) throw new EntityNotFoundException($"Mission does not exist with id {request.Id}");
 
             _dbContext.Set<MissionImage>().Remove(missionImage);
             await _dbContext.SaveChangesAsync();
 
-            await _storageService.DeleteAsync(missionImage.FileURL.ToString());
+            //await _storageService.DeleteAsync(missionImage.FileURL.ToString());
 
             return true;
         }

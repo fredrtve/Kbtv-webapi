@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using BjBygg.Application.Shared;
+using CleanArchitecture.Core.Exceptions;
 
 namespace BjBygg.Application.Queries.MissionQueries.Detail
 {
@@ -19,8 +21,8 @@ namespace BjBygg.Application.Queries.MissionQueries.Detail
 
         public MissionDetailByIdHandler(AppDbContext dbContext, IMapper mapper)
         {
-            _dbContext = dbContext;
-            _mapper = mapper;
+            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<MissionDetailByIdResponse> Handle(MissionDetailByIdQuery request, CancellationToken cancellationToken)
@@ -28,12 +30,19 @@ namespace BjBygg.Application.Queries.MissionQueries.Detail
             var mission = (await _dbContext.Set<Mission>().AsQueryable()
                 .Where(m => m.Id == request.Id)
                 .Include(m => m.MissionImages)
+                .Include(m => m.MissionReports)
+                .ThenInclude(d => d.MissionReportType)
                 .Include(m => m.MissionType)
                 .Include(m => m.MissionNotes)
                 .Include(m => m.Employer)
                 .ToListAsync()).FirstOrDefault();
+
+            if (mission == null)
+                throw new EntityNotFoundException($"Mission does not exist with id {request.Id}");
+
             mission.MissionNotes = mission.MissionNotes.OrderByDescending(a => a.CreatedAt).ToList();
             mission.MissionImages = mission.MissionImages.OrderByDescending(a => a.CreatedAt).ToList();
+
             return _mapper.Map<MissionDetailByIdResponse>(mission);
         }
     }

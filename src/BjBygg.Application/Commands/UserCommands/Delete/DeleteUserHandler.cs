@@ -1,5 +1,6 @@
 using AutoMapper;
 using CleanArchitecture.Core.Entities;
+using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Infrastructure.Data;
 using CleanArchitecture.Infrastructure.Identity;
 using MediatR;
@@ -25,9 +26,11 @@ namespace BjBygg.Application.Commands.UserCommands.Delete
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
 
-            var userIsLeader = await _userManager.IsInRoleAsync(user, "Leder");
+            if (user == null)
+                throw new EntityNotFoundException($"User does not exist with username {request.UserName}");
 
-            if (user == null || userIsLeader) return false;
+            if (await _userManager.IsInRoleAsync(user, "Leder"))
+                throw new ForbiddenException($"Deleting users with role Leder is forbidden.");
 
             await _userManager.DeleteAsync(user);
             return true;

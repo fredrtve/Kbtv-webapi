@@ -1,3 +1,4 @@
+using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Entities;
 using MediatR;
 using System;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace BjBygg.Application.Commands.MissionTypeCommands.Create
 {
-    public class CreateMissionTypeCommand : IRequest
+    public class CreateMissionTypeCommand : IRequest<MissionTypeDto>
     {
         [Required(ErrorMessage = "{0} må fylles ut.")]
         [StringLength(45, ErrorMessage = "{0} kan maks være på {1} tegn.")]

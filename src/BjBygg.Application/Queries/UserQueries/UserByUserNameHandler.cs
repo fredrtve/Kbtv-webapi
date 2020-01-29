@@ -5,10 +5,12 @@ using AutoMapper;
 using CleanArchitecture.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
+using BjBygg.Application.Shared;
+using CleanArchitecture.Core.Exceptions;
 
 namespace BjBygg.Application.Queries.UserQueries
 {
-    public class UserByUserNameHandler : IRequestHandler<UserByUserNameQuery, UserByUserNameResponse>
+    public class UserByUserNameHandler : IRequestHandler<UserByUserNameQuery, UserDto>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
@@ -19,16 +21,16 @@ namespace BjBygg.Application.Queries.UserQueries
             _mapper = mapper;
         }
 
-        public async Task<UserByUserNameResponse> Handle(UserByUserNameQuery request, CancellationToken cancellationToken)
+        public async Task<UserDto> Handle(UserByUserNameQuery request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByNameAsync(request.UserName);
+           var user = await _userManager.FindByNameAsync(request.UserName);
 
-            var response = _mapper.Map<UserByUserNameResponse>(user);
+           if (user == null) throw new EntityNotFoundException($"User does not exist with username {request.UserName}");
 
-            if(user != null)
-                response.Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
-            
-            return response;
-        }
+            var response = _mapper.Map<UserDto>(user);
+           response.Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+           return response;
+        }                             
+        
     }
 }

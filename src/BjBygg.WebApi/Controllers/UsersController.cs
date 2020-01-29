@@ -10,12 +10,14 @@ using BjBygg.Application.Queries.UserQueries.List;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using CleanArchitecture.Core.Exceptions;
+using BjBygg.Application.Shared;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BjBygg.WebApi.Controllers.User
 {
-    public class UsersController : Controller
+    public class UsersController : BaseController
     {
         private readonly IMediator _mediator;
 
@@ -28,59 +30,53 @@ namespace BjBygg.WebApi.Controllers.User
         [Route("/")]
         public IActionResult Home()
         {
-            return Ok("Kbtv WebApi");
+            return Redirect("/swagger");
         }
 
-        [Authorize]
+        [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
         [HttpGet]
         [Route("api/[controller]")]
-        public IActionResult Index(string? role)
+        public Task<IEnumerable<UserListItemDto>> Index()
         {
-            return Ok(_mediator.Send(new UserListQuery() { Role = role }));
+            return _mediator.Send(new UserListQuery());
         }
 
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<IActionResult> Create([FromBody] CreateUserCommand command)
+        public async Task<UserDto> Create([FromBody] CreateUserCommand command)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState.Values);
+                throw new BadRequestException(ModelState.Values.ToString());
 
-            return Ok(await _mediator.Send(command));
+            return await _mediator.Send(command);
         }
 
         [Authorize]
         [HttpGet]
         [Route("api/[controller]/{UserName}")]
-        public async Task<IActionResult> GetUser(UserByUserNameQuery query)
+        public async Task<UserDto> GetUser(UserByUserNameQuery query)
         {
-            var result = await _mediator.Send(query);
-            if (result == null) return NotFound($"User does not exist (username = {query.UserName})");
-            return Ok(result);
+            return await _mediator.Send(query);
         }
 
         [Authorize(Roles = "Leder")]
         [HttpPut]
         [Route("api/[controller]/{UserName}")]
-        public async Task<IActionResult> Update([FromBody] UpdateUserCommand command)
+        public async Task<UserDto> Update([FromBody] UpdateUserCommand command)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState.Values);
+                throw new BadRequestException(ModelState.Values.ToString());
 
-            return Ok(await _mediator.Send(command));
+            return await _mediator.Send(command);
         }
 
         [Authorize(Roles = "Leder")]
         [HttpDelete]
         [Route("api/[controller]/{UserName}")]
-        public async Task<IActionResult> Delete(DeleteUserCommand command)
+        public async Task<bool> Delete(DeleteUserCommand command)
         {
-            var result = await _mediator.Send(command);
-
-            if (!result) return NotFound($"User does not exist (username = {command.UserName})");
-
-            return Ok(result);
+            return await _mediator.Send(command);
         }
 
     }

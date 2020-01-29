@@ -28,11 +28,8 @@ namespace BjBygg.Application.Queries.UserQueries.List
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<UserListItemDto>> Handle(UserListQuery request, CancellationToken cancellationToken)
+        public Task<IEnumerable<UserListItemDto>> Handle(UserListQuery request, CancellationToken cancellationToken)
         {
-            if (!String.IsNullOrEmpty(request.Role))
-                return _mapper.Map<IEnumerable<UserListItemDto>>(await _userManager.GetUsersInRoleAsync(request.Role));
-
             var usersWithRoles = (from user in _dbContext.Users
                                   select new
                                   {
@@ -54,7 +51,7 @@ namespace BjBygg.Application.Queries.UserQueries.List
                                       Role = p.Role.FirstOrDefault()
                                   });
 
-            return usersWithRoles;
+            return Task.FromResult(usersWithRoles);
         }
     }
 }

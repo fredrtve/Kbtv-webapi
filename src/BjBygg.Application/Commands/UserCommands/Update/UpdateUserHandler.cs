@@ -1,5 +1,8 @@
 using AutoMapper;
+using BjBygg.Application.Queries.UserQueries;
+using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Entities;
+using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Infrastructure.Data;
 using CleanArchitecture.Infrastructure.Identity;
 using MediatR;
@@ -14,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Commands.UserCommands.Update
 {
-    public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, bool>
+    public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, UserDto>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
@@ -25,13 +28,15 @@ namespace BjBygg.Application.Commands.UserCommands.Update
             _mapper = mapper;
         }
 
-        public async Task<bool> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+        public async Task<UserDto> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            if (request.Role == "Leder") return false; //Not allowing new leaders
+            if (request.Role == "Leder") //Not allowing new leaders
+                throw new ForbiddenException($"Updating to role Leder is forbidden.");
 
             var user = await _userManager.FindByNameAsync(request.UserName);
 
-            if (user == null) return false;
+            if (user == null) 
+                throw new EntityNotFoundException($"User does not exist with username {request.UserName}"); ;
        
             if(!String.IsNullOrEmpty(request.FirstName)) 
                 user.FirstName = request.FirstName;
@@ -44,18 +49,20 @@ namespace BjBygg.Application.Commands.UserCommands.Update
 
             var result = await _userManager.UpdateAsync(user);
 
-            var currentRole = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+            if (!result.Succeeded) 
+                throw new BadRequestException(result.Errors.ToString());
 
-            if (!result.Succeeded) return false;
+            var currentRole = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
 
             if (currentRole != request.Role && currentRole != "Leder" && !String.IsNullOrEmpty(request.Role))
             {
                 await _userManager.RemoveFromRoleAsync(user, currentRole);
                 await _userManager.AddToRoleAsync(user, request.Role);
-                return true;
             }
-            
-            return true;
+
+            var response = _mapper.Map<UserDto>(user);
+            response.Role = request.Role;
+            return response;
         }
     }
 }

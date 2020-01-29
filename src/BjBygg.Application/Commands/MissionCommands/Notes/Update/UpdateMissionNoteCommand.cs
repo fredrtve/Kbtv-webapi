@@ -1,3 +1,4 @@
+using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Entities;
 using MediatR;
 using System;
@@ -7,12 +8,12 @@ using System.Text;
 
 namespace BjBygg.Application.Commands.MissionCommands.Notes.Update
 {
-    public class UpdateMissionNoteCommand : IRequest<bool>
+    public class UpdateMissionNoteCommand : IRequest<MissionNoteDetailsDto>
     {
         [Required]
         public int Id { get; set; }
 
-        [StringLength(75, ErrorMessage = "{0} kan maks være på {1} tegn.")]
+        [StringLength(100, ErrorMessage = "{0} kan maks være på {1} tegn.")]
         [Display(Name = "Tittel")]
         public string? Title { get; set; }
 

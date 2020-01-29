@@ -18,9 +18,9 @@ namespace CleanArchitecture.Infrastructure.Api.FileStorage
             _azureBlobConnectionFactory = new AzureBlobConnectionFactory(configuration);
         }
 
-        public async Task DeleteAsync(string fileUri)
+        public async Task DeleteAsync(string fileUri, string fileType = "image")
         {
-            var blobContainer = await _azureBlobConnectionFactory.GetBlobContainer();
+            var blobContainer = await _azureBlobConnectionFactory.GetBlobContainer(fileType);
 
             Uri uri = new Uri(fileUri);
             string filename = Path.GetFileName(uri.LocalPath);
@@ -29,9 +29,9 @@ namespace CleanArchitecture.Infrastructure.Api.FileStorage
             await blob.DeleteIfExistsAsync();
         }
 
-        public async Task<IEnumerable<Uri>> ListAsync()
+        public async Task<IEnumerable<Uri>> ListAsync(string fileType = "image")
         {
-            var blobContainer = await _azureBlobConnectionFactory.GetBlobContainer();
+            var blobContainer = await _azureBlobConnectionFactory.GetBlobContainer(fileType);
             var allBlobs = new List<Uri>();
             BlobContinuationToken blobContinuationToken = null;
             do
@@ -47,9 +47,9 @@ namespace CleanArchitecture.Infrastructure.Api.FileStorage
             return allBlobs;
         }
 
-        public async Task<IEnumerable<Uri>> UploadAsync(IFormFileCollection files)
+        public async Task<IEnumerable<Uri>> UploadFilesAsync(IFormFileCollection files, string fileType = "image")
         {
-            var blobContainer = await _azureBlobConnectionFactory.GetBlobContainer();
+            var blobContainer = await _azureBlobConnectionFactory.GetBlobContainer(fileType);
             var blobs = new List<Uri>();
             for (int i = 0; i < files.Count; i++)
             {
@@ -63,13 +63,22 @@ namespace CleanArchitecture.Infrastructure.Api.FileStorage
             return blobs;
         }
 
-        /// <summary> 
-        /// string GetRandomBlobName(string filename): Generates a unique random file name to be uploaded  
-        /// </summary> 
-        private string GetRandomBlobName(string filename)
+        public async Task<Uri> UploadFileAsync(IFormFile file, string fileType = "image")
         {
-            string ext = Path.GetExtension(filename);
+            var blobContainer = await _azureBlobConnectionFactory.GetBlobContainer(fileType);
+
+            var blob = blobContainer.GetBlockBlobReference(GetRandomBlobName(file.FileName));
+                using (var stream = file.OpenReadStream())
+                {
+                    await blob.UploadFromStreamAsync(stream);
+                }   
+            return blob.Uri;
+        }
+
+        private string GetRandomBlobName(string fileName)
+        {
+            string ext = Path.GetExtension(fileName);
             return string.Format("{0:10}_{1}{2}", DateTime.Now.Ticks, Guid.NewGuid(), ext);
         }
-    }
+}
 }

@@ -13,22 +13,35 @@ namespace BjBygg.Application.Queries.MissionQueries.Detail
         public MissionDetailByIdProfile()
         {
             CreateMap<Mission, MissionDetailByIdResponse>()
-                .ForMember(
-                    dest => dest.MissionTypeName,
-                    act => act.MapFrom(x => x.MissionType.Name))
-                .ForMember(
-                    dest => dest.Employer,
-                    act => act.MapFrom(x => x.Employer))
+                .ForMember(x => x.Mission, act => act.MapFrom(x => x))
+  
                 .ForMember(
                     dest => dest.MissionNotes,
                     act => act.MapFrom(x => x.MissionNotes))
                 .ForMember(
                     dest => dest.MissionImages,
-                    act => act.MapFrom(x => x.MissionImages));
+                    act => act.MapFrom(x => x.MissionImages))
+                .ForMember(
+                    dest => dest.MissionReports,
+                    act => act.MapFrom(x => x.MissionReports));
+
+            CreateMap<Mission, MissionDto>()
+                .ForMember(
+                    dest => dest.MissionType,
+                    act => act.MapFrom(x => x.MissionType))
+                .ForMember(
+                    dest => dest.Employer,
+                    act => act.MapFrom(x => x.Employer));
 
             CreateMap<MissionNote, MissionNoteDto>();
-            CreateMap<Employer, MissionEmployerDto>();
+            CreateMap<Employer, EmployerDto>();
+            CreateMap<MissionType, MissionTypeDto>();
             CreateMap<MissionImage, MissionImageDto>();
+
+            CreateMap<MissionReport, MissionReportDto>()
+                .ForMember(dest => dest.MissionReportType, act => act.MapFrom(x => x.MissionReportType));
+
+            CreateMap<MissionReportType, MissionReportTypeDto>();
         }
     }
 }

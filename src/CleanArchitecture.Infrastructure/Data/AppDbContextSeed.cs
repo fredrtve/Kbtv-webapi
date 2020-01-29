@@ -23,6 +23,7 @@ namespace CleanArchitecture.Infrastructure.Data
                     context.SaveChanges();
                     context.Database.CloseConnection();
                 }
+                
                 if (!context.MissionTypes.Any())
                 {
                     context.Database.OpenConnection();
@@ -32,11 +33,29 @@ namespace CleanArchitecture.Infrastructure.Data
                     context.SaveChanges();
                     context.Database.CloseConnection();
                 }
+                if (!context.MissionReportTypes.Any())
+                {
+                    context.Database.OpenConnection();
+                    context.MissionReportTypes.AddRange(
+                        GetPreconfiguredMissionReportTypes());
+
+                    context.SaveChanges();
+                    context.Database.CloseConnection();
+                }
                 if (!context.Missions.Any())
                 {
                     context.Database.OpenConnection();
                     context.Missions.AddRange(
                         GetPreconfiguredMissions());
+
+                    context.SaveChanges();
+                    context.Database.CloseConnection();
+                }
+                if (!context.MissionReports.Any())
+                {
+                    context.Database.OpenConnection();
+                    context.MissionReports.AddRange(
+                        GetPreconfiguredMissionReports());
 
                     context.SaveChanges();
                     context.Database.CloseConnection();
@@ -73,6 +92,16 @@ namespace CleanArchitecture.Infrastructure.Data
                 new MissionType() { Id = 2, Name = "Oppbygging" }
             };
         }
+
+        static IEnumerable<MissionReportType> GetPreconfiguredMissionReportTypes()
+        {
+            return new List<MissionReportType>()
+            {
+                new MissionReportType() { Id = 1, Name = "Skaderapport" },
+                new MissionReportType() { Id = 2, Name = "Tørkerapport" }
+            };
+        }
+
         static IEnumerable<Mission> GetPreconfiguredMissions()
         {
             var missions = new List<Mission>();
@@ -91,6 +120,14 @@ namespace CleanArchitecture.Infrastructure.Data
             }
 
             return missions;
+        }
+        static IEnumerable<MissionReport> GetPreconfiguredMissionReports()
+        {
+            return new List<MissionReport>()
+            {
+                new MissionReport() { Id = 1, FileURL = new Uri("https://kbtv.blob.core.windows.net/images/28e89dfa-8d9b-422f-81fd-ee1f7aafbbe7.jpg"), MissionId = 1, MissionReportTypeId = 1 },
+                new MissionReport() { Id = 2, FileURL = new Uri("https://kbtv.blob.core.windows.net/images/28e89dfa-8d9b-422f-81fd-ee1f7aafbbe7.jpg"), MissionId = 1, MissionReportTypeId = 2 }
+            };
         }
 
         static IEnumerable<MissionNote> GetPreconfiguredMissionNotes()

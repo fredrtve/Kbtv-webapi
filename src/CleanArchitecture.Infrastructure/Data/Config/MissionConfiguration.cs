@@ -14,6 +14,7 @@ namespace CleanArchitecture.Infrastructure.Data.Config
             builder.Property(e => e.Name).HasMaxLength(50);
             builder.Property(e => e.PhoneNumber).HasMaxLength(12);
             builder.Property(e => e.Description).HasMaxLength(400);
+            builder.Property(e => e.Finished).HasDefaultValue(false);
         }
     }
 }

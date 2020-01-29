@@ -29,28 +29,20 @@ namespace BjBygg.Application.Queries.MissionQueries.List
         {
             IReadOnlyList<Mission> itemsOnPage;
 
-            int totalItems = await _dbContext.Set<Mission>().CountAsync();
+            var query = _dbContext.Set<Mission>().AsQueryable();     
 
-            if (String.IsNullOrEmpty(request.SearchString))
-            {
-                itemsOnPage = await _dbContext.Set<Mission>().AsQueryable()
-                    .OrderBy(x => x.CreatedAt)
-                    .Skip(request.ItemsPerPage * request.PageIndex)
-                    .Take(request.ItemsPerPage)
-                    .ToListAsync();
-            }
-            else
-            {
-                var formatedSearchString = new CultureInfo("nb-NO", false).TextInfo.ToTitleCase(request.SearchString);
-                itemsOnPage = await _dbContext.Set<Mission>().AsQueryable()
-                    .Where(x => x.Address.Contains(request.SearchString))
-                    .OrderBy(x => x.CreatedAt)
-                    .Skip(request.ItemsPerPage * request.PageIndex)
-                    .Take(request.ItemsPerPage)
-                    .ToListAsync();           
-            }
+            if (!String.IsNullOrEmpty(request.SearchString))   
+                query = query.Where(x => x.Address.Contains(request.SearchString));
 
-            var response = new MissionListResponse()
+            int totalItems = await query.CountAsync();
+
+            itemsOnPage = await query
+                .OrderByDescending(x => x.CreatedAt)
+                .Skip(request.ItemsPerPage * request.PageIndex)
+                .Take(request.ItemsPerPage)
+                .ToListAsync();
+
+            return new MissionListResponse()
             {
                Missions = _mapper.Map<List<MissionListItemDto>>(itemsOnPage),
                PaginationInfo = new PaginationDto()
@@ -61,8 +53,6 @@ namespace BjBygg.Application.Queries.MissionQueries.List
                    TotalPages = int.Parse(Math.Ceiling(((decimal)totalItems / request.ItemsPerPage)).ToString())
                }            
             };
-
-            return response;
         }
     }
 

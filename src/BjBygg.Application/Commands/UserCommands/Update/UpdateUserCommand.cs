@@ -1,3 +1,5 @@
+using BjBygg.Application.Queries.UserQueries;
+using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Entities;
 using MediatR;
 using System;
@@ -7,7 +9,7 @@ using System.Text;
 
 namespace BjBygg.Application.Commands.UserCommands.Update
 {
-    public class UpdateUserCommand : IRequest<bool>
+    public class UpdateUserCommand : IRequest<UserDto>
     {
         [Required]
         [Display(Name = "Brukernavn")]

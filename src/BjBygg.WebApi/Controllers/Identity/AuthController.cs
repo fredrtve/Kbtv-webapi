@@ -1,5 +1,7 @@
-﻿using BjBygg.Application.Commands.UserCommands.Update;
+﻿using AutoMapper;
+using BjBygg.Application.Commands.UserCommands.Update;
 using BjBygg.Application.Queries.UserQueries;
+using BjBygg.Application.Shared;
 using CleanArchitecture.Infrastructure.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -23,13 +25,14 @@ namespace BjBygg.WebApi.Controllers.Identity
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IMediator _mediator;
+        private IMapper _mapper;
 
-
-        public AuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IMediator mediator)
+        public AuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IMediator mediator, IMapper mapper)
         {
             this._userManager = userManager;
             this._signInManager = signInManager;
             this._mediator = mediator;
+            this._mapper = mapper;
         }
 
         [EnableCors]
@@ -41,7 +44,7 @@ namespace BjBygg.WebApi.Controllers.Identity
             var result = await _mediator.Send(
                 new UserByUserNameQuery() { UserName = User.FindFirst("UserName").Value });
 
-            if (result == null) return NotFound($"User does not exist (username = {User.FindFirst("UserName").Value})");
+            if (result == null) return NotFound($"Finner ikke bruker med brukernavn '{User.FindFirst("UserName").Value})'");
 
             return Ok(new
             {
@@ -118,21 +121,17 @@ namespace BjBygg.WebApi.Controllers.Identity
                 );
 
                 var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+                var userReponse = _mapper.Map<UserDto>(user);
+                userReponse.Role = roles.FirstOrDefault();
 
                 return Ok(new
                 {
                     Token = tokenString,
-                    ExpiresIn = token.ValidTo,
-                    User = new { 
-                        userName = user.UserName, 
-                        firstName = user.FirstName,
-                        lastName = user.LastName,
-                        phoneNumber = user.PhoneNumber,
-                    }
+                    User = userReponse
                 });
             }
 
-            return Unauthorized(new { message = "Brukernavn eller passord er feil!" });
+            return Unauthorized("Brukernavn eller passord er feil!");
         }
     }
 }
