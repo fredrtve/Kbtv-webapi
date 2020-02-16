@@ -12,5 +12,6 @@ namespace BjBygg.Application.Shared
         public DateTime CreatedAt { get; set; }
         public string CreatedBy { get; set; }
         public bool Pinned { get; set; }
+        public int MissionId { get; set; }
     }
 }

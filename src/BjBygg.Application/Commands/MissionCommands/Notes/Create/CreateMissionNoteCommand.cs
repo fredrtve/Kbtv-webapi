@@ -8,7 +8,7 @@ using System.Text;
 
 namespace BjBygg.Application.Commands.MissionCommands.Notes.Create
 {
-    public class CreateMissionNoteCommand : IRequest<MissionNoteDetailsDto>
+    public class CreateMissionNoteCommand : IRequest<MissionNoteDto>
     {
         [Required]
         public int MissionId { get; set; }

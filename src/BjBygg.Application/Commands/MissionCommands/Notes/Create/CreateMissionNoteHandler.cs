@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Commands.MissionCommands.Notes.Create
 {
-    public class CreateMissionNoteHandler : IRequestHandler<CreateMissionNoteCommand, MissionNoteDetailsDto>
+    public class CreateMissionNoteHandler : IRequestHandler<CreateMissionNoteCommand, MissionNoteDto>
     {
         private readonly AppDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -22,7 +22,7 @@ namespace BjBygg.Application.Commands.MissionCommands.Notes.Create
             _mapper = mapper;
         }
 
-        public async Task<MissionNoteDetailsDto> Handle(CreateMissionNoteCommand request, CancellationToken cancellationToken)
+        public async Task<MissionNoteDto> Handle(CreateMissionNoteCommand request, CancellationToken cancellationToken)
         {
             var note = _mapper.Map<MissionNote>(request);
 
@@ -31,7 +31,7 @@ namespace BjBygg.Application.Commands.MissionCommands.Notes.Create
 
             await _dbContext.SaveChangesAsync();
             
-            return _mapper.Map<MissionNoteDetailsDto>(note);
+            return _mapper.Map<MissionNoteDto>(note);
         }
     }
 }

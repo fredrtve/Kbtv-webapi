@@ -6,7 +6,7 @@ using System.Text;
 
 namespace BjBygg.Application.Queries.MissionQueries.Note
 {
-    public class MissionNoteByIdQuery : IRequest<MissionNoteDetailsDto>
+    public class MissionNoteByIdQuery : IRequest<MissionNoteDto>
     {
         public int Id { get; set; }
     }

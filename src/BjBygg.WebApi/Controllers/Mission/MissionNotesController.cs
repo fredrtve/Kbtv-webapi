@@ -25,8 +25,8 @@ namespace BjBygg.WebApi.Controllers.Mission
 
         [Authorize]
         [HttpGet]
-        [Route("api/Missions/{MissionId}/[controller]/{Id}")]
-        public async Task<MissionNoteDetailsDto> GetNote(int id)
+        [Route("api/Missions/[controller]/{Id}")]
+        public async Task<MissionNoteDto> GetNote(int id)
         {
             return await _mediator.Send(new MissionNoteByIdQuery() { Id = id });
         }
@@ -34,7 +34,7 @@ namespace BjBygg.WebApi.Controllers.Mission
         [Authorize]
         [HttpPost]
         [Route("api/Missions/{MissionId}/[controller]")]
-        public async Task<MissionNoteDetailsDto> Create([FromBody] CreateMissionNoteCommand command)
+        public async Task<MissionNoteDto> Create([FromBody] CreateMissionNoteCommand command)
         {
             if (!ModelState.IsValid)
                 throw new BadRequestException(ModelState.Values.ToString());
@@ -44,8 +44,8 @@ namespace BjBygg.WebApi.Controllers.Mission
 
         [Authorize(Roles = "Leder")]
         [HttpPut]
-        [Route("api/Missions/{MissionId}/[controller]/{Id}")]
-        public async Task<MissionNoteDetailsDto> Update([FromBody] UpdateMissionNoteCommand command)
+        [Route("api/Missions/[controller]/{Id}")]
+        public async Task<MissionNoteDto> Update([FromBody] UpdateMissionNoteCommand command)
         {
             if (!ModelState.IsValid)
                 throw new BadRequestException(ModelState.Values.ToString());
@@ -55,7 +55,7 @@ namespace BjBygg.WebApi.Controllers.Mission
 
         [Authorize(Roles = "Leder")]
         [HttpDelete]
-        [Route("api/Missions/{MissionId}/[controller]/{Id}")]
+        [Route("api/Missions/[controller]/{Id}")]
         public async Task<bool> Delete(DeleteMissionNoteCommand command)
         {
             return await _mediator.Send(command);

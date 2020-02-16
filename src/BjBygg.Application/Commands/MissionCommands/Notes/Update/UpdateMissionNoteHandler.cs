@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Commands.MissionCommands.Notes.Update
 {
-    public class UpdateMissionNoteHandler : IRequestHandler<UpdateMissionNoteCommand, MissionNoteDetailsDto>
+    public class UpdateMissionNoteHandler : IRequestHandler<UpdateMissionNoteCommand, MissionNoteDto>
     {
         private readonly AppDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -24,7 +24,7 @@ namespace BjBygg.Application.Commands.MissionCommands.Notes.Update
             _mapper = mapper;
         }
 
-        public async Task<MissionNoteDetailsDto> Handle(UpdateMissionNoteCommand request, CancellationToken cancellationToken)
+        public async Task<MissionNoteDto> Handle(UpdateMissionNoteCommand request, CancellationToken cancellationToken)
         {
             var note = _mapper.Map<MissionNote>(request);
 
@@ -41,7 +41,7 @@ namespace BjBygg.Application.Commands.MissionCommands.Notes.Update
                 throw new EntityNotFoundException($"Entity does not exist with id {request.Id}");
             }
 
-            return _mapper.Map<MissionNoteDetailsDto>(note);
+            return _mapper.Map<MissionNoteDto>(note);
         }
     }
 }

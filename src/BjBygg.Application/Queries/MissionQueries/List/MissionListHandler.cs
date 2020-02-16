@@ -32,7 +32,10 @@ namespace BjBygg.Application.Queries.MissionQueries.List
             var query = _dbContext.Set<Mission>().AsQueryable();     
 
             if (!String.IsNullOrEmpty(request.SearchString))   
-                query = query.Where(x => x.Address.Contains(request.SearchString));
+                query = query.Where(x => x.Address.ToLower().Contains(request.SearchString.ToLower()));
+
+            if (request.OnlyActive)
+                query = query.Where(x => x.Finished != true);
 
             int totalItems = await query.CountAsync();
 

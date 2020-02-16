@@ -69,6 +69,7 @@ namespace CleanArchitecture.Infrastructure.Data
                             break;
                         case EntityState.Added:
                             trackable.CreatedAt = now;
+                            trackable.UpdatedAt = now;
                             trackable.CreatedBy = user;
                             trackable.Deleted = false;
                             break;

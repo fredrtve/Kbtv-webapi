@@ -11,8 +11,8 @@ namespace BjBygg.Application.Queries.MissionQueries.Note
     {
         public MissionNoteDetailsDtoProfile()
         {
-            CreateMap<MissionNote, MissionNoteDetailsDto>();
-            CreateMap<MissionNoteDetailsDto, MissionNote>();
+            CreateMap<MissionNote, MissionNoteDto>();
+            CreateMap<MissionNoteDto, MissionNote>();
         }
     }
 }

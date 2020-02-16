@@ -55,7 +55,8 @@ namespace BjBygg.Application.Commands.MissionCommands.Update
             catch (Exception ex){
                 throw new EntityNotFoundException($"Entity does not exist with id {request.Id}");
             }
-                   
+
+            //Assign values after creation to prevent unwanted changes
             return _mapper.Map<MissionDto>(mission);
         }
     }

@@ -10,5 +10,7 @@ namespace BjBygg.Application.Queries.MissionQueries.Detail
         public string? Title { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool Pinned { get; set; }
+
+        public int MissionId { get; set; }
     }
 }

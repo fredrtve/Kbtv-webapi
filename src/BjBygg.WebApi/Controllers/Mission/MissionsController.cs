@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using BjBygg.Application.Commands.MissionCommands.Create;
 using BjBygg.Application.Commands.MissionCommands.Delete;
@@ -27,9 +28,25 @@ namespace BjBygg.WebApi.Controllers.Mission
         [Authorize]
         [HttpGet]
         [Route("api/[controller]")]
-        public async Task<MissionListResponse> Index(string? searchString, int pageId = 0)
+        public async Task<MissionListResponse> Index(bool onlyActive, string? searchString, int pageId = 0)
         {
-            var query = new MissionListQuery() { ItemsPerPage = 8, PageIndex = pageId, SearchString = searchString };
+            var query = new MissionListQuery() { 
+                OnlyActive = onlyActive, 
+                ItemsPerPage = 8, 
+                PageIndex = pageId, 
+                SearchString = searchString 
+            };
+
+            return await _mediator.Send(query);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("api/[controller]/Range")]
+        public async Task<IEnumerable<MissionDto>> GetDateRange(MissionByDateRangeQuery query)
+        {
+            if (query.FromDate == null) query.FromDate = DateTime.Now.AddYears(-25);
+            if (query.ToDate == null) query.ToDate = DateTime.Now;
             return await _mediator.Send(query);
         }
 

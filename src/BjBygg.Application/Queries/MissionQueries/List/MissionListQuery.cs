@@ -7,6 +7,7 @@ namespace BjBygg.Application.Queries.MissionQueries.List
 {
     public class MissionListQuery : IRequest<MissionListResponse>
     {
+        public bool OnlyActive { get; set; }
         public int PageIndex { get; set; }
 
         public int ItemsPerPage { get; set; }

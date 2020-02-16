@@ -38,7 +38,7 @@ namespace BjBygg.WebApi.Controllers.Mission
 
         [Authorize(Roles = "Leder")]
         [HttpDelete]
-        [Route("api/Missions/{missionId}/[controller]/{id}")]
+        [Route("api/Missions/[controller]/{id}")]
         public async Task<bool> Delete(DeleteMissionImageCommand command)
         {
             return await _mediator.Send(command);

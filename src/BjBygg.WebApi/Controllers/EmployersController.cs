@@ -31,6 +31,16 @@ namespace BjBygg.WebApi.Controllers
             return await _mediator.Send(new EmployerListQuery());
         }
 
+        [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
+        [HttpGet]
+        [Route("api/[controller]/Range")]
+        public async Task<IEnumerable<MissionDto>> GetDateRange(MissionByDateRangeQuery query)
+        {
+            if (query.FromDate == null) query.FromDate = DateTime.Now.AddYears(-25);
+            if (query.ToDate == null) query.ToDate = DateTime.Now;
+            return await _mediator.Send(query);
+        }
+
         [Authorize(Roles = "Leder, Mellomleder")]
         [HttpPost]
         [Route("api/[controller]")]

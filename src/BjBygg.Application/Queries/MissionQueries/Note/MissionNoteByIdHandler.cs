@@ -12,7 +12,7 @@ using CleanArchitecture.Core.Exceptions;
 
 namespace BjBygg.Application.Queries.MissionQueries.Note
 {
-    public class MissionNoteByIdHandler : IRequestHandler<MissionNoteByIdQuery, MissionNoteDetailsDto>
+    public class MissionNoteByIdHandler : IRequestHandler<MissionNoteByIdQuery, MissionNoteDto>
     {
         private readonly AppDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -23,11 +23,11 @@ namespace BjBygg.Application.Queries.MissionQueries.Note
             _mapper = mapper;
         }
 
-        public async Task<MissionNoteDetailsDto> Handle(MissionNoteByIdQuery request, CancellationToken cancellationToken)
+        public async Task<MissionNoteDto> Handle(MissionNoteByIdQuery request, CancellationToken cancellationToken)
         {
             var note = await _dbContext.Set<MissionNote>().FindAsync(request.Id);
             if (note == null) throw new EntityNotFoundException($"Note does not exist with id {request.Id}");
-            return _mapper.Map<MissionNoteDetailsDto>(note);
+            return _mapper.Map<MissionNoteDto>(note);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace BjBygg.Application.Shared
 {
@@ -14,5 +15,7 @@ namespace BjBygg.Application.Shared
 
         [StringLength(100, ErrorMessage = "{0} kan maks være på {1} tegn.")]
         public string? Address { get; set; }
+
+        public DateTime UpdatedAt { get; set; }
     }
 }

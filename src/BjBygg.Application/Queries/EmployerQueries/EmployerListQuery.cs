@@ -6,7 +6,7 @@ using System.Text;
 
 namespace BjBygg.Application.Queries.EmployerQueries.List
 {
-    public class EmployerListQuery : IRequest<IEnumerable<EmployerDto>>
+    public class EmployerListQuery : DateRangeQuery, IRequest<IEnumerable<EmployerDto>>
     {
 
     }
