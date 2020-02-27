@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BjBygg.Application.Shared
 {
-    public class EmployerDto
+    public class EmployerDto : DbSyncDto
     {
         public int? Id { get; set; }
 
@@ -16,6 +16,5 @@ namespace BjBygg.Application.Shared
         [StringLength(100, ErrorMessage = "{0} kan maks være på {1} tegn.")]
         public string? Address { get; set; }
 
-        public DateTime UpdatedAt { get; set; }
     }
 }

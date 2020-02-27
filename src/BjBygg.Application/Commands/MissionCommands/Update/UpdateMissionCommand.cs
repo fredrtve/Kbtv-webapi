@@ -19,11 +19,6 @@ namespace BjBygg.Application.Commands.MissionCommands.Update
         [StringLength(100, ErrorMessage = "{0} kan maks være på {1} tegn.")]
         public string Address { get; set; }
 
-
-        [Display(Name = "Navn")]
-        [StringLength(50, ErrorMessage = "{0} kan maks være på {1} tegn.")]
-        public string? Name { get; set; }
-
         [Display(Name = "Mobilnr")]
         [DataType(DataType.PhoneNumber)]
         [StringLength(12, ErrorMessage = "{0} må være mellom {2} og {1} tegn.", MinimumLength = 4)]

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BjBygg.Application.Shared
 {
-    public class MissionNoteDetailsDto
+    public class MissionNoteDto : DbSyncDto
     {
         public int Id { get; set; }
         public string? Title { get; set; }

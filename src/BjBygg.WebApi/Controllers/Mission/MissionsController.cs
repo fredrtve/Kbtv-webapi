@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using BjBygg.Application.Commands.MissionCommands.Create;
 using BjBygg.Application.Commands.MissionCommands.Delete;
+using BjBygg.Application.Commands.MissionCommands.DeleteRange;
 using BjBygg.Application.Commands.MissionCommands.ToggleMissionFinish;
 using BjBygg.Application.Commands.MissionCommands.Update;
+using BjBygg.Application.Queries.DbSyncQueries;
+using BjBygg.Application.Queries.DbSyncQueries.MissionQuery;
 using BjBygg.Application.Queries.MissionQueries;
 using BjBygg.Application.Queries.MissionQueries.Detail;
 using BjBygg.Application.Queries.MissionQueries.List;
@@ -23,6 +26,14 @@ namespace BjBygg.WebApi.Controllers.Mission
         public MissionsController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("api/[controller]/[action]")]
+        public async Task<DbSyncResponse<MissionDto>> Sync([FromBody] MissionSyncQuery query)
+        {
+            return await _mediator.Send(query);
         }
 
         [Authorize]
@@ -106,5 +117,14 @@ namespace BjBygg.WebApi.Controllers.Mission
         {
             return await _mediator.Send(command);
         }
+
+        [Authorize(Roles = "Leder")]
+        [HttpPost]
+        [Route("api/[controller]/DeleteRange")]
+        public async Task<bool> DeleteRange([FromBody] DeleteRangeMissionCommand command)
+        {
+            return await _mediator.Send(command);
+        }
+
     }
 }

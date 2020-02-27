@@ -29,12 +29,14 @@ namespace BjBygg.Application.Commands.MissionCommands.Create
 
             if(mission.Employer != null)
             {
+                //If no changes are made
                 if (mission.Employer.Id > 0 || String.IsNullOrEmpty(mission.Employer.Name))
                     mission.Employer = null;
             }
 
-            if (mission.MissionType != null) 
+            if (mission.MissionType != null)
             {
+                //If no changes are made
                 if (mission.MissionType.Id > 0 || String.IsNullOrEmpty(mission.MissionType.Name))
                     mission.MissionType = null;
             }           

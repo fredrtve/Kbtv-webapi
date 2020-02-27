@@ -33,7 +33,7 @@ namespace BjBygg.Application.Queries.MissionQueries.Detail
                     dest => dest.Employer,
                     act => act.MapFrom(x => x.Employer));
 
-            CreateMap<MissionNote, MissionNoteDto>();
+            CreateMap<MissionNote, MissionDetailNoteDto>();
             CreateMap<Employer, EmployerDto>();
             CreateMap<MissionType, MissionTypeDto>();
             CreateMap<MissionImage, MissionImageDto>();

@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using BjBygg.Application.Commands.MissionCommands.Images.Delete;
 using BjBygg.Application.Commands.MissionCommands.Images.Upload;
 using BjBygg.Application.Commands.MissionCommands.Reports.Upload;
+using BjBygg.Application.Queries.DbSyncQueries;
+using BjBygg.Application.Queries.DbSyncQueries.MissionReportQuery;
 using BjBygg.Application.Queries.MissionReportTypeQueries.List;
 using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Exceptions;
@@ -24,9 +26,17 @@ namespace BjBygg.WebApi.Controllers.Mission
             _mediator = mediator;
         }
 
+        [Authorize]
+        [HttpPost]
+        [Route("api/[controller]/[action]")]
+        public async Task<DbSyncResponse<MissionReportDto>> Sync([FromBody] MissionReportSyncQuery query)
+        {
+            return await _mediator.Send(query);
+        }
+
         [Authorize(Roles = "Leder")]
         [HttpPost]
-        [Route("api/Missions/{missionId}/[controller]")]
+        [Route("api/[controller]/{missionId}")]
         public async Task<MissionReportDto> Upload(int missionId)
         {
             if (Request.Form.Files.Count() == 0)
@@ -50,7 +60,7 @@ namespace BjBygg.WebApi.Controllers.Mission
 
         [Authorize(Roles = "Leder")]
         [HttpDelete]
-        [Route("api/Missions/[controller]/{id}")]
+        [Route("api/[controller]/{id}")]
         public async Task<bool> Delete(DeleteMissionReportCommand command)
         {
             return await _mediator.Send(command);

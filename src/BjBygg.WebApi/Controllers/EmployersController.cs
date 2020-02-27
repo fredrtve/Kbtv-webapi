@@ -2,7 +2,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using BjBygg.Application.Commands.EmployerCommands.Create;
 using BjBygg.Application.Commands.EmployerCommands.Delete;
+using BjBygg.Application.Commands.EmployerCommands.DeleteRange;
 using BjBygg.Application.Commands.EmployerCommands.Update;
+using BjBygg.Application.Queries.DbSyncQueries;
+using BjBygg.Application.Queries.DbSyncQueries.EmployerQuery;
 using BjBygg.Application.Queries.EmployerQueries.List;
 using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Exceptions;
@@ -24,21 +27,19 @@ namespace BjBygg.WebApi.Controllers
         }
 
         [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
+        [HttpPost]
+        [Route("api/[controller]/[action]")]
+        public async Task<DbSyncResponse<EmployerDto>> Sync([FromBody] EmployerSyncQuery query)
+        {
+            return await _mediator.Send(query);
+        }
+
+        [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
         [HttpGet]
         [Route("api/[controller]")]
         public async Task<IEnumerable<EmployerDto>> Index()
         {
             return await _mediator.Send(new EmployerListQuery());
-        }
-
-        [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
-        [HttpGet]
-        [Route("api/[controller]/Range")]
-        public async Task<IEnumerable<MissionDto>> GetDateRange(MissionByDateRangeQuery query)
-        {
-            if (query.FromDate == null) query.FromDate = DateTime.Now.AddYears(-25);
-            if (query.ToDate == null) query.ToDate = DateTime.Now;
-            return await _mediator.Send(query);
         }
 
         [Authorize(Roles = "Leder, Mellomleder")]
@@ -67,6 +68,14 @@ namespace BjBygg.WebApi.Controllers
         [HttpDelete]
         [Route("api/[controller]/{Id}")]
         public async Task<bool> Delete(DeleteEmployerCommand command)
+        {
+            return await _mediator.Send(command);
+        }
+
+        [Authorize(Roles = "Leder")]
+        [HttpPost]
+        [Route("api/[controller]/DeleteRange")]
+        public async Task<bool> DeleteRange([FromBody] DeleteRangeEmployerCommand command)
         {
             return await _mediator.Send(command);
         }

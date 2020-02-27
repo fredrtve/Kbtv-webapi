@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BjBygg.Application.Shared
 {
-    public class MissionDto
+    public class MissionDto : DbSyncDto
     {
         public int Id { get; set; }
 
@@ -12,15 +12,15 @@ namespace BjBygg.Application.Shared
 
         public bool Finished { get; set; }
 
-        public string? Name { get; set; }
-
         public string? PhoneNumber { get; set; }
 
         public string? Description { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
-        public DateTime UpdatedAt { get; set; }
+        public int MissionTypeId { get; set; }
+
+        public int EmployerId { get; set; }
 
         public MissionTypeDto MissionType { get; set; }
 

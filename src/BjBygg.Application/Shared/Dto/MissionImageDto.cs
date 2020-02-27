@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BjBygg.Application.Shared
 {
-    public class MissionImageDto
+    public class MissionImageDto : DbSyncDto
     {
         public int Id { get; set; }
 
@@ -14,6 +14,5 @@ namespace BjBygg.Application.Shared
 
         public DateTime CreatedAt { get; set; }
 
-        public DateTime UpdatedAt { get; set; }
     }
 }

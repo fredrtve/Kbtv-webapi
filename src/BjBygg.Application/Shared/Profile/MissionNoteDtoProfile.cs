@@ -7,9 +7,9 @@ using System.Text;
 
 namespace BjBygg.Application.Queries.MissionQueries.Note
 {
-    public class MissionNoteDetailsDtoProfile : Profile
+    public class MissionNoteDtoProfile : Profile
     {
-        public MissionNoteDetailsDtoProfile()
+        public MissionNoteDtoProfile()
         {
             CreateMap<MissionNote, MissionNoteDto>();
             CreateMap<MissionNoteDto, MissionNote>();

@@ -3,6 +3,7 @@ using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,7 +24,15 @@ namespace BjBygg.Application.Commands.MissionCommands.Delete
 
             if (mission == null) throw new EntityNotFoundException($"Mission does not exist with id {request.Id}");
 
-            _dbContext.Set<Mission>().Remove(mission);      
+            _dbContext.Set<MissionImage>()
+                .RemoveRange(_dbContext.Set<MissionImage>().Where(x => x.MissionId == mission.Id));
+            _dbContext.Set<MissionNote>()
+                .RemoveRange(_dbContext.Set<MissionNote>().Where(x => x.MissionId == mission.Id));
+            _dbContext.Set<MissionReport>()
+                .RemoveRange(_dbContext.Set<MissionReport>().Where(x => x.MissionId == mission.Id));
+
+            _dbContext.Set<Mission>().Remove(mission); 
+            
             await _dbContext.SaveChangesAsync();
             return true;
         }

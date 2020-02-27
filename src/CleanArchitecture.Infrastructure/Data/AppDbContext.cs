@@ -52,7 +52,7 @@ namespace CleanArchitecture.Infrastructure.Data
 
         private void OnBeforeSaving()
         {
-            var now = DateTime.UtcNow;
+            var now = DateTime.Now;
             var user = GetCurrentUser();
 
             foreach (var entry in ChangeTracker.Entries())
@@ -76,6 +76,7 @@ namespace CleanArchitecture.Infrastructure.Data
                         case EntityState.Deleted:
                             entry.State = EntityState.Modified;
                             trackable.Deleted = true;
+                            trackable.UpdatedAt = now;
                             break;
                     }
                 }

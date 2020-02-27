@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BjBygg.Application.Queries.MissionQueries.Detail
 {
-    public class MissionNoteDto
+    public class MissionDetailNoteDto
     {
         public int Id { get; set; }
         public string? Title { get; set; }

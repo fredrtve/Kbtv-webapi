@@ -40,7 +40,7 @@ namespace BjBygg.Application.Commands.MissionCommands.Notes.Update
             {
                 throw new EntityNotFoundException($"Entity does not exist with id {request.Id}");
             }
-
+            
             return _mapper.Map<MissionNoteDto>(note);
         }
     }

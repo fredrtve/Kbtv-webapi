@@ -2,7 +2,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using BjBygg.Application.Commands.MissionReportTypeCommands.Create;
 using BjBygg.Application.Commands.MissionReportTypeCommands.Delete;
+using BjBygg.Application.Commands.MissionReportTypeCommands.DeleteRange;
 using BjBygg.Application.Commands.MissionReportTypeCommands.Update;
+using BjBygg.Application.Queries.DbSyncQueries;
+using BjBygg.Application.Queries.DbSyncQueries.MissionReportTypeQuery;
 using BjBygg.Application.Queries.MissionReportTypeQueries.List;
 using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Exceptions;
@@ -21,6 +24,14 @@ namespace BjBygg.WebApi.Controllers
         public MissionReportTypesController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("api/[controller]/[action]")]
+        public async Task<DbSyncResponse<MissionReportTypeDto>> Sync([FromBody] MissionReportTypeSyncQuery query)
+        {
+            return await _mediator.Send(query);
         }
 
         [Authorize]
@@ -57,6 +68,14 @@ namespace BjBygg.WebApi.Controllers
         [HttpDelete]
         [Route("api/[controller]/{Id}")]
         public async Task<bool> Delete(DeleteMissionReportTypeCommand command)
+        {
+            return await _mediator.Send(command);
+        }
+
+        [Authorize(Roles = "Leder")]
+        [HttpPost]
+        [Route("api/[controller]/DeleteRange")]
+        public async Task<bool> DeleteRange([FromBody] DeleteRangeMissionReportTypeCommand command)
         {
             return await _mediator.Send(command);
         }

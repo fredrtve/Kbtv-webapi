@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BjBygg.Application.Shared
 {
-    public class MissionTypeDto
+    public class MissionTypeDto : DbSyncDto
     {
         public int? Id { get; set; }
 
