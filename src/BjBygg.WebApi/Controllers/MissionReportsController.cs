@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace BjBygg.WebApi.Controllers.Mission
+namespace BjBygg.WebApi.Controllers
 {
     public class MissionReportsController : BaseController
     {

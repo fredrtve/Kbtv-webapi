@@ -31,12 +31,17 @@ namespace CleanArchitecture.Infrastructure.Data
         public DbSet<MissionImage> MissionImages { get; set; }
         public DbSet<MissionReport> MissionReports { get; set; }
         public DbSet<MissionNote> MissionNotes { get; set; }
-
+        public DbSet<Timesheet> Timesheets { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyAllConfigurationsFromCurrentAssembly();
+
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
         }
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)

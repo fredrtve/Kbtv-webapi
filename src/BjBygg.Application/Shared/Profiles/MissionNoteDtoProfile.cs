@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BjBygg.Application.Queries.MissionQueries.Note
+namespace BjBygg.Application.Shared
 {
     public class MissionNoteDtoProfile : Profile
     {

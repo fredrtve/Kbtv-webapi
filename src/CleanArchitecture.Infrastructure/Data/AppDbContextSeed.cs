@@ -69,6 +69,15 @@ namespace CleanArchitecture.Infrastructure.Data
                     context.SaveChanges();
                     context.Database.CloseConnection();
                 }
+                if (!context.Timesheets.Any())
+                {
+                    context.Database.OpenConnection();
+                    context.Timesheets.AddRange(
+                        GetPreconfiguredTimesheets());
+
+                    context.SaveChanges();
+                    context.Database.CloseConnection();
+                }
 
             }
             catch (Exception ex)
@@ -166,6 +175,46 @@ namespace CleanArchitecture.Infrastructure.Data
 
             return missionNotes;
         }
+        static IEnumerable<Timesheet> GetPreconfiguredTimesheets()
+        {
+            var timesheets = new List<Timesheet>();
+            var idCounter = 1;
+            var dayCounter = 0;
+            var rnd = new Random();
+ 
 
+            for (var missionId = 1; missionId <= 15; missionId++)
+            {
+                for (var p = 1; p <= 7; p++)
+                {
+                    var startDate = DateTime.Now.AddDays(-dayCounter);
+                    timesheets.Add(new Timesheet()
+                    {
+                        Id = idCounter,
+                        MissionId = missionId,
+                        StartTime = startDate,
+                        EndTime = startDate.AddHours(rnd.Next(4,10)),
+                        UserName = "leder"
+                    });
+                    idCounter++;
+
+                    timesheets.Add(new Timesheet()
+                    {
+                        Id = idCounter,
+                        MissionId = missionId,
+                        StartTime = startDate,
+                        EndTime = startDate.AddHours(rnd.Next(4, 10)),
+                        UserName = "ansatt"
+                    });
+
+                    idCounter++;
+                    dayCounter++;
+                }
+            }
+
+
+
+            return timesheets;
+        }
     }
 }

@@ -5,6 +5,7 @@ using BjBygg.Application.Queries.DbSyncQueries.MissionQuery;
 using BjBygg.Application.Queries.DbSyncQueries.MissionReportQuery;
 using BjBygg.Application.Queries.DbSyncQueries.MissionReportTypeQuery;
 using BjBygg.Application.Queries.DbSyncQueries.MissionTypeQuery;
+using BjBygg.Application.Queries.DbSyncQueries.TimesheetQuery;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
 using System;
@@ -33,7 +34,8 @@ namespace BjBygg.Application.Queries.DbSyncQueries.SyncAll
                 MissionNoteSync = await _mediator.Send(new MissionNoteSyncQuery() { FromDate = request.FromDate }),
                 MissionReportSync = await _mediator.Send(new MissionReportSyncQuery() { FromDate = request.FromDate }),
                 MissionReportTypeSync = await _mediator.Send(new MissionReportTypeSyncQuery() { FromDate = request.FromDate }),
-                MissionTypeSync = await _mediator.Send(new MissionTypeSyncQuery() { FromDate = request.FromDate })
+                MissionTypeSync = await _mediator.Send(new MissionTypeSyncQuery() { FromDate = request.FromDate }),
+                TimesheetSync = await _mediator.Send(new TimesheetSyncQuery() { FromDate = request.FromDate , UserName = request.UserName, Role = request.Role})
             };
         }
     }

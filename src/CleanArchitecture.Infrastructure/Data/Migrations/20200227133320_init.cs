@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CleanArchitecture.Infrastructure.data.migrations
+namespace CleanArchitecture.Infrastructure.Data.migrations
 {
     public partial class init : Migration
     {
@@ -121,7 +121,7 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                         column: x => x.MissionId,
                         principalTable: "Missions",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -148,7 +148,7 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                         column: x => x.MissionId,
                         principalTable: "Missions",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -174,13 +174,41 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                         column: x => x.MissionId,
                         principalTable: "Missions",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_MissionReports_MissionReportTypes_MissionReportTypeId",
                         column: x => x.MissionReportTypeId,
                         principalTable: "MissionReportTypes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Timesheets",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Deleted = table.Column<bool>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: true),
+                    UpdatedAt = table.Column<DateTime>(nullable: false),
+                    UpdatedBy = table.Column<string>(nullable: true),
+                    UserName = table.Column<string>(nullable: true),
+                    MissionId = table.Column<int>(nullable: false),
+                    StartTime = table.Column<DateTime>(nullable: false),
+                    EndTime = table.Column<DateTime>(nullable: false),
+                    Locked = table.Column<bool>(nullable: false, defaultValue: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Timesheets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Timesheets_Missions_MissionId",
+                        column: x => x.MissionId,
+                        principalTable: "Missions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -212,6 +240,11 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                 name: "IX_Missions_MissionTypeId",
                 table: "Missions",
                 column: "MissionTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Timesheets_MissionId",
+                table: "Timesheets",
+                column: "MissionId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -226,10 +259,13 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                 name: "MissionReports");
 
             migrationBuilder.DropTable(
-                name: "Missions");
+                name: "Timesheets");
 
             migrationBuilder.DropTable(
                 name: "MissionReportTypes");
+
+            migrationBuilder.DropTable(
+                name: "Missions");
 
             migrationBuilder.DropTable(
                 name: "Employers");

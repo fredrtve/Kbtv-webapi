@@ -22,11 +22,11 @@ namespace BjBygg.Application.Commands.MissionTypeCommands.Delete
 
         public async Task<bool> Handle(DeleteMissionTypeCommand request, CancellationToken cancellationToken)
         {
-            var MissionType = await _dbContext.Set<MissionType>().FindAsync(request.Id);
+            var missionType = await _dbContext.Set<MissionType>().FindAsync(request.Id);
 
-            if (MissionType == null) throw new EntityNotFoundException($"Entity does not exist with id {request.Id}");
+            if (missionType == null) throw new EntityNotFoundException($"Entity does not exist with id {request.Id}");
 
-            _dbContext.Set<MissionType>().Remove(MissionType);      
+            _dbContext.Set<MissionType>().Remove(missionType);      
             await _dbContext.SaveChangesAsync();
             return true;
         }

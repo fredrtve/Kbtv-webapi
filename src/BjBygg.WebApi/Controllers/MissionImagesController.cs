@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BjBygg.WebApi.Controllers.Mission
+namespace BjBygg.WebApi.Controllers
 {
     public class MissionImagesController : BaseController
     {

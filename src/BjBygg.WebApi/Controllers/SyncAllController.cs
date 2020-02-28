@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using BjBygg.Application.Queries.DbSyncQueries.SyncAll;
 using MediatR;
@@ -21,9 +22,14 @@ namespace BjBygg.WebApi.Controllers
         [Authorize]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<SyncAllResponse> Post([FromBody] SyncAllQuery query)
+        public async Task<SyncAllResponse> Post([FromBody] string FromDate)
         {
-            return await _mediator.Send(query);
+            return await _mediator.Send(new SyncAllQuery()
+            {
+                FromDate = FromDate,
+                UserName = User.FindFirstValue("UserName"),
+                Role = User.FindFirstValue(ClaimTypes.Role),
+            });
         }
     }
 }

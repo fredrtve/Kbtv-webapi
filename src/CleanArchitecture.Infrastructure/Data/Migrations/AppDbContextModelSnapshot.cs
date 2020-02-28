@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CleanArchitecture.Infrastructure.data.migrations
+namespace CleanArchitecture.Infrastructure.Data.migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
@@ -295,15 +295,62 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     b.ToTable("MissionTypes");
                 });
 
+            modelBuilder.Entity("CleanArchitecture.Core.Entities.Timesheet", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Locked")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(false);
+
+                    b.Property<int>("MissionId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MissionId");
+
+                    b.ToTable("Timesheets");
+                });
+
             modelBuilder.Entity("CleanArchitecture.Core.Entities.Mission", b =>
                 {
                     b.HasOne("CleanArchitecture.Core.Entities.Employer", "Employer")
                         .WithMany("Missions")
-                        .HasForeignKey("EmployerId");
+                        .HasForeignKey("EmployerId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("CleanArchitecture.Core.Entities.MissionType", "MissionType")
                         .WithMany("Missions")
-                        .HasForeignKey("MissionTypeId");
+                        .HasForeignKey("MissionTypeId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("CleanArchitecture.Core.Entities.MissionImage", b =>
@@ -311,7 +358,7 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     b.HasOne("CleanArchitecture.Core.Entities.Mission", "Mission")
                         .WithMany("MissionImages")
                         .HasForeignKey("MissionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -320,7 +367,7 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     b.HasOne("CleanArchitecture.Core.Entities.Mission", null)
                         .WithMany("MissionNotes")
                         .HasForeignKey("MissionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -329,13 +376,22 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     b.HasOne("CleanArchitecture.Core.Entities.Mission", "Mission")
                         .WithMany("MissionReports")
                         .HasForeignKey("MissionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("CleanArchitecture.Core.Entities.MissionReportType", "MissionReportType")
                         .WithMany("MissionReports")
                         .HasForeignKey("MissionReportTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CleanArchitecture.Core.Entities.Timesheet", b =>
+                {
+                    b.HasOne("CleanArchitecture.Core.Entities.Mission", "Mission")
+                        .WithMany("Timesheets")
+                        .HasForeignKey("MissionId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618
