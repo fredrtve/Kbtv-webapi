@@ -6,22 +6,12 @@ using System.Text;
 
 namespace BjBygg.Application.Shared
 {
-    public class TimesheetDto : DbSyncDto
+    public class TimesheetWeekDto : DbSyncDto
     {
         public int Id { get; set; }
-
         public string UserName { get; set; }
-
-        public int MissionId { get; set; }
-
-        public int TimesheetWeekId { get; set; }
-
-        public TimesheetWeekDto TimesheetWeek { get; set; }
-
-        public DateTime StartTime { get; set; }
-
-        public DateTime EndTime { get; set; }
-
+        public int Year { get; set; }
+        public int WeekNr { get; set; }
         public TimesheetStatus Status { get; set; }
     }
 }

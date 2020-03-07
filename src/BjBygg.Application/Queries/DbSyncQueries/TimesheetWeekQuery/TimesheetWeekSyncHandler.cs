@@ -1,40 +1,50 @@
 ﻿using AutoMapper;
 using BjBygg.Application.Shared;
+using CleanArchitecture.Core.Entities;
+using CleanArchitecture.Core.Enums;
+using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Infrastructure.Data;
+using CleanArchitecture.Infrastructure.Identity;
 using CleanArchitecture.SharedKernel;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BjBygg.Application.Queries.DbSyncQueries
+namespace BjBygg.Application.Queries.DbSyncQueries.TimesheetQuery
 {
-    public abstract class DbSyncHandler<T, Q, R> : IRequestHandler<Q, DbSyncResponse<R>>
-        where T : BaseEntity where Q : DbSyncQuery<R> where R : DbSyncDto
+    public class TimesheetWeekSyncHandler : IRequestHandler<TimesheetWeekSyncQuery, DbSyncResponse<TimesheetWeekDto>>
     {
         private readonly AppDbContext _dbContext;
         private readonly IMapper _mapper;
 
-        public DbSyncHandler(AppDbContext dbContext, IMapper mapper)
+        public TimesheetWeekSyncHandler(AppDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
         }
 
-        public async Task<DbSyncResponse<R>> Handle(Q request, CancellationToken cancellationToken)
-        {
-            List<T> entities;
+        //Identical to timesheet handler, create generic
+        public async Task<DbSyncResponse<TimesheetWeekDto>> Handle(TimesheetWeekSyncQuery request, CancellationToken cancellationToken)
+        { 
+            List<TimesheetWeek> entities;
             List<int> deletedEntities = new List<int>();
 
             var minDate = DateTime.Now.AddYears(-5);
             var date = DateTime.MinValue;
             DateTime.TryParseExact(request.FromDate, "o", null, System.Globalization.DateTimeStyles.None, out date);
 
-            IQueryable<T> query = _dbContext.Set<T>();
+            IQueryable<TimesheetWeek> query = _dbContext.Set<TimesheetWeek>();
+
+            //Only include self timesheets for roles other than leader, dont include open timesheets for leader
+            if (request.Role != "Leder")
+                query = query.Where(x => x.UserName == request.UserName);
+            else 
+                query = query.Where(x => x.Status != TimesheetStatus.Open || x.UserName == request.UserName);
 
             Boolean initialCall = (DateTime.Compare(date, minDate) < 0); //If last updated resource is older than 5 years
 
@@ -54,8 +64,9 @@ namespace BjBygg.Application.Queries.DbSyncQueries
                 entities = entities.Where(x => x.Deleted == false).ToList(); //Remove deleted entities
             }
 
-            return new DbSyncResponse<R>() {
-                Entities = _mapper.Map<IEnumerable<R>>(entities),
+            return new DbSyncResponse<TimesheetWeekDto>()
+            {
+                Entities = _mapper.Map<IEnumerable<TimesheetWeekDto>>(entities),
                 DeletedEntities = deletedEntities,
                 Timestamp = DateTime.Now.ToString("o"),
             };

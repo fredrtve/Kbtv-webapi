@@ -1,4 +1,6 @@
 using CleanArchitecture.Core.Entities;
+using CleanArchitecture.Core.Enums;
+using CleanArchitecture.SharedKernel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -65,6 +67,15 @@ namespace CleanArchitecture.Infrastructure.Data
                     context.Database.OpenConnection();
                     context.MissionNotes.AddRange(
                         GetPreconfiguredMissionNotes());
+
+                    context.SaveChanges();
+                    context.Database.CloseConnection();
+                }
+                if (!context.TimesheetWeeks.Any())
+                {
+                    context.Database.OpenConnection();
+                    context.TimesheetWeeks.AddRange(
+                        GetPreconfiguredTimesheetWeeks());
 
                     context.SaveChanges();
                     context.Database.CloseConnection();
@@ -175,6 +186,41 @@ namespace CleanArchitecture.Infrastructure.Data
 
             return missionNotes;
         }
+        static IEnumerable<TimesheetWeek> GetPreconfiguredTimesheetWeeks()
+        {
+            var timesheets = new List<TimesheetWeek>();
+            var idCounter = 1;
+
+            for (var weekNr = 1; weekNr <= 42; weekNr++)
+            {
+                    timesheets.Add(new TimesheetWeek()
+                    {
+                        Id = idCounter,
+                        UserName = "leder",
+                        Year = 2019,
+                        WeekNr = weekNr,
+                        Status = weekNr % 2 == 0 ? TimesheetStatus.Open : TimesheetStatus.Confirming
+                    });
+                    idCounter++;
+            }
+
+            for (var weekNr = 1; weekNr <= 42; weekNr++)
+            {
+                timesheets.Add(new TimesheetWeek()
+                {
+                    Id = idCounter,
+                    UserName = "ansatt",
+                    Year = 2018,
+                    WeekNr = (53 - weekNr),
+                    Status = weekNr % 2 == 0 ? TimesheetStatus.Open : TimesheetStatus.Confirming
+                });
+                idCounter++;
+            }
+
+
+            return timesheets;
+        }
+
         static IEnumerable<Timesheet> GetPreconfiguredTimesheets()
         {
             var timesheets = new List<Timesheet>();
@@ -183,28 +229,32 @@ namespace CleanArchitecture.Infrastructure.Data
             var rnd = new Random();
  
 
-            for (var missionId = 1; missionId <= 15; missionId++)
+            for (var weekId = 1; weekId <= 42; weekId++)
             {
-                for (var p = 1; p <= 7; p++)
+                for (var missionId = 1; missionId <= 10; missionId++)
                 {
                     var startDate = DateTime.Now.AddDays(-dayCounter);
                     timesheets.Add(new Timesheet()
                     {
                         Id = idCounter,
+                        TimesheetWeekId = weekId,
                         MissionId = missionId,
                         StartTime = startDate,
                         EndTime = startDate.AddHours(rnd.Next(4,10)),
-                        UserName = "leder"
+                        UserName = "leder",
+                        Status = weekId % 2 == 0 ? TimesheetStatus.Open : TimesheetStatus.Confirming
                     });
                     idCounter++;
 
                     timesheets.Add(new Timesheet()
                     {
                         Id = idCounter,
+                        TimesheetWeekId = (85 - weekId),
                         MissionId = missionId,
                         StartTime = startDate,
                         EndTime = startDate.AddHours(rnd.Next(4, 10)),
-                        UserName = "ansatt"
+                        UserName = "ansatt",
+                        Status = weekId % 2 == 0 ? TimesheetStatus.Open : TimesheetStatus.Confirming
                     });
 
                     idCounter++;

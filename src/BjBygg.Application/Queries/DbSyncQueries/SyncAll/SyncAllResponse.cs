@@ -21,6 +21,9 @@ namespace BjBygg.Application.Queries.DbSyncQueries.SyncAll
 
         public DbSyncResponse<MissionTypeDto> MissionTypeSync { get; set; }
 
+        public DbSyncResponse<TimesheetWeekDto> TimesheetWeekSync { get; set; }
+
         public DbSyncResponse<TimesheetDto> TimesheetSync { get; set; }
+
     }
 }

@@ -1,6 +1,6 @@
 using CleanArchitecture.Core.Exceptions;
-using CleanArchitecture.Core.SharedKernel;
 using CleanArchitecture.Infrastructure.Data;
+using CleanArchitecture.SharedKernel;
 using MediatR;
 using System;
 using System.Linq;

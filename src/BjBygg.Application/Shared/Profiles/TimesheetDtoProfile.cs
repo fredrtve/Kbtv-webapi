@@ -7,8 +7,12 @@ namespace BjBygg.Application.Shared
     {
         public TimesheetDtoProfile()
         {
-            CreateMap<Timesheet, TimesheetDto>();
+            CreateMap<Timesheet, TimesheetDto>()
+                .ForMember(dest => dest.TimesheetWeek, opt => opt.MapFrom(src => src.TimesheetWeek));
+
             CreateMap<TimesheetDto, Timesheet>();
+
+            CreateMap<TimesheetWeek, TimesheetWeekDto>();
         }
     }
 }

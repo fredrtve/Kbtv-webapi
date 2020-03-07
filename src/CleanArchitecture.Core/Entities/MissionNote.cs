@@ -1,7 +1,5 @@
-using CleanArchitecture.Core.SharedKernel;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using CleanArchitecture.SharedKernel;
+
 
 namespace CleanArchitecture.Core.Entities
 {

@@ -1,8 +1,7 @@
-using CleanArchitecture.SharedKernel;
 using System;
-using System.Collections.Generic;
 
-namespace CleanArchitecture.Core.SharedKernel
+
+namespace CleanArchitecture.SharedKernel
 {
     public abstract class BaseEntity : ITrackable
     {

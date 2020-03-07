@@ -1,13 +1,16 @@
-﻿using CleanArchitecture.Core.SharedKernel;
+﻿using CleanArchitecture.Core.Enums;
+using CleanArchitecture.SharedKernel;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CleanArchitecture.Core.Entities
 {
     public class Timesheet : BaseEntity
     {
         public string UserName { get; set; }
+
+        public int TimesheetWeekId { get; set; }
+
+        public TimesheetWeek TimesheetWeek { get; set; }
 
         public int MissionId { get; set; }
 
@@ -17,7 +20,7 @@ namespace CleanArchitecture.Core.Entities
 
         public DateTime EndTime { get; set; }
 
-        public Boolean Locked { get; set; }
+        public TimesheetStatus Status { get; set; }
 
         public double GetTotalHours()
         {

@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Entities;
+using CleanArchitecture.Core.Enums;
 using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Infrastructure.Data;
 using CleanArchitecture.Infrastructure.Identity;
+using CleanArchitecture.SharedKernel;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -18,13 +20,11 @@ namespace BjBygg.Application.Queries.DbSyncQueries.TimesheetQuery
     public class TimesheetSyncHandler : IRequestHandler<TimesheetSyncQuery, DbSyncResponse<TimesheetDto>>
     {
         private readonly AppDbContext _dbContext;
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
 
-        public TimesheetSyncHandler(AppDbContext dbContext, UserManager<ApplicationUser> userManager, IMapper mapper)
+        public TimesheetSyncHandler(AppDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
-            _userManager = userManager;
             _mapper = mapper;
         }
 
@@ -39,8 +39,11 @@ namespace BjBygg.Application.Queries.DbSyncQueries.TimesheetQuery
 
             IQueryable<Timesheet> query = _dbContext.Set<Timesheet>();
 
-            if (request.Role != "Leder") //Only include self timesheets for roles other than leader
+            //Only include self timesheets for roles other than leader, dont include open timesheets for leader
+            if (request.Role != "Leder")
                 query = query.Where(x => x.UserName == request.UserName);
+            else
+                query = query.Where(x => x.Status != TimesheetStatus.Open || x.UserName == request.UserName);
 
             Boolean initialCall = (DateTime.Compare(date, minDate) < 0); //If last updated resource is older than 5 years
 

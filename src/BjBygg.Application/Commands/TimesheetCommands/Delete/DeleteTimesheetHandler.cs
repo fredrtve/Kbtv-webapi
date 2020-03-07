@@ -1,7 +1,9 @@
 using AutoMapper;
 using CleanArchitecture.Core.Entities;
+using CleanArchitecture.Core.Enums;
 using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Infrastructure.Data;
+using CleanArchitecture.SharedKernel;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -30,8 +32,8 @@ namespace BjBygg.Application.Commands.TimesheetCommands.Delete
             if (request.UserName != timesheet.UserName && request.Role != "Leder") //Allow leader
                 throw new UnauthorizedException("Timesheet does not belong to user");
 
-            if (timesheet.Locked && request.Role != "Leder") //Allow leader
-                throw new BadRequestException("Timesheet is locked & can't be deleted.");
+            if (timesheet.Status != TimesheetStatus.Open && request.Role != "Leder") //Allow leader
+                throw new BadRequestException("Timesheet is not open & can't be deleted.");
 
             _dbContext.Set<Timesheet>().Remove(timesheet);      
             await _dbContext.SaveChangesAsync();

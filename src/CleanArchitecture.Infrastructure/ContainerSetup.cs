@@ -1,7 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using CleanArchitecture.Core.SharedKernel;
-using CleanArchitecture.Infrastructure.Data;
+using CleanArchitecture.SharedKernel;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Reflection;

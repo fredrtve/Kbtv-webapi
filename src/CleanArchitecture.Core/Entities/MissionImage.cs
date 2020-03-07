@@ -1,4 +1,4 @@
-using CleanArchitecture.Core.SharedKernel;
+using CleanArchitecture.SharedKernel;
 using System;
 
 namespace CleanArchitecture.Core.Entities

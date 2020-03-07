@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CleanArchitecture.Core.Entities;
-using CleanArchitecture.Core.SharedKernel;
 using Ardalis.EFCore.Extensions;
 using System.Reflection;
 using JetBrains.Annotations;
@@ -31,7 +30,9 @@ namespace CleanArchitecture.Infrastructure.Data
         public DbSet<MissionImage> MissionImages { get; set; }
         public DbSet<MissionReport> MissionReports { get; set; }
         public DbSet<MissionNote> MissionNotes { get; set; }
+        public DbSet<TimesheetWeek> TimesheetWeeks { get; set; }
         public DbSet<Timesheet> Timesheets { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
