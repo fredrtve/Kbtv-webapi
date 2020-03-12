@@ -8,10 +8,6 @@ namespace CleanArchitecture.Core.Entities
     {
         public string UserName { get; set; }
 
-        public int TimesheetWeekId { get; set; }
-
-        public TimesheetWeek TimesheetWeek { get; set; }
-
         public int MissionId { get; set; }
 
         public Mission Mission { get; set; }
@@ -20,11 +16,9 @@ namespace CleanArchitecture.Core.Entities
 
         public DateTime EndTime { get; set; }
 
+        public double TotalHours { get; set; }
+
         public TimesheetStatus Status { get; set; }
 
-        public double GetTotalHours()
-        {
-            return (EndTime - StartTime).TotalHours;
-        }
     }
 }

@@ -14,13 +14,11 @@ namespace BjBygg.Application.Shared
 
         public int MissionId { get; set; }
 
-        public int TimesheetWeekId { get; set; }
-
-        public TimesheetWeekDto TimesheetWeek { get; set; }
-
         public DateTime StartTime { get; set; }
 
         public DateTime EndTime { get; set; }
+
+        public double TotalHours { get; set; }
 
         public TimesheetStatus Status { get; set; }
     }

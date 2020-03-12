@@ -71,15 +71,6 @@ namespace CleanArchitecture.Infrastructure.Data
                     context.SaveChanges();
                     context.Database.CloseConnection();
                 }
-                if (!context.TimesheetWeeks.Any())
-                {
-                    context.Database.OpenConnection();
-                    context.TimesheetWeeks.AddRange(
-                        GetPreconfiguredTimesheetWeeks());
-
-                    context.SaveChanges();
-                    context.Database.CloseConnection();
-                }
                 if (!context.Timesheets.Any())
                 {
                     context.Database.OpenConnection();
@@ -186,40 +177,6 @@ namespace CleanArchitecture.Infrastructure.Data
 
             return missionNotes;
         }
-        static IEnumerable<TimesheetWeek> GetPreconfiguredTimesheetWeeks()
-        {
-            var timesheets = new List<TimesheetWeek>();
-            var idCounter = 1;
-
-            for (var weekNr = 1; weekNr <= 42; weekNr++)
-            {
-                    timesheets.Add(new TimesheetWeek()
-                    {
-                        Id = idCounter,
-                        UserName = "leder",
-                        Year = 2019,
-                        WeekNr = weekNr,
-                        Status = weekNr % 2 == 0 ? TimesheetStatus.Open : TimesheetStatus.Confirming
-                    });
-                    idCounter++;
-            }
-
-            for (var weekNr = 1; weekNr <= 42; weekNr++)
-            {
-                timesheets.Add(new TimesheetWeek()
-                {
-                    Id = idCounter,
-                    UserName = "ansatt",
-                    Year = 2018,
-                    WeekNr = (53 - weekNr),
-                    Status = weekNr % 2 == 0 ? TimesheetStatus.Open : TimesheetStatus.Confirming
-                });
-                idCounter++;
-            }
-
-
-            return timesheets;
-        }
 
         static IEnumerable<Timesheet> GetPreconfiguredTimesheets()
         {
@@ -229,37 +186,40 @@ namespace CleanArchitecture.Infrastructure.Data
             var rnd = new Random();
  
 
-            for (var weekId = 1; weekId <= 42; weekId++)
+            for (var n = 1; n <= 42; n++)
             {
-                for (var missionId = 1; missionId <= 10; missionId++)
+                
+                for (var missionId = 1; missionId <= 15; missionId++)
                 {
                     var startDate = DateTime.Now.AddDays(-dayCounter);
+                    var endDate = startDate.AddHours(rnd.Next(4, 10));
                     timesheets.Add(new Timesheet()
                     {
                         Id = idCounter,
-                        TimesheetWeekId = weekId,
                         MissionId = missionId,
                         StartTime = startDate,
                         EndTime = startDate.AddHours(rnd.Next(4,10)),
+                        TotalHours = (endDate - startDate).TotalHours,
                         UserName = "leder",
-                        Status = weekId % 2 == 0 ? TimesheetStatus.Open : TimesheetStatus.Confirming
+                        Status = n % 2 == 0 ? TimesheetStatus.Open : TimesheetStatus.Confirmed
                     });
                     idCounter++;
 
                     timesheets.Add(new Timesheet()
                     {
                         Id = idCounter,
-                        TimesheetWeekId = (85 - weekId),
                         MissionId = missionId,
                         StartTime = startDate,
                         EndTime = startDate.AddHours(rnd.Next(4, 10)),
+                        TotalHours = (endDate - startDate).TotalHours,
                         UserName = "ansatt",
-                        Status = weekId % 2 == 0 ? TimesheetStatus.Open : TimesheetStatus.Confirming
+                        Status = n % 2 == 0 ? TimesheetStatus.Open : TimesheetStatus.Confirmed
                     });
 
                     idCounter++;
                     dayCounter++;
                 }
+       
             }
 
 

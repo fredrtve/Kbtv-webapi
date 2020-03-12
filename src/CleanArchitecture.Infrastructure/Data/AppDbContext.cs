@@ -30,7 +30,6 @@ namespace CleanArchitecture.Infrastructure.Data
         public DbSet<MissionImage> MissionImages { get; set; }
         public DbSet<MissionReport> MissionReports { get; set; }
         public DbSet<MissionNote> MissionNotes { get; set; }
-        public DbSet<TimesheetWeek> TimesheetWeeks { get; set; }
         public DbSet<Timesheet> Timesheets { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

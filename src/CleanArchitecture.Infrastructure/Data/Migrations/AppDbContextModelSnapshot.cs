@@ -323,8 +323,8 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("TimesheetWeekId")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("TotalHours")
+                        .HasColumnType("REAL");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
@@ -333,55 +333,14 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserName")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.HasIndex("MissionId");
 
-                    b.HasIndex("TimesheetWeekId");
-
                     b.ToTable("Timesheets");
-                });
-
-            modelBuilder.Entity("CleanArchitecture.Core.Entities.TimesheetWeek", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("WeekNr")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Year")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TimesheetWeeks");
                 });
 
             modelBuilder.Entity("CleanArchitecture.Core.Entities.Mission", b =>
@@ -435,12 +394,6 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     b.HasOne("CleanArchitecture.Core.Entities.Mission", "Mission")
                         .WithMany("Timesheets")
                         .HasForeignKey("MissionId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("CleanArchitecture.Core.Entities.TimesheetWeek", "TimesheetWeek")
-                        .WithMany("Timesheets")
-                        .HasForeignKey("TimesheetWeekId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

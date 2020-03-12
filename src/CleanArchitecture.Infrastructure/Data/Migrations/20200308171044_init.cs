@@ -64,27 +64,6 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TimesheetWeeks",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Deleted = table.Column<bool>(nullable: false),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    CreatedBy = table.Column<string>(nullable: true),
-                    UpdatedAt = table.Column<DateTime>(nullable: false),
-                    UpdatedBy = table.Column<string>(nullable: true),
-                    UserName = table.Column<string>(nullable: false),
-                    Year = table.Column<int>(nullable: false),
-                    WeekNr = table.Column<int>(nullable: false),
-                    Status = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TimesheetWeeks", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Missions",
                 columns: table => new
                 {
@@ -215,11 +194,11 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     CreatedBy = table.Column<string>(nullable: true),
                     UpdatedAt = table.Column<DateTime>(nullable: false),
                     UpdatedBy = table.Column<string>(nullable: true),
-                    UserName = table.Column<string>(nullable: true),
-                    TimesheetWeekId = table.Column<int>(nullable: false),
+                    UserName = table.Column<string>(nullable: false),
                     MissionId = table.Column<int>(nullable: false),
                     StartTime = table.Column<DateTime>(nullable: false),
                     EndTime = table.Column<DateTime>(nullable: false),
+                    TotalHours = table.Column<double>(nullable: false),
                     Status = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
@@ -229,12 +208,6 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                         name: "FK_Timesheets_Missions_MissionId",
                         column: x => x.MissionId,
                         principalTable: "Missions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Timesheets_TimesheetWeeks_TimesheetWeekId",
-                        column: x => x.TimesheetWeekId,
-                        principalTable: "TimesheetWeeks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -273,11 +246,6 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                 name: "IX_Timesheets_MissionId",
                 table: "Timesheets",
                 column: "MissionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Timesheets_TimesheetWeekId",
-                table: "Timesheets",
-                column: "TimesheetWeekId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -299,9 +267,6 @@ namespace CleanArchitecture.Infrastructure.data.migrations
 
             migrationBuilder.DropTable(
                 name: "Missions");
-
-            migrationBuilder.DropTable(
-                name: "TimesheetWeeks");
 
             migrationBuilder.DropTable(
                 name: "Employers");
