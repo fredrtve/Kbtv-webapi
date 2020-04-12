@@ -35,7 +35,7 @@ namespace BjBygg.Application.Queries.DbSyncQueries.SyncAll
                 MissionReportSync = await _mediator.Send(new MissionReportSyncQuery() { FromDate = request.FromDate }),
                 MissionReportTypeSync = await _mediator.Send(new MissionReportTypeSyncQuery() { FromDate = request.FromDate }),
                 MissionTypeSync = await _mediator.Send(new MissionTypeSyncQuery() { FromDate = request.FromDate }),
-                TimesheetSync = await _mediator.Send(new TimesheetSyncQuery() { FromDate = request.FromDate , UserName = request.UserName, Role = request.Role})
+                UserTimesheetSync = await _mediator.Send(new UserTimesheetSyncQuery() { FromDate = request.FromDate , UserName = request.UserName})
             };
         }
     }

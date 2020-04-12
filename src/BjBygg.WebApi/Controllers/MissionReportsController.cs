@@ -36,7 +36,7 @@ namespace BjBygg.WebApi.Controllers
 
         [Authorize(Roles = "Leder")]
         [HttpPost]
-        [Route("api/[controller]/{missionId}")]
+        [Route("api/[controller]")]
         public async Task<MissionReportDto> Upload(int missionId)
         {
             if (Request.Form.Files.Count() == 0)

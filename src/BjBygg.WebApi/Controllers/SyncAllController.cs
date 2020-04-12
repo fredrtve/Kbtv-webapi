@@ -27,8 +27,7 @@ namespace BjBygg.WebApi.Controllers
             return await _mediator.Send(new SyncAllQuery()
             {
                 FromDate = FromDate,
-                UserName = User.FindFirstValue("UserName"),
-                Role = User.FindFirstValue(ClaimTypes.Role),
+                UserName = User.FindFirstValue("UserName")
             });
         }
     }

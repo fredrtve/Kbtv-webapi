@@ -10,8 +10,6 @@ namespace BjBygg.Application.Shared
     {
         public int Id { get; set; }
 
-        public string UserName { get; set; }
-
         public int MissionId { get; set; }
 
         public DateTime StartTime { get; set; }

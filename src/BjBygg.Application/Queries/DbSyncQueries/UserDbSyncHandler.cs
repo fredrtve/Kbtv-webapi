@@ -1,49 +1,42 @@
 ﻿using AutoMapper;
 using BjBygg.Application.Shared;
-using CleanArchitecture.Core.Entities;
-using CleanArchitecture.Core.Enums;
-using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Infrastructure.Data;
-using CleanArchitecture.Infrastructure.Identity;
 using CleanArchitecture.SharedKernel;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BjBygg.Application.Queries.DbSyncQueries.TimesheetQuery
+namespace BjBygg.Application.Queries.DbSyncQueries
 {
-    public class TimesheetSyncHandler : IRequestHandler<TimesheetSyncQuery, DbSyncResponse<TimesheetDto>>
+    public abstract class UserDbSyncHandler<T, Q, R> : IRequestHandler<Q, DbSyncResponse<R>>
+        where T : UserEntity where Q : UserDbSyncQuery<R> where R : DbSyncDto
     {
         private readonly AppDbContext _dbContext;
         private readonly IMapper _mapper;
 
-        public TimesheetSyncHandler(AppDbContext dbContext, IMapper mapper)
+        public UserDbSyncHandler(AppDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
         }
 
-        public async Task<DbSyncResponse<TimesheetDto>> Handle(TimesheetSyncQuery request, CancellationToken cancellationToken)
+        public async Task<DbSyncResponse<R>> Handle(Q request, CancellationToken cancellationToken)
         {
-            List<Timesheet> entities;
+            List<T> entities;
             List<int> deletedEntities = new List<int>();
 
             var minDate = DateTime.Now.AddYears(-5);
             var date = DateTime.MinValue;
             DateTime.TryParseExact(request.FromDate, "o", null, System.Globalization.DateTimeStyles.None, out date);
 
-            IQueryable<Timesheet> query = _dbContext.Set<Timesheet>();
+            IQueryable<T> query = _dbContext.Set<T>();
 
-            //Only include self timesheets for roles other than leader, dont include open timesheets for leader
-            if (request.Role != "Leder")
-                query = query.Where(x => x.UserName == request.UserName);
-            else
-                query = query.Where(x => x.Status != TimesheetStatus.Open || x.UserName == request.UserName);
+            query = query.Where(x => x.UserName == request.UserName); //Only users entities
 
             Boolean initialCall = (DateTime.Compare(date, minDate) < 0); //If last updated resource is older than 5 years
 
@@ -63,9 +56,9 @@ namespace BjBygg.Application.Queries.DbSyncQueries.TimesheetQuery
                 entities = entities.Where(x => x.Deleted == false).ToList(); //Remove deleted entities
             }
 
-            return new DbSyncResponse<TimesheetDto>()
+            return new DbSyncResponse<R>()
             {
-                Entities = _mapper.Map<IEnumerable<TimesheetDto>>(entities),
+                Entities = _mapper.Map<IEnumerable<R>>(entities),
                 DeletedEntities = deletedEntities,
                 Timestamp = DateTime.Now.ToString("o"),
             };

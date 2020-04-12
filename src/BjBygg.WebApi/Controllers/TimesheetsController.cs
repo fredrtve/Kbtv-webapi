@@ -38,10 +38,9 @@ namespace BjBygg.WebApi.Controllers
         [Route("api/[controller]/[action]")]
         public async Task<DbSyncResponse<TimesheetDto>> Sync([FromBody] string FromDate)
         {
-            return await _mediator.Send(new TimesheetSyncQuery() { 
+            return await _mediator.Send(new UserTimesheetSyncQuery() { 
                 FromDate = FromDate,
                 UserName = User.FindFirstValue("UserName"),
-                Role = User.FindFirstValue(ClaimTypes.Role),
             });
         }
 

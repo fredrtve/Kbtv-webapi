@@ -43,7 +43,7 @@ namespace BjBygg.WebApi.Controllers
 
         [Authorize]
         [HttpPost]
-        [Route("api/[controller]/{MissionId}")]
+        [Route("api/[controller]")]
         public async Task<MissionNoteDto> Create([FromBody] CreateMissionNoteCommand command)
         {
             if (!ModelState.IsValid)
