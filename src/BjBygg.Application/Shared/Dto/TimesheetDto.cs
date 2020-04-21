@@ -19,5 +19,7 @@ namespace BjBygg.Application.Shared
         public double TotalHours { get; set; }
 
         public TimesheetStatus Status { get; set; }
+
+        public string? UserName { get; set; }
     }
 }
