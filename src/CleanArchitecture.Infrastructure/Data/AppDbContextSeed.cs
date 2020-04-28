@@ -216,6 +216,7 @@ namespace CleanArchitecture.Infrastructure.Data
                         UserName = "ansatt",
                         Status = n % 2 == 0 ? TimesheetStatus.Open : TimesheetStatus.Confirmed
                     });
+                    idCounter++;
 
                     timesheets.Add(new Timesheet()
                     {
@@ -228,8 +229,8 @@ namespace CleanArchitecture.Infrastructure.Data
                         UserName = "mellomleder",
                         Status = n % 2 == 0 ? TimesheetStatus.Open : TimesheetStatus.Confirmed
                     });
-
                     idCounter++;
+
                     dayCounter++;
                 }
        
