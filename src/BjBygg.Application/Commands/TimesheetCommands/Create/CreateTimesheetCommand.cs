@@ -20,5 +20,9 @@ namespace BjBygg.Application.Commands.TimesheetCommands.Create
 
         [Required]
         public DateTime EndTime { get; set; }
+
+        [Required]
+        [StringLength(400, ErrorMessage = "{0} kan maks være på {1} tegn.")]
+        public string Comment { get; set; }
     }
 }
