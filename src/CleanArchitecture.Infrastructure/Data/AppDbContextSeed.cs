@@ -184,14 +184,13 @@ namespace CleanArchitecture.Infrastructure.Data
             var idCounter = 1;
             var dayCounter = 0;
             var rnd = new Random();
- 
+            var today = DateTime.Now.Date;
 
-            for (var n = 1; n <= 42; n++)
-            {
-                
+            for (var n = 1; n <= 100; n++)
+            {        
                 for (var missionId = 1; missionId <= 15; missionId++)
                 {
-                    var startDate = DateTime.Now.AddDays(-dayCounter);
+                    var startDate = today.AddDays(-dayCounter);
                     var endDate = startDate.AddHours(rnd.Next(4, 10));
                     timesheets.Add(new Timesheet()
                     {
@@ -200,6 +199,7 @@ namespace CleanArchitecture.Infrastructure.Data
                         StartTime = startDate,
                         EndTime = startDate.AddHours(rnd.Next(4,10)),
                         TotalHours = (endDate - startDate).TotalHours,
+                        Comment = "Dette er en kommentar til en time for leder for ett kult oppdrag",
                         UserName = "leder",
                         Status = n % 2 == 0 ? TimesheetStatus.Open : TimesheetStatus.Confirmed
                     });
@@ -212,7 +212,20 @@ namespace CleanArchitecture.Infrastructure.Data
                         StartTime = startDate,
                         EndTime = startDate.AddHours(rnd.Next(4, 10)),
                         TotalHours = (endDate - startDate).TotalHours,
+                        Comment = "Dette er en kommentar til en time for ansatt",
                         UserName = "ansatt",
+                        Status = n % 2 == 0 ? TimesheetStatus.Open : TimesheetStatus.Confirmed
+                    });
+
+                    timesheets.Add(new Timesheet()
+                    {
+                        Id = idCounter,
+                        MissionId = missionId,
+                        StartTime = startDate,
+                        EndTime = startDate.AddHours(rnd.Next(4, 10)),
+                        TotalHours = (endDate - startDate).TotalHours,
+                        Comment = "Dette er en kommentar til en time for mellomleder for ett alle tiders oppdrag",
+                        UserName = "mellomleder",
                         Status = n % 2 == 0 ? TimesheetStatus.Open : TimesheetStatus.Confirmed
                     });
 

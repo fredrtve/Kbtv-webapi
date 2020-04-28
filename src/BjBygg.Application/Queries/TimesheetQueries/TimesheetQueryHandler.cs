@@ -44,7 +44,8 @@ namespace BjBygg.Application.Queries.TimesheetQueries
             {
                 var endDate = dtDateTime.AddSeconds(request.EndDate ?? 0).ToLocalTime();
                 query = query.Where(x => x.StartTime.Date >= startDate.Date && x.StartTime.Date <= endDate.Date);
-            }   
+            }
+           
 
             return _mapper.Map<IEnumerable<TimesheetDto>>(await query.ToListAsync());
         }

@@ -199,7 +199,8 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     StartTime = table.Column<DateTime>(nullable: false),
                     EndTime = table.Column<DateTime>(nullable: false),
                     TotalHours = table.Column<double>(nullable: false),
-                    Status = table.Column<string>(nullable: false)
+                    Status = table.Column<string>(nullable: false),
+                    Comment = table.Column<string>(maxLength: 400, nullable: false)
                 },
                 constraints: table =>
                 {

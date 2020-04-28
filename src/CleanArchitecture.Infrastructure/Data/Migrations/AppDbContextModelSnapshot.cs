@@ -301,6 +301,11 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(400);
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 

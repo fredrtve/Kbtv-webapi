@@ -14,6 +14,7 @@ namespace CleanArchitecture.Infrastructure.Data.Config
             builder.Property(t => t.UserName).IsRequired();
             builder.Property(t => t.StartTime).IsRequired();
             builder.Property(t => t.EndTime).IsRequired();
+            builder.Property(t => t.Comment).IsRequired().HasMaxLength(400);
             builder.Property(t => t.MissionId).IsRequired();
             builder.Property(t => t.Status).IsRequired()
                    .HasConversion(v =>

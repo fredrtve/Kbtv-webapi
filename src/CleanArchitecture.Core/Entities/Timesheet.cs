@@ -18,5 +18,7 @@ namespace CleanArchitecture.Core.Entities
 
         public TimesheetStatus Status { get; set; }
 
+        public string Comment { get; set; }
+
     }
 }
