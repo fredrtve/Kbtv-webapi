@@ -9,6 +9,6 @@ namespace BjBygg.Application.Queries.DbSyncQueries
     {
         public IEnumerable<T> Entities { get; set; }
         public IEnumerable<int>?  DeletedEntities { get; set; }
-        public string Timestamp { get; set; }
+        public double Timestamp { get; set; }
     }
 }

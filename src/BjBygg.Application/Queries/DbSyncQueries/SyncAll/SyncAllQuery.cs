@@ -9,10 +9,9 @@ namespace BjBygg.Application.Queries.DbSyncQueries.SyncAll
 {
     public class SyncAllQuery: IRequest<SyncAllResponse>
     {
-        public string FromDate { get; set; }
+        public double? Timestamp { get; set; }
 
-        [Required]
-        public string UserName { get; set; }
+        public string? UserName { get; set; }
 
     }
 }

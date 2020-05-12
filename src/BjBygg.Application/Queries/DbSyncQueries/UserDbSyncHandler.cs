@@ -30,9 +30,9 @@ namespace BjBygg.Application.Queries.DbSyncQueries
             List<T> entities;
             List<int> deletedEntities = new List<int>();
 
+            System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            var date = dtDateTime.AddSeconds(request.Timestamp ?? 0).ToLocalTime();
             var minDate = DateTime.Now.AddYears(-5);
-            var date = DateTime.MinValue;
-            DateTime.TryParseExact(request.FromDate, "o", null, System.Globalization.DateTimeStyles.None, out date);
 
             IQueryable<T> query = _dbContext.Set<T>();
 
@@ -60,7 +60,7 @@ namespace BjBygg.Application.Queries.DbSyncQueries
             {
                 Entities = _mapper.Map<IEnumerable<R>>(entities),
                 DeletedEntities = deletedEntities,
-                Timestamp = DateTime.Now.ToString("o"),
+                Timestamp = DateTimeOffset.UtcNow.ToLocalTime().ToUnixTimeSeconds(),
             };
         }
     }

@@ -28,14 +28,14 @@ namespace BjBygg.Application.Queries.DbSyncQueries.SyncAll
         {
             return new SyncAllResponse()
             {
-                MissionSync = await _mediator.Send(new MissionSyncQuery() { FromDate =  request.FromDate }),
-                EmployerSync = await _mediator.Send(new EmployerSyncQuery() { FromDate = request.FromDate }),
-                MissionImageSync = await _mediator.Send(new MissionImageSyncQuery() { FromDate = request.FromDate }),
-                MissionNoteSync = await _mediator.Send(new MissionNoteSyncQuery() { FromDate = request.FromDate }),
-                MissionReportSync = await _mediator.Send(new MissionReportSyncQuery() { FromDate = request.FromDate }),
-                MissionReportTypeSync = await _mediator.Send(new MissionReportTypeSyncQuery() { FromDate = request.FromDate }),
-                MissionTypeSync = await _mediator.Send(new MissionTypeSyncQuery() { FromDate = request.FromDate }),
-                UserTimesheetSync = await _mediator.Send(new UserTimesheetSyncQuery() { FromDate = request.FromDate , UserName = request.UserName})
+                MissionSync = await _mediator.Send(new MissionSyncQuery() { Timestamp =  request.Timestamp }),
+                EmployerSync = await _mediator.Send(new EmployerSyncQuery() { Timestamp = request.Timestamp }),
+                MissionImageSync = await _mediator.Send(new MissionImageSyncQuery() { Timestamp = request.Timestamp }),
+                MissionNoteSync = await _mediator.Send(new MissionNoteSyncQuery() { Timestamp = request.Timestamp }),
+                MissionReportSync = await _mediator.Send(new MissionReportSyncQuery() { Timestamp = request.Timestamp }),
+                MissionReportTypeSync = await _mediator.Send(new MissionReportTypeSyncQuery() { Timestamp = request.Timestamp }),
+                MissionTypeSync = await _mediator.Send(new MissionTypeSyncQuery() { Timestamp = request.Timestamp }),
+                UserTimesheetSync = await _mediator.Send(new UserTimesheetSyncQuery() { Timestamp = request.Timestamp, UserName = request.UserName})
             };
         }
     }
