@@ -30,13 +30,7 @@ namespace BjBygg.Application.Commands.TimesheetCommands.UpdateStatus
 
         public async Task<TimesheetDto> Handle(UpdateTimesheetStatusCommand request, CancellationToken cancellationToken)
         {
-            if (request.Status == TimesheetStatus.Open && request.Role != "Leder") //Only allow leaders to change hours to open
-                throw new ForbiddenException("Du kan ikke åpne bekreftede timer");
-
             var timesheet = await _dbContext.Set<Timesheet>().FindAsync(request.Id);
-
-            if (timesheet.UserName != request.UserName && request.Role != "Leder") //Only allow edit of own hours, except leader
-                throw new UnauthorizedException("Time tilhører ikke bruker");
 
             timesheet.Status = request.Status;
 

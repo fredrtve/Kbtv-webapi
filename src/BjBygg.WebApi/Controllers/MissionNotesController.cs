@@ -26,9 +26,9 @@ namespace BjBygg.WebApi.Controllers
         }
 
         [Authorize]
-        [HttpPost]
+        [HttpGet]
         [Route("api/[controller]/[action]")]
-        public async Task<DbSyncResponse<MissionNoteDto>> Sync([FromBody] MissionNoteSyncQuery query)
+        public async Task<DbSyncResponse<MissionNoteDto>> Sync(MissionNoteSyncQuery query)
         {
             return await _mediator.Send(query);
         }
@@ -41,7 +41,7 @@ namespace BjBygg.WebApi.Controllers
             return await _mediator.Send(new MissionNoteByIdQuery() { Id = id });
         }
 
-        [Authorize]
+        [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
         [HttpPost]
         [Route("api/[controller]")]
         public async Task<MissionNoteDto> Create([FromBody] CreateMissionNoteCommand command)

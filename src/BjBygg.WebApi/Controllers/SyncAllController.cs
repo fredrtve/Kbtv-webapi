@@ -20,15 +20,12 @@ namespace BjBygg.WebApi.Controllers
         }
 
         [Authorize]
-        [HttpPost]
+        [HttpGet]
         [Route("api/[controller]")]
-        public async Task<SyncAllResponse> Post([FromBody] string FromDate)
+        public async Task<SyncAllResponse> Get(SyncAllQuery query)
         {
-            return await _mediator.Send(new SyncAllQuery()
-            {
-                FromDate = FromDate,
-                UserName = User.FindFirstValue("UserName")
-            });
+            query.UserName = User.FindFirstValue("UserName"); 
+            return await _mediator.Send(query);
         }
     }
 }

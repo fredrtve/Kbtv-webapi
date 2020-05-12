@@ -30,6 +30,8 @@
     <Compile Remove="Data\migrations\20200227132745_init.Designer.cs" />
     <Compile Remove="Data\migrations\20200308171044_init.cs" />
     <Compile Remove="Data\migrations\20200308171044_init.Designer.cs" />
+    <Compile Remove="Data\migrations\20200428084545_init.cs" />
+    <Compile Remove="Data\migrations\20200428084545_init.Designer.cs" />
     <Compile Remove="Identity\Migrations\20191121173213_init.cs" />
     <Compile Remove="Identity\Migrations\20191121173213_init.Designer.cs" />
     <Compile Remove="Identity\Migrations\20191121173832_init.cs" />

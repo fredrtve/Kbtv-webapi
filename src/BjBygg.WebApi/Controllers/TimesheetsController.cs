@@ -38,5 +38,27 @@ namespace BjBygg.WebApi.Controllers
 
             return await _mediator.Send(query);
         }
+
+        [Authorize(Roles = "Leder")]
+        [HttpPut]
+        [Route("api/[controller]/{Id}/Status")]
+        public async Task<TimesheetDto> UpdateStatus([FromBody] UpdateTimesheetStatusCommand command)
+        {
+            if (!ModelState.IsValid)
+                throw new BadRequestException(ModelState.Values.ToString());
+
+            return await _mediator.Send(command);
+        }
+
+        [Authorize(Roles = "Leder")]
+        [HttpPut]
+        [Route("api/[controller]/Status")]
+        public async Task<IEnumerable<TimesheetDto>> UpdateStatuses([FromBody] UpdateTimesheetStatusRangeCommand command)
+        {
+            if (!ModelState.IsValid)
+                throw new BadRequestException(ModelState.Values.ToString());
+
+            return await _mediator.Send(command);
+        }
     }
 }

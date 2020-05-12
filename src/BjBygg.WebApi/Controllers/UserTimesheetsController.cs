@@ -28,12 +28,12 @@ namespace BjBygg.WebApi.Controllers
         }
 
         [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
-        [HttpPost]
+        [HttpGet]
         [Route("api/[controller]/[action]")]
-        public async Task<DbSyncResponse<TimesheetDto>> Sync([FromBody] string FromDate)
+        public async Task<DbSyncResponse<TimesheetDto>> Sync(double timestamp)
         {
             return await _mediator.Send(new UserTimesheetSyncQuery() { 
-                FromDate = FromDate,
+                Timestamp = timestamp,
                 UserName = User.FindFirstValue("UserName"),
             });
         }
@@ -46,34 +46,6 @@ namespace BjBygg.WebApi.Controllers
             if (!ModelState.IsValid)
                 throw new BadRequestException(ModelState.Values.ToString());
 
-            command.UserName = User.FindFirstValue("UserName");
-
-            return await _mediator.Send(command);
-        }
-
-        [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
-        [HttpPut]
-        [Route("api/[controller]/{Id}/Status")]
-        public async Task<TimesheetDto> UpdateStatus([FromBody] UpdateTimesheetStatusCommand command)
-        {
-            if (!ModelState.IsValid)
-                throw new BadRequestException(ModelState.Values.ToString());
-
-            command.Role = User.FindFirstValue(ClaimTypes.Role);
-            command.UserName = User.FindFirstValue("UserName");
-
-            return await _mediator.Send(command);
-        }
-
-        [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
-        [HttpPut]
-        [Route("api/[controller]/Status")]
-        public async Task<IEnumerable<TimesheetDto>> UpdateStatuses([FromBody] UpdateTimesheetStatusRangeCommand command)
-        {
-            if (!ModelState.IsValid)
-                throw new BadRequestException(ModelState.Values.ToString());
-
-            command.Role = User.FindFirstValue(ClaimTypes.Role);
             command.UserName = User.FindFirstValue("UserName");
 
             return await _mediator.Send(command);

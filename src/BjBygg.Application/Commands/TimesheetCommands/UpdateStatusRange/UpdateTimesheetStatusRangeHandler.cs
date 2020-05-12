@@ -30,15 +30,12 @@ namespace BjBygg.Application.Commands.TimesheetCommands.UpdateStatusRange
 
         public async Task<IEnumerable<TimesheetDto>> Handle(UpdateTimesheetStatusRangeCommand request, CancellationToken cancellationToken)
         {
-            if (request.Status == TimesheetStatus.Open && request.Role != "Leder") //Only allow leaders to change hours to open
-                throw new ForbiddenException("Du kan ikke åpne bekreftede timer");
-
             //Exclude timesheets that dont belong to user (if there are any), except for leader role
             var timesheets = await _dbContext.Set<Timesheet>()
-                .Where(x => request.Ids.Contains(x.Id) && (x.UserName == request.UserName || request.Role == "Leder")).ToListAsync();
+                .Where(x => request.Ids.Contains(x.Id)).ToListAsync();
 
             //Update status to confirmed
-            timesheets = timesheets.Select(x => { x.Status = TimesheetStatus.Confirmed; return x; }).ToList();
+            timesheets = timesheets.Select(x => { x.Status = request.Status; return x; }).ToList();
 
             _dbContext.Timesheets.UpdateRange(timesheets);
             await _dbContext.SaveChangesAsync();

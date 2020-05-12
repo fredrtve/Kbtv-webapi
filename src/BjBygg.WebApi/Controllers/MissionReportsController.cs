@@ -27,9 +27,9 @@ namespace BjBygg.WebApi.Controllers
         }
 
         [Authorize]
-        [HttpPost]
+        [HttpGet]
         [Route("api/[controller]/[action]")]
-        public async Task<DbSyncResponse<MissionReportDto>> Sync([FromBody] MissionReportSyncQuery query)
+        public async Task<DbSyncResponse<MissionReportDto>> Sync(MissionReportSyncQuery query)
         {
             return await _mediator.Send(query);
         }

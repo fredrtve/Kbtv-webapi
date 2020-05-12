@@ -184,7 +184,7 @@ namespace CleanArchitecture.Infrastructure.Data
             var idCounter = 1;
             var dayCounter = 0;
             var rnd = new Random();
-            var today = DateTime.Now.Date;
+            var today = DateTime.Now.Date.AddHours(6);
 
             for (var n = 1; n <= 100; n++)
             {        
@@ -197,7 +197,7 @@ namespace CleanArchitecture.Infrastructure.Data
                         Id = idCounter,
                         MissionId = missionId,
                         StartTime = startDate,
-                        EndTime = startDate.AddHours(rnd.Next(4,10)),
+                        EndTime = endDate,
                         TotalHours = (endDate - startDate).TotalHours,
                         Comment = "Dette er en kommentar til en time for leder for ett kult oppdrag",
                         UserName = "leder",
@@ -210,7 +210,7 @@ namespace CleanArchitecture.Infrastructure.Data
                         Id = idCounter,
                         MissionId = missionId,
                         StartTime = startDate,
-                        EndTime = startDate.AddHours(rnd.Next(4, 10)),
+                        EndTime = endDate,
                         TotalHours = (endDate - startDate).TotalHours,
                         Comment = "Dette er en kommentar til en time for ansatt",
                         UserName = "ansatt",
@@ -223,7 +223,7 @@ namespace CleanArchitecture.Infrastructure.Data
                         Id = idCounter,
                         MissionId = missionId,
                         StartTime = startDate,
-                        EndTime = startDate.AddHours(rnd.Next(4, 10)),
+                        EndTime = endDate,
                         TotalHours = (endDate - startDate).TotalHours,
                         Comment = "Dette er en kommentar til en time for mellomleder for ett alle tiders oppdrag",
                         UserName = "mellomleder",

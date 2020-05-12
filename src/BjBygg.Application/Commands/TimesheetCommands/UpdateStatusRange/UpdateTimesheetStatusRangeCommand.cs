@@ -11,9 +11,6 @@ namespace BjBygg.Application.Commands.TimesheetCommands.UpdateStatusRange
 {
     public class UpdateTimesheetStatusRangeCommand : IRequest<IEnumerable<TimesheetDto>>
     {   
-        public string UserName { get; set; }
-        public string Role { get; set; }
-
         [Required]
         public IEnumerable<int> Ids { get; set; }
         [Required]

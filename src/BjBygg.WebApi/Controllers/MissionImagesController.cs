@@ -24,9 +24,9 @@ namespace BjBygg.WebApi.Controllers
         }
 
         [Authorize]
-        [HttpPost]
+        [HttpGet]
         [Route("api/[controller]/[action]")]
-        public async Task<DbSyncResponse<MissionImageDto>> Sync([FromBody] MissionImageSyncQuery query)
+        public async Task<DbSyncResponse<MissionImageDto>> Sync(MissionImageSyncQuery query)
         {
             return await _mediator.Send(query);
         }
