@@ -7,6 +7,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,19 +27,25 @@ namespace BjBygg.Application.Commands.EmployerCommands.Update
 
         public async Task<EmployerDto> Handle(UpdateEmployerCommand request, CancellationToken cancellationToken)
         {
-            var employer = _mapper.Map<Employer>(request);
+            var dbEmployer = await _dbContext.Employers.FirstOrDefaultAsync(x => x.Id == request.Id);
 
-            try {
-                _dbContext.Entry(employer).State = EntityState.Modified;
+            if (dbEmployer == null)
+                throw new EntityNotFoundException($"Entity does not exist with id {request.Id}");
 
-                await _dbContext.SaveChangesAsync();
+            foreach (var property in request.GetType().GetProperties())
+            {
+                if (property.Name == "Id") continue;
+                dbEmployer.GetType().GetProperty(property.Name).SetValue(dbEmployer, property.GetValue(request), null);
             }
+
+
+            try { await _dbContext.SaveChangesAsync(); }
             catch (Exception ex)
             {
-                throw new EntityNotFoundException($"Entity does not exist with id {request.Id}");
+                throw new BadRequestException($"Something went wrong when storing your request");
             }
 
-            return _mapper.Map<EmployerDto>(employer);
+            return _mapper.Map<EmployerDto>(dbEmployer);
         }
     }
 }

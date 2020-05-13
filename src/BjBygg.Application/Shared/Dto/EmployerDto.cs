@@ -16,7 +16,5 @@ namespace BjBygg.Application.Shared
         [StringLength(100, ErrorMessage = "{0} kan maks være på {1} tegn.")]
         public string? Address { get; set; }
 
-        public string? UserName { get; set; }
-
     }
 }

@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using BjBygg.Application.Commands.TimesheetCommands.Create;
 using BjBygg.Application.Commands.TimesheetCommands.Delete;
+using BjBygg.Application.Commands.TimesheetCommands.Update;
 using BjBygg.Application.Commands.TimesheetCommands.UpdateStatus;
 using BjBygg.Application.Commands.TimesheetCommands.UpdateStatusRange;
 using BjBygg.Application.Queries.DbSyncQueries;
@@ -42,6 +43,19 @@ namespace BjBygg.WebApi.Controllers
         [HttpPost]
         [Route("api/[controller]")]
         public async Task<TimesheetDto> Create([FromBody] CreateTimesheetCommand command)
+        {
+            if (!ModelState.IsValid)
+                throw new BadRequestException(ModelState.Values.ToString());
+
+            command.UserName = User.FindFirstValue("UserName");
+
+            return await _mediator.Send(command);
+        }
+
+        [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
+        [HttpPut]
+        [Route("api/[controller]/{Id}")]
+        public async Task<TimesheetDto> Update([FromBody] UpdateTimesheetCommand command)
         {
             if (!ModelState.IsValid)
                 throw new BadRequestException(ModelState.Values.ToString());

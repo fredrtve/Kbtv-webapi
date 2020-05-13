@@ -31,12 +31,14 @@ namespace BjBygg.Application.Commands.MissionCommands.Reports.Upload
         public async Task<MissionReportDto> Handle(UploadMissionReportCommand request, CancellationToken cancellationToken)
         {
             var report = _mapper.Map<MissionReport>(request);
-            var type = report.MissionReportType;
 
             report.FileURL = await _storageService.UploadFileAsync(request.File, "report");
 
-            if (report.MissionReportType.Id > 0 || String.IsNullOrEmpty(report.MissionReportType.Name))
-               report.MissionReportType = null;
+            if (report.MissionReportType.Id != 0)
+            {
+                report.MissionReportTypeId = report.MissionReportType.Id;
+                report.MissionReportType = null;
+            }
             
             try
             {
@@ -47,8 +49,6 @@ namespace BjBygg.Application.Commands.MissionCommands.Reports.Upload
             {
                 throw new EntityNotFoundException($"Invalid foreign key");
             }
-           
-            report.MissionReportType = type;
 
             return _mapper.Map<MissionReportDto>(report);
         }

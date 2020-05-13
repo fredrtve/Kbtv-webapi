@@ -25,7 +25,5 @@ namespace BjBygg.Application.Commands.MissionCommands.Notes.Update
         [Display(Name = "Marker som viktig")]
         public bool Pinned { get; set; }
 
-        [Required]
-        public int MissionId { get; set; }
     }
 }

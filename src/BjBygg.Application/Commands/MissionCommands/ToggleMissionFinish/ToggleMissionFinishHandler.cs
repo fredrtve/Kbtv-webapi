@@ -25,17 +25,15 @@ namespace BjBygg.Application.Commands.MissionCommands.ToggleMissionFinish
 
         public async Task<bool> Handle(ToggleMissionFinishCommand request, CancellationToken cancellationToken)
         {
-            var mission = await _dbContext.Set<Mission>().FindAsync(request.Id);
+            var dbMission = await _dbContext.Set<Mission>().FindAsync(request.Id);
 
-            if (mission == null) throw new EntityNotFoundException($"Mission does not exist with id {request.Id}");
+            if (dbMission == null) throw new EntityNotFoundException($"Mission does not exist with id {request.Id}");
 
-            if (mission.Finished) mission.Finished = false;
-            else mission.Finished = true;
+            dbMission.Finished = !dbMission.Finished;
 
-            _dbContext.Entry(mission).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
 
-            return mission.Finished;
+            return dbMission.Finished;
         }
     }
 }

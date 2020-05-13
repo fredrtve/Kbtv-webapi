@@ -7,6 +7,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,22 +27,25 @@ namespace BjBygg.Application.Commands.MissionCommands.Notes.Update
 
         public async Task<MissionNoteDto> Handle(UpdateMissionNoteCommand request, CancellationToken cancellationToken)
         {
-            var note = _mapper.Map<MissionNote>(request);
+            var dbNote = await _dbContext.MissionNotes.FirstOrDefaultAsync(x => x.Id == request.Id);
 
-            try
+            if (dbNote == null)
+                throw new EntityNotFoundException($"Entity does not exist with id {request.Id}");
+
+            foreach (var property in request.GetType().GetProperties())
             {
-                _dbContext.Entry(note).State = EntityState.Modified;
-
-                _dbContext.Entry(note).Property(x => x.MissionId).IsModified = false;
-
-                await _dbContext.SaveChangesAsync();
+                if (property.Name == "Id") continue;
+                dbNote.GetType().GetProperty(property.Name).SetValue(dbNote, property.GetValue(request), null);
             }
+
+
+            try{await _dbContext.SaveChangesAsync();}
             catch (Exception ex)
             {
-                throw new EntityNotFoundException($"Entity does not exist with id {request.Id}");
+                throw new BadRequestException($"Something went wrong when storing your request");
             }
             
-            return _mapper.Map<MissionNoteDto>(note);
+            return _mapper.Map<MissionNoteDto>(dbNote);
         }
     }
 }

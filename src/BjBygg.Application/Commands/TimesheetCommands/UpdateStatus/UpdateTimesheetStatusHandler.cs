@@ -30,14 +30,16 @@ namespace BjBygg.Application.Commands.TimesheetCommands.UpdateStatus
 
         public async Task<TimesheetDto> Handle(UpdateTimesheetStatusCommand request, CancellationToken cancellationToken)
         {
-            var timesheet = await _dbContext.Set<Timesheet>().FindAsync(request.Id);
+            var dbTimesheet = await _dbContext.Set<Timesheet>().FindAsync(request.Id);
 
-            timesheet.Status = request.Status;
+            if (dbTimesheet == null)
+                throw new EntityNotFoundException($"Entity does not exist with id {request.Id}");
 
-            _dbContext.Entry(timesheet).State = EntityState.Modified;
+            dbTimesheet.Status = request.Status;
+
             await _dbContext.SaveChangesAsync();
 
-            return _mapper.Map<TimesheetDto>(timesheet);
+            return _mapper.Map<TimesheetDto>(dbTimesheet);
         }
     }
 }

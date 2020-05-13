@@ -31,16 +31,16 @@ namespace BjBygg.Application.Commands.TimesheetCommands.UpdateStatusRange
         public async Task<IEnumerable<TimesheetDto>> Handle(UpdateTimesheetStatusRangeCommand request, CancellationToken cancellationToken)
         {
             //Exclude timesheets that dont belong to user (if there are any), except for leader role
-            var timesheets = await _dbContext.Set<Timesheet>()
+            var dbTimesheets = await _dbContext.Set<Timesheet>()
                 .Where(x => request.Ids.Contains(x.Id)).ToListAsync();
 
             //Update status to confirmed
-            timesheets = timesheets.Select(x => { x.Status = request.Status; return x; }).ToList();
+            dbTimesheets = dbTimesheets.Select(x => { x.Status = request.Status; return x; }).ToList();
 
-            _dbContext.Timesheets.UpdateRange(timesheets);
+            //_dbContext.Timesheets.UpdateRange(timesheets);
             await _dbContext.SaveChangesAsync();
 
-            return _mapper.Map<IEnumerable<TimesheetDto>>(timesheets);
+            return _mapper.Map<IEnumerable<TimesheetDto>>(dbTimesheets);
         }
     }
 }

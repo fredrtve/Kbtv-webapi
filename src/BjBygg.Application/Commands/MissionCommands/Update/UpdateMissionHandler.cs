@@ -8,6 +8,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,37 +28,34 @@ namespace BjBygg.Application.Commands.MissionCommands.Update
 
         public async Task<MissionDto> Handle(UpdateMissionCommand request, CancellationToken cancellationToken)
         {
+            var dbMission = await _dbContext.Missions
+                .Include(x => x.MissionType)
+                .Include(x => x.Employer)
+                .FirstOrDefaultAsync(x => x.Id == request.Id);
+
+            if (dbMission == null)
+                throw new EntityNotFoundException($"Entity does not exist with id {request.Id}");
+
             var mission = _mapper.Map<Mission>(request);
-
-            if (mission.MissionType != null)
+            foreach (var property in mission.GetType().GetProperties())
             {
-                if (mission.MissionType.Id == 0 && !String.IsNullOrEmpty(mission.MissionType.Name)) //Add new type if only name is present
-                  _dbContext.Set<MissionType>().Add(mission.MissionType);
-
-                else if (String.IsNullOrEmpty(mission.MissionType.Name)) //Prevent wiping name of existing type if no name is present
-                  mission.MissionType = null;
-            }
-
-            if (mission.Employer != null)
-            {
-                if (mission.Employer.Id == 0 && !String.IsNullOrEmpty(mission.Employer.Name))
-                  _dbContext.Set<Employer>().Add(mission.Employer);
- 
-                else if (String.IsNullOrEmpty(mission.Employer.Name))
-                  mission.Employer = null;
+                if (property.Name == "Id") continue;
+                if (property.Name == "MissionType" && mission.MissionType != null && mission.MissionType.Id != 0)
+                    dbMission.MissionTypeId = mission.MissionType.Id; //Update only ID if existing entity
+                else if (property.Name == "Employer" && mission.Employer != null && mission.Employer.Id != 0)
+                    dbMission.EmployerId = mission.Employer.Id; //Update only ID if existing entity
+                else property.SetValue(dbMission, property.GetValue(mission), null);
             }
 
             try
             {
-                _dbContext.Entry(mission).State = EntityState.Modified;
                 await _dbContext.SaveChangesAsync();
             }
             catch (Exception ex){
-                throw new EntityNotFoundException($"Entity does not exist with id {request.Id}");
+                throw new BadRequestException($"Something went wrong when trying to store your request.");
             }
 
-            //Assign values after creation to prevent unwanted changes
-            return _mapper.Map<MissionDto>(mission);
+            return _mapper.Map<MissionDto>(dbMission);
         }
     }
 }
