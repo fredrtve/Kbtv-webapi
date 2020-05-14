@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TimeZoneConverter;
 
 namespace BjBygg.Application.Commands.TimesheetCommands.Update
 {
@@ -46,6 +47,12 @@ namespace BjBygg.Application.Commands.TimesheetCommands.Update
                 dbTimesheet.GetType().GetProperty(property.Name).SetValue(dbTimesheet, property.GetValue(request), null);
             }
 
+            TimeZoneInfo timeInfo = TZConvert.GetTimeZoneInfo("Central Europe Standard Time");
+
+            dbTimesheet.StartTime = TimeZoneInfo.ConvertTime(dbTimesheet.StartTime, timeInfo);
+            dbTimesheet.EndTime = TimeZoneInfo.ConvertTime(dbTimesheet.EndTime, timeInfo);
+
+            dbTimesheet.TotalHours = (dbTimesheet.EndTime - dbTimesheet.StartTime).TotalHours;
 
             try { await _dbContext.SaveChangesAsync(); }
             catch (Exception ex)

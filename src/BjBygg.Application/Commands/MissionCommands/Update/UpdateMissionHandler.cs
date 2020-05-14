@@ -36,15 +36,31 @@ namespace BjBygg.Application.Commands.MissionCommands.Update
             if (dbMission == null)
                 throw new EntityNotFoundException($"Entity does not exist with id {request.Id}");
 
-            var mission = _mapper.Map<Mission>(request);
-            foreach (var property in mission.GetType().GetProperties())
+            //var mission = _mapper.Map<Mission>(request);
+            foreach (var property in request.GetType().GetProperties())
             {
-                if (property.Name == "Id") continue;
-                if (property.Name == "MissionType" && mission.MissionType != null && mission.MissionType.Id != 0)
-                    dbMission.MissionTypeId = mission.MissionType.Id; //Update only ID if existing entity
-                else if (property.Name == "Employer" && mission.Employer != null && mission.Employer.Id != 0)
-                    dbMission.EmployerId = mission.Employer.Id; //Update only ID if existing entity
-                else property.SetValue(dbMission, property.GetValue(mission), null);
+                if (property.Name == "Id") continue; //Skip id
+                if (property.Name == "MissionType") {
+                    if (request.MissionType == null) continue;
+                    if ((request.MissionType.Id ?? 0) != 0) //If id is not 0 or null
+                        dbMission.MissionTypeId = request.MissionType.Id;
+                    else if (!String.IsNullOrWhiteSpace(request.MissionType.Name)) //If name is present but no id, create
+                        dbMission.MissionType = new MissionType() { Name = request.MissionType.Name };
+                    else dbMission.MissionType = null; //No new or existing added
+                    continue;
+                }
+                else if (property.Name == "Employer")
+                {
+                    if (request.Employer == null) continue;
+                    if ((request.Employer.Id ?? 0) != 0) //If id is not 0 or null
+                        dbMission.EmployerId = request.Employer.Id;
+                    else if (!String.IsNullOrWhiteSpace(request.Employer.Name)) //If name is present but no id, create
+                        dbMission.Employer = new Employer() { Name = request.Employer.Name };
+                    else dbMission.Employer = null; //No new or existing added
+                    continue;
+                }
+                else
+                    dbMission.GetType().GetProperty(property.Name).SetValue(dbMission, property.GetValue(request), null);
             }
 
             try

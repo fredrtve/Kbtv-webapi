@@ -1,13 +1,9 @@
 using AutoMapper;
-using BjBygg.Application.Queries.UserQueries;
 using BjBygg.Application.Shared;
-using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Exceptions;
-using CleanArchitecture.Infrastructure.Data;
 using CleanArchitecture.Infrastructure.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;

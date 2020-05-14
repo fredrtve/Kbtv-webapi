@@ -49,6 +49,7 @@ namespace CleanArchitecture.Infrastructure.Data
             OnBeforeSaving();
             return base.SaveChanges(acceptAllChangesOnSuccess);
         }
+
         public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
             OnBeforeSaving();
