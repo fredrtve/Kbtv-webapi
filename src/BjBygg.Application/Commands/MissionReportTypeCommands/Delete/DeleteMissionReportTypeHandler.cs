@@ -9,23 +9,23 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BjBygg.Application.Commands.MissionReportTypeCommands.Delete
+namespace BjBygg.Application.Commands.ReportTypeCommands.Delete
 {
-    public class DeleteMissionReportTypeHandler : IRequestHandler<DeleteMissionReportTypeCommand, bool>
+    public class DeleteReportTypeHandler : IRequestHandler<DeleteReportTypeCommand, bool>
     {
         private readonly AppDbContext _dbContext;
 
-        public DeleteMissionReportTypeHandler(AppDbContext dbContext)
+        public DeleteReportTypeHandler(AppDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<bool> Handle(DeleteMissionReportTypeCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(DeleteReportTypeCommand request, CancellationToken cancellationToken)
         {
-            var missionReportType = await _dbContext.Set<MissionReportType>().FindAsync(request.Id);
-            if (missionReportType == null) throw new EntityNotFoundException($"Entity does not exist with id {request.Id}");
+            var ReportType = await _dbContext.Set<ReportType>().FindAsync(request.Id);
+            if (ReportType == null) throw new EntityNotFoundException($"Entity does not exist with id {request.Id}");
 
-            _dbContext.Set<MissionReportType>().Remove(missionReportType);      
+            _dbContext.Set<ReportType>().Remove(ReportType);      
             await _dbContext.SaveChangesAsync();
             return true;
         }

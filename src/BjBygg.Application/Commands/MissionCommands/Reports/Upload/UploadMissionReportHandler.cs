@@ -34,10 +34,10 @@ namespace BjBygg.Application.Commands.MissionCommands.Reports.Upload
 
             report.FileURL = await _storageService.UploadFileAsync(request.File, "report");
 
-            if (report.MissionReportType.Id != 0)
+            if (report.ReportType.Id != 0)
             {
-                report.MissionReportTypeId = report.MissionReportType.Id;
-                report.MissionReportType = null;
+                report.ReportTypeId = report.ReportType.Id;
+                report.ReportType = null;
             }
             
             try

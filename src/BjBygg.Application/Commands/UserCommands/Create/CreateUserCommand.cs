@@ -42,5 +42,8 @@ namespace BjBygg.Application.Commands.UserCommands.Create
         [Display(Name = "Passord")]
         [Required]
         public string Password { get; set; }
+
+        [Display(Name = "Oppdragsgiver")]
+        public int EmployerId { get; set; }
     }
 }

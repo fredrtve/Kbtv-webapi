@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BjBygg.Application.Queries.DbSyncQueries.MissionReportTypeQuery
+namespace BjBygg.Application.Queries.DbSyncQueries.ReportTypeQuery
 {
-    public class MissionReportTypeSyncQuery : DbSyncQuery<MissionReportTypeDto>
+    public class ReportTypeSyncQuery : DbSyncQuery<ReportTypeDto>
     {
     }
 }

@@ -3,10 +3,10 @@ using BjBygg.Application.Commands.Shared.DeleteRange;
 using CleanArchitecture.Infrastructure.Data;
 
 
-namespace BjBygg.Application.Commands.MissionReportTypeCommands.DeleteRange
+namespace BjBygg.Application.Commands.ReportTypeCommands.DeleteRange
 {
-    public class DeleteRangeMissionReportTypeHandler : DeleteRangeHandler<MissionReportType, DeleteRangeMissionReportTypeCommand>
+    public class DeleteRangeReportTypeHandler : DeleteRangeHandler<ReportType, DeleteRangeReportTypeCommand>
     {
-        public DeleteRangeMissionReportTypeHandler(AppDbContext dbContext) : base(dbContext){}
+        public DeleteRangeReportTypeHandler(AppDbContext dbContext) : base(dbContext){}
     }
 }

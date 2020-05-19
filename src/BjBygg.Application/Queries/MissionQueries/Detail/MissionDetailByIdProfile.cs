@@ -39,9 +39,9 @@ namespace BjBygg.Application.Queries.MissionQueries.Detail
             CreateMap<MissionImage, MissionImageDto>();
 
             CreateMap<MissionReport, MissionReportDto>()
-                .ForMember(dest => dest.MissionReportType, act => act.MapFrom(x => x.MissionReportType));
+                .ForMember(dest => dest.ReportType, act => act.MapFrom(x => x.ReportType));
 
-            CreateMap<MissionReportType, MissionReportTypeDto>();
+            CreateMap<ReportType, ReportTypeDto>();
         }
     }
 }

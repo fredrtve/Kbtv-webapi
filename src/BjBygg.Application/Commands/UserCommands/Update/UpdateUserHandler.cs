@@ -47,6 +47,9 @@ namespace BjBygg.Application.Commands.UserCommands.Update
             user.PhoneNumber = request.PhoneNumber;
             user.Email = request.Email;
 
+            if (request.Role != "Oppdragsgiver") user.EmployerId = null;
+            else user.EmployerId = request.EmployerId;
+
             var result = await _userManager.UpdateAsync(user);
 
             if (!result.Succeeded) 

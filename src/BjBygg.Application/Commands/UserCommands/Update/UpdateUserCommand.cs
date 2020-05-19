@@ -35,5 +35,8 @@ namespace BjBygg.Application.Commands.UserCommands.Update
         [Display(Name = "Rolle")]
         public string Role { get; set; }
 
+        [Display(Name = "Oppdragsgiver")]
+        public int EmployerId { get; set; }
+
     }
 }

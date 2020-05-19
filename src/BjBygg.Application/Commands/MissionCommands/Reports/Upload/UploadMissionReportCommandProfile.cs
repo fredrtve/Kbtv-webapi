@@ -12,15 +12,15 @@ namespace BjBygg.Application.Commands.MissionCommands.Reports.Upload
         public UploadMissionReportCommandProfile()
         {
             CreateMap<UploadMissionReportCommand, MissionReport>()
-                .ForMember(dest => dest.MissionReportType, opt => opt.MapFrom(src => src.MissionReportType))
+                .ForMember(dest => dest.ReportType, opt => opt.MapFrom(src => src.ReportType))
                 .ForMember(dest => dest.FileURL, opt => opt.Ignore())
                 .ForSourceMember(src => src.File, dest => dest.DoNotValidate());
 
             CreateMap<MissionReport, MissionReportDto>()
-                .ForMember(dest => dest.MissionReportType, opt => opt.MapFrom(src => src.MissionReportType));
+                .ForMember(dest => dest.ReportType, opt => opt.MapFrom(src => src.ReportType));
 
-            CreateMap<MissionReportTypeDto, MissionReportType>();
-            CreateMap<MissionReportType, MissionReportTypeDto>();
+            CreateMap<ReportTypeDto, ReportType>();
+            CreateMap<ReportType, ReportTypeDto>();
         }
     }
 }

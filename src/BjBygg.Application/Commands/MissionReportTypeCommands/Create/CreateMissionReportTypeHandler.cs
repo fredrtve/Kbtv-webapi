@@ -9,9 +9,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BjBygg.Application.Commands.MissionReportTypeCommands.Create
+namespace BjBygg.Application.Commands.ReportTypeCommands.Create
 {
-    public class CreateMissionTypeHandler : IRequestHandler<CreateMissionReportTypeCommand, MissionReportTypeDto>
+    public class CreateMissionTypeHandler : IRequestHandler<CreateReportTypeCommand, ReportTypeDto>
     {
         private readonly AppDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -22,14 +22,14 @@ namespace BjBygg.Application.Commands.MissionReportTypeCommands.Create
             _mapper = mapper;
         }
 
-        public async Task<MissionReportTypeDto> Handle(CreateMissionReportTypeCommand request, CancellationToken cancellationToken)
+        public async Task<ReportTypeDto> Handle(CreateReportTypeCommand request, CancellationToken cancellationToken)
         {
-            var missionReportType = new MissionReportType() { Name = request.Name };
-            _dbContext.Set<MissionReportType>().Add(missionReportType);
+            var ReportType = new ReportType() { Name = request.Name };
+            _dbContext.Set<ReportType>().Add(ReportType);
 
             await _dbContext.SaveChangesAsync();
 
-            return _mapper.Map<MissionReportTypeDto>(missionReportType);
+            return _mapper.Map<ReportTypeDto>(ReportType);
         }
     }
 }

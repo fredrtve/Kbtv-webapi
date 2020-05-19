@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace BjBygg.Application.Commands.MissionReportTypeCommands.Create
+namespace BjBygg.Application.Commands.ReportTypeCommands.Create
 {
-    public class CreateMissionReportTypeCommand : IRequest<MissionReportTypeDto>
+    public class CreateReportTypeCommand : IRequest<ReportTypeDto>
     {
         [Required(ErrorMessage = "{0} må fylles ut.")]
         [StringLength(45, ErrorMessage = "{0} kan maks være på {1} tegn.")]

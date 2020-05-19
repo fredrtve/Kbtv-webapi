@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace BjBygg.Application.Commands.MissionReportTypeCommands.Update
+namespace BjBygg.Application.Commands.ReportTypeCommands.Update
 {
-    public class UpdateMissionReportTypeCommand : IRequest<MissionReportTypeDto>
+    public class UpdateReportTypeCommand : IRequest<ReportTypeDto>
     {
         [Required]
         public int Id { get; set; }

@@ -12,9 +12,9 @@ namespace BjBygg.Application.Shared
 
         public Uri FileURL { get; set; }
 
-        public int MissionReportTypeId { get; set; }
+        public int ReportTypeId { get; set; }
 
-        public MissionReportTypeDto MissionReportType { get; set; }
+        public ReportTypeDto ReportType { get; set; }
 
         public DateTime CreatedAt { get; set; }
     }

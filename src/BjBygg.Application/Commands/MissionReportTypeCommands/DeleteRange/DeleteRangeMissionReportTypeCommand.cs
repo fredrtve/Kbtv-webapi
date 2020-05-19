@@ -1,6 +1,6 @@
 using BjBygg.Application.Commands.Shared.DeleteRange;
 
-namespace BjBygg.Application.Commands.MissionReportTypeCommands.DeleteRange
+namespace BjBygg.Application.Commands.ReportTypeCommands.DeleteRange
 {
-    public class DeleteRangeMissionReportTypeCommand : DeleteRangeCommand {}
+    public class DeleteRangeReportTypeCommand : DeleteRangeCommand {}
 }

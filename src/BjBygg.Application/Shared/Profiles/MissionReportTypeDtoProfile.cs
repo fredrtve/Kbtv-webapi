@@ -3,12 +3,12 @@ using CleanArchitecture.Core.Entities;
 
 namespace BjBygg.Application.Shared
 {
-    public class MissionReportTypeDtoProfile : Profile
+    public class ReportTypeDtoProfile : Profile
     {
-        public MissionReportTypeDtoProfile()
+        public ReportTypeDtoProfile()
         {
-            CreateMap<MissionReportType, MissionReportTypeDtoProfile>();
-            CreateMap<MissionReportTypeDtoProfile, MissionReportType>();
+            CreateMap<ReportType, ReportTypeDtoProfile>();
+            CreateMap<ReportTypeDtoProfile, ReportType>();
         }
     }
 }

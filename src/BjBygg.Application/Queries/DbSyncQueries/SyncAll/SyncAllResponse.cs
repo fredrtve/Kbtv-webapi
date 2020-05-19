@@ -17,7 +17,7 @@ namespace BjBygg.Application.Queries.DbSyncQueries.SyncAll
 
         public DbSyncResponse<MissionReportDto> MissionReportSync { get; set; }
 
-        public DbSyncResponse<MissionReportTypeDto> MissionReportTypeSync { get; set; }
+        public DbSyncResponse<ReportTypeDto> ReportTypeSync { get; set; }
 
         public DbSyncResponse<MissionTypeDto> MissionTypeSync { get; set; }
 

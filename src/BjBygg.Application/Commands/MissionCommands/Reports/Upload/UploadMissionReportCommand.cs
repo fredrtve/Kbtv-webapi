@@ -17,7 +17,7 @@ namespace BjBygg.Application.Commands.MissionCommands.Reports.Upload
         public int MissionId { get; set; }
 
         [Required]
-        public MissionReportTypeDto MissionReportType { get; set; }
+        public ReportTypeDto ReportType { get; set; }
 
     }
 }

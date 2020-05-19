@@ -12,22 +12,22 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BjBygg.Application.Commands.MissionReportTypeCommands.Update
+namespace BjBygg.Application.Commands.ReportTypeCommands.Update
 {
-    public class UpdateMissionReportTypeHandler : IRequestHandler<UpdateMissionReportTypeCommand, MissionReportTypeDto>
+    public class UpdateReportTypeHandler : IRequestHandler<UpdateReportTypeCommand, ReportTypeDto>
     {
         private readonly AppDbContext _dbContext;
         private readonly IMapper _mapper;
 
-        public UpdateMissionReportTypeHandler(AppDbContext dbContext, IMapper mapper)
+        public UpdateReportTypeHandler(AppDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
         }
 
-        public async Task<MissionReportTypeDto> Handle(UpdateMissionReportTypeCommand request, CancellationToken cancellationToken)
+        public async Task<ReportTypeDto> Handle(UpdateReportTypeCommand request, CancellationToken cancellationToken)
         {
-            var dbReportType = await _dbContext.MissionReportTypes.FirstOrDefaultAsync(x => x.Id == request.Id);
+            var dbReportType = await _dbContext.ReportTypes.FirstOrDefaultAsync(x => x.Id == request.Id);
 
             if (dbReportType == null)
                 throw new EntityNotFoundException($"Entity does not exist with id {request.Id}");
@@ -45,7 +45,7 @@ namespace BjBygg.Application.Commands.MissionReportTypeCommands.Update
                 throw new BadRequestException($"Something went wrong when storing your request");
             }
 
-            return _mapper.Map<MissionReportTypeDto>(dbReportType);
+            return _mapper.Map<ReportTypeDto>(dbReportType);
         }
     }
 }

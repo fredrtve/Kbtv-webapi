@@ -31,7 +31,7 @@ namespace BjBygg.Application.Queries.MissionQueries.Detail
                 .Where(m => m.Id == request.Id)
                 .Include(m => m.MissionImages)
                 .Include(m => m.MissionReports)
-                .ThenInclude(d => d.MissionReportType)
+                .ThenInclude(d => d.ReportType)
                 .Include(m => m.MissionType)
                 .Include(m => m.MissionNotes)
                 .Include(m => m.Employer)

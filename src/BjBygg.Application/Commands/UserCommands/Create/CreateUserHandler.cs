@@ -33,7 +33,9 @@ namespace BjBygg.Application.Commands.UserCommands.Create
             if (request.Role.ToLower() == "Leder")
                 throw new ForbiddenException($"Creating users with role {request.Role} is forbidden.");
 
-            var user = _mapper.Map<ApplicationUser>(request);                  
+            var user = _mapper.Map<ApplicationUser>(request);
+
+            if (request.Role != "Oppdragsgiver") user.EmployerId = null;
 
             var result = await _userManager.CreateAsync(user, request.Password);
 

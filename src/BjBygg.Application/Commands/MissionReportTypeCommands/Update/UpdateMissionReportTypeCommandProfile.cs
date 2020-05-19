@@ -4,13 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BjBygg.Application.Commands.MissionReportTypeCommands.Update
+namespace BjBygg.Application.Commands.ReportTypeCommands.Update
 {
-    class UpdateMissionReportTypeCommandProfile : Profile
+    class UpdateReportTypeCommandProfile : Profile
     {
-        public UpdateMissionReportTypeCommandProfile()
+        public UpdateReportTypeCommandProfile()
         {
-            CreateMap<UpdateMissionReportTypeCommand, MissionReportType>();
+            CreateMap<UpdateReportTypeCommand, ReportType>();
         }
     }
 }
