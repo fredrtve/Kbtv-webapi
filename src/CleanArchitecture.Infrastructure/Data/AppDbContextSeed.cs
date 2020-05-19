@@ -35,11 +35,11 @@ namespace CleanArchitecture.Infrastructure.Data
                     context.SaveChanges();
                     context.Database.CloseConnection();
                 }
-                if (!context.MissionReportTypes.Any())
+                if (!context.ReportTypes.Any())
                 {
                     context.Database.OpenConnection();
-                    context.MissionReportTypes.AddRange(
-                        GetPreconfiguredMissionReportTypes());
+                    context.ReportTypes.AddRange(
+                        GetPreconfiguredReportTypes());
 
                     context.SaveChanges();
                     context.Database.CloseConnection();
@@ -104,12 +104,12 @@ namespace CleanArchitecture.Infrastructure.Data
             };
         }
 
-        static IEnumerable<MissionReportType> GetPreconfiguredMissionReportTypes()
+        static IEnumerable<ReportType> GetPreconfiguredReportTypes()
         {
-            return new List<MissionReportType>()
+            return new List<ReportType>()
             {
-                new MissionReportType() { Id = 1, Name = "Skaderapport" },
-                new MissionReportType() { Id = 2, Name = "Tørkerapport" }
+                new ReportType() { Id = 1, Name = "Skaderapport" },
+                new ReportType() { Id = 2, Name = "Tørkerapport" }
             };
         }
 
@@ -136,8 +136,8 @@ namespace CleanArchitecture.Infrastructure.Data
         {
             return new List<MissionReport>()
             {
-                new MissionReport() { Id = 1, FileURL = new Uri("https://kbtv.blob.core.windows.net/images/28e89dfa-8d9b-422f-81fd-ee1f7aafbbe7.jpg"), MissionId = 1, MissionReportTypeId = 1 },
-                new MissionReport() { Id = 2, FileURL = new Uri("https://kbtv.blob.core.windows.net/images/28e89dfa-8d9b-422f-81fd-ee1f7aafbbe7.jpg"), MissionId = 1, MissionReportTypeId = 2 }
+                new MissionReport() { Id = 1, FileURL = new Uri("https://kbtv.blob.core.windows.net/images/28e89dfa-8d9b-422f-81fd-ee1f7aafbbe7.jpg"), MissionId = 1, ReportTypeId = 1 },
+                new MissionReport() { Id = 2, FileURL = new Uri("https://kbtv.blob.core.windows.net/images/28e89dfa-8d9b-422f-81fd-ee1f7aafbbe7.jpg"), MissionId = 1, ReportTypeId = 2 }
             };
         }
 

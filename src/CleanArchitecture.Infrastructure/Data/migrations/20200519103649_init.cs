@@ -28,24 +28,6 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MissionReportTypes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Deleted = table.Column<bool>(nullable: false),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    CreatedBy = table.Column<string>(nullable: true),
-                    UpdatedAt = table.Column<DateTime>(nullable: false),
-                    UpdatedBy = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(maxLength: 45, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MissionReportTypes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "MissionTypes",
                 columns: table => new
                 {
@@ -61,6 +43,24 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MissionTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ReportTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Deleted = table.Column<bool>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: true),
+                    UpdatedAt = table.Column<DateTime>(nullable: false),
+                    UpdatedBy = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(maxLength: 45, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReportTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -164,7 +164,7 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     UpdatedBy = table.Column<string>(nullable: true),
                     MissionId = table.Column<int>(nullable: false),
                     FileURL = table.Column<string>(maxLength: 400, nullable: false),
-                    MissionReportTypeId = table.Column<int>(nullable: false)
+                    ReportTypeId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -176,9 +176,9 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_MissionReports_MissionReportTypes_MissionReportTypeId",
-                        column: x => x.MissionReportTypeId,
-                        principalTable: "MissionReportTypes",
+                        name: "FK_MissionReports_ReportTypes_ReportTypeId",
+                        column: x => x.ReportTypeId,
+                        principalTable: "ReportTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -229,9 +229,9 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                 column: "MissionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MissionReports_MissionReportTypeId",
+                name: "IX_MissionReports_ReportTypeId",
                 table: "MissionReports",
-                column: "MissionReportTypeId");
+                column: "ReportTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Missions_EmployerId",
@@ -264,7 +264,7 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                 name: "Timesheets");
 
             migrationBuilder.DropTable(
-                name: "MissionReportTypes");
+                name: "ReportTypes");
 
             migrationBuilder.DropTable(
                 name: "Missions");

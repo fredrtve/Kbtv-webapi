@@ -14,6 +14,8 @@ namespace CleanArchitecture.Infrastructure.Identity
 
         public IdentityRole Role { get; set; }
 
+        public int? EmployerId { get; set; }
+
         public bool Deleted { get; set; }
         public DateTime CreatedAt { get; set; }
         public string CreatedBy { get; set; }

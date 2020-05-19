@@ -44,6 +44,9 @@ namespace CleanArchitecture.Infrastructure.identity.migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("EmployerId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("FirstName")
                         .HasColumnType("TEXT");
 

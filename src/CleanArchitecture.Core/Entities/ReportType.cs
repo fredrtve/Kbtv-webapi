@@ -5,9 +5,9 @@ using System.Text;
 
 namespace CleanArchitecture.Core.Entities
 {
-    public class MissionReportType : BaseEntity
+    public class ReportType : BaseEntity
     {
-        public MissionReportType() { }
+        public ReportType() { }
         public string Name { get; set; }
         public List<MissionReport> MissionReports { get; set; }
     }

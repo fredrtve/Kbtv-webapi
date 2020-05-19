@@ -26,7 +26,7 @@ namespace CleanArchitecture.Infrastructure.Data
         public DbSet<Employer> Employers { get; set; }
         public DbSet<Mission> Missions { get; set; }
         public DbSet<MissionType> MissionTypes { get; set; }
-        public DbSet<MissionReportType> MissionReportTypes { get; set; }
+        public DbSet<ReportType> ReportTypes { get; set; }
         public DbSet<MissionImage> MissionImages { get; set; }
         public DbSet<MissionReport> MissionReports { get; set; }
         public DbSet<MissionNote> MissionNotes { get; set; }

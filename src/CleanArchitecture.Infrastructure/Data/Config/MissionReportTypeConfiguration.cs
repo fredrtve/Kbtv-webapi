@@ -5,9 +5,9 @@ using System;
 
 namespace CleanArchitecture.Infrastructure.Data.Config
 {
-    public class MissionReportTypeConfiguration : BaseEntityConfiguration<MissionReportType>
+    public class ReportTypeConfiguration : BaseEntityConfiguration<ReportType>
     {
-        public override void Configure(EntityTypeBuilder<MissionReportType> builder)
+        public override void Configure(EntityTypeBuilder<ReportType> builder)
         {
             base.Configure(builder);
 

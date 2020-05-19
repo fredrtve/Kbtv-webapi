@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CleanArchitecture.Infrastructure.data.migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200512083306_init")]
+    [Migration("20200519103649_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -217,7 +217,7 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     b.Property<int>("MissionId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("MissionReportTypeId")
+                    b.Property<int>("ReportTypeId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -230,40 +230,9 @@ namespace CleanArchitecture.Infrastructure.data.migrations
 
                     b.HasIndex("MissionId");
 
-                    b.HasIndex("MissionReportTypeId");
+                    b.HasIndex("ReportTypeId");
 
                     b.ToTable("MissionReports");
-                });
-
-            modelBuilder.Entity("CleanArchitecture.Core.Entities.MissionReportType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(45);
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MissionReportTypes");
                 });
 
             modelBuilder.Entity("CleanArchitecture.Core.Entities.MissionType", b =>
@@ -295,6 +264,37 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     b.HasKey("Id");
 
                     b.ToTable("MissionTypes");
+                });
+
+            modelBuilder.Entity("CleanArchitecture.Core.Entities.ReportType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(45);
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ReportTypes");
                 });
 
             modelBuilder.Entity("CleanArchitecture.Core.Entities.Timesheet", b =>
@@ -389,9 +389,9 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("CleanArchitecture.Core.Entities.MissionReportType", "MissionReportType")
+                    b.HasOne("CleanArchitecture.Core.Entities.ReportType", "ReportType")
                         .WithMany("MissionReports")
-                        .HasForeignKey("MissionReportTypeId")
+                        .HasForeignKey("ReportTypeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

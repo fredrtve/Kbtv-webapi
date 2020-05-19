@@ -42,6 +42,7 @@ namespace CleanArchitecture.Infrastructure.identity.migrations
                     AccessFailedCount = table.Column<int>(nullable: false),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
+                    EmployerId = table.Column<int>(nullable: true),
                     Deleted = table.Column<bool>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     CreatedBy = table.Column<string>(nullable: true),

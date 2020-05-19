@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CleanArchitecture.Infrastructure.identity.migrations
 {
     [DbContext(typeof(AppIdentityDbContext))]
-    [Migration("20200514125236_init")]
+    [Migration("20200519111734_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,6 +44,9 @@ namespace CleanArchitecture.Infrastructure.identity.migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("EmployerId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("FirstName")

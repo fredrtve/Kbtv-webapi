@@ -6,7 +6,7 @@ using BjBygg.Application.Commands.MissionCommands.Images.Upload;
 using BjBygg.Application.Commands.MissionCommands.Reports.Upload;
 using BjBygg.Application.Queries.DbSyncQueries;
 using BjBygg.Application.Queries.DbSyncQueries.MissionReportQuery;
-using BjBygg.Application.Queries.MissionReportTypeQueries.List;
+using BjBygg.Application.Queries.ReportTypeQueries.List;
 using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Exceptions;
 using MediatR;
@@ -51,7 +51,7 @@ namespace BjBygg.WebApi.Controllers
             var command = new UploadMissionReportCommand()
             {
                 File = Request.Form.Files[0],
-                MissionReportType = JsonConvert.DeserializeObject<MissionReportTypeDto>(Request.Form["MissionReportType"], settings),
+                ReportType = JsonConvert.DeserializeObject<ReportTypeDto>(Request.Form["ReportType"], settings),
                 MissionId = missionId
             };
 
