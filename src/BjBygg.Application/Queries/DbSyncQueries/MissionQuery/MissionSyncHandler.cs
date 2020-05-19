@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Entities;
+using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -25,11 +26,13 @@ namespace BjBygg.Application.Queries.DbSyncQueries.MissionQuery
 
         public async Task<DbSyncResponse<MissionDto>> Handle(MissionSyncQuery request, CancellationToken cancellationToken)
         {
+            if (request.User == null) throw new EntityNotFoundException($"No user found");
+
             List<Mission> entities;
             List<int> deletedEntities = new List<int>();
 
             System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-            var date = dtDateTime.AddSeconds(request.Timestamp ?? 0).ToLocalTime();
+            var date = dtDateTime.AddSeconds(request.Timestamp ?? 0);
             var minDate = DateTime.Now.AddYears(-5);
 
             IQueryable<Mission> query = _dbContext.Set<Mission>();
@@ -44,6 +47,9 @@ namespace BjBygg.Application.Queries.DbSyncQueries.MissionQuery
                 query = query.Where(x => DateTime.Compare(x.UpdatedAt, date) > 0);
             }
 
+            if (request.User.Role == "Oppdragsgiver") //Only allow employers missions if role is employer
+                query = query.Where(x => x.EmployerId == request.User.EmployerId);
+            
             entities = await query.ToListAsync();
 
             if (!initialCall)
@@ -56,7 +62,7 @@ namespace BjBygg.Application.Queries.DbSyncQueries.MissionQuery
             {
                 Entities = _mapper.Map<IEnumerable<MissionDto>>(entities),
                 DeletedEntities = deletedEntities,
-                Timestamp = DateTimeOffset.UtcNow.ToLocalTime().ToUnixTimeSeconds(),
+                Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
             };
         }
 

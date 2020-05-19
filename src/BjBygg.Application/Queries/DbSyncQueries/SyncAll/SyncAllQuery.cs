@@ -1,12 +1,13 @@
-﻿using MediatR;
+﻿using BjBygg.Application.Shared;
+using MediatR;
 
 
 namespace BjBygg.Application.Queries.DbSyncQueries.SyncAll
 {
     public class SyncAllQuery : IRequest<SyncAllResponse>
     {
-        public string? UserName { get; set; }
-        public string? Role { get; set; }
+        public UserDto? User { get; set; }
+
         public double? MissionTimestamp { get; set; }
 
         public double? EmployerTimestamp { get; set; }

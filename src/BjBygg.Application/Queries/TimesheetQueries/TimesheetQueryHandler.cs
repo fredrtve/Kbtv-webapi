@@ -35,14 +35,17 @@ namespace BjBygg.Application.Queries.TimesheetQueries
             if (request.UserName != null)
                 query = query.Where(x => x.UserName == request.UserName);
 
+            TimeZoneInfo timeInfo = TZConvert.GetTimeZoneInfo("Central Europe Standard Time");
             System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-            var startDate = dtDateTime.AddSeconds(request.StartDate ?? 0).ToLocalTime();
+            var startDate = dtDateTime.AddSeconds(request.StartDate ?? 0);
+            startDate = TimeZoneInfo.ConvertTime(startDate, timeInfo);
 
-            if(request.EndDate == null)
+            if (request.EndDate == null)
                 query = query.Where(x => x.StartTime.Date >= startDate.Date);
             else
             {
-                var endDate = dtDateTime.AddSeconds(request.EndDate ?? 0).ToLocalTime();
+                var endDate = dtDateTime.AddSeconds(request.EndDate ?? 0);
+                endDate = TimeZoneInfo.ConvertTime(endDate, timeInfo);
                 query = query.Where(x => x.StartTime.Date >= startDate.Date && x.StartTime.Date <= endDate.Date);
             }
            

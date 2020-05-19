@@ -30,12 +30,12 @@ namespace BjBygg.Application.Queries.DbSyncQueries.TimesheetQuery
             List<int> deletedEntities = new List<int>();
 
             System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-            var date = dtDateTime.AddSeconds(request.Timestamp ?? 0).ToLocalTime();
+            var date = dtDateTime.AddSeconds(request.Timestamp ?? 0);
             var minDate = DateTime.Now.AddYears(-5);
 
             IQueryable<Timesheet> query = _dbContext.Set<Timesheet>();
 
-            query = query.Where(x => x.UserName == request.UserName); //Only users entities
+            query = query.Where(x => x.UserName == request.User.UserName); //Only users entities
 
             Boolean initialCall = (DateTime.Compare(date, minDate) < 0); //If last updated resource is older than 5 years
 
@@ -59,7 +59,7 @@ namespace BjBygg.Application.Queries.DbSyncQueries.TimesheetQuery
             {
                 Entities = _mapper.Map<IEnumerable<TimesheetDto>>(entities),
                 DeletedEntities = deletedEntities,
-                Timestamp = DateTimeOffset.UtcNow.ToLocalTime().ToUnixTimeSeconds(),
+                Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
             };
         }
     }

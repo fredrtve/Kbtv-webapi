@@ -29,7 +29,7 @@ namespace BjBygg.Application.Queries.DbSyncQueries.EmployerQuery
             List<int> deletedEntities = new List<int>();
 
             System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-            var date = dtDateTime.AddSeconds(request.Timestamp ?? 0).ToLocalTime();
+            var date = dtDateTime.AddSeconds(request.Timestamp ?? 0);
 
             IQueryable<Employer> query = _dbContext.Set<Employer>();
 
@@ -50,7 +50,7 @@ namespace BjBygg.Application.Queries.DbSyncQueries.EmployerQuery
             {
                 Entities = _mapper.Map<IEnumerable<EmployerDto>>(entities),
                 DeletedEntities = deletedEntities,
-                Timestamp = DateTimeOffset.UtcNow.ToLocalTime().ToUnixTimeSeconds(),
+                Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
             };
         }
 

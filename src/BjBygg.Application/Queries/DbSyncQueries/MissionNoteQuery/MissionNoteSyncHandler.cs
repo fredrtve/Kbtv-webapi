@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Entities;
+using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -25,11 +26,13 @@ namespace BjBygg.Application.Queries.DbSyncQueries.MissionNoteQuery
 
         public async Task<DbSyncResponse<MissionNoteDto>> Handle(MissionNoteSyncQuery request, CancellationToken cancellationToken)
         {
+            if (request.User == null) throw new EntityNotFoundException($"No user found");
+
             List<MissionNote> entities;
             List<int> deletedEntities = new List<int>();
 
             System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-            var date = dtDateTime.AddSeconds(request.Timestamp ?? 0).ToLocalTime();
+            var date = dtDateTime.AddSeconds(request.Timestamp ?? 0);
             var minDate = DateTime.Now.AddYears(-5);
 
             IQueryable<MissionNote> query = _dbContext.Set<MissionNote>();
@@ -44,6 +47,9 @@ namespace BjBygg.Application.Queries.DbSyncQueries.MissionNoteQuery
                 query = query.Where(x => DateTime.Compare(x.UpdatedAt, date) > 0);
             }
 
+            if (request.User.Role == "Oppdragsgiver") //Only allow employers mission children if role is employer
+                query = query.Include(x => x.Mission).Where(x => x.Mission.EmployerId == request.User.EmployerId);
+
             entities = await query.ToListAsync();
 
             if (!initialCall)
@@ -56,7 +62,7 @@ namespace BjBygg.Application.Queries.DbSyncQueries.MissionNoteQuery
             {
                 Entities = _mapper.Map<IEnumerable<MissionNoteDto>>(entities),
                 DeletedEntities = deletedEntities,
-                Timestamp = DateTimeOffset.UtcNow.ToLocalTime().ToUnixTimeSeconds(),
+                Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
             };
         }
 

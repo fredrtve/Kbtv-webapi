@@ -29,7 +29,7 @@ namespace BjBygg.Application.Queries.DbSyncQueries.ReportTypeQuery
             List<int> deletedEntities = new List<int>();
 
             System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-            var date = dtDateTime.AddSeconds(request.Timestamp ?? 0).ToLocalTime();
+            var date = dtDateTime.AddSeconds(request.Timestamp ?? 0);
 
             IQueryable<ReportType> query = _dbContext.Set<ReportType>();
 
@@ -50,7 +50,7 @@ namespace BjBygg.Application.Queries.DbSyncQueries.ReportTypeQuery
             {
                 Entities = _mapper.Map<IEnumerable<ReportTypeDto>>(entities),
                 DeletedEntities = deletedEntities,
-                Timestamp = DateTimeOffset.UtcNow.ToLocalTime().ToUnixTimeSeconds(),
+                Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
             };
         }
 

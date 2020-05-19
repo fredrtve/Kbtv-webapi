@@ -28,16 +28,14 @@ namespace BjBygg.Application.Queries.DbSyncQueries.SyncAll
         {
             return new SyncAllResponse()
             {
-                MissionSync = await _mediator.Send(new MissionSyncQuery() { Timestamp =  request.MissionTimestamp }),
+                MissionSync = await _mediator.Send(new MissionSyncQuery() { Timestamp =  request.MissionTimestamp, User = request.User }),
+                MissionImageSync = await _mediator.Send(new MissionImageSyncQuery() { Timestamp = request.MissionImageTimestamp, User = request.User }),
+                MissionNoteSync = await _mediator.Send(new MissionNoteSyncQuery() { Timestamp = request.MissionNoteTimestamp, User = request.User }),
+                MissionReportSync = await _mediator.Send(new MissionReportSyncQuery() { Timestamp = request.MissionReportTimestamp, User = request.User }),
+                UserTimesheetSync = await _mediator.Send(new UserTimesheetSyncQuery() { Timestamp = request.UserTimesheetTimestamp, User = request.User }),
                 EmployerSync = await _mediator.Send(new EmployerSyncQuery() { Timestamp = request.EmployerTimestamp }),
-                MissionImageSync = await _mediator.Send(new MissionImageSyncQuery() { Timestamp = request.MissionImageTimestamp }),
-                MissionNoteSync = await _mediator.Send(new MissionNoteSyncQuery() { Timestamp = request.MissionNoteTimestamp }),
-                MissionReportSync = await _mediator.Send(new MissionReportSyncQuery() { Timestamp = request.MissionReportTimestamp }),
                 ReportTypeSync = await _mediator.Send(new ReportTypeSyncQuery() { Timestamp = request.ReportTypeTimestamp }),
                 MissionTypeSync = await _mediator.Send(new MissionTypeSyncQuery() { Timestamp = request.MissionTypeTimestamp }),
-                UserTimesheetSync = await _mediator.Send(new UserTimesheetSyncQuery() { 
-                    Timestamp = request.UserTimesheetTimestamp, UserName = request.UserName, Role = request.Role
-                })
             };
         }
     }

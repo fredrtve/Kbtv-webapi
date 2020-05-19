@@ -26,7 +26,7 @@ namespace BjBygg.WebApi.Controllers
             _mediator = mediator;
         }
 
-        [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
+        [Authorize]
         [HttpGet]
         [Route("api/[controller]/[action]")]
         public async Task<DbSyncResponse<EmployerDto>> Sync(EmployerSyncQuery query)
@@ -34,7 +34,7 @@ namespace BjBygg.WebApi.Controllers
             return await _mediator.Send(query);
         }
 
-        [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
+        [Authorize]
         [HttpGet]
         [Route("api/[controller]")]
         public async Task<IEnumerable<EmployerDto>> Index()

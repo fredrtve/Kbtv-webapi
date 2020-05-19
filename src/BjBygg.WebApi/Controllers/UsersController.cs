@@ -33,7 +33,7 @@ namespace BjBygg.WebApi.Controllers.User
             return Redirect("/swagger");
         }
 
-        [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
+        [Authorize(Roles = "Leder")]
         [HttpGet]
         [Route("api/[controller]")]
         public Task<IEnumerable<UserListItemDto>> Index()
@@ -52,7 +52,7 @@ namespace BjBygg.WebApi.Controllers.User
             return await _mediator.Send(command);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Leder")]
         [HttpGet]
         [Route("api/[controller]/{UserName}")]
         public async Task<UserDto> GetUser(UserByUserNameQuery query)

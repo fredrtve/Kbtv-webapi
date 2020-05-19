@@ -44,6 +44,6 @@ namespace BjBygg.Application.Commands.UserCommands.Create
         public string Password { get; set; }
 
         [Display(Name = "Oppdragsgiver")]
-        public int EmployerId { get; set; }
+        public int? EmployerId { get; set; }
     }
 }
