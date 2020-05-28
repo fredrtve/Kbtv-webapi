@@ -9,7 +9,7 @@ namespace BjBygg.Application.Queries.MissionQueries.Detail
     {
         public MissionDto Mission { get; set; }
         public List<MissionImageDto> MissionImages { get; set; }
-        public List<MissionReportDto> MissionReports { get; set; }
+        public List<MissionDocumentDto> MissionDocuments { get; set; }
         public List<MissionDetailNoteDto> MissionNotes { get; set; }
 
     }

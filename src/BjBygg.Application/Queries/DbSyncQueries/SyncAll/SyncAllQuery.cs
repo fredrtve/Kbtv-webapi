@@ -16,9 +16,9 @@ namespace BjBygg.Application.Queries.DbSyncQueries.SyncAll
 
         public double? MissionNoteTimestamp { get; set; }
 
-        public double? MissionReportTimestamp { get; set; }
+        public double? MissionDocumentTimestamp { get; set; }
 
-        public double? ReportTypeTimestamp { get; set; }
+        public double? DocumentTypeTimestamp { get; set; }
 
         public double? MissionTypeTimestamp { get; set; }
 

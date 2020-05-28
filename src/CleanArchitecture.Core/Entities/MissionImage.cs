@@ -4,7 +4,7 @@ using System;
 
 namespace CleanArchitecture.Core.Entities
 {
-    public class MissionImage : BaseEntity, IMissionChildEntity
+    public class MissionImage : BaseEntity, IMissionChildEntity, IFile
     {
         public MissionImage() {}
 

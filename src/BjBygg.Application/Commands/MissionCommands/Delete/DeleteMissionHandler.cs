@@ -28,8 +28,8 @@ namespace BjBygg.Application.Commands.MissionCommands.Delete
                 .RemoveRange(_dbContext.Set<MissionImage>().Where(x => x.MissionId == mission.Id));
             _dbContext.Set<MissionNote>()
                 .RemoveRange(_dbContext.Set<MissionNote>().Where(x => x.MissionId == mission.Id));
-            _dbContext.Set<MissionReport>()
-                .RemoveRange(_dbContext.Set<MissionReport>().Where(x => x.MissionId == mission.Id));
+            _dbContext.Set<MissionDocument>()
+                .RemoveRange(_dbContext.Set<MissionDocument>().Where(x => x.MissionId == mission.Id));
 
             _dbContext.Set<Mission>().Remove(mission); 
             

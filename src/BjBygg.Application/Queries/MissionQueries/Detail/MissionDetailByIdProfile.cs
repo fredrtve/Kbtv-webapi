@@ -22,8 +22,8 @@ namespace BjBygg.Application.Queries.MissionQueries.Detail
                     dest => dest.MissionImages,
                     act => act.MapFrom(x => x.MissionImages))
                 .ForMember(
-                    dest => dest.MissionReports,
-                    act => act.MapFrom(x => x.MissionReports));
+                    dest => dest.MissionDocuments,
+                    act => act.MapFrom(x => x.MissionDocuments));
 
             CreateMap<Mission, MissionDto>()
                 .ForMember(
@@ -38,10 +38,10 @@ namespace BjBygg.Application.Queries.MissionQueries.Detail
             CreateMap<MissionType, MissionTypeDto>();
             CreateMap<MissionImage, MissionImageDto>();
 
-            CreateMap<MissionReport, MissionReportDto>()
-                .ForMember(dest => dest.ReportType, act => act.MapFrom(x => x.ReportType));
+            CreateMap<MissionDocument, MissionDocumentDto>()
+                .ForMember(dest => dest.DocumentType, act => act.MapFrom(x => x.DocumentType));
 
-            CreateMap<ReportType, ReportTypeDto>();
+            CreateMap<DocumentType, DocumentTypeDto>();
         }
     }
 }

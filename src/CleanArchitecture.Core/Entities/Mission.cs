@@ -22,7 +22,7 @@ namespace CleanArchitecture.Core.Entities
 
         public bool Finished { get; set; }
         public List<MissionImage> MissionImages { get; set; }
-        public List<MissionReport> MissionReports { get; set; }
+        public List<MissionDocument> MissionDocuments { get; set; }
         public List<MissionNote> MissionNotes { get; set; }
         public List<Timesheet> Timesheets { get; set; }
         public MissionType MissionType { get; set; }

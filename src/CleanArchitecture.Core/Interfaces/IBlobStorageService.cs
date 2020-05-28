@@ -1,3 +1,4 @@
+using CleanArchitecture.Core.Enums;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -8,9 +9,9 @@ namespace CleanArchitecture.Core.Interfaces
 {
     public interface IBlobStorageService
     {
-        Task<IEnumerable<Uri>> ListAsync(string fileType = "image");
-        Task<IEnumerable<Uri>> UploadFilesAsync(IFormFileCollection files, string fileType = "image");
-        Task<Uri> UploadFileAsync(IFormFile file, string fileType = "image");
-        Task DeleteAsync(string fileUri, string fileType = "image");
+        Task<IEnumerable<Uri>> ListAsync(FileType fileType = FileType.Image);
+        Task<IEnumerable<Uri>> UploadFilesAsync(IFormFileCollection files, FileType fileType = FileType.Image);
+        Task<Uri> UploadFileAsync(IFormFile file, FileType fileType = FileType.Image);
+        Task DeleteAsync(string fileUri, FileType fileType = FileType.Image);
     }
 }

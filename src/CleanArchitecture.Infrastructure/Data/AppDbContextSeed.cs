@@ -37,11 +37,11 @@ namespace CleanArchitecture.Infrastructure.Data
                     context.SaveChanges();
                     context.Database.CloseConnection();
                 }
-                if (!context.ReportTypes.Any())
+                if (!context.DocumentTypes.Any())
                 {
                     context.Database.OpenConnection();
-                    context.ReportTypes.AddRange(
-                        GetPreconfiguredReportTypes());
+                    context.DocumentTypes.AddRange(
+                        GetPreconfiguredDocumentTypes());
 
                     context.SaveChanges();
                     context.Database.CloseConnection();
@@ -55,11 +55,11 @@ namespace CleanArchitecture.Infrastructure.Data
                     context.SaveChanges();
                     context.Database.CloseConnection();
                 }
-                if (!context.MissionReports.Any())
+                if (!context.MissionDocuments.Any())
                 {
                     context.Database.OpenConnection();
-                    context.MissionReports.AddRange(
-                        GetPreconfiguredMissionReports());
+                    context.MissionDocuments.AddRange(
+                        GetPreconfiguredMissionDocuments());
 
                     context.SaveChanges();
                     context.Database.CloseConnection();
@@ -110,12 +110,12 @@ namespace CleanArchitecture.Infrastructure.Data
             };
         }
 
-        static IEnumerable<ReportType> GetPreconfiguredReportTypes()
+        static IEnumerable<DocumentType> GetPreconfiguredDocumentTypes()
         {
-            return new List<ReportType>()
+            return new List<DocumentType>()
             {
-                new ReportType() { Id = 1, Name = "Skaderapport" },
-                new ReportType() { Id = 2, Name = "Tørkerapport" },
+                new DocumentType() { Id = 1, Name = "Skaderapport" },
+                new DocumentType() { Id = 2, Name = "Tørkerapport" },
             };
         }
 
@@ -138,22 +138,22 @@ namespace CleanArchitecture.Infrastructure.Data
 
             return missions;
         }
-        static IEnumerable<MissionReport> GetPreconfiguredMissionReports()
+        static IEnumerable<MissionDocument> GetPreconfiguredMissionDocuments()
         {
-            var missionReports = new List<MissionReport>();
+            var missionDocuments = new List<MissionDocument>();
 
             for (var i = 1; i <= 500; i++)
             {
-                missionReports.Add(new MissionReport()
+                missionDocuments.Add(new MissionDocument()
                 {
                     Id = i,
                     FileURL = new Uri("https://kbtv.blob.core.windows.net/images/28e89dfa-8d9b-422f-81fd-ee1f7aafbbe7.jpg"),
                     MissionId = random.Next(1, 300),
-                    ReportTypeId = i % 2 == 0 ? 1 : 2
+                    DocumentTypeId = i % 2 == 0 ? 1 : 2
                 });
             }
      
-            return missionReports;
+            return missionDocuments;
         }
 
         static IEnumerable<MissionNote> GetPreconfiguredMissionNotes()

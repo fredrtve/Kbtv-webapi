@@ -1,3 +1,4 @@
+using CleanArchitecture.Core.Enums;
 using Microsoft.Extensions.Configuration;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -17,15 +18,15 @@ namespace CleanArchitecture.Infrastructure.Api.FileStorage
             _configuration = configuration;
         }
 
-        public async Task<CloudBlobContainer> GetBlobContainer(string fileType = "image")
+        public async Task<CloudBlobContainer> GetBlobContainer(FileType fileType = FileType.Image)
         {
             if (_blobContainer != null)
                 return _blobContainer;
 
             string containerName;
 
-            if(fileType == "report") 
-                containerName = _configuration.GetValue<string>("ReportContainerName");
+            if(fileType == FileType.Document) 
+                containerName = _configuration.GetValue<string>("DocumentContainerName");
             else
                 containerName = _configuration.GetValue<string>("ImageContainerName");
 

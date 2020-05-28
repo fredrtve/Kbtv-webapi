@@ -1,3 +1,4 @@
+using CleanArchitecture.Core.Enums;
 using CleanArchitecture.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -18,7 +19,7 @@ namespace CleanArchitecture.Infrastructure.Api.FileStorage
             _azureBlobConnectionFactory = new AzureBlobConnectionFactory(configuration);
         }
 
-        public async Task DeleteAsync(string fileUri, string fileType = "image")
+        public async Task DeleteAsync(string fileUri, FileType fileType = FileType.Image)
         {
             var blobContainer = await _azureBlobConnectionFactory.GetBlobContainer(fileType);
 
@@ -29,7 +30,7 @@ namespace CleanArchitecture.Infrastructure.Api.FileStorage
             await blob.DeleteIfExistsAsync();
         }
 
-        public async Task<IEnumerable<Uri>> ListAsync(string fileType = "image")
+        public async Task<IEnumerable<Uri>> ListAsync(FileType fileType = FileType.Image)
         {
             var blobContainer = await _azureBlobConnectionFactory.GetBlobContainer(fileType);
             var allBlobs = new List<Uri>();
@@ -47,7 +48,7 @@ namespace CleanArchitecture.Infrastructure.Api.FileStorage
             return allBlobs;
         }
 
-        public async Task<IEnumerable<Uri>> UploadFilesAsync(IFormFileCollection files, string fileType = "image")
+        public async Task<IEnumerable<Uri>> UploadFilesAsync(IFormFileCollection files, FileType fileType = FileType.Image)
         {
             var blobContainer = await _azureBlobConnectionFactory.GetBlobContainer(fileType);
             var blobs = new List<Uri>();
@@ -63,7 +64,7 @@ namespace CleanArchitecture.Infrastructure.Api.FileStorage
             return blobs;
         }
 
-        public async Task<Uri> UploadFileAsync(IFormFile file, string fileType = "image")
+        public async Task<Uri> UploadFileAsync(IFormFile file, FileType fileType = FileType.Image)
         {
             var blobContainer = await _azureBlobConnectionFactory.GetBlobContainer(fileType);
 
