@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using BjBygg.Application.Commands.MissionCommands.Images.Delete;
 using BjBygg.Application.Commands.MissionCommands.Images.Upload;
+using BjBygg.Application.Commands.MissionCommands.Reports.DeleteRange;
+using BjBygg.Application.Commands.MissionCommands.Reports.Mail;
 using BjBygg.Application.Commands.MissionCommands.Reports.Upload;
 using BjBygg.Application.Queries.DbSyncQueries;
 using BjBygg.Application.Queries.DbSyncQueries.MissionReportQuery;
@@ -66,6 +68,22 @@ namespace BjBygg.WebApi.Controllers
             return await _mediator.Send(command);
         }
 
+        [Authorize(Roles = "Leder")]
+        [HttpPost]
+        [Route("api/[controller]/DeleteRange")]
+        public async Task<bool> DeleteRange([FromBody] DeleteRangeMissionReportCommand command)
+        {
+            return await _mediator.Send(command);
+        }
+
+
+        [Authorize(Roles = "Leder")]
+        [HttpPost]
+        [Route("api/[controller]/SendReports")]
+        public async Task<bool> SendImages([FromBody] MailMissionReportsCommand command)
+        {
+            return await _mediator.Send(command);
+        }
 
     }
 }

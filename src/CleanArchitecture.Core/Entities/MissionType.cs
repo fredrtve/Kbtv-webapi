@@ -1,3 +1,4 @@
+using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.SharedKernel;
 using System.Collections.Generic;
 

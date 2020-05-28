@@ -32,15 +32,6 @@ namespace CleanArchitecture.Infrastructure.Identity
                     userManager.AddToRoleAsync(user, "Leder").Wait();
             }
 
-            if (userManager.FindByNameAsync("ansatt").Result == null)
-            {
-                var user = new ApplicationUser { UserName = "ansatt", SecurityStamp = Guid.NewGuid().ToString(), Email = "test@test.com", FirstName = "Jens", LastName = "Nordmann", PhoneNumber = "94446434" };
-                var result = await userManager.CreateAsync(user, "passord1");
-
-                if (result.Succeeded)
-                    userManager.AddToRoleAsync(user, "Ansatt").Wait();
-            }
-
             if (userManager.FindByNameAsync("mellomleder").Result == null)
             {
                 var user = new ApplicationUser { UserName = "mellomleder", SecurityStamp = Guid.NewGuid().ToString(), Email = "test@test.com", FirstName = "Karin", LastName = "Kro", PhoneNumber = "94446434" };
@@ -59,6 +50,41 @@ namespace CleanArchitecture.Infrastructure.Identity
                     userManager.AddToRoleAsync(user, "Oppdragsgiver").Wait();
             }
 
+            if (userManager.FindByNameAsync("ansatt0").Result == null)
+            {
+                var user = new ApplicationUser { UserName = "ansatt0", SecurityStamp = Guid.NewGuid().ToString(), Email = "test@test.com", FirstName = "Jens", LastName = "Nordmann", PhoneNumber = "94446434" };
+                var result = await userManager.CreateAsync(user, "passord1");
+
+                if (result.Succeeded)
+                    userManager.AddToRoleAsync(user, "Ansatt").Wait();
+            }
+
+            if (userManager.FindByNameAsync("ansatt1").Result == null)
+            {
+                var user = new ApplicationUser { UserName = "ansatt1", SecurityStamp = Guid.NewGuid().ToString(), Email = "test2@test.com", FirstName = "Jens2", LastName = "Nordmann2", PhoneNumber = "94446434" };
+                var result = await userManager.CreateAsync(user, "passord1");
+
+                if (result.Succeeded)
+                    userManager.AddToRoleAsync(user, "Ansatt").Wait();
+            }
+
+            if (userManager.FindByNameAsync("ansatt2").Result == null)
+            {
+                var user = new ApplicationUser { UserName = "ansatt2", SecurityStamp = Guid.NewGuid().ToString(), Email = "test3@test.com", FirstName = "Jens3", LastName = "Nordmann3", PhoneNumber = "94446434" };
+                var result = await userManager.CreateAsync(user, "passord1");
+
+                if (result.Succeeded)
+                    userManager.AddToRoleAsync(user, "Ansatt").Wait();
+            }
+
+            if (userManager.FindByNameAsync("ansatt3").Result == null)
+            {
+                var user = new ApplicationUser { UserName = "ansatt3", SecurityStamp = Guid.NewGuid().ToString(), Email = "test4@test.com", FirstName = "Jens4", LastName = "Nordmann4", PhoneNumber = "94446434" };
+                var result = await userManager.CreateAsync(user, "passord1");
+
+                if (result.Succeeded)
+                    userManager.AddToRoleAsync(user, "Ansatt").Wait();
+            }
         }
     }
 }

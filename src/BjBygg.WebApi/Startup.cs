@@ -26,6 +26,8 @@ using BjBygg.Application.Shared;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
+using CleanArchitecture.Infrastructure.Api;
+using CleanArchitecture.Infrastructure.Api.SendGridMailService;
 
 namespace BjBygg.WebApi
 {
@@ -93,6 +95,8 @@ namespace BjBygg.WebApi
             services.AddAutoMapper(Assembly.GetAssembly(typeof(MissionDtoProfile)));
 
             services.AddMediatR(Assembly.GetAssembly(typeof(MissionByIdQuery)));
+
+            services.AddTransient<IMailService, SendGridMailService>();
 
             services.AddSingleton<IBlobStorageService, AzureBlobStorageService>();
             //services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();

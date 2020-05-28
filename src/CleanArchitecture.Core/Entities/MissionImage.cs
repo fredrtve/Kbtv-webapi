@@ -1,9 +1,10 @@
+using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.SharedKernel;
 using System;
 
 namespace CleanArchitecture.Core.Entities
 {
-    public class MissionImage : BaseEntity
+    public class MissionImage : BaseEntity, IMissionChildEntity
     {
         public MissionImage() {}
 

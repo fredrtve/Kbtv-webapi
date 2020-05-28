@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CleanArchitecture.Infrastructure.data.migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200519103649_init")]
+    [Migration("20200526190738_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,9 @@ namespace CleanArchitecture.Infrastructure.data.migrations
 
                     b.Property<bool>("Deleted")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -374,7 +377,7 @@ namespace CleanArchitecture.Infrastructure.data.migrations
 
             modelBuilder.Entity("CleanArchitecture.Core.Entities.MissionNote", b =>
                 {
-                    b.HasOne("CleanArchitecture.Core.Entities.Mission", null)
+                    b.HasOne("CleanArchitecture.Core.Entities.Mission", "Mission")
                         .WithMany("MissionNotes")
                         .HasForeignKey("MissionId")
                         .OnDelete(DeleteBehavior.Restrict)

@@ -35,6 +35,9 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     b.Property<bool>("Deleted")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT")
@@ -372,7 +375,7 @@ namespace CleanArchitecture.Infrastructure.data.migrations
 
             modelBuilder.Entity("CleanArchitecture.Core.Entities.MissionNote", b =>
                 {
-                    b.HasOne("CleanArchitecture.Core.Entities.Mission", null)
+                    b.HasOne("CleanArchitecture.Core.Entities.Mission", "Mission")
                         .WithMany("MissionNotes")
                         .HasForeignKey("MissionId")
                         .OnDelete(DeleteBehavior.Restrict)

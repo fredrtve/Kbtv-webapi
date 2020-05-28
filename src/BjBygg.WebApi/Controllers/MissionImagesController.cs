@@ -1,12 +1,16 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BjBygg.Application.Commands.MissionCommands.Images.Delete;
+using BjBygg.Application.Commands.MissionCommands.Images.DeleteRange;
+using BjBygg.Application.Commands.MissionCommands.Images.Mail;
 using BjBygg.Application.Commands.MissionCommands.Images.Upload;
 using BjBygg.Application.Queries.DbSyncQueries;
 using BjBygg.Application.Queries.DbSyncQueries.MissionImageQuery;
 using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Exceptions;
+using CleanArchitecture.Core.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -17,10 +21,12 @@ namespace BjBygg.WebApi.Controllers
     public class MissionImagesController : BaseController
     {
         private readonly IMediator _mediator;
+        private readonly IMailService _mailService;
 
-        public MissionImagesController(IMediator mediator)
+        public MissionImagesController(IMediator mediator, IMailService mailService)
         {
             _mediator = mediator;
+            _mailService = mailService;
         }
 
         [Authorize]
@@ -50,6 +56,23 @@ namespace BjBygg.WebApi.Controllers
         [HttpDelete]
         [Route("api/[controller]/{id}")]
         public async Task<bool> Delete(DeleteMissionImageCommand command)
+        {
+            return await _mediator.Send(command);
+        }
+
+        [Authorize(Roles = "Leder")]
+        [HttpPost]
+        [Route("api/[controller]/DeleteRange")]
+        public async Task<bool> DeleteRange([FromBody] DeleteRangeMissionImageCommand command)
+        {
+            return await _mediator.Send(command);
+        }
+
+
+        [Authorize(Roles = "Leder")]
+        [HttpPost]
+        [Route("api/[controller]/SendImages")]
+        public async Task<bool> SendImages([FromBody] MailMissionImagesCommand command)
         {
             return await _mediator.Send(command);
         }

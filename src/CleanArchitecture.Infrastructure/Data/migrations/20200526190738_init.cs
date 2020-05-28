@@ -20,6 +20,7 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     UpdatedBy = table.Column<string>(nullable: true),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     PhoneNumber = table.Column<string>(maxLength: 12, nullable: true),
+                    Email = table.Column<string>(nullable: true),
                     Address = table.Column<string>(maxLength: 100, nullable: true)
                 },
                 constraints: table =>

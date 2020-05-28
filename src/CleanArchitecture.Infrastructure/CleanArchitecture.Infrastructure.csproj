@@ -32,6 +32,8 @@
     <Compile Remove="Data\migrations\20200308171044_init.Designer.cs" />
     <Compile Remove="Data\migrations\20200428084545_init.cs" />
     <Compile Remove="Data\migrations\20200428084545_init.Designer.cs" />
+    <Compile Remove="Data\migrations\20200519103649_init.cs" />
+    <Compile Remove="Data\migrations\20200519103649_init.Designer.cs" />
     <Compile Remove="Identity\Migrations\20191121173213_init.cs" />
     <Compile Remove="Identity\Migrations\20191121173213_init.Designer.cs" />
     <Compile Remove="Identity\Migrations\20191121173832_init.cs" />
@@ -60,6 +62,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" PrivateAssets="all" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
+    <PackageReference Include="SendGrid" />
     <PackageReference Include="SQLite" />
     <PackageReference Include="NETStandard.Library" />
     <PackageReference Include="WindowsAzure.Storage" />

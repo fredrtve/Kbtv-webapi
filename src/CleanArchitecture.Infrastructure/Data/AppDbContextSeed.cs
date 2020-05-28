@@ -10,6 +10,8 @@ namespace CleanArchitecture.Infrastructure.Data
 {
     public class AppDbContextSeed
     {
+        readonly static Random random = new Random();
+
         public static void Seed(AppDbContext context)
         {
             try
@@ -91,8 +93,12 @@ namespace CleanArchitecture.Infrastructure.Data
         {
             return new List<Employer>()
             {
-                new Employer() { Id = 1, Name = "NSU" },
-                new Employer() { Id = 2, Name = "BSU" },
+                new Employer() { Id = 1, Name = "NSU", Email = "NSU@test.no" },
+                new Employer() { Id = 2, Name = "BSU", Email = "BSU@test.no" },
+                new Employer() { Id = 3, Name = "RSU", Email = "RSU@test.no" },
+                new Employer() { Id = 4, Name = "TSU", Email = "TSU@test.no" },
+                new Employer() { Id = 5, Name = "Privat", Email = "Privat@test.no" },
+                new Employer() { Id = 6, Name = "Jens Bjarne AS", Email = "jens@test.no" },
             };
         }
         static IEnumerable<MissionType> GetPreconfiguredMissionTypes()
@@ -100,7 +106,7 @@ namespace CleanArchitecture.Infrastructure.Data
             return new List<MissionType>()
             {
                 new MissionType() { Id = 1, Name = "Riving" },
-                new MissionType() { Id = 2, Name = "Oppbygging" }
+                new MissionType() { Id = 2, Name = "Oppbygging" },
             };
         }
 
@@ -109,14 +115,14 @@ namespace CleanArchitecture.Infrastructure.Data
             return new List<ReportType>()
             {
                 new ReportType() { Id = 1, Name = "Skaderapport" },
-                new ReportType() { Id = 2, Name = "Tørkerapport" }
+                new ReportType() { Id = 2, Name = "Tørkerapport" },
             };
         }
 
         static IEnumerable<Mission> GetPreconfiguredMissions()
         {
             var missions = new List<Mission>();
-            for (var i = 1; i <= 15; i++)
+            for (var i = 1; i <= 300; i++)
             {
                 missions.Add(new Mission()
                 {
@@ -125,8 +131,8 @@ namespace CleanArchitecture.Infrastructure.Data
                     PhoneNumber = "92278483",
                     Description = "Dette er en beskrivelse",
                     Address = $"Furuberget {i}, 1940 Bjørkelangen",
-                    EmployerId = 1,
-                    MissionTypeId = 1,
+                    EmployerId = random.Next(1,6),
+                    MissionTypeId = i % 2 == 0 ? 1 : 2,
                 });
             }
 
@@ -134,46 +140,37 @@ namespace CleanArchitecture.Infrastructure.Data
         }
         static IEnumerable<MissionReport> GetPreconfiguredMissionReports()
         {
-            return new List<MissionReport>()
+            var missionReports = new List<MissionReport>();
+
+            for (var i = 1; i <= 500; i++)
             {
-                new MissionReport() { Id = 1, FileURL = new Uri("https://kbtv.blob.core.windows.net/images/28e89dfa-8d9b-422f-81fd-ee1f7aafbbe7.jpg"), MissionId = 1, ReportTypeId = 1 },
-                new MissionReport() { Id = 2, FileURL = new Uri("https://kbtv.blob.core.windows.net/images/28e89dfa-8d9b-422f-81fd-ee1f7aafbbe7.jpg"), MissionId = 1, ReportTypeId = 2 }
-            };
+                missionReports.Add(new MissionReport()
+                {
+                    Id = i,
+                    FileURL = new Uri("https://kbtv.blob.core.windows.net/images/28e89dfa-8d9b-422f-81fd-ee1f7aafbbe7.jpg"),
+                    MissionId = random.Next(1, 300),
+                    ReportTypeId = i % 2 == 0 ? 1 : 2
+                });
+            }
+     
+            return missionReports;
         }
 
         static IEnumerable<MissionNote> GetPreconfiguredMissionNotes()
         {
             var missionNotes = new List<MissionNote>();
-            var idCounter = 1;
 
-            for (var missionId = 1; missionId <= 15; missionId++)
+            for (var i = 1; i <= 500; i++)
             {
-                for (var p = 1; p <= 3; p++)
-                {
                     missionNotes.Add(new MissionNote()
                     {
-                        Id = idCounter,
-                        MissionId = missionId,
+                        Id = i,
+                        MissionId = random.Next(1, 300),
                         Content = "Dette er ett veldig interessant notat. Veldig interessant. Det er også veldig viktig.",
                         Title =  "Dette er ett notat",
-                        Pinned = false
-                    });
-                    idCounter++;
-
-                    missionNotes.Add(new MissionNote()
-                    {
-                        Id = idCounter,
-                        MissionId = missionId,
-                        Content = "Dette er ett veldig interessant og viktig notat. Veldig viktig og interessant. Det er også veldig viktig.",
-                        Title = "Dette er ett viktig notat",
-                        Pinned = true
-                    });
-
-                    idCounter++;
-                }
+                        Pinned = i % 2 == 0 ? false : true
+                    });           
             }
-
-
 
             return missionNotes;
         }
@@ -183,19 +180,16 @@ namespace CleanArchitecture.Infrastructure.Data
             var timesheets = new List<Timesheet>();
             var idCounter = 1;
             var dayCounter = 0;
-            var rnd = new Random();
             var today = DateTime.Now.Date.AddHours(6);
 
-            for (var n = 1; n <= 100; n++)
+            for (var n = 1; n <= 3000; n++)
             {        
-                for (var missionId = 1; missionId <= 15; missionId++)
-                {
                     var startDate = today.AddDays(-dayCounter);
-                    var endDate = startDate.AddHours(rnd.Next(4, 10));
+                    var endDate = startDate.AddHours(random.Next(4, 10));
                     timesheets.Add(new Timesheet()
                     {
                         Id = idCounter,
-                        MissionId = missionId,
+                        MissionId = random.Next(1,300),
                         StartTime = startDate,
                         EndTime = endDate,
                         TotalHours = (endDate - startDate).TotalHours,
@@ -205,23 +199,27 @@ namespace CleanArchitecture.Infrastructure.Data
                     });
                     idCounter++;
 
-                    timesheets.Add(new Timesheet()
+                    for(var user = 0; user <= 3; user++)
                     {
-                        Id = idCounter,
-                        MissionId = missionId,
-                        StartTime = startDate,
-                        EndTime = endDate,
-                        TotalHours = (endDate - startDate).TotalHours,
-                        Comment = "Dette er en kommentar til en time for ansatt",
-                        UserName = "ansatt",
-                        Status = n % 2 == 0 ? TimesheetStatus.Open : TimesheetStatus.Confirmed
-                    });
-                    idCounter++;
+                        timesheets.Add(new Timesheet()
+                        {
+                            Id = idCounter,
+                            MissionId = random.Next(1, 300),
+                            StartTime = startDate,
+                            EndTime = endDate,
+                            TotalHours = (endDate - startDate).TotalHours,
+                            Comment = "Dette er en kommentar til en time for ansatt",
+                            UserName = "ansatt" + user,
+                            Status = n % 2 == 0 ? TimesheetStatus.Open : TimesheetStatus.Confirmed
+                        });
+                        idCounter++;
+                    }
+     
 
                     timesheets.Add(new Timesheet()
                     {
                         Id = idCounter,
-                        MissionId = missionId,
+                        MissionId = random.Next(1, 300),
                         StartTime = startDate,
                         EndTime = endDate,
                         TotalHours = (endDate - startDate).TotalHours,
@@ -231,8 +229,7 @@ namespace CleanArchitecture.Infrastructure.Data
                     });
                     idCounter++;
 
-                    dayCounter++;
-                }
+                    dayCounter++;              
        
             }
 
@@ -241,4 +238,5 @@ namespace CleanArchitecture.Infrastructure.Data
             return timesheets;
         }
     }
+ 
 }
