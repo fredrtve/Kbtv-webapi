@@ -63,7 +63,8 @@ namespace BjBygg.Application.Commands.MissionCommands.Update
                         else dbMission.Employer = null; //No new or existing added
                         break;
                     case "DeleteCurrentImage":
-                        dbMission.ImageURL = null;
+                        if(request.DeleteCurrentImage == true)
+                            dbMission.ImageURL = null;
                         break;
                     case "Image":
                         if(request.Image != null)
