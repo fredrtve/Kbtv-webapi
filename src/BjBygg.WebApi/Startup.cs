@@ -28,6 +28,8 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using CleanArchitecture.Infrastructure.Api;
 using CleanArchitecture.Infrastructure.Api.SendGridMailService;
+using Microsoft.AspNetCore.Http.Features;
+using System;
 
 namespace BjBygg.WebApi
 {
@@ -90,6 +92,11 @@ namespace BjBygg.WebApi
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Kbtv API", Version = "v1" });
+            });
+
+            services.Configure<FormOptions>(options => 
+            {
+                options.MemoryBufferThreshold = Int32.MaxValue;
             });
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(MissionDtoProfile)));

@@ -1,7 +1,9 @@
 using AutoMapper;
 using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Entities;
+using CleanArchitecture.Core.Enums;
 using CleanArchitecture.Core.Exceptions;
+using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
 using System;
@@ -14,11 +16,13 @@ namespace BjBygg.Application.Commands.MissionCommands.Create
     {
         private readonly AppDbContext _dbContext;
         private readonly IMapper _mapper;
+        private readonly IBlobStorageService _storageService;
 
-        public CreateMissionHandler(AppDbContext dbContext, IMapper mapper)
+        public CreateMissionHandler(AppDbContext dbContext, IMapper mapper, IBlobStorageService storageService)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            _storageService = storageService;
         }
 
         public async Task<MissionDto> Handle(CreateMissionCommand request, CancellationToken cancellationToken)
@@ -39,7 +43,12 @@ namespace BjBygg.Application.Commands.MissionCommands.Create
                 //If no changes are made
                 if (mission.MissionType.Id > 0 || String.IsNullOrEmpty(mission.MissionType.Name))
                     mission.MissionType = null;
-            }           
+            }  
+            
+            if(request.Image != null)
+            {
+                mission.ImageURL = await _storageService.UploadFileAsync(request.Image, FileType.Image);
+            }
 
             try
             {

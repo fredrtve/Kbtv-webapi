@@ -2,10 +2,12 @@ using BjBygg.Application.Queries.MissionQueries;
 using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace BjBygg.Application.Commands.MissionCommands.Update
 {
@@ -35,5 +37,9 @@ namespace BjBygg.Application.Commands.MissionCommands.Update
 
         public EmployerDto Employer { get; set; }
 
+        [JsonIgnore]
+        public IFormFile? Image { get; set; }
+
+        public Boolean? DeleteCurrentImage { get; set; }
     }
 }

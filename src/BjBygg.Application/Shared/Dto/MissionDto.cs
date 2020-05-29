@@ -25,5 +25,7 @@ namespace BjBygg.Application.Shared
         public MissionTypeDto MissionType { get; set; }
 
         public EmployerDto Employer { get; set; }
+
+        public Uri? ImageURL { get; set; }
     }
 }

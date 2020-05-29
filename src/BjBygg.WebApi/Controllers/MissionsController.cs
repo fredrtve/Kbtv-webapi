@@ -15,7 +15,9 @@ using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace BjBygg.WebApi.Controllers
 {
@@ -64,9 +66,18 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder, Mellomleder")]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<MissionDto> Create([FromBody] CreateMissionCommand command)
+        public async Task<MissionDto> Create()
         {
-            if (!ModelState.IsValid)
+            var settings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
+  
+            var command = JsonConvert.DeserializeObject<CreateMissionCommand>(Request.Form["command"], settings);
+            command.Image = Request.Form.Files.Count > 0 ? Request.Form.Files[0] : null;
+
+            if (!TryValidateModel(command))
                 throw new BadRequestException(ModelState.Values.ToString());
 
             return await _mediator.Send(command);
@@ -91,9 +102,18 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder")]
         [HttpPut]
         [Route("api/[controller]/{Id}")]
-        public async Task<MissionDto> Update([FromBody] UpdateMissionCommand command)
+        public async Task<MissionDto> Update()
         {
-            if (!ModelState.IsValid)
+            var settings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
+
+            var command = JsonConvert.DeserializeObject<UpdateMissionCommand>(Request.Form["command"], settings);
+            command.Image = Request.Form.Files.Count > 0 ? Request.Form.Files[0] : null;
+
+            if (!TryValidateModel(command))
                 throw new BadRequestException(ModelState.Values.ToString());
 
             return await _mediator.Send(command);

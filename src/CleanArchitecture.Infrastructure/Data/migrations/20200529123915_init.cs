@@ -81,7 +81,8 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     Address = table.Column<string>(maxLength: 100, nullable: false),
                     Finished = table.Column<bool>(nullable: false, defaultValue: false),
                     MissionTypeId = table.Column<int>(nullable: true),
-                    EmployerId = table.Column<int>(nullable: true)
+                    EmployerId = table.Column<int>(nullable: true),
+                    ImageURL = table.Column<string>(maxLength: 400, nullable: true)
                 },
                 constraints: table =>
                 {

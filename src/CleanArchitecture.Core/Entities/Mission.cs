@@ -1,3 +1,4 @@
+using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.SharedKernel;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,6 @@ namespace CleanArchitecture.Core.Entities
         public int? MissionTypeId { get; set; }
         public Employer Employer { get; set; }
         public int? EmployerId { get; set; }
-
+        public Uri? ImageURL { get; set; }
     }
 }

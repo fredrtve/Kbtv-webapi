@@ -2,7 +2,9 @@ using AutoMapper;
 using BjBygg.Application.Queries.MissionQueries;
 using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Entities;
+using CleanArchitecture.Core.Enums;
 using CleanArchitecture.Core.Exceptions;
+using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -19,11 +21,13 @@ namespace BjBygg.Application.Commands.MissionCommands.Update
     {
         private readonly AppDbContext _dbContext;
         private readonly IMapper _mapper;
+        private readonly IBlobStorageService _storageService;
 
-        public UpdateMissionHandler(AppDbContext dbContext, IMapper mapper)
+        public UpdateMissionHandler(AppDbContext dbContext, IMapper mapper, IBlobStorageService storageService)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            _storageService = storageService;
         }
 
         public async Task<MissionDto> Handle(UpdateMissionCommand request, CancellationToken cancellationToken)
@@ -39,28 +43,36 @@ namespace BjBygg.Application.Commands.MissionCommands.Update
             //var mission = _mapper.Map<Mission>(request);
             foreach (var property in request.GetType().GetProperties())
             {
-                if (property.Name == "Id") continue; //Skip id
-                if (property.Name == "MissionType") {
-                    if (request.MissionType == null) continue;
-                    if ((request.MissionType.Id ?? 0) != 0) //If id is not 0 or null
-                        dbMission.MissionTypeId = request.MissionType.Id;
-                    else if (!String.IsNullOrWhiteSpace(request.MissionType.Name)) //If name is present but no id, create
-                        dbMission.MissionType = new MissionType() { Name = request.MissionType.Name };
-                    else dbMission.MissionType = null; //No new or existing added
-                    continue;
-                }
-                else if (property.Name == "Employer")
+                switch (property.Name)
                 {
-                    if (request.Employer == null) continue;
-                    if ((request.Employer.Id ?? 0) != 0) //If id is not 0 or null
-                        dbMission.EmployerId = request.Employer.Id;
-                    else if (!String.IsNullOrWhiteSpace(request.Employer.Name)) //If name is present but no id, create
-                        dbMission.Employer = new Employer() { Name = request.Employer.Name };
-                    else dbMission.Employer = null; //No new or existing added
-                    continue;
+                    case "Id": break;
+                    case "MissionType":
+                        if (request.MissionType == null) continue;
+                        if ((request.MissionType.Id ?? 0) != 0) //If id is not 0 or null
+                            dbMission.MissionTypeId = request.MissionType.Id;
+                        else if (!String.IsNullOrWhiteSpace(request.MissionType.Name)) //If name is present but no id, create
+                            dbMission.MissionType = new MissionType() { Name = request.MissionType.Name };
+                        else dbMission.MissionType = null; //No new or existing added
+                        break;
+                    case "Employer":
+                        if (request.Employer == null) continue;
+                        if ((request.Employer.Id ?? 0) != 0) //If id is not 0 or null
+                            dbMission.EmployerId = request.Employer.Id;
+                        else if (!String.IsNullOrWhiteSpace(request.Employer.Name)) //If name is present but no id, create
+                            dbMission.Employer = new Employer() { Name = request.Employer.Name };
+                        else dbMission.Employer = null; //No new or existing added
+                        break;
+                    case "DeleteCurrentImage":
+                        dbMission.ImageURL = null;
+                        break;
+                    case "Image":
+                        if(request.Image != null)
+                            dbMission.ImageURL = await _storageService.UploadFileAsync(request.Image, FileType.Image);
+                        break;
+                    default:
+                        dbMission.GetType().GetProperty(property.Name).SetValue(dbMission, property.GetValue(request), null);
+                        break;
                 }
-                else
-                    dbMission.GetType().GetProperty(property.Name).SetValue(dbMission, property.GetValue(request), null);
             }
 
             try

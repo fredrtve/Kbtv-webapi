@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CleanArchitecture.Infrastructure.data.migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200528141007_init")]
+    [Migration("20200529123915_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -122,6 +122,10 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
                         .HasDefaultValue(false);
+
+                    b.Property<string>("ImageURL")
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(400);
 
                     b.Property<int?>("MissionTypeId")
                         .HasColumnType("INTEGER");

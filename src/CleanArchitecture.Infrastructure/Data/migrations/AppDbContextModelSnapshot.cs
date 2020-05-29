@@ -121,6 +121,10 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                         .HasColumnType("INTEGER")
                         .HasDefaultValue(false);
 
+                    b.Property<string>("ImageURL")
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(400);
+
                     b.Property<int?>("MissionTypeId")
                         .HasColumnType("INTEGER");
 
