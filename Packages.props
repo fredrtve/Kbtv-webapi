@@ -12,6 +12,7 @@
     <PackageReference Update="SQLite" Version="3.13.0" />
     <PackageReference Update="Microsoft.EntityFrameworkCore.Sqlite" Version="3.0.0" />
     <PackageReference Update="SendGrid"  Version="9.15.1"/>
+    <PackageReference Update="itext7" Version="7.1.11" />
     <PackageReference Update="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0" />
     <PackageReference Update="Microsoft.EntityFrameworkCore.InMemory" Version="3.0.0" />
     <PackageReference Update="Ardalis.EFCore.Extensions" Version="1.1.0" />
@@ -43,5 +44,6 @@
       <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="3.0.0" />
       <PackageReference Include="IdentityServer4.EntityFramework.Storage" Version="3.0.2" />
     <PackageReference Include="SendGrid"  Version="9.15.1"/>
+    <PackageReference Include="itext7" Version="7.1.11" />
   </ItemGroup>
 </Project>
