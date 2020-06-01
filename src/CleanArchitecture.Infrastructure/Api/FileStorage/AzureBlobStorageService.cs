@@ -54,7 +54,7 @@ namespace CleanArchitecture.Infrastructure.Api.FileStorage
             var blobs = new List<Uri>();
             for (int i = 0; i < files.Count; i++)
             {
-                var blob = blobContainer.GetBlockBlobReference(GetRandomBlobName(files[i].FileName));
+                var blob = blobContainer.GetBlockBlobReference(GetRandomBlobName(Path.GetExtension(files[i].FileName)));
                 using (var stream = files[i].OpenReadStream())
                 {
                     await blob.UploadFromStreamAsync(stream);
@@ -68,18 +68,28 @@ namespace CleanArchitecture.Infrastructure.Api.FileStorage
         {
             var blobContainer = await _azureBlobConnectionFactory.GetBlobContainer(fileType);
 
-            var blob = blobContainer.GetBlockBlobReference(GetRandomBlobName(file.FileName));
+            var blob = blobContainer.GetBlockBlobReference(GetRandomBlobName(Path.GetExtension(file.FileName)));
                 using (var stream = file.OpenReadStream())
                 {
                     await blob.UploadFromStreamAsync(stream);
                 }   
             return blob.Uri;
         }
-
-        private string GetRandomBlobName(string fileName)
+        public async Task<Uri> UploadFileAsync(Stream stream, string extension, FileType fileType = FileType.Image)
         {
-            string ext = Path.GetExtension(fileName);
-            return string.Format("{0:10}_{1}{2}", DateTime.Now.Ticks, Guid.NewGuid(), ext);
+            var blobContainer = await _azureBlobConnectionFactory.GetBlobContainer(fileType);
+
+            var blob = blobContainer.GetBlockBlobReference(GetRandomBlobName(extension));
+            using (var st = stream)
+            {
+                await blob.UploadFromStreamAsync(st);
+            }
+            return blob.Uri;
+        }
+
+        private string GetRandomBlobName(string extension)
+        {
+            return string.Format("{0:10}_{1}{2}", DateTime.Now.Ticks, Guid.NewGuid(), extension);
         }
 }
 }
