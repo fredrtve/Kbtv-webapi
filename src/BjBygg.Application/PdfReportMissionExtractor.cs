@@ -1,6 +1,7 @@
 ﻿using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Interfaces;
+using CleanArchitecture.Core.Interfaces.Services;
 using iText.Kernel.Colors;
 using iText.Kernel.Geom;
 using iText.Kernel.Pdf;

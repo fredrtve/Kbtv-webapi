@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Core.Interfaces
+namespace CleanArchitecture.Core.Interfaces.Services
 {
     public interface IBlobStorageService
     {

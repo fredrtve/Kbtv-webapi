@@ -3,10 +3,8 @@ using SendGrid;
 using SendGrid.Helpers.Mail;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using Newtonsoft.Json;
 using CleanArchitecture.Core.Exceptions;
+using CleanArchitecture.Core.Interfaces.Services;
 
 namespace CleanArchitecture.Infrastructure.Api.SendGridMailService
 {

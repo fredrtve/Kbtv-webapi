@@ -1,5 +1,5 @@
 using CleanArchitecture.Core.Enums;
-using CleanArchitecture.Core.Interfaces;
+using CleanArchitecture.Core.Interfaces.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.WindowsAzure.Storage.Blob;

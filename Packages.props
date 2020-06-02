@@ -45,5 +45,6 @@
       <PackageReference Include="IdentityServer4.EntityFramework.Storage" Version="3.0.2" />
     <PackageReference Include="SendGrid"  Version="9.15.1"/>
     <PackageReference Include="itext7" Version="7.1.11" />
+    
   </ItemGroup>
 </Project>

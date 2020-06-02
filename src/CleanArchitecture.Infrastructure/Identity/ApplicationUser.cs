@@ -2,6 +2,7 @@ using CleanArchitecture.SharedKernel;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CleanArchitecture.Infrastructure.Identity
 {
@@ -14,6 +15,8 @@ namespace CleanArchitecture.Infrastructure.Identity
 
         public IdentityRole Role { get; set; }
 
+        public List<RefreshToken> RefreshTokens { get; set; }
+
         public int? EmployerId { get; set; }
 
         public bool Deleted { get; set; }
@@ -21,5 +24,20 @@ namespace CleanArchitecture.Infrastructure.Identity
         public string CreatedBy { get; set; }
         public DateTime UpdatedAt { get; set; }
         public string UpdatedBy { get; set; }
+
+        public bool HasValidRefreshToken(string refreshToken)
+        {
+            return RefreshTokens.Any(rt => rt.Token == refreshToken && rt.Active);
+        }
+
+        public void AddRefreshToken(string token, string userId, double daysToExpire = 30)
+        {
+            RefreshTokens.Add(new RefreshToken(token, DateTime.UtcNow.AddDays(daysToExpire), userId));
+        }
+
+        public void RemoveRefreshToken(string refreshToken)
+        {
+            RefreshTokens.Remove(RefreshTokens.First(t => t.Token == refreshToken));
+        }
     }
 }

@@ -40,7 +40,7 @@ namespace BjBygg.WebApi.Controllers
         [Route("api/[controller]/[action]")]
         public async Task<DbSyncResponse<TimesheetDto>> Sync(UserTimesheetSyncQuery query)
         {
-            var user = await _userManager.FindByNameAsync(User.FindFirstValue("UserName"));
+            var user = await _userManager.FindByNameAsync(User.FindFirstValue(ClaimTypes.Name));
             query.User = _mapper.Map<UserDto>(user);
             query.User.Role = User.FindFirstValue(ClaimTypes.Role);
             return await _mediator.Send(query);
@@ -54,7 +54,7 @@ namespace BjBygg.WebApi.Controllers
             if (!ModelState.IsValid)
                 throw new BadRequestException(ModelState.Values.ToString());
 
-            command.UserName = User.FindFirstValue("UserName");
+            command.UserName = User.FindFirstValue(ClaimTypes.Name);
 
             return await _mediator.Send(command);
         }
@@ -67,7 +67,7 @@ namespace BjBygg.WebApi.Controllers
             if (!ModelState.IsValid)
                 throw new BadRequestException(ModelState.Values.ToString());
 
-            command.UserName = User.FindFirstValue("UserName");
+            command.UserName = User.FindFirstValue(ClaimTypes.Name);
 
             return await _mediator.Send(command);
         }
@@ -79,7 +79,7 @@ namespace BjBygg.WebApi.Controllers
         {
             return await _mediator.Send(new DeleteTimesheetCommand() {
                 Id = Id,
-                UserName = User.FindFirstValue("UserName"),
+                UserName = User.FindFirstValue(ClaimTypes.Name),
                 Role = User.FindFirstValue(ClaimTypes.Role),
             });
         }

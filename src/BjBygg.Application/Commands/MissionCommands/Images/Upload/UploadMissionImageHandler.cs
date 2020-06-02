@@ -3,6 +3,7 @@ using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Core.Interfaces;
+using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
 using System;

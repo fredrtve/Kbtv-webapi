@@ -1,6 +1,5 @@
 using CleanArchitecture.Infrastructure;
 using CleanArchitecture.Infrastructure.Identity;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -12,24 +11,18 @@ using AutoMapper;
 using MediatR;
 using System.Reflection;
 using BjBygg.Application.Queries.MissionQueries;
-using CleanArchitecture.Core.Interfaces;
-using CleanArchitecture.Infrastructure.Data;
 using CleanArchitecture.Infrastructure.Api.FileStorage;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using System.Collections.Generic;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using BjBygg.Application.Shared;
-using System.Globalization;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.Extensions.Options;
-using CleanArchitecture.Infrastructure.Api;
 using CleanArchitecture.Infrastructure.Api.SendGridMailService;
 using Microsoft.AspNetCore.Http.Features;
 using System;
+using BjBygg.WebApi.Models;
+using CleanArchitecture.Infrastructure.Auth;
+using System.Threading.Tasks;
+using CleanArchitecture.Core.Interfaces.Services;
 
 namespace BjBygg.WebApi
 {
@@ -62,27 +55,60 @@ namespace BjBygg.WebApi
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
                 .AddDefaultTokenProviders();
 
+            var authSettings = Configuration.GetSection(nameof(AuthSettings));
+            services.Configure<AuthSettings>(authSettings);
+
+            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(authSettings[nameof(AuthSettings.SecretKey)]));
+
+            var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
+
+            // Configure JwtIssuerOptions
+            services.Configure<JwtIssuerOptions>(options =>
+            {
+                options.Issuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
+                options.Audience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)];
+                options.SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
+            });
+
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)],
+
+                ValidateAudience = true,
+                ValidAudience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)],
+
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = signingKey,
+
+                RequireExpirationTime = false,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
+            };
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                //options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             })
               .AddJwtBearer(options =>
               {
-                  options.TokenValidationParameters = new TokenValidationParameters
-                  {
-                      ValidateIssuer = true,
-                      ValidateAudience = true,
-                      ValidateLifetime = true,
-                      ValidateIssuerSigningKey = true,
-
-                      ValidIssuer = "https://localhost:44379",
-                      ValidAudience = "https://localhost:44379",
-                      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("karlbredetvetesecretkey"))
-                  };
+                  options.ClaimsIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
+                  options.TokenValidationParameters = tokenValidationParameters;
                   options.SaveToken = true;
-                  options.RequireHttpsMetadata = true;
+
+                  options.Events = new JwtBearerEvents
+                  {
+                      OnAuthenticationFailed = context =>
+                      {
+                          if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                          {
+                              context.Response.Headers.Add("Token-Expired", "true");   
+                          }
+                          return Task.CompletedTask;
+                      }
+                  };
               });
 
             services.AddAppDbContext();
@@ -106,6 +132,12 @@ namespace BjBygg.WebApi
             services.AddTransient<IMailService, SendGridMailService>();
 
             services.AddSingleton<IBlobStorageService, AzureBlobStorageService>();
+
+            services.AddTransient<IJwtTokenHandler, JwtTokenHandler>();
+            services.AddTransient<ITokenFactory, TokenFactory>();
+            services.AddTransient<IJwtFactory, JwtFactory>();
+            services.AddTransient<IJwtTokenValidator, JwtTokenValidator>();
+
             //services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             //services.AddScoped<IActionContextAccessor, ActionContextAccessor>();
         }

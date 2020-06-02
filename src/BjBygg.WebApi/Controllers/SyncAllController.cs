@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BjBygg.Application.Queries.DbSyncQueries.SyncAll;
 using BjBygg.Application.Shared;
+using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Infrastructure.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -29,7 +30,9 @@ namespace BjBygg.WebApi.Controllers
         [Route("api/[controller]")]
         public async Task<SyncAllResponse> Get(SyncAllQuery query)
         {
-            var user = await _userManager.FindByNameAsync(User.FindFirstValue("UserName"));
+            var userName = User.FindFirstValue(ClaimTypes.Name);
+            if (userName == null) throw new BadRequestException("Cant find user");
+            var user = await _userManager.FindByNameAsync(userName);
             query.User = _mapper.Map<UserDto>(user);
             query.User.Role = User.FindFirstValue(ClaimTypes.Role);
             return await _mediator.Send(query);

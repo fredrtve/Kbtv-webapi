@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Core.Interfaces
+namespace CleanArchitecture.Core.Interfaces.Services
 {
     public interface IPdfReportMissionExtractor
     {

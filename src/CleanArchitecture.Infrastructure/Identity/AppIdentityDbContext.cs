@@ -20,6 +20,8 @@ namespace CleanArchitecture.Infrastructure.Identity
             _httpContextAccessor = httpContextAccessor;
         }
 
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

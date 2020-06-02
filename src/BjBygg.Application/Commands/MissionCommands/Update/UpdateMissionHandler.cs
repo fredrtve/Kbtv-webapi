@@ -5,6 +5,7 @@ using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Enums;
 using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Core.Interfaces;
+using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

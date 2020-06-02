@@ -24,11 +24,11 @@ namespace BjBygg.WebApi
             {
                 var services = scope.ServiceProvider;
 
-                using (var context = services.GetService<AppDbContext>())
-                {
-                    context.Database.Migrate();
-                    AppDbContextSeed.Seed(context);
-                }
+                //using (var context = services.GetService<AppDbContext>())
+                //{
+                //    context.Database.Migrate();
+                //    AppDbContextSeed.Seed(context);
+                //}
 
                 //using (var context = services.GetService<AppIdentityDbContext>())
                 //{

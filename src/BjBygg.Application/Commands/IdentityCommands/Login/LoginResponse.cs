@@ -1,7 +1,5 @@
 ﻿using BjBygg.Application.Shared;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using CleanArchitecture.Core.Dto;
 
 namespace BjBygg.Application.Commands.IdentityCommands.Login
 {
@@ -9,6 +7,7 @@ namespace BjBygg.Application.Commands.IdentityCommands.Login
     {
         public UserDto User { get; set; }
 
-        public string Token { get; set; }
+        public AccessToken AccessToken { get; set; }
+        public string RefreshToken { get; set; }
     }
 }
