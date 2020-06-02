@@ -12,6 +12,7 @@ using CleanArchitecture.Core.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace BjBygg.WebApi.Controllers
@@ -19,10 +20,12 @@ namespace BjBygg.WebApi.Controllers
     public class MissionDocumentsController : BaseController
     {
         private readonly IMediator _mediator;
+        private readonly ILogger<MissionDocumentsController> _logger;
 
-        public MissionDocumentsController(IMediator mediator)
+        public MissionDocumentsController(IMediator mediator, ILogger<MissionDocumentsController> logger)
         {
             _mediator = mediator;
+            _logger = logger;
         }
 
         [Authorize]
@@ -54,6 +57,10 @@ namespace BjBygg.WebApi.Controllers
                 MissionId = missionId
             };
 
+            if (!TryValidateModel(command))
+                throw new BadRequestException(ModelState.Values.ToString());
+
+
             return await _mediator.Send(command);
         }
 
@@ -77,7 +84,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]/SendDocuments")]
-        public async Task<bool> SendImages([FromBody] MailMissionDocumentsCommand command)
+        public async Task<bool> SendDocuments([FromBody] MailMissionDocumentsCommand command)
         {
             return await _mediator.Send(command);
         }

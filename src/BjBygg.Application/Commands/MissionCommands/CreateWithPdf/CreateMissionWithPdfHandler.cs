@@ -32,6 +32,10 @@ namespace BjBygg.Application.Commands.MissionCommands.CreateWithPdf
         public async Task<MissionDto> Handle(CreateMissionWithPdfCommand request, CancellationToken cancellationToken)
         {
             var extractor = new PdfReportMissionExtractor();
+
+            if(request.File == null)
+                throw new BadRequestException("No file found.");
+
             var missionPdfDto = extractor.Extract(request.File.OpenReadStream());
     
             if (missionPdfDto == null) 

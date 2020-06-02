@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BjBygg.Application.Commands.MissionCommands.Create;
+using BjBygg.Application.Commands.MissionCommands.CreateWithPdf;
 using BjBygg.Application.Commands.MissionCommands.Delete;
 using BjBygg.Application.Commands.MissionCommands.DeleteRange;
 using BjBygg.Application.Commands.MissionCommands.ToggleMissionFinish;
@@ -17,6 +18,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
 
 namespace BjBygg.WebApi.Controllers
@@ -24,10 +27,12 @@ namespace BjBygg.WebApi.Controllers
     public class MissionsController : BaseController
     {
         private readonly IMediator _mediator;
+        private readonly ILogger<MissionsController> _logger;
 
-        public MissionsController(IMediator mediator)
+        public MissionsController(IMediator mediator, ILogger<MissionsController> logger)
         {
             _mediator = mediator;
+            _logger = logger;
         }
 
         [Authorize]
@@ -76,6 +81,29 @@ namespace BjBygg.WebApi.Controllers
   
             var command = JsonConvert.DeserializeObject<CreateMissionCommand>(Request.Form["command"], settings);
             command.Image = Request.Form.Files.Count > 0 ? Request.Form.Files[0] : null;
+
+            if (!TryValidateModel(command))
+                throw new BadRequestException(ModelState.Values.ToString());
+
+            return await _mediator.Send(command);
+        }
+
+        [HttpPost]
+        [Route("api/[controller]/[action]")]
+        public async Task<MissionDto> CreateFromPdfReport()
+        {
+            StringValues fromEmail;
+            Request.Form.TryGetValue("from", out fromEmail);
+
+            _logger.LogInformation($"Http Request Information:{Environment.NewLine}" +
+                        $"Schema:{Request.Scheme} " +
+                        $"Host: {Request.Host} " +
+                        $"Path: {Request.Path} " +
+                        $"QueryString: {Request.QueryString} " +
+                        $"FromEmail: { fromEmail.ToString() } ");
+
+            var command = new CreateMissionWithPdfCommand();
+            command.File = Request.Form.Files.Count > 0 ? Request.Form.Files[0] : null;
 
             if (!TryValidateModel(command))
                 throw new BadRequestException(ModelState.Values.ToString());

@@ -23,6 +23,7 @@ using BjBygg.WebApi.Models;
 using CleanArchitecture.Infrastructure.Auth;
 using System.Threading.Tasks;
 using CleanArchitecture.Core.Interfaces.Services;
+using Microsoft.Extensions.Logging;
 
 namespace BjBygg.WebApi
 {
@@ -143,7 +144,7 @@ namespace BjBygg.WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
