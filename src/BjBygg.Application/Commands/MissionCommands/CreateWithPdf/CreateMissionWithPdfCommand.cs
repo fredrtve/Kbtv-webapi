@@ -12,6 +12,6 @@ namespace BjBygg.Application.Commands.MissionCommands.CreateWithPdf
     {
         [Required]
         [JsonIgnore]
-        public IFormFile File { get; set; }
+        public IFormFileCollection Files { get; set; }
     }
 }

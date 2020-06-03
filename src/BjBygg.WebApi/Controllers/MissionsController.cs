@@ -103,7 +103,7 @@ namespace BjBygg.WebApi.Controllers
                         $"FromEmail: { fromEmail.ToString() } ");
 
             var command = new CreateMissionWithPdfCommand();
-            command.File = Request.Form.Files.Count > 0 ? Request.Form.Files[0] : null;
+            command.Files = Request.Form.Files.Count > 0 ? Request.Form.Files : null;
 
             if (!TryValidateModel(command))
                 throw new BadRequestException(ModelState.Values.ToString());

@@ -22,21 +22,29 @@ namespace BjBygg.Application
 {
     public class PdfReportMissionExtractor : IPdfReportMissionExtractor
     {
-        public MissionPdfDto Extract(Stream pdf)
+        public MissionPdfDto TryExtract(Stream pdf)
         {
-            var pdfReader = new PdfReader(pdf);
-            var pdfDocument = new PdfDocument(pdfReader);
-            var page = pdfDocument.GetFirstPage();
+            MissionPdfDto mission;
+            try
+            {
+                var pdfReader = new PdfReader(pdf);
+                var pdfDocument = new PdfDocument(pdfReader);
+                var page = pdfDocument.GetFirstPage();
 
-            var strategy = new SimpleTextExtractionStrategy();
-            var rawString = PdfTextExtractor.GetTextFromPage(page, strategy);
+                var strategy = new SimpleTextExtractionStrategy();
+                var rawString = PdfTextExtractor.GetTextFromPage(page, strategy);
 
-            var mission = GetMissionFromRawString(rawString);
-            mission.Image = GetImageStreamFromFirstPage(page);
+                mission = GetMissionFromRawString(rawString);
+                mission.Image = GetImageStreamFromFirstPage(page);
 
-            pdfDocument.Close();
-            pdfReader.Close();
-
+                pdfDocument.Close();
+                pdfReader.Close();
+            }
+            catch
+            {
+                mission = null;
+            }
+  
             return mission;
         }
 

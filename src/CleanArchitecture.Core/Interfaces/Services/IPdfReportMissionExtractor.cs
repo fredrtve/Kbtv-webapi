@@ -9,6 +9,6 @@ namespace CleanArchitecture.Core.Interfaces.Services
 {
     public interface IPdfReportMissionExtractor
     {
-        MissionPdfDto Extract(Stream pdf);
+        MissionPdfDto TryExtract(Stream pdf);
     }
 }
