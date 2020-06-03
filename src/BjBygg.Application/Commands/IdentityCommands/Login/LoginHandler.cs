@@ -38,7 +38,7 @@ namespace BjBygg.Application.Commands.IdentityCommands.Login
         {
             var user = await _dbContext.Users
                 .Include(x => x.RefreshTokens)
-                .FirstOrDefaultAsync(x => x.UserName == request.UserName);
+                .FirstOrDefaultAsync(x => x.NormalizedUserName == request.UserName.ToUpper());
 
             if (user == null || !(await this._userManager.CheckPasswordAsync(user, request.Password)))
                 throw new UnauthorizedException("Brukernavn eller passord er feil!");
