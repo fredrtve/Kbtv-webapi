@@ -110,9 +110,6 @@ namespace CleanArchitecture.Infrastructure.identity.migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
@@ -139,7 +136,7 @@ namespace CleanArchitecture.Infrastructure.identity.migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("RefreshTokens");
                 });
@@ -278,9 +275,9 @@ namespace CleanArchitecture.Infrastructure.identity.migrations
 
             modelBuilder.Entity("CleanArchitecture.Infrastructure.Identity.RefreshToken", b =>
                 {
-                    b.HasOne("CleanArchitecture.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("CleanArchitecture.Infrastructure.Identity.ApplicationUser", "User")
                         .WithMany("RefreshTokens")
-                        .HasForeignKey("ApplicationUserId");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

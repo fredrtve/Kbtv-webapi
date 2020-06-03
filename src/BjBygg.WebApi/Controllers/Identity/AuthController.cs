@@ -39,7 +39,6 @@ namespace BjBygg.WebApi.Controllers.Identity
             _authSettings = authSettings.Value;
         }
 
-        [EnableCors]
         [HttpPost]
         [Route("api/[controller]/refresh")]
         public async Task<RefreshTokenResponse> Refresh([FromBody] RefreshTokenCommand command)
@@ -48,14 +47,13 @@ namespace BjBygg.WebApi.Controllers.Identity
             return await _mediator.Send(command);
         }
 
-        [EnableCors]
         [HttpPost]
         [Route("api/[controller]/login")]
         public async Task<LoginResponse> Login([FromBody] LoginCommand command)
         {
             return await _mediator.Send(command);
         }
-        [EnableCors]
+
         [Authorize]
         [HttpGet]
         [Route("api/[controller]")]
