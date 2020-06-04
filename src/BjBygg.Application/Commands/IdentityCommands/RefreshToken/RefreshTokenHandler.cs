@@ -57,12 +57,12 @@ namespace BjBygg.Application.Commands.IdentityCommands.RefreshToken
                 throw new BadRequestException("invalid_grant");
 
             var jwtToken = await _jwtFactory.GenerateEncodedToken(user.Id, user.UserName, roles.First());
-            var refreshToken = _tokenFactory.GenerateToken();
-            user.RemoveRefreshToken(command.RefreshToken); // delete the token we've exchanged
-            user.AddRefreshToken(refreshToken, user.Id); // add the new one
+            //var refreshToken = _tokenFactory.GenerateToken();
+            //user.RemoveRefreshToken(command.RefreshToken); // delete the token we've exchanged
+            //user.AddRefreshToken(refreshToken, user.Id); // add the new one
             await _userManager.UpdateAsync(user);
 
-            return new RefreshTokenResponse(jwtToken, refreshToken);
+            return new RefreshTokenResponse(jwtToken, command.RefreshToken);
         }
 
     }

@@ -49,7 +49,7 @@ namespace BjBygg.Application.Commands.IdentityCommands.Login
                 throw new UnauthorizedException("Konto har ingen rolle!");
 
             var refreshToken = _tokenFactory.GenerateToken();
-            user.AddRefreshToken(refreshToken, user.Id, 360);
+            user.AddRefreshToken(refreshToken, user.Id);
             await _userManager.UpdateAsync(user);
 
    
