@@ -23,6 +23,7 @@ namespace BjBygg.Application.Queries.EmployerQueries.List
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public async Task<IEnumerable<EmployerDto>> Handle(EmployerListQuery request, CancellationToken cancellationToken)

@@ -22,6 +22,7 @@ namespace BjBygg.Application.Queries.DbSyncQueries.TimesheetQuery
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public async Task<DbSyncResponse<TimesheetDto>> Handle(UserTimesheetSyncQuery request, CancellationToken cancellationToken)

@@ -22,6 +22,7 @@ namespace BjBygg.Application.Queries.DbSyncQueries.MissionQuery
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public async Task<DbSyncResponse<MissionDto>> Handle(MissionSyncQuery request, CancellationToken cancellationToken)

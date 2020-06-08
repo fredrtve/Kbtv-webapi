@@ -22,6 +22,7 @@ namespace BjBygg.Application.Queries.DbSyncQueries.MissionImageQuery
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public async Task<DbSyncResponse<MissionImageDto>> Handle(MissionImageSyncQuery request, CancellationToken cancellationToken)

@@ -21,6 +21,7 @@ namespace BjBygg.Application.Queries.DbSyncQueries.EmployerQuery
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public async Task<DbSyncResponse<EmployerDto>> Handle(EmployerSyncQuery request, CancellationToken cancellationToken)

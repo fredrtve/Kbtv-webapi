@@ -23,6 +23,7 @@ namespace BjBygg.Application.Queries.MissionQueries.Detail
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public async Task<MissionDetailByIdResponse> Handle(MissionDetailByIdQuery request, CancellationToken cancellationToken)

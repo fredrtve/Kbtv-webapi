@@ -64,6 +64,15 @@ namespace CleanArchitecture.Infrastructure.Data
                     context.SaveChanges();
                     context.Database.CloseConnection();
                 }
+                if (!context.MissionImages.Any())
+                {
+                    context.Database.OpenConnection();
+                    context.MissionImages.AddRange(
+                        GetPreconfiguredMissionImages());
+
+                    context.SaveChanges();
+                    context.Database.CloseConnection();
+                }
                 if (!context.MissionNotes.Any())
                 {
                     context.Database.OpenConnection();
@@ -155,6 +164,28 @@ namespace CleanArchitecture.Infrastructure.Data
      
             return missionDocuments;
         }
+        static IEnumerable<MissionImage> GetPreconfiguredMissionImages()
+        {
+            var missionImages = new List<MissionImage>();
+            var imageUrls = new List<Uri>
+            {
+                new Uri("https://kbtv.blob.core.windows.net/images/1637271568376872507_90030357-a167-426d-8ca2-fd669e17888b.jpg"),
+                new Uri("https://kbtv.blob.core.windows.net/images/1637271568378142015_fef915f9-5f35-45ea-96ae-898f33d79df2.jpg"),
+                new Uri("https://kbtv.blob.core.windows.net/images/1637125277915871387_33a58ce3-9b65-42c1-99aa-35bbbf200e82.jpg")
+            };
+            for (var i = 1; i <= 1000; i++)
+            {
+                missionImages.Add(new MissionImage()
+                {
+                    Id = i,
+                    MissionId = random.Next(1, 300),
+                    FileURL = imageUrls[random.Next(imageUrls.Count)]
+                });
+            }
+
+            return missionImages;
+        }
+
 
         static IEnumerable<MissionNote> GetPreconfiguredMissionNotes()
         {

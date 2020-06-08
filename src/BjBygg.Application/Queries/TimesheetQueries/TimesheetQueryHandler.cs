@@ -23,6 +23,7 @@ namespace BjBygg.Application.Queries.TimesheetQueries
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public async Task<IEnumerable<TimesheetDto>> Handle(TimesheetQuery request, CancellationToken cancellationToken)

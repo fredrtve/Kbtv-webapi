@@ -26,6 +26,7 @@ namespace BjBygg.Application.Queries.UserQueries.List
             _userManager = userManager;
             _mapper = mapper;
             _dbContext = dbContext;
+            dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public Task<IEnumerable<UserListItemDto>> Handle(UserListQuery request, CancellationToken cancellationToken)
