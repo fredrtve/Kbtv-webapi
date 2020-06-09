@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace BjBygg.Application.Queries.MissionQueries.Note
 {

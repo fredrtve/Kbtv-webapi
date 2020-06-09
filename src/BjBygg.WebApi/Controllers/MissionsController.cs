@@ -63,8 +63,8 @@ namespace BjBygg.WebApi.Controllers
         [Route("api/[controller]/Range")]
         public async Task<IEnumerable<MissionDto>> GetDateRange(MissionByDateRangeQuery query)
         {
-            if (query.FromDate == null) query.FromDate = DateTime.Now.AddYears(-25);
-            if (query.ToDate == null) query.ToDate = DateTime.Now;
+            if (query.FromDate == null) query.FromDate = DateTime.UtcNow.AddYears(-25);
+            if (query.ToDate == null) query.ToDate = DateTime.UtcNow;
             return await _mediator.Send(query);
         }
 

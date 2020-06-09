@@ -11,6 +11,7 @@ namespace CleanArchitecture.Infrastructure.Data
     public class AppDbContextSeed
     {
         readonly static Random random = new Random();
+        private static int numberOfMissions = 500;
 
         public static void Seed(AppDbContext context)
         {
@@ -131,7 +132,7 @@ namespace CleanArchitecture.Infrastructure.Data
         static IEnumerable<Mission> GetPreconfiguredMissions()
         {
             var missions = new List<Mission>();
-            for (var i = 1; i <= 300; i++)
+            for (var i = 1; i <= numberOfMissions; i++)
             {
                 missions.Add(new Mission()
                 {
@@ -151,13 +152,13 @@ namespace CleanArchitecture.Infrastructure.Data
         {
             var missionDocuments = new List<MissionDocument>();
 
-            for (var i = 1; i <= 500; i++)
+            for (var i = 1; i <= numberOfMissions*2; i++)
             {
                 missionDocuments.Add(new MissionDocument()
                 {
                     Id = i,
                     FileURL = new Uri("https://kbtv.blob.core.windows.net/images/28e89dfa-8d9b-422f-81fd-ee1f7aafbbe7.jpg"),
-                    MissionId = random.Next(1, 300),
+                    MissionId = random.Next(1, numberOfMissions),
                     DocumentTypeId = i % 2 == 0 ? 1 : 2
                 });
             }
@@ -173,12 +174,12 @@ namespace CleanArchitecture.Infrastructure.Data
                 new Uri("https://kbtv.blob.core.windows.net/images/1637271568378142015_fef915f9-5f35-45ea-96ae-898f33d79df2.jpg"),
                 new Uri("https://kbtv.blob.core.windows.net/images/1637125277915871387_33a58ce3-9b65-42c1-99aa-35bbbf200e82.jpg")
             };
-            for (var i = 1; i <= 1000; i++)
+            for (var i = 1; i <= numberOfMissions*4; i++)
             {
                 missionImages.Add(new MissionImage()
                 {
                     Id = i,
-                    MissionId = random.Next(1, 300),
+                    MissionId = random.Next(1, numberOfMissions),
                     FileURL = imageUrls[random.Next(imageUrls.Count)]
                 });
             }
@@ -191,12 +192,12 @@ namespace CleanArchitecture.Infrastructure.Data
         {
             var missionNotes = new List<MissionNote>();
 
-            for (var i = 1; i <= 500; i++)
+            for (var i = 1; i <= numberOfMissions; i++)
             {
                     missionNotes.Add(new MissionNote()
                     {
                         Id = i,
-                        MissionId = random.Next(1, 300),
+                        MissionId = random.Next(1, numberOfMissions),
                         Content = "Dette er ett veldig interessant notat. Veldig interessant. Det er også veldig viktig.",
                         Title =  "Dette er ett notat",
                         Pinned = i % 2 == 0 ? false : true
@@ -211,16 +212,16 @@ namespace CleanArchitecture.Infrastructure.Data
             var timesheets = new List<Timesheet>();
             var idCounter = 1;
             var dayCounter = 0;
-            var today = DateTime.Now.Date.AddHours(6);
+            var today = DateTime.UtcNow.Date.AddHours(6);
 
-            for (var n = 1; n <= 3000; n++)
+            for (var n = 1; n <= numberOfMissions*6; n++)
             {        
                     var startDate = today.AddDays(-dayCounter);
                     var endDate = startDate.AddHours(random.Next(4, 10));
                     timesheets.Add(new Timesheet()
                     {
                         Id = idCounter,
-                        MissionId = random.Next(1,300),
+                        MissionId = random.Next(1, numberOfMissions),
                         StartTime = startDate,
                         EndTime = endDate,
                         TotalHours = (endDate - startDate).TotalHours,
@@ -235,7 +236,7 @@ namespace CleanArchitecture.Infrastructure.Data
                         timesheets.Add(new Timesheet()
                         {
                             Id = idCounter,
-                            MissionId = random.Next(1, 300),
+                            MissionId = random.Next(1, numberOfMissions),
                             StartTime = startDate,
                             EndTime = endDate,
                             TotalHours = (endDate - startDate).TotalHours,
@@ -250,7 +251,7 @@ namespace CleanArchitecture.Infrastructure.Data
                     timesheets.Add(new Timesheet()
                     {
                         Id = idCounter,
-                        MissionId = random.Next(1, 300),
+                        MissionId = random.Next(1, numberOfMissions),
                         StartTime = startDate,
                         EndTime = endDate,
                         TotalHours = (endDate - startDate).TotalHours,

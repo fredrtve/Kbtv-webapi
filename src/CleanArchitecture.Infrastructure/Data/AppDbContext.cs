@@ -58,7 +58,7 @@ namespace CleanArchitecture.Infrastructure.Data
 
         private void OnBeforeSaving()
         {
-            var now = DateTime.Now;
+            var now = DateTime.UtcNow;
             var user = GetCurrentUser();
 
             foreach (var entry in ChangeTracker.Entries())

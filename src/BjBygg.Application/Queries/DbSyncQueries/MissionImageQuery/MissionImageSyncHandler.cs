@@ -34,7 +34,7 @@ namespace BjBygg.Application.Queries.DbSyncQueries.MissionImageQuery
 
             System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
             var date = dtDateTime.AddSeconds(request.Timestamp ?? 0);
-            var minDate = DateTime.Now.AddYears(-5);
+            var minDate = DateTime.UtcNow.AddYears(-5);
 
             IQueryable<MissionImage> query = _dbContext.Set<MissionImage>();
 
