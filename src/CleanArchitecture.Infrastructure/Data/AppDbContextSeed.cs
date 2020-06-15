@@ -109,6 +109,11 @@ namespace CleanArchitecture.Infrastructure.Data
                 new Employer() { Id = 4, Name = "TSU", Email = "TSU@test.no" },
                 new Employer() { Id = 5, Name = "Privat", Email = "Privat@test.no" },
                 new Employer() { Id = 6, Name = "Jens Bjarne AS", Email = "jens@test.no" },
+                new Employer() { Id = 7, Name = "NSU2", Email = "NSU2@test.no" },
+                new Employer() { Id = 8, Name = "BSU2", Email = "BSU2@test.no" },
+                new Employer() { Id = 9, Name = "RSU2", Email = "RSU2@test.no" },
+                new Employer() { Id = 10, Name = "TSU2", Email = "TSU2@test.no" },
+                new Employer() { Id = 11, Name = "Privat2", Email = "Privat2@test.no" },
             };
         }
         static IEnumerable<MissionType> GetPreconfiguredMissionTypes()
@@ -117,6 +122,14 @@ namespace CleanArchitecture.Infrastructure.Data
             {
                 new MissionType() { Id = 1, Name = "Riving" },
                 new MissionType() { Id = 2, Name = "Oppbygging" },
+                new MissionType() { Id = 3, Name = "Riving2" },
+                new MissionType() { Id = 4, Name = "Oppbygging2" },
+                new MissionType() { Id = 5, Name = "Riving3" },
+                new MissionType() { Id = 6, Name = "Oppbygging3" },
+                new MissionType() { Id = 7, Name = "Oppbygging4" },
+                new MissionType() { Id = 8, Name = "Riving4" },
+                new MissionType() { Id = 9, Name = "Oppbygging5" },
+                new MissionType() { Id = 10, Name = "Riving5" },
             };
         }
 

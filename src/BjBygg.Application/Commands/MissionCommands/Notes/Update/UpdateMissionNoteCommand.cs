@@ -23,7 +23,7 @@ namespace BjBygg.Application.Commands.MissionCommands.Notes.Update
         public string Content { get; set; }
 
         [Display(Name = "Marker som viktig")]
-        public bool Pinned { get; set; }
+        public bool? Pinned { get; set; }
 
     }
 }
