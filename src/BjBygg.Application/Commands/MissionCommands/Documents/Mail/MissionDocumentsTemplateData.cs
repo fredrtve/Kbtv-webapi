@@ -9,7 +9,7 @@ namespace BjBygg.Application.Commands.MissionCommands.Documents.Mail
 
     public class MissionDocumentsTemplateData : ITemplateData
     {
-        [JsonProperty("missions")]
+        [JsonProperty("documents")]
         public IEnumerable<MissionDocumentsTemplateDocumentDto> Documents { get; set; }
     }
 
