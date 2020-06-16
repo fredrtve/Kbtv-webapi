@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using CleanArchitecture.Core.Exceptions;
 using BjBygg.Application.Shared;
+using BjBygg.Application.Commands.UserCommands.NewPassword;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -67,6 +68,17 @@ namespace BjBygg.WebApi.Controllers.User
         {
             if (!ModelState.IsValid)
                 throw new BadRequestException(ModelState.Values.ToString());
+
+            return await _mediator.Send(command);
+        }
+
+        [Authorize(Roles = "Leder")]
+        [HttpPut]
+        [Route("api/[controller]/{UserName}/[action]")]
+        public async Task<bool> NewPassword([FromBody] NewPasswordCommand command)
+        {
+            if (!ModelState.IsValid)
+                throw new BadRequestException(ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage);
 
             return await _mediator.Send(command);
         }
