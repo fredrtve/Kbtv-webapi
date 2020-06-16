@@ -7,6 +7,7 @@ namespace BjBygg.Application.Queries.DbSyncQueries.SyncAll
     public class SyncAllQuery : IRequest<SyncAllResponse>
     {
         public UserDto? User { get; set; }
+        public int? InitialNumberOfMonths { get; set; }
 
         public double? MissionTimestamp { get; set; }
 

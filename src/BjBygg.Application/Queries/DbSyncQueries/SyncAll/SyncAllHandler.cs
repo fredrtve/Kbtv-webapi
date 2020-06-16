@@ -24,14 +24,39 @@ namespace BjBygg.Application.Queries.DbSyncQueries.SyncAll
         {
             return new SyncAllResponse()
             {
-                MissionSync = await _mediator.Send(new MissionSyncQuery() { Timestamp =  request.MissionTimestamp, User = request.User }),
-                MissionImageSync = await _mediator.Send(new MissionImageSyncQuery() { Timestamp = request.MissionImageTimestamp, User = request.User }),
-                MissionNoteSync = await _mediator.Send(new MissionNoteSyncQuery() { Timestamp = request.MissionNoteTimestamp, User = request.User }),
-                MissionDocumentSync = await _mediator.Send(new MissionDocumentSyncQuery() { Timestamp = request.MissionDocumentTimestamp, User = request.User }),
-                UserTimesheetSync = await _mediator.Send(new UserTimesheetSyncQuery() { Timestamp = request.UserTimesheetTimestamp, User = request.User }),
+                MissionSync = await _mediator.Send(
+                    new MissionSyncQuery() { 
+                        Timestamp =  request.MissionTimestamp, User = request.User, 
+                        InitialNumberOfMonths = request.InitialNumberOfMonths 
+                    }
+                ),
+                MissionImageSync = await _mediator.Send(
+                    new MissionImageSyncQuery() { 
+                        Timestamp = request.MissionImageTimestamp, User = request.User, 
+                        InitialNumberOfMonths = request.InitialNumberOfMonths 
+                    }
+                ),
+                MissionNoteSync = await _mediator.Send(
+                    new MissionNoteSyncQuery() { 
+                        Timestamp = request.MissionNoteTimestamp, User = request.User, 
+                        InitialNumberOfMonths = request.InitialNumberOfMonths  
+                    }
+                ),
+                MissionDocumentSync = await _mediator.Send(
+                    new MissionDocumentSyncQuery() { 
+                        Timestamp = request.MissionDocumentTimestamp, User = request.User,
+                        InitialNumberOfMonths = request.InitialNumberOfMonths
+                    }
+                ),
+                UserTimesheetSync = await _mediator.Send(
+                    new UserTimesheetSyncQuery() { 
+                        Timestamp = request.UserTimesheetTimestamp, User = request.User,
+                        InitialNumberOfMonths = request.InitialNumberOfMonths
+                    }
+                ),
+                MissionTypeSync = await _mediator.Send(new MissionTypeSyncQuery() { Timestamp = request.MissionTypeTimestamp }),
                 EmployerSync = await _mediator.Send(new EmployerSyncQuery() { Timestamp = request.EmployerTimestamp }),
                 DocumentTypeSync = await _mediator.Send(new DocumentTypeSyncQuery() { Timestamp = request.DocumentTypeTimestamp }),
-                MissionTypeSync = await _mediator.Send(new MissionTypeSyncQuery() { Timestamp = request.MissionTypeTimestamp }),
             };
         }
     }

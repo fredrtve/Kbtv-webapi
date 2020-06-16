@@ -30,7 +30,7 @@ namespace BjBygg.WebApi.Controllers
         [Route("api/[controller]")]
         public async Task<SyncAllResponse> Get(SyncAllQuery query)
         {
-            var userName = User.FindFirstValue(ClaimTypes.Name);
+             var userName = User.FindFirstValue(ClaimTypes.Name);
             if (userName == null) throw new BadRequestException("Cant find user");
             var user = await _userManager.FindByNameAsync(userName);
             query.User = _mapper.Map<UserDto>(user);

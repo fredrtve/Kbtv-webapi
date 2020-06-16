@@ -32,7 +32,7 @@ namespace BjBygg.Application.Queries.DbSyncQueries.TimesheetQuery
 
             System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
             var date = dtDateTime.AddSeconds(request.Timestamp ?? 0);
-            var minDate = DateTime.UtcNow.AddYears(-5);
+            var minDate = DateTime.UtcNow.AddMonths(-request.InitialNumberOfMonths ?? -48);
 
             IQueryable<Timesheet> query = _dbContext.Set<Timesheet>();
 
@@ -41,7 +41,7 @@ namespace BjBygg.Application.Queries.DbSyncQueries.TimesheetQuery
             Boolean initialCall = (DateTime.Compare(date, minDate) < 0); //If last updated resource is older than 5 years
 
             if (initialCall)
-                query = query.Where(x => DateTime.Compare(x.CreatedAt, minDate) > 0);
+                query = query.Where(x => DateTime.Compare(x.UpdatedAt, minDate) > 0);
             else
             {
                 query = query.IgnoreQueryFilters(); //Include deleted property to check for deleted entities
