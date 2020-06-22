@@ -11,10 +11,10 @@ namespace CleanArchitecture.Infrastructure.Data
     public class AppDbContextSeed
     {
         readonly static Random random = new Random();
-        private static int numberOfMissions = 500;
-
-        public static void Seed(AppDbContext context)
+        private static int _numberOfMissions;
+        public static void Seed(AppDbContext context, int numberOfMissions)
         {
+            _numberOfMissions = numberOfMissions;
             try
             {
                 // TODO: Only run this if using a real database
@@ -139,13 +139,19 @@ namespace CleanArchitecture.Infrastructure.Data
             {
                 new DocumentType() { Id = 1, Name = "Skaderapport" },
                 new DocumentType() { Id = 2, Name = "Tørkerapport" },
+                new DocumentType() { Id = 3, Name = "Skaderapport1" },
+                new DocumentType() { Id = 4, Name = "Tørkerapport1" },
+                new DocumentType() { Id = 5, Name = "Skaderapport2" },
+                new DocumentType() { Id = 6, Name = "Tørkerapport2" },
+                new DocumentType() { Id = 7, Name = "Skaderapport3" },
+                new DocumentType() { Id = 8, Name = "Tørkerapport3" },
             };
         }
 
         static IEnumerable<Mission> GetPreconfiguredMissions()
         {
             var missions = new List<Mission>();
-            for (var i = 1; i <= numberOfMissions; i++)
+            for (var i = 1; i <= _numberOfMissions; i++)
             {
                 missions.Add(new Mission()
                 {
@@ -165,13 +171,13 @@ namespace CleanArchitecture.Infrastructure.Data
         {
             var missionDocuments = new List<MissionDocument>();
 
-            for (var i = 1; i <= numberOfMissions*2; i++)
+            for (var i = 1; i <= _numberOfMissions*2; i++)
             {
                 missionDocuments.Add(new MissionDocument()
                 {
                     Id = i,
                     FileURL = new Uri("https://kbtv.blob.core.windows.net/images/28e89dfa-8d9b-422f-81fd-ee1f7aafbbe7.jpg"),
-                    MissionId = random.Next(1, numberOfMissions),
+                    MissionId = random.Next(1, _numberOfMissions),
                     DocumentTypeId = i % 2 == 0 ? 1 : 2
                 });
             }
@@ -187,12 +193,12 @@ namespace CleanArchitecture.Infrastructure.Data
                 new Uri("https://kbtv.blob.core.windows.net/images/1637271568378142015_fef915f9-5f35-45ea-96ae-898f33d79df2.jpg"),
                 new Uri("https://kbtv.blob.core.windows.net/images/1637125277915871387_33a58ce3-9b65-42c1-99aa-35bbbf200e82.jpg")
             };
-            for (var i = 1; i <= numberOfMissions*4; i++)
+            for (var i = 1; i <= _numberOfMissions*4; i++)
             {
                 missionImages.Add(new MissionImage()
                 {
                     Id = i,
-                    MissionId = random.Next(1, numberOfMissions),
+                    MissionId = random.Next(1, _numberOfMissions),
                     FileURL = imageUrls[random.Next(imageUrls.Count)]
                 });
             }
@@ -205,12 +211,12 @@ namespace CleanArchitecture.Infrastructure.Data
         {
             var missionNotes = new List<MissionNote>();
 
-            for (var i = 1; i <= numberOfMissions; i++)
+            for (var i = 1; i <= _numberOfMissions; i++)
             {
                     missionNotes.Add(new MissionNote()
                     {
                         Id = i,
-                        MissionId = random.Next(1, numberOfMissions),
+                        MissionId = random.Next(1, _numberOfMissions),
                         Content = "Dette er ett veldig interessant notat. Veldig interessant. Det er også veldig viktig.",
                         Title =  "Dette er ett notat",
                         Pinned = i % 2 == 0 ? false : true
@@ -227,14 +233,14 @@ namespace CleanArchitecture.Infrastructure.Data
             var dayCounter = 0;
             var today = DateTime.UtcNow.Date.AddHours(6);
 
-            for (var n = 1; n <= numberOfMissions*6; n++)
+            for (var n = 1; n <= _numberOfMissions*6; n++)
             {        
                     var startDate = today.AddDays(-dayCounter);
                     var endDate = startDate.AddHours(random.Next(4, 10));
                     timesheets.Add(new Timesheet()
                     {
                         Id = idCounter,
-                        MissionId = random.Next(1, numberOfMissions),
+                        MissionId = random.Next(1, _numberOfMissions),
                         StartTime = startDate,
                         EndTime = endDate,
                         TotalHours = (endDate - startDate).TotalHours,
@@ -249,7 +255,7 @@ namespace CleanArchitecture.Infrastructure.Data
                         timesheets.Add(new Timesheet()
                         {
                             Id = idCounter,
-                            MissionId = random.Next(1, numberOfMissions),
+                            MissionId = random.Next(1, _numberOfMissions),
                             StartTime = startDate,
                             EndTime = endDate,
                             TotalHours = (endDate - startDate).TotalHours,
@@ -264,7 +270,7 @@ namespace CleanArchitecture.Infrastructure.Data
                     timesheets.Add(new Timesheet()
                     {
                         Id = idCounter,
-                        MissionId = random.Next(1, numberOfMissions),
+                        MissionId = random.Next(1, _numberOfMissions),
                         StartTime = startDate,
                         EndTime = endDate,
                         TotalHours = (endDate - startDate).TotalHours,

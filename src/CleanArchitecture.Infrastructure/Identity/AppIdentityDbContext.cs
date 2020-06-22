@@ -21,12 +21,14 @@ namespace CleanArchitecture.Infrastructure.Identity
         }
 
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<InboundEmailPassword> InboundEmailPasswords { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
             builder.Entity<ApplicationUser>().HasMany(p => p.Roles).WithOne().HasForeignKey(p => p.UserId).IsRequired();
-            builder.Entity<ApplicationUser>().Ignore(p => p.Role);
+            builder.Entity<ApplicationUser>().Ignore(p => p.Role).HasQueryFilter(m => m.Deleted == false);
+            builder.Entity<InboundEmailPassword>().HasQueryFilter(m => m.Deleted == false);
         }
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {

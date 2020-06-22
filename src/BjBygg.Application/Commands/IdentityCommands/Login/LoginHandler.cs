@@ -2,10 +2,12 @@ using AutoMapper;
 using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Core.Interfaces.Services;
+using CleanArchitecture.Infrastructure.Auth;
 using CleanArchitecture.Infrastructure.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,6 +16,7 @@ namespace BjBygg.Application.Commands.IdentityCommands.Login
 {
     public class LoginHandler : IRequestHandler<LoginCommand, LoginResponse>
     {
+        private readonly AuthSettings _authSettings;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly AppIdentityDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -21,12 +24,14 @@ namespace BjBygg.Application.Commands.IdentityCommands.Login
         private readonly ITokenFactory _tokenFactory;
 
         public LoginHandler(
+            IOptions<AuthSettings> authSettings,
             UserManager<ApplicationUser> userManager,
             AppIdentityDbContext dbContext,
             IMapper mapper,
             IJwtFactory jwtFactory, 
             ITokenFactory tokenFactory)
         {
+            _authSettings = authSettings.Value;
             _userManager = userManager;
             _dbContext = dbContext;
             _mapper = mapper;
@@ -49,7 +54,7 @@ namespace BjBygg.Application.Commands.IdentityCommands.Login
                 throw new UnauthorizedException("Konto har ingen rolle!");
 
             var refreshToken = _tokenFactory.GenerateToken();
-            user.AddRefreshToken(refreshToken, user.Id);
+            user.AddRefreshToken(refreshToken, user.Id, _authSettings.RefreshTokenLifeTimeInDays);
             await _userManager.UpdateAsync(user);
 
    

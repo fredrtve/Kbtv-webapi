@@ -55,6 +55,24 @@ namespace CleanArchitecture.Infrastructure.identity.migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "InboundEmailPasswords",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Password = table.Column<string>(nullable: true),
+                    Deleted = table.Column<bool>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: true),
+                    UpdatedAt = table.Column<DateTime>(nullable: false),
+                    UpdatedBy = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InboundEmailPasswords", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -245,6 +263,9 @@ namespace CleanArchitecture.Infrastructure.identity.migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "InboundEmailPasswords");
 
             migrationBuilder.DropTable(
                 name: "RefreshTokens");

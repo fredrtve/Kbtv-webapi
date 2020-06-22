@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,7 +9,10 @@ namespace CleanArchitecture.Infrastructure.Identity
 {
     public class AppIdentityDbContextSeed
     {
-        public static async Task SeedAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task SeedAsync(
+            UserManager<ApplicationUser> userManager, 
+            RoleManager<IdentityRole> roleManager, 
+            AppIdentityDbContext context)
         {           
             if (!roleManager.RoleExistsAsync("Ansatt").Result)
                 await roleManager.CreateAsync(new IdentityRole { Name = "Ansatt" });
@@ -21,7 +25,6 @@ namespace CleanArchitecture.Infrastructure.Identity
 
             if (!roleManager.RoleExistsAsync("Oppdragsgiver").Result)
                 await roleManager.CreateAsync(new IdentityRole { Name = "Oppdragsgiver" });
-
 
             if (userManager.FindByNameAsync("leder").Result == null)
             {
@@ -85,6 +88,12 @@ namespace CleanArchitecture.Infrastructure.Identity
                 if (result.Succeeded)
                     userManager.AddToRoleAsync(user, "Ansatt").Wait();
             }
+
+            context.Database.OpenConnection();
+            context.InboundEmailPasswords.Add(new InboundEmailPassword() { Id = 1, Password = "passord1" });
+            context.SaveChanges();
+            context.Database.CloseConnection();
+
         }
     }
 }

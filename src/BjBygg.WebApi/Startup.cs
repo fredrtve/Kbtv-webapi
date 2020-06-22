@@ -19,7 +19,6 @@ using BjBygg.Application.Shared;
 using CleanArchitecture.Infrastructure.Api.SendGridMailService;
 using Microsoft.AspNetCore.Http.Features;
 using System;
-using BjBygg.WebApi.Models;
 using CleanArchitecture.Infrastructure.Auth;
 using System.Threading.Tasks;
 using CleanArchitecture.Core.Interfaces.Services;

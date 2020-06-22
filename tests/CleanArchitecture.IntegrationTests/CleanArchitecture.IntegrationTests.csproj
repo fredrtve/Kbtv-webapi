@@ -7,11 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CleanArchitecture.Tests\CleanArchitecture.UnitTests.csproj" />
+    <PackageReference Include="FluentAssertions" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\" />
+    <ProjectReference Include="..\..\src\BjBygg.WebApi\BjBygg.WebApi.csproj" />
+    <ProjectReference Include="..\CleanArchitecture.Tests\CleanArchitecture.UnitTests.csproj" />
   </ItemGroup>
 
 </Project>

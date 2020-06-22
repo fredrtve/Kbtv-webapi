@@ -104,6 +104,35 @@ namespace CleanArchitecture.Infrastructure.identity.migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("CleanArchitecture.Infrastructure.Identity.InboundEmailPassword", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("InboundEmailPasswords");
+                });
+
             modelBuilder.Entity("CleanArchitecture.Infrastructure.Identity.RefreshToken", b =>
                 {
                     b.Property<int>("Id")

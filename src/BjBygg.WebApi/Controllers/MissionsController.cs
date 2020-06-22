@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using BjBygg.Application.Commands.InboundEmailPasswordCommands.Verify;
 using BjBygg.Application.Commands.MissionCommands.Create;
 using BjBygg.Application.Commands.MissionCommands.CreateWithPdf;
 using BjBygg.Application.Commands.MissionCommands.Delete;
@@ -90,18 +92,41 @@ namespace BjBygg.WebApi.Controllers
 
         [HttpPost]
         [Route("api/[controller]/[action]")]
-        public async Task<MissionDto> CreateFromPdfReport()
+        public async Task<MissionDto> CreateFromInboundEmailPdfReport()
         {
             StringValues fromEmail;
             Request.Form.TryGetValue("from", out fromEmail);
 
+            StringValues toEmail;
+            Request.Form.TryGetValue("to", out toEmail);
+        
             _logger.LogInformation($"Http Request Information:{Environment.NewLine}" +
                         $"Schema:{Request.Scheme} " +
                         $"Host: {Request.Host} " +
                         $"Path: {Request.Path} " +
                         $"QueryString: {Request.QueryString} " +
-                        $"FromEmail: { fromEmail.ToString() } ");
+                        $"FromEmail: { fromEmail.ToString() } " +
+                        $"ToEmail: { toEmail.ToString() } ");
 
+            var emailPassword = Regex.Match(toEmail, @"(.*?)(?=\@)").Groups[0].Value; //Get password from toEmail (local part)
+            var verifyPasswordResult = await _mediator.Send(new VerifyInboundEmailPasswordCommand() { Password = emailPassword });
+            _logger.LogInformation($"Inbound email authorization accepted: {verifyPasswordResult}");
+            if (verifyPasswordResult == false) throw new UnauthorizedException($"Unauthorized inbound email from '{fromEmail}'");
+
+            var command = new CreateMissionWithPdfCommand();
+            command.Files = Request.Form.Files.Count > 0 ? Request.Form.Files : null;
+
+            if (!TryValidateModel(command))
+                throw new BadRequestException(ModelState.Values.ToString());
+
+            return await _mediator.Send(command);
+        }
+
+        [Authorize(Roles = "Leder")]
+        [HttpPost]
+        [Route("api/[controller]/[action]")]
+        public async Task<MissionDto> CreateFromPdfReport()
+        {
             var command = new CreateMissionWithPdfCommand();
             command.Files = Request.Form.Files.Count > 0 ? Request.Form.Files : null;
 

@@ -10,11 +10,13 @@ namespace CleanArchitecture.Infrastructure.Auth
     public class JwtTokenHandler : IJwtTokenHandler
     {
         private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
+        private readonly ILogger<JwtTokenHandler> _logger;
 
-        public JwtTokenHandler()
+        public JwtTokenHandler(ILogger<JwtTokenHandler> logger)
         {
             if (_jwtSecurityTokenHandler == null)
                 _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
+            _logger = logger;
         }
 
         public string WriteToken(JwtSecurityToken jwt)
@@ -35,7 +37,7 @@ namespace CleanArchitecture.Infrastructure.Auth
             }
             catch (Exception e)
             {
-                //_logger.LogError($"Token validation failed: {e.Message}");
+                _logger.LogError($"Token validation failed: {e.Message}");
                 return null;
             }
         }
