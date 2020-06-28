@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" />
+    <Packagereference Include="System.Text.Json" />
   </ItemGroup>
 
 </Project>

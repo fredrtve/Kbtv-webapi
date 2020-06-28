@@ -33,7 +33,7 @@ namespace BjBygg.Application.Commands.MissionCommands.Images.Delete
             _dbContext.Set<MissionImage>().Remove(missionImage);
             await _dbContext.SaveChangesAsync();
 
-            //await _storageService.DeleteAsync(missionImage.FileURL.ToString());
+            //await _storageService.DeleteAsync(missionImage.FileURL.ToString(), ResourceFolderContants.Image);
 
             return true;
         }

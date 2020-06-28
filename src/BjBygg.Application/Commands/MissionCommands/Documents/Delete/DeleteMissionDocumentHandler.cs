@@ -33,7 +33,7 @@ namespace BjBygg.Application.Commands.MissionCommands.Documents.Delete
             _dbContext.Set<MissionDocument>().Remove(missionDocument);
             await _dbContext.SaveChangesAsync();
 
-            // await _storageService.DeleteAsync(missionDocument.FileURL.ToString(), FileType.Document);
+            // await _storageService.DeleteAsync(missionDocument.FileURL.ToString(), ResourceFolderConstants.Document);
 
             return true;
         }

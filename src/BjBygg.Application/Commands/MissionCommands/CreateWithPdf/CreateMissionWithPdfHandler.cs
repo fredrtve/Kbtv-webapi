@@ -23,18 +23,15 @@ namespace BjBygg.Application.Commands.MissionCommands.CreateWithPdf
         private readonly AppDbContext _dbContext;
         private readonly IMapper _mapper;
         private readonly IBlobStorageService _storageService;
-        private readonly ILogger<CreateMissionWithPdfHandler> _logger;
 
         public CreateMissionWithPdfHandler(
             AppDbContext dbContext, 
             IMapper mapper, 
-            IBlobStorageService storageService, 
-            ILogger<CreateMissionWithPdfHandler> logger)
+            IBlobStorageService storageService)
         {
             _dbContext = dbContext;
             _mapper = mapper;
             _storageService = storageService;
-            _logger = logger;
         }
 
         public async Task<MissionDto> Handle(CreateMissionWithPdfCommand request, CancellationToken cancellationToken)
@@ -70,13 +67,13 @@ namespace BjBygg.Application.Commands.MissionCommands.CreateWithPdf
             dbMission.PhoneNumber = missionPdfDto.PhoneNumber;
 
             if(missionPdfDto.Image != null)
-                dbMission.ImageURL = await _storageService.UploadFileAsync(missionPdfDto.Image, ".jpg", FileType.Image);
+                dbMission.ImageURL = await _storageService.UploadFileAsync(missionPdfDto.Image, ".jpg", ResourceFolderConstants.Image);
 
             var documentType = await _dbContext.Set<DocumentType>().Where(x => x.Name == "Skaderapport").FirstOrDefaultAsync();
             if (documentType == null) documentType = new DocumentType() { Name = "Skaderapport" };
 
             var report = new MissionDocument(); 
-            report.FileURL = await _storageService.UploadFileAsync(extractedFile, FileType.Document);
+            report.FileURL = await _storageService.UploadFileAsync(extractedFile, ResourceFolderConstants.Document);
             report.DocumentType = documentType;
 
             dbMission.MissionDocuments = new List<MissionDocument>();

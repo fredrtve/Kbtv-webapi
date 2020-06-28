@@ -1,5 +1,6 @@
 using AutoMapper;
 using BjBygg.Application.Shared;
+using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Core.Interfaces;
@@ -34,7 +35,7 @@ namespace BjBygg.Application.Commands.MissionCommands.Images.Upload
 
             if(request.Files != null && request.Files.Count != 0)
             {
-                var imageURIs = await _storageService.UploadFilesAsync(request.Files);
+                var imageURIs = await _storageService.UploadFilesAsync(request.Files, ResourceFolderConstants.Image);
                 foreach (var uri in imageURIs)
                 {
                     images.Add(new MissionImage() { MissionId = request.MissionId, FileURL = uri });

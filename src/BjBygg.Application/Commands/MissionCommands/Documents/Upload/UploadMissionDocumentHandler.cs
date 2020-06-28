@@ -1,5 +1,6 @@
 using AutoMapper;
 using BjBygg.Application.Shared;
+using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Enums;
 using CleanArchitecture.Core.Exceptions;
@@ -34,7 +35,7 @@ namespace BjBygg.Application.Commands.MissionCommands.Documents.Upload
         {
             var document = _mapper.Map<MissionDocument>(request);
 
-            document.FileURL = await _storageService.UploadFileAsync(request.File, FileType.Document);
+            document.FileURL = await _storageService.UploadFileAsync(request.File, ResourceFolderConstants.Document);
 
             if (document.DocumentType.Id != 0)
             {

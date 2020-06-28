@@ -1,5 +1,6 @@
 using AutoMapper;
 using BjBygg.Application.Shared;
+using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Enums;
 using CleanArchitecture.Core.Exceptions;
@@ -48,7 +49,7 @@ namespace BjBygg.Application.Commands.MissionCommands.Create
             
             if(request.Image != null)
             {
-                mission.ImageURL = await _storageService.UploadFileAsync(request.Image, FileType.Image);
+                mission.ImageURL = await _storageService.UploadFileAsync(request.Image, ResourceFolderConstants.Image);
             }
 
             try

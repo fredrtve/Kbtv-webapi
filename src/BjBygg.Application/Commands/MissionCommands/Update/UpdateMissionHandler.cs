@@ -1,6 +1,7 @@
 using AutoMapper;
 using BjBygg.Application.Queries.MissionQueries;
 using BjBygg.Application.Shared;
+using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Enums;
 using CleanArchitecture.Core.Exceptions;
@@ -69,7 +70,7 @@ namespace BjBygg.Application.Commands.MissionCommands.Update
                         break;
                     case "Image":
                         if(request.Image != null)
-                            dbMission.ImageURL = await _storageService.UploadFileAsync(request.Image, FileType.Image);
+                            dbMission.ImageURL = await _storageService.UploadFileAsync(request.Image, ResourceFolderConstants.Image);
                         break;
                     default:
                         dbMission.GetType().GetProperty(property.Name).SetValue(dbMission, property.GetValue(request), null);

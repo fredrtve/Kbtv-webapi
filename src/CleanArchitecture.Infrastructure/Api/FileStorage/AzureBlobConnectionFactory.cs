@@ -18,26 +18,19 @@ namespace CleanArchitecture.Infrastructure.Api.FileStorage
             _configuration = configuration;
         }
 
-        public async Task<CloudBlobContainer> GetBlobContainer(FileType fileType = FileType.Image)
+        public async Task<CloudBlobContainer> GetBlobContainer(string folder)
         {
             if (_blobContainer != null)
                 return _blobContainer;
 
-            string containerName;
-
-            if(fileType == FileType.Document) 
-                containerName = _configuration.GetValue<string>("DocumentContainerName");
-            else
-                containerName = _configuration.GetValue<string>("ImageContainerName");
-
-            if (string.IsNullOrWhiteSpace(containerName))
+            if (string.IsNullOrWhiteSpace(folder))
             {
                 throw new ArgumentException("Configuration must contain ContainerName");
             }
 
             var blobClient = GetClient();
 
-            _blobContainer = blobClient.GetContainerReference(containerName);
+            _blobContainer = blobClient.GetContainerReference(folder);
             if (await _blobContainer.CreateIfNotExistsAsync())
             {
                 await _blobContainer.SetPermissionsAsync(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });

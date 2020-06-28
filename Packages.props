@@ -26,6 +26,7 @@
       <PackageReference Update="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="3.0.0" />
       <PackageReference Update="IdentityServer4.EntityFramework.Storage" Version="3.0.2" />
     <PackageReference Update="FluentAssertions" Version="5.10.3" />
+    <PackageReference Update="System.Text.Json" Version="4.7.2" />
   </ItemGroup>
   
   <ItemGroup Condition="'$(TestProjectMode)' == 'true'">
@@ -47,6 +48,7 @@
     <PackageReference Include="SendGrid"  Version="9.15.1"/>
     <PackageReference Include="itext7" Version="7.1.11" />
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
+    <PackageReference Include="System.Text.Json" Version="4.7.2" />
     
   </ItemGroup>
 </Project>

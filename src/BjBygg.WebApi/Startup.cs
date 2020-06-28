@@ -23,6 +23,7 @@ using CleanArchitecture.Infrastructure.Auth;
 using System.Threading.Tasks;
 using CleanArchitecture.Core.Interfaces.Services;
 using Microsoft.Extensions.Logging;
+using BjBygg.Application;
 
 namespace BjBygg.WebApi
 {
@@ -34,6 +35,11 @@ namespace BjBygg.WebApi
         }
 
         public IConfiguration Configuration { get; }
+
+        protected virtual void ConfigureDatabaseServices(IServiceCollection services)
+        {
+            services.AddAppDbContext();
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -111,7 +117,7 @@ namespace BjBygg.WebApi
                   };
               });
 
-            services.AddAppDbContext();
+            ConfigureDatabaseServices(services);
 
             services.AddControllers();
 
@@ -138,12 +144,13 @@ namespace BjBygg.WebApi
             services.AddTransient<IJwtFactory, JwtFactory>();
             services.AddTransient<IJwtTokenValidator, JwtTokenValidator>();
 
+            services.AddTransient<ICsvConverter, CsvConverter>();
             //services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             //services.AddScoped<IActionContextAccessor, ActionContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+        public virtual void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
