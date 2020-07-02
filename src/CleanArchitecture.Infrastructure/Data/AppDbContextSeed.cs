@@ -17,8 +17,6 @@ namespace CleanArchitecture.Infrastructure.Data
             _numberOfMissions = numberOfMissions;
             try
             {
-                // TODO: Only run this if using a real database
-                // context.Database.Migrate();
                 if (!context.Employers.Any())
                 {
                     context.Database.OpenConnection();

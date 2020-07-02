@@ -24,21 +24,18 @@ using System.Threading.Tasks;
 using CleanArchitecture.Core.Interfaces.Services;
 using Microsoft.Extensions.Logging;
 using BjBygg.Application;
+using CleanArchitecture.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace BjBygg.WebApi
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-        }
-
-        public IConfiguration Configuration { get; }
-
-        protected virtual void ConfigureDatabaseServices(IServiceCollection services)
-        {
-            services.AddAppDbContext();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -117,7 +114,7 @@ namespace BjBygg.WebApi
                   };
               });
 
-            ConfigureDatabaseServices(services);
+            services.AddAppDbContext();
 
             services.AddControllers();
 

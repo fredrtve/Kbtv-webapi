@@ -46,16 +46,16 @@ namespace CleanArchitecture.Infrastructure.Identity
 
             if (userManager.FindByNameAsync("oppdragsgiver").Result == null)
             {
-                var user = new ApplicationUser { UserName = "oppdragsgiver", SecurityStamp = Guid.NewGuid().ToString(), Email = "test@test.com", FirstName = "Oppdrags", LastName = "Giver", PhoneNumber = "94446434" };
+                var user = new ApplicationUser { UserName = "oppdragsgiver", SecurityStamp = Guid.NewGuid().ToString(), Email = "test@test.com", FirstName = "Oppdrags", LastName = "Giver", PhoneNumber = "94446434", EmployerId = 1 };
                 var result = await userManager.CreateAsync(user, "passord1");
 
                 if (result.Succeeded)
                     userManager.AddToRoleAsync(user, "Oppdragsgiver").Wait();
             }
 
-            if (userManager.FindByNameAsync("ansatt0").Result == null)
+            if (userManager.FindByNameAsync("ansatt").Result == null)
             {
-                var user = new ApplicationUser { UserName = "ansatt0", SecurityStamp = Guid.NewGuid().ToString(), Email = "test@test.com", FirstName = "Jens", LastName = "Nordmann", PhoneNumber = "94446434" };
+                var user = new ApplicationUser { UserName = "ansatt", SecurityStamp = Guid.NewGuid().ToString(), Email = "test@test.com", FirstName = "Jens", LastName = "Nordmann", PhoneNumber = "94446434" };
                 var result = await userManager.CreateAsync(user, "passord1");
 
                 if (result.Succeeded)
