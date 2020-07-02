@@ -1,4 +1,6 @@
-﻿using BjBygg.WebApi;
+﻿using BjBygg.Application.Queries.UserQueries;
+using BjBygg.Application.Shared;
+using BjBygg.WebApi;
 using CleanArchitecture.Infrastructure.Data;
 using CleanArchitecture.Infrastructure.Identity;
 using MediatR;
@@ -13,118 +15,137 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-[SetUpFixture]
-public class Testing
-{   
-    private static IConfigurationRoot _configuration;
-    private static IServiceScopeFactory _scopeFactory;
-    private static string _currentUserId;
-
-    [OneTimeSetUp]
-    public void RunBeforeAnyTests()
+namespace Application.IntegrationTests
+{
+    [SetUpFixture]
+    public class Testing
     {
-        var builder = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", true, true)
-            .AddEnvironmentVariables();
+        private static IConfigurationRoot _configuration;
+        private static IServiceScopeFactory _scopeFactory;
 
-        _configuration = builder.Build();
+        [OneTimeSetUp]
+        public async Task RunBeforeAnyTests()
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", true, true)
+                .AddEnvironmentVariables();
 
-        var startup = new Startup(_configuration);
+            _configuration = builder.Build();
 
-        var services = new ServiceCollection();
+            var startup = new Startup(_configuration);
 
-        services.AddSingleton(Mock.Of<IWebHostEnvironment>(w =>
-            w.EnvironmentName == "Development" &&
-            w.ApplicationName == "BjBygg.WebApi"));
+            var services = new ServiceCollection();
 
-        services.AddLogging();
+            services.AddSingleton(Mock.Of<IWebHostEnvironment>(w =>
+                w.EnvironmentName == "Development" &&
+                w.ApplicationName == "BjBygg.WebApi"));
 
-        startup.ConfigureServices(services);
+            services.AddLogging();
 
-        var dbDescriptor = services.FirstOrDefault(d =>
-            d.ServiceType == typeof(AppDbContext));
+            startup.ConfigureServices(services);
 
-        services.Remove(dbDescriptor);
+            var dbDescriptor = services.SingleOrDefault(
+                d => d.ServiceType == typeof(DbContextOptions<AppDbContext>));
 
-        services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlite("Data Source=test.db"));
+            services.Remove(dbDescriptor);
 
-        _scopeFactory = services.BuildServiceProvider().GetService<IServiceScopeFactory>();
-        
-        EnsureDatabase();
-    }
+            services.AddDbContext<AppDbContext>(options =>
+                     options.UseSqlite("Data Source=test.sqlite"));
 
-    private static void EnsureDatabase()
-    {
-        using var scope = _scopeFactory.CreateScope();
+            var identityDescriptor = services.SingleOrDefault(
+                d => d.ServiceType == typeof(DbContextOptions<AppIdentityDbContext>));
 
-        var context = scope.ServiceProvider.GetService<AppDbContext>();
+            services.Remove(identityDescriptor);
 
-        context.Database.Migrate();
+            services.AddDbContext<AppIdentityDbContext>(options =>
+                options.UseSqlite("Data Source=testidentity.sqlite"));
 
-        AppDbContextSeed.Seed(context, 5);
-    }
+            _scopeFactory = services.BuildServiceProvider().GetService<IServiceScopeFactory>();
 
-    public static async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)
-    {
-        using var scope = _scopeFactory.CreateScope();
+            await EnsureAppIdentityDb();
+        }
 
-        var mediator = scope.ServiceProvider.GetService<IMediator>();
 
-        return await mediator.Send(request);
-    }
+        public static async Task EnsureAppIdentityDb()
+        {
+            using var scope = _scopeFactory.CreateScope();
 
-    public static async Task<string> RunAsDefaultUserAsync()
-    {
-        return await RunAsUserAsync("leder", "passord1");
-    }
+            var idContext = scope.ServiceProvider.GetService<AppIdentityDbContext>();
+            var userManager = scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
+            var roleManager = scope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
+            idContext.Database.EnsureDeleted();
+            idContext.Database.Migrate();
 
-    public static async Task<string> RunAsUserAsync(string userName, string password)
-    {
-        using var scope = _scopeFactory.CreateScope();
+            await AppIdentityDbContextSeed.SeedAsync(userManager, roleManager, idContext);
+        }
 
-        var userManager = scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
+        public static async Task EnsureAppDbAsync(TestSeederConfig seedConfig)
+        {
+            using var scope = _scopeFactory.CreateScope();
 
-        var user = new ApplicationUser { UserName = userName, Email = userName };
+            var context = scope.ServiceProvider.GetService<AppDbContext>();
+            context.Database.EnsureDeleted();
+            context.Database.Migrate();
+            await TestSeeder.SeedAllAsync(context, seedConfig);
+        }
 
-        var result = await userManager.CreateAsync(user, password);
+        public static async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)
+        {
+            using var scope = _scopeFactory.CreateScope();
 
-        _currentUserId = user.Id;
+            var mediator = scope.ServiceProvider.GetService<IMediator>();
 
-        return _currentUserId;
-    }
+            return await mediator.Send(request);
+        }
 
-    public static async Task ResetState()
-    {
-        //await _checkpoint.Reset(_configuration.GetConnectionString("DefaultConnection"));
-        //_currentUserId = null;
-    }
+        public static async Task<UserDto> GetUser(string userName)
+        {
+            using var scope = _scopeFactory.CreateScope();
 
-    public static async Task<TEntity> FindAsync<TEntity>(int id)
-        where TEntity : class
-    {
-        using var scope = _scopeFactory.CreateScope();
+            var mediator = scope.ServiceProvider.GetService<IMediator>();
 
-        var context = scope.ServiceProvider.GetService<AppDbContext>();
+            return await mediator.Send(new UserByUserNameQuery() { UserName = userName });
+        }
 
-        return await context.FindAsync<TEntity>(id);
-    }
+        public static async Task<ApplicationUser> RunAsUserAsync(string userName, string password)
+        {
+            using var scope = _scopeFactory.CreateScope();
 
-    public static async Task AddAsync<TEntity>(TEntity entity)
-        where TEntity : class
-    {
-        using var scope = _scopeFactory.CreateScope();
+            var userManager = scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
 
-        var context = scope.ServiceProvider.GetService<AppDbContext>();
+            var user = new ApplicationUser { UserName = userName, Email = userName };
 
-        context.Add(entity);
+            var result = await userManager.CreateAsync(user, password);
 
-        await context.SaveChangesAsync();
-    }
+            return user;
+        }
 
-    [OneTimeTearDown]
-    public void RunAfterAnyTests()
-    {
+        public static async Task<TEntity> FindAsync<TEntity>(int id)
+            where TEntity : class
+        {
+            using var scope = _scopeFactory.CreateScope();
+
+            var context = scope.ServiceProvider.GetService<AppDbContext>();
+
+            return await context.FindAsync<TEntity>(id);
+        }
+
+        public static async Task AddAsync<TEntity>(TEntity entity)
+            where TEntity : class
+        {
+            using var scope = _scopeFactory.CreateScope();
+
+            var context = scope.ServiceProvider.GetService<AppDbContext>();
+
+            context.Add(entity);
+
+            await context.SaveChangesAsync();
+        }
+
+        [OneTimeTearDown]
+        public void RunAfterAnyTests()
+        {
+        }
     }
 }

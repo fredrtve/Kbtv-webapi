@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Application.IntegrationTests
+namespace Application.IntegrationTests
 {
     using static Testing;
 
@@ -10,7 +10,7 @@ namespace CleanArchitecture.Application.IntegrationTests
         [SetUp]
         public async Task TestSetUp()
         {
-            await ResetState();
+            await EnsureAppDbAsync(new TestSeederConfig());
         }
     }
 }
