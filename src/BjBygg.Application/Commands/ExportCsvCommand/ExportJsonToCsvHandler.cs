@@ -5,6 +5,7 @@ using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Enums;
 using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure.Data;
+using CleanArchitecture.SharedKernel;
 using MediatR;
 using Newtonsoft.Json;
 using System;
@@ -38,8 +39,12 @@ namespace BjBygg.Application.Commands.ExportCsvCommands
 
             // convert string to stream
             byte[] byteArray = Encoding.Default.GetBytes(csvString);
-            MemoryStream stream = new MemoryStream(byteArray);
-            var fileUrl = await _blobStorageService.UploadFileAsync(stream, ".csv", ResourceFolderConstants.CsvTemp);
+            Uri fileUrl;
+            using(var stream = new BasicFileStream(new MemoryStream(byteArray), ".csv"))
+            {
+                fileUrl = await _blobStorageService.UploadFileAsync(stream, ResourceFolderConstants.CsvTemp);
+            }
+
             return fileUrl;
         }
     }
