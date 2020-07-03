@@ -1,14 +1,16 @@
 using AutoMapper;
-using CleanArchitecture.Core.Entities;
+using BjBygg.Application.Shared.Dto;
+using CleanArchitecture.Infrastructure.Identity;
 
 namespace BjBygg.Application.Shared
 {
-    public class DocumentTypeDtoProfile : Profile
+    public class InboundEmailPasswordDtoProfile : Profile
     {
-        public DocumentTypeDtoProfile()
+        public InboundEmailPasswordDtoProfile()
         {
-            CreateMap<DocumentType, DocumentTypeDto>();
-            CreateMap<DocumentTypeDto, DocumentType>();
+            CreateMap<InboundEmailPassword, InboundEmailPasswordDto>();
+
+            CreateMap<InboundEmailPasswordDto, InboundEmailPassword>();
         }
     }
 }
