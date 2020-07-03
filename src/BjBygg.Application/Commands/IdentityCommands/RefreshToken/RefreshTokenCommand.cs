@@ -12,6 +12,7 @@ namespace BjBygg.Application.Commands.IdentityCommands.RefreshToken
         public string AccessToken { get; set; }
         [Required]
         public string RefreshToken { get; set; }
+        [Required]
         public string SigningKey { get; set; }
 
         public RefreshTokenCommand(){}

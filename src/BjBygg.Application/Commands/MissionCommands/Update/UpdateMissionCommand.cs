@@ -1,6 +1,7 @@
 using BjBygg.Application.Queries.MissionQueries;
 using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Entities;
+using CleanArchitecture.SharedKernel;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -38,7 +39,7 @@ namespace BjBygg.Application.Commands.MissionCommands.Update
         public EmployerDto Employer { get; set; }
 
         [JsonIgnore]
-        public IFormFile? Image { get; set; }
+        public BasicFileStream? Image { get; set; }
 
         public Boolean? DeleteCurrentImage { get; set; }
     }

@@ -1,4 +1,5 @@
 using BjBygg.Application.Shared;
+using CleanArchitecture.SharedKernel;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -11,7 +12,7 @@ namespace BjBygg.Application.Commands.MissionCommands.Images.Upload
     public class UploadMissionImageCommand : IRequest<IEnumerable<MissionImageDto>>
     {
         [Required]
-        public IFormFileCollection Files { get; set; }
+        public DisposableList<BasicFileStream> Files { get; set; }
 
         [Required]
         public int MissionId { get; set; }

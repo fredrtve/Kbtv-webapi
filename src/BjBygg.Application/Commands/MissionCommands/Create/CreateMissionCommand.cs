@@ -1,5 +1,6 @@
 
 using BjBygg.Application.Shared;
+using CleanArchitecture.SharedKernel;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
@@ -28,6 +29,6 @@ namespace BjBygg.Application.Commands.MissionCommands.Create
         public EmployerDto? Employer { get; set; }
 
         [JsonIgnore]
-        public IFormFile? Image { get; set; }
+        public BasicFileStream? Image { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 
 using BjBygg.Application.Shared;
+using CleanArchitecture.SharedKernel;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
@@ -9,9 +10,15 @@ namespace BjBygg.Application.Commands.MissionCommands.CreateWithPdf
 {
     public class CreateMissionWithPdfCommand : IRequest<MissionDto>
     {
+        public CreateMissionWithPdfCommand(){}
+        public CreateMissionWithPdfCommand(DisposableList<BasicFileStream> files)
+        {
+            Files = files;
+        }
+
         [Required]
         [JsonIgnore]
-        public IFormFileCollection Files { get; set; }
+        public DisposableList<BasicFileStream> Files { get; set; }
 
     }
 }

@@ -2,14 +2,12 @@ using AutoMapper;
 using BjBygg.Application.Shared;
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
-using CleanArchitecture.Core.Enums;
 using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure.Data;
+using CleanArchitecture.SharedKernel;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,24 +40,21 @@ namespace BjBygg.Application.Commands.MissionCommands.CreateWithPdf
                 throw new BadRequestException("No file found.");
 
             MissionPdfDto missionPdfDto = null;
-            IFormFile extractedFile = null;
+            BasicFileStream extractedFile = null;
 
             //Loop over files and break if one fits extraction scheme
             //Helps when email clients append additional files that get extracted instead.
             foreach (var file in request.Files) 
-           {
-                missionPdfDto = extractor.TryExtract(file.OpenReadStream());
+            {
+                missionPdfDto = extractor.TryExtract(file.Stream);
                 if (missionPdfDto != null)
                 {
                     extractedFile = file; //Save extracted file to add to mission later
                     break;
                 };
            }
-
-           if(missionPdfDto == null)
-               throw new BadRequestException("No valid files found.");
             
-           if (missionPdfDto == null) 
+           if(missionPdfDto == null) 
                throw new BadRequestException("Mission could not be extracted from file.");
 
             var dbMission = new Mission();
@@ -67,7 +62,9 @@ namespace BjBygg.Application.Commands.MissionCommands.CreateWithPdf
             dbMission.PhoneNumber = missionPdfDto.PhoneNumber;
 
             if(missionPdfDto.Image != null)
-                dbMission.ImageURL = await _storageService.UploadFileAsync(missionPdfDto.Image, ".jpg", ResourceFolderConstants.Image);
+                dbMission.ImageURL = await _storageService.UploadFileAsync(
+                    new BasicFileStream(missionPdfDto.Image, ".jpg"), 
+                    ResourceFolderConstants.Image);
 
             var documentType = await _dbContext.Set<DocumentType>().Where(x => x.Name == "Skaderapport").FirstOrDefaultAsync();
             if (documentType == null) documentType = new DocumentType() { Name = "Skaderapport" };

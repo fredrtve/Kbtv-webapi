@@ -9,6 +9,7 @@ namespace BjBygg.Application.Commands.Shared.DeleteRange
 {
     public abstract class DeleteRangeCommand : IRequest<bool>
     {
+        [Required]
         public IEnumerable<int> Ids { get; set; }
     }
 }

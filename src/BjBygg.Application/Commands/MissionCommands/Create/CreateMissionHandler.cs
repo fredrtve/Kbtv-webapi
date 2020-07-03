@@ -48,7 +48,7 @@ namespace BjBygg.Application.Commands.MissionCommands.Create
             }  
             
             if(request.Image != null)
-            {
+            {          
                 mission.ImageURL = await _storageService.UploadFileAsync(request.Image, ResourceFolderConstants.Image);
             }
 

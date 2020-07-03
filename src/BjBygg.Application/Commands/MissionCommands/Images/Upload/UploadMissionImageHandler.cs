@@ -6,9 +6,11 @@ using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure.Data;
+using CleanArchitecture.SharedKernel;
 using MediatR;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -31,15 +33,14 @@ namespace BjBygg.Application.Commands.MissionCommands.Images.Upload
 
         public async Task<IEnumerable<MissionImageDto>> Handle(UploadMissionImageCommand request, CancellationToken cancellationToken)
         {
-            var images = new List<MissionImage>();
+            List<MissionImage> images = new List<MissionImage>();
 
             if(request.Files != null && request.Files.Count != 0)
-            {
-                var imageURIs = await _storageService.UploadFilesAsync(request.Files, ResourceFolderConstants.Image);
-                foreach (var uri in imageURIs)
-                {
-                    images.Add(new MissionImage() { MissionId = request.MissionId, FileURL = uri });
-                }
+            {           
+                var imageUrls = await _storageService.UploadFilesAsync(request.Files, ResourceFolderConstants.Image);
+
+                images.AddRange(
+                    imageUrls.Select(url => new MissionImage() { MissionId = request.MissionId, FileURL = url }));
 
                 try
                 {

@@ -9,6 +9,7 @@ namespace BjBygg.Application.Commands.MissionCommands.Notes.Delete
 {
     public class DeleteMissionNoteCommand : IRequest<bool>
     {
+        [Required]
         public int Id { get; set; }
     }
 }

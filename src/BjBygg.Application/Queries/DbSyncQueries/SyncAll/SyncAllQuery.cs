@@ -1,12 +1,14 @@
 ﻿using BjBygg.Application.Shared;
 using MediatR;
-
+using System.ComponentModel.DataAnnotations;
 
 namespace BjBygg.Application.Queries.DbSyncQueries.SyncAll
 {
     public class SyncAllQuery : IRequest<SyncAllResponse>
     {
+        [Required]
         public string UserName { get; set; }
+        [Required]
         public string Role { get; set; }
         public int? InitialNumberOfMonths { get; set; }
 

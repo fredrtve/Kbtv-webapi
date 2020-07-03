@@ -9,6 +9,7 @@ namespace BjBygg.Application.Commands.EmployerCommands.Delete
 {
     public class DeleteEmployerCommand : IRequest<bool>
     {
+        [Required]
         public int Id { get; set; }
     }
 }

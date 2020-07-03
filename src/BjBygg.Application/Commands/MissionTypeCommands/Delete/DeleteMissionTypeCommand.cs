@@ -9,6 +9,7 @@ namespace BjBygg.Application.Commands.MissionTypeCommands.Delete
 {
     public class DeleteMissionTypeCommand : IRequest<bool>
     {
+        [Required]
         public int Id { get; set; }
     }
 }
