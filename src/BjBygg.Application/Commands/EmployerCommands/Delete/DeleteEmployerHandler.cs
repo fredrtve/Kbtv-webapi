@@ -4,7 +4,7 @@ using CleanArchitecture.Infrastructure.Data;
 
 namespace BjBygg.Application.Commands.EmployerCommands.Delete
 {
-    public class DeleteEmployerHandler : DeleteCommandHandler<Employer, DeleteEmployerCommand>
+    public class DeleteEmployerHandler : DeleteHandler<Employer, DeleteEmployerCommand>
     {
         public DeleteEmployerHandler(AppDbContext dbContext) :
             base(dbContext) {}

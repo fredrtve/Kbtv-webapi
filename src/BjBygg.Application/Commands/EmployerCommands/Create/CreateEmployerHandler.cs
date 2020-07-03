@@ -6,7 +6,7 @@ using CleanArchitecture.Infrastructure.Data;
 
 namespace BjBygg.Application.Commands.EmployerCommands.Create
 {
-    public class CreateEmployerHandler : CreateCommandHandler<Employer, CreateEmployerCommand, EmployerDto>
+    public class CreateEmployerHandler : CreateHandler<Employer, CreateEmployerCommand, EmployerDto>
     {
         public CreateEmployerHandler(AppDbContext dbContext, IMapper mapper) :
             base(dbContext, mapper) {}

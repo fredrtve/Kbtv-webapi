@@ -6,7 +6,7 @@ using CleanArchitecture.Infrastructure.Data;
 
 namespace BjBygg.Application.Commands.EmployerCommands.Update
 {
-    public class UpdateEmployerHandler : UpdateCommandHandler<Employer, UpdateEmployerCommand, EmployerDto>
+    public class UpdateEmployerHandler : UpdateHandler<Employer, UpdateEmployerCommand, EmployerDto>
     {
         public UpdateEmployerHandler(AppDbContext dbContext, IMapper mapper) :
             base(dbContext, mapper) {}

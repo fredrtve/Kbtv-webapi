@@ -5,7 +5,7 @@ using CleanArchitecture.Infrastructure.Data;
 
 namespace BjBygg.Application.Commands.MissionCommands.Documents.DeleteRange
 {
-    public class DeleteRangeMissionDocumentHandler : DeleteRangeCommandHandler<MissionDocument, DeleteRangeMissionDocumentCommand>
+    public class DeleteRangeMissionDocumentHandler : DeleteRangeHandler<MissionDocument, DeleteRangeMissionDocumentCommand>
     {
         public DeleteRangeMissionDocumentHandler(AppDbContext dbContext) : 
             base(dbContext) {}

@@ -4,7 +4,7 @@ using CleanArchitecture.Infrastructure.Data;
 
 namespace BjBygg.Application.Commands.MissionCommands.Notes.Delete
 {
-    public class DeleteMissionNoteHandler : DeleteCommandHandler<MissionNote, DeleteMissionNoteCommand>
+    public class DeleteMissionNoteHandler : DeleteHandler<MissionNote, DeleteMissionNoteCommand>
     {
         public DeleteMissionNoteHandler(AppDbContext dbContext) :
             base(dbContext) { }

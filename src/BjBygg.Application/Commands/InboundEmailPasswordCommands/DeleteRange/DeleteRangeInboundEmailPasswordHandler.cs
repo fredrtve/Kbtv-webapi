@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace BjBygg.Application.Commands.InboundEmailPasswordCommands.DeleteRange
 {
     public class DeleteRangeInboundEmailPasswordHandler : 
-        DeleteRangeCommandHandler<InboundEmailPassword, DeleteRangeInboundEmailPasswordCommand>
+        DeleteRangeHandler<InboundEmailPassword, DeleteRangeInboundEmailPasswordCommand>
     {
         public DeleteRangeInboundEmailPasswordHandler(AppIdentityDbContext dbContext) : 
             base(dbContext) {}

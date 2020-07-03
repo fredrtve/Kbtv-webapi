@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Commands.BaseEntityCommands.Delete
 {
-    public abstract class DeleteCommandHandler<TEntity, TCommand> : IRequestHandler<TCommand, bool>
+    public abstract class DeleteHandler<TEntity, TCommand> : IRequestHandler<TCommand, bool>
         where TEntity : BaseEntity where TCommand : DeleteCommand
     {
         private readonly DbContext _dbContext;
 
-        public DeleteCommandHandler(DbContext dbContext)
+        public DeleteHandler(DbContext dbContext)
         {
             _dbContext = dbContext;
         }

@@ -2,9 +2,9 @@ using AutoMapper;
 using CleanArchitecture.Core.Entities;
 namespace BjBygg.Application.Commands.EmployerCommands.Update
 {
-    class UpdateEmployerCommandProfile : Profile
+    class UpdateEmployerProfile : Profile
     {
-        public UpdateEmployerCommandProfile()
+        public UpdateEmployerProfile()
         {
             CreateMap<UpdateEmployerCommand, Employer>();
         }

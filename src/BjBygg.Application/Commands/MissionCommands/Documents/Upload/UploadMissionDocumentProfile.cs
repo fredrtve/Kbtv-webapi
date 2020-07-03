@@ -4,9 +4,9 @@ using CleanArchitecture.Core.Entities;
 
 namespace BjBygg.Application.Commands.MissionCommands.Documents.Upload
 {
-    class UploadMissionDocumentCommandProfile : Profile
+    class UploadMissionDocumentProfile : Profile
     {
-        public UploadMissionDocumentCommandProfile()
+        public UploadMissionDocumentProfile()
         {
             CreateMap<UploadMissionDocumentCommand, MissionDocument>()
                 .ForMember(dest => dest.DocumentType, opt => opt.MapFrom(src => src.DocumentType))

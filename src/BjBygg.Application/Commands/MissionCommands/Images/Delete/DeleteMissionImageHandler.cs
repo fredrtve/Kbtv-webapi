@@ -4,7 +4,7 @@ using CleanArchitecture.Infrastructure.Data;
 
 namespace BjBygg.Application.Commands.MissionCommands.Images.Delete
 {
-    public class DeleteMissionImageHandler : DeleteCommandHandler<MissionImage, DeleteMissionImageCommand>
+    public class DeleteMissionImageHandler : DeleteHandler<MissionImage, DeleteMissionImageCommand>
     {
         public DeleteMissionImageHandler(AppDbContext dbContext) :
             base(dbContext) { }

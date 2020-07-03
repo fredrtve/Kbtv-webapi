@@ -6,9 +6,9 @@ using System.Text;
 
 namespace BjBygg.Application.Commands.MissionCommands.Notes.Update
 {
-    class UpdateMissionNoteCommandProfile : Profile
+    class UpdateMissionNoteProfile : Profile
     {
-        public UpdateMissionNoteCommandProfile()
+        public UpdateMissionNoteProfile()
         {
             CreateMap<UpdateMissionNoteCommand, MissionNote>();
         }

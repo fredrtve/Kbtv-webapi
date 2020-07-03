@@ -7,9 +7,9 @@ using System.Text;
 
 namespace BjBygg.Application.Commands.TimesheetCommands.Update
 {
-    class UpdateTimesheetCommandProfile : Profile
+    class UpdateTimesheetProfile : Profile
     {
-        public UpdateTimesheetCommandProfile()
+        public UpdateTimesheetProfile()
         {
             CreateMap<UpdateTimesheetCommand, Timesheet>();
         }

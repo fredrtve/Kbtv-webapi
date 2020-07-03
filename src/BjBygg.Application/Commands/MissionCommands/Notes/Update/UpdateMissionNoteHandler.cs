@@ -6,7 +6,7 @@ using CleanArchitecture.Infrastructure.Data;
 
 namespace BjBygg.Application.Commands.MissionCommands.Notes.Update
 {
-    public class UpdateMissionNoteHandler : UpdateCommandHandler<MissionNote, UpdateMissionNoteCommand, MissionNoteDto>
+    public class UpdateMissionNoteHandler : UpdateHandler<MissionNote, UpdateMissionNoteCommand, MissionNoteDto>
     {
         public UpdateMissionNoteHandler(AppDbContext dbContext, IMapper mapper) :
             base(dbContext, mapper) {}

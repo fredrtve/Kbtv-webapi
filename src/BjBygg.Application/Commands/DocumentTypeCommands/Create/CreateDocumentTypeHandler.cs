@@ -5,7 +5,7 @@ using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Infrastructure.Data;
 namespace BjBygg.Application.Commands.DocumentTypeCommands.Create
 {
-    public class CreateDocumentTypeHandler : CreateCommandHandler<DocumentType, CreateDocumentTypeCommand, DocumentTypeDto>
+    public class CreateDocumentTypeHandler : CreateHandler<DocumentType, CreateDocumentTypeCommand, DocumentTypeDto>
     {
         public CreateDocumentTypeHandler(AppDbContext dbContext, IMapper mapper) : 
             base(dbContext, mapper) {}

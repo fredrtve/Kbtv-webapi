@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Commands.BaseEntityCommands.Update
 {
-    public class UpdateCommandHandler<TEntity, TCommand, TResponse> : IRequestHandler<TCommand, TResponse>
+    public class UpdateHandler<TEntity, TCommand, TResponse> : IRequestHandler<TCommand, TResponse>
         where TEntity : BaseEntity where TCommand : UpdateCommand<TResponse>
     {
         private readonly DbContext _dbContext;
         private readonly IMapper _mapper;
 
-        public UpdateCommandHandler(DbContext dbContext, IMapper mapper)
+        public UpdateHandler(DbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;

@@ -6,7 +6,7 @@ using CleanArchitecture.Infrastructure.Identity;
 namespace BjBygg.Application.Commands.InboundEmailPasswordCommands.Create
 {
     public class CreateInboundEmailPasswordHandler : 
-        CreateCommandHandler<InboundEmailPassword, CreateInboundEmailPasswordCommand, InboundEmailPasswordDto>
+        CreateHandler<InboundEmailPassword, CreateInboundEmailPasswordCommand, InboundEmailPasswordDto>
     {
         public CreateInboundEmailPasswordHandler(AppIdentityDbContext dbContext, IMapper mapper) :
             base(dbContext, mapper) {}

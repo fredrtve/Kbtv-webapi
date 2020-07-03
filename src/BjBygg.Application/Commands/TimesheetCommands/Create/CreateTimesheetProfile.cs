@@ -6,9 +6,9 @@ using System.Text;
 
 namespace BjBygg.Application.Commands.TimesheetCommands.Create
 {
-    public class CreateTimesheetCommandProfile : Profile
+    public class CreateTimesheetProfile : Profile
     {
-        public CreateTimesheetCommandProfile()
+        public CreateTimesheetProfile()
         {
             CreateMap<CreateTimesheetCommand, Timesheet>();
         }

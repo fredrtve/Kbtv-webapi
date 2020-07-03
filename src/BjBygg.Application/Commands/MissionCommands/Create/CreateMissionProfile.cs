@@ -1,17 +1,14 @@
 using AutoMapper;
 using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace BjBygg.Application.Commands.MissionCommands.Update
+namespace BjBygg.Application.Commands.MissionCommands.Create
 {
-    class UpdateMissionCommandProfile : Profile
+    class CreateMissionProfile : Profile
     {
-        public UpdateMissionCommandProfile()
+        public CreateMissionProfile()
         {
-            CreateMap<UpdateMissionCommand, Mission>()
+            CreateMap<CreateMissionCommand, Mission>()
                 .ForMember(dest => dest.MissionType, opt => opt.MapFrom(src => src.MissionType))
                 .ForMember(dest => dest.Employer, opt => opt.MapFrom(src => src.Employer))
                 .ForMember(dest => dest.ImageURL, opt => opt.Ignore())

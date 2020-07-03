@@ -9,9 +9,9 @@ using System.Text;
 
 namespace BjBygg.Application.Commands.UserCommands.Create
 {
-    class CreateUserCommandProfile : Profile
+    class CreateUserProfile : Profile
     {
-        public CreateUserCommandProfile()
+        public CreateUserProfile()
         {
             CreateMap<CreateUserCommand, ApplicationUser>()
                 .ForSourceMember(x => x.Password, opt => opt.DoNotValidate())

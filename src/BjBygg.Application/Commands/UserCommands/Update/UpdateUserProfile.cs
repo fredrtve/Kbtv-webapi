@@ -7,9 +7,9 @@ using System.Text;
 
 namespace BjBygg.Application.Commands.UserCommands.Update
 {
-    class UpdateUserCommandProfile : Profile
+    class UpdateUserProfile : Profile
     {
-        public UpdateUserCommandProfile()
+        public UpdateUserProfile()
         {
             CreateMap<UpdateUserCommand, ApplicationUser>()
                 .ForSourceMember(x => x.Role, opt => opt.DoNotValidate());
