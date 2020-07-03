@@ -1,15 +1,9 @@
-using CleanArchitecture.Core.Entities;
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+
+using BjBygg.Application.Commands.BaseEntityCommands.Delete;
 
 namespace BjBygg.Application.Commands.MissionTypeCommands.Delete
 {
-    public class DeleteMissionTypeCommand : IRequest<bool>
+    public class DeleteMissionTypeCommand : DeleteCommand
     {
-        [Required]
-        public int Id { get; set; }
     }
 }

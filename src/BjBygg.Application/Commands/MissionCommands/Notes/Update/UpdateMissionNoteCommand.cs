@@ -1,18 +1,11 @@
+using BjBygg.Application.Commands.BaseEntityCommands.Update;
 using BjBygg.Application.Shared;
-using CleanArchitecture.Core.Entities;
-using MediatR;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace BjBygg.Application.Commands.MissionCommands.Notes.Update
 {
-    public class UpdateMissionNoteCommand : IRequest<MissionNoteDto>
+    public class UpdateMissionNoteCommand : UpdateCommand<MissionNoteDto>
     {
-        [Required]
-        public int Id { get; set; }
-
         [StringLength(100, ErrorMessage = "{0} kan maks være på {1} tegn.")]
         [Display(Name = "Tittel")]
         public string? Title { get; set; }

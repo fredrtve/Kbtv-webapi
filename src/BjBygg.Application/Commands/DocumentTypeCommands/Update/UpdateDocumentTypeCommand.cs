@@ -1,3 +1,4 @@
+using BjBygg.Application.Commands.BaseEntityCommands.Update;
 using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Entities;
 using MediatR;
@@ -8,11 +9,8 @@ using System.Text;
 
 namespace BjBygg.Application.Commands.DocumentTypeCommands.Update
 {
-    public class UpdateDocumentTypeCommand : IRequest<DocumentTypeDto>
+    public class UpdateDocumentTypeCommand : UpdateCommand<DocumentTypeDto>
     {
-        [Required]
-        public int Id { get; set; }
-
         [Required(ErrorMessage = "{0} må fylles ut.")]
         [StringLength(45, ErrorMessage = "{0} kan maks være på {1} tegn.")]
         [Display(Name = "Navn")]

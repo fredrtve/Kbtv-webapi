@@ -1,17 +1,11 @@
+using BjBygg.Application.Commands.BaseEntityCommands.Update;
 using BjBygg.Application.Shared;
-using CleanArchitecture.Core.Entities;
-using MediatR;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace BjBygg.Application.Commands.EmployerCommands.Update
 {
-    public class UpdateEmployerCommand : IRequest<EmployerDto>
+    public class UpdateEmployerCommand : UpdateCommand<EmployerDto>
     {
-        [Required]
-        public int Id { get; set; }
         [Required(ErrorMessage = "{0} må fylles ut.")]
         [Display(Name = "Navn")]
         [StringLength(50, ErrorMessage = "{0} kan maks være på {1} tegn.")]

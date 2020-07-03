@@ -2,17 +2,11 @@ using AutoMapper;
 using BjBygg.Application.Shared;
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
-using CleanArchitecture.Core.Enums;
 using CleanArchitecture.Core.Exceptions;
-using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 

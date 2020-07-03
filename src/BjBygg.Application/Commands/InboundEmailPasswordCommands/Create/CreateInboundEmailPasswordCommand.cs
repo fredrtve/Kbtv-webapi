@@ -1,11 +1,10 @@
-using BjBygg.Application.Shared;
+using BjBygg.Application.Commands.BaseEntityCommands.Create;
 using BjBygg.Application.Shared.Dto;
-using MediatR;
 using System.ComponentModel.DataAnnotations;
 
 namespace BjBygg.Application.Commands.InboundEmailPasswordCommands.Create
 {
-    public class CreateInboundEmailPasswordCommand : IRequest<InboundEmailPasswordDto>
+    public class CreateInboundEmailPasswordCommand : CreateCommand<InboundEmailPasswordDto>
     {
         [Required(ErrorMessage = "{0} må fylles ut.")]
         [Display(Name = "Passord")]

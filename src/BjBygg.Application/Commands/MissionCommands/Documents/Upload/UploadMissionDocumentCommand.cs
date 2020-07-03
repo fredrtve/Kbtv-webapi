@@ -1,7 +1,6 @@
 using BjBygg.Application.Shared;
 using CleanArchitecture.SharedKernel;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 namespace BjBygg.Application.Commands.MissionCommands.Documents.Upload

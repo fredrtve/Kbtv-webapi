@@ -1,13 +1,8 @@
-using MediatR;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using BjBygg.Application.Commands.BaseEntityCommands.DeleteRange;
 
 namespace BjBygg.Application.Commands.InboundEmailPasswordCommands.DeleteRange
 {
-    public class DeleteRangeInboundEmailPasswordCommand : IRequest<bool>
+    public class DeleteRangeInboundEmailPasswordCommand : DeleteRangeCommand
     {
-        [Required(ErrorMessage = "{0} må fylles ut.")]
-        [Display(Name = "Ids")]
-        public IEnumerable<int> Ids { get; set; }
     }
 }

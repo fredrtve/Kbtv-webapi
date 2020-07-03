@@ -1,11 +1,11 @@
-using BjBygg.Application.Commands.Shared.DeleteRange;
+using BjBygg.Application.Commands.BaseEntityCommands.DeleteRange;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Infrastructure.Data;
 
 
 namespace BjBygg.Application.Commands.MissionCommands.Images.DeleteRange
 {
-    public class DeleteRangeMissionImageHandler : DeleteRangeHandler<MissionImage, DeleteRangeMissionImageCommand>
+    public class DeleteRangeMissionImageHandler : DeleteRangeCommandHandler<MissionImage, DeleteRangeMissionImageCommand>
     {
         public DeleteRangeMissionImageHandler(AppDbContext dbContext) : base(dbContext){}
     }

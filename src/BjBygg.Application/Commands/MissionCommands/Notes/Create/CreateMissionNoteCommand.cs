@@ -1,14 +1,10 @@
+using BjBygg.Application.Commands.BaseEntityCommands.Create;
 using BjBygg.Application.Shared;
-using CleanArchitecture.Core.Entities;
-using MediatR;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace BjBygg.Application.Commands.MissionCommands.Notes.Create
 {
-    public class CreateMissionNoteCommand : IRequest<MissionNoteDto>
+    public class CreateMissionNoteCommand : CreateCommand<MissionNoteDto>
     {
         [Required]
         public int MissionId { get; set; }

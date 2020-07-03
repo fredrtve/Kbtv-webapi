@@ -1,11 +1,8 @@
-using MediatR;
-using System.ComponentModel.DataAnnotations;
+using BjBygg.Application.Commands.BaseEntityCommands.Delete;
 
 namespace BjBygg.Application.Commands.MissionCommands.Documents.Delete
 {
-    public class DeleteMissionDocumentCommand : IRequest<bool>
+    public class DeleteMissionDocumentCommand : DeleteCommand
     {
-        [Required]
-        public int Id { get; set; }
     }
 }

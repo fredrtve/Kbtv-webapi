@@ -1,10 +1,11 @@
+using BjBygg.Application.Commands.BaseEntityCommands.Create;
 using BjBygg.Application.Shared;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 
 namespace BjBygg.Application.Commands.EmployerCommands.Create
 {
-    public class CreateEmployerCommand : IRequest<EmployerDto>
+    public class CreateEmployerCommand : CreateCommand<EmployerDto>
     {
         [Required(ErrorMessage = "{0} må fylles ut.")]
         [Display(Name = "Navn")]

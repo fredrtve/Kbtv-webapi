@@ -1,6 +1,8 @@
-using BjBygg.Application.Commands.Shared.DeleteRange;
+using BjBygg.Application.Commands.BaseEntityCommands.DeleteRange;
 
 namespace BjBygg.Application.Commands.DocumentTypeCommands.DeleteRange
 {
-    public class DeleteRangeDocumentTypeCommand : DeleteRangeCommand {}
+    public class DeleteRangeDocumentTypeCommand : DeleteRangeCommand 
+    {
+    }
 }

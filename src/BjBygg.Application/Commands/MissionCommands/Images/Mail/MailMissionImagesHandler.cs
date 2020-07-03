@@ -46,8 +46,7 @@ namespace BjBygg.Application.Commands.MissionCommands.Images.Mail
             var templateData = new MissionImagesTemplateData() { Missions = missionTemplates };
 
             var templateId = _configuration.GetValue<string>("SendGridMissionImagesTemplateId");
-
-       
+     
             await _mailService.SendTemplateEmailAsync(request.ToEmail, templateId, templateData);
      
             return true;

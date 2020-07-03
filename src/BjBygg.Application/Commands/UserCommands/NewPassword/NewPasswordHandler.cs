@@ -26,9 +26,12 @@ namespace BjBygg.Application.Commands.UserCommands.NewPassword
         public async Task<bool> Handle(NewPasswordCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
+
             if (user == null) throw new EntityNotFoundException($"Cant find user with username {request.UserName}");
+
             var passwordValidator = new PasswordValidator<ApplicationUser>();
             var validationResult = await passwordValidator.ValidateAsync(_userManager, user, request.NewPassword);
+
             if (!validationResult.Succeeded) 
                 throw new BadRequestException(validationResult.Errors.FirstOrDefault().ToString());
 

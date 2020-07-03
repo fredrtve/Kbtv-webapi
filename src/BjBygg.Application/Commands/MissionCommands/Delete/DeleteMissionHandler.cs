@@ -22,7 +22,9 @@ namespace BjBygg.Application.Commands.MissionCommands.Delete
         {
             var mission = await _dbContext.Set<Mission>().FindAsync(request.Id);
 
-            if (mission == null) throw new EntityNotFoundException($"Mission does not exist with id {request.Id}");
+            if (mission == null) throw new EntityNotFoundException($"Entity does not exist with id {request.Id}");
+
+            _dbContext.Set<Mission>().Remove(mission);
 
             _dbContext.Set<MissionImage>()
                 .RemoveRange(_dbContext.Set<MissionImage>().Where(x => x.MissionId == mission.Id));
@@ -30,10 +32,9 @@ namespace BjBygg.Application.Commands.MissionCommands.Delete
                 .RemoveRange(_dbContext.Set<MissionNote>().Where(x => x.MissionId == mission.Id));
             _dbContext.Set<MissionDocument>()
                 .RemoveRange(_dbContext.Set<MissionDocument>().Where(x => x.MissionId == mission.Id));
-
-            _dbContext.Set<Mission>().Remove(mission); 
-            
+         
             await _dbContext.SaveChangesAsync();
+
             return true;
         }
     }

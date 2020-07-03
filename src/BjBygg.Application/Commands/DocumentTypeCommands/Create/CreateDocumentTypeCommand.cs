@@ -1,3 +1,4 @@
+using BjBygg.Application.Commands.BaseEntityCommands.Create;
 using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Entities;
 using MediatR;
@@ -8,7 +9,7 @@ using System.Text;
 
 namespace BjBygg.Application.Commands.DocumentTypeCommands.Create
 {
-    public class CreateDocumentTypeCommand : IRequest<DocumentTypeDto>
+    public class CreateDocumentTypeCommand : CreateCommand<DocumentTypeDto>
     {
         [Required(ErrorMessage = "{0} må fylles ut.")]
         [StringLength(45, ErrorMessage = "{0} kan maks være på {1} tegn.")]
