@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using BjBygg.Application.Shared;
-using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Infrastructure.Data;
 using CleanArchitecture.SharedKernel;
 using MediatR;
@@ -8,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 

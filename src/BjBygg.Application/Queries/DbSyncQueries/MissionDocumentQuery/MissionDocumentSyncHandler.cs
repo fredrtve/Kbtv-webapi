@@ -15,7 +15,7 @@ namespace BjBygg.Application.Queries.DbSyncQueries.MissionDocumentQuery
 
         protected override IQueryable<MissionDocument> AppendQuery(IQueryable<MissionDocument> query, MissionDocumentSyncQuery request)
         {
-            if (request.User == null) throw new EntityNotFoundException($"No user found");
+            if (request.User == null) throw new EntityNotFoundException($"No user provided");
 
             if (request.User.Role == "Oppdragsgiver") //Only allow employers missions if role is employer
                 query = query.Include(x => x.Mission).Where(x => x.Mission.EmployerId == request.User.EmployerId);

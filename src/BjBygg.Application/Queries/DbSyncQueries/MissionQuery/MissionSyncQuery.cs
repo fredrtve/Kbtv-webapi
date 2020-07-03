@@ -2,7 +2,7 @@
 
 namespace BjBygg.Application.Queries.DbSyncQueries.MissionQuery
 {
-    public class MissionSyncQuery : DbSyncQuery<MissionDto>
+    public class MissionSyncQuery : UserDbSyncQuery<MissionDto>
     {
     }
 }

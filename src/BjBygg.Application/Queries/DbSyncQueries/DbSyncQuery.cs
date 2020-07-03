@@ -10,6 +10,5 @@ namespace BjBygg.Application.Queries.DbSyncQueries
     {
         public int? InitialNumberOfMonths { get; set; }
         public double? Timestamp { get; set; }
-        public UserDto? User { get; set; }
     }
 }

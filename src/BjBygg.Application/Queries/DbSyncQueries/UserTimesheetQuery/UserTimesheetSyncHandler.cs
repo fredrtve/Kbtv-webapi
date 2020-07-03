@@ -14,8 +14,6 @@ namespace BjBygg.Application.Queries.DbSyncQueries.TimesheetQuery
 
         protected override IQueryable<Timesheet> AppendQuery(IQueryable<Timesheet> query, UserTimesheetSyncQuery request)
         {
-            if (request.User == null) throw new EntityNotFoundException($"No user found");
-
             query = query.Where(x => x.UserName == request.User.UserName); //Only users entities
 
             return query;

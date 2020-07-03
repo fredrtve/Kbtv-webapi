@@ -15,7 +15,7 @@ namespace BjBygg.Application.Queries.DbSyncQueries.MissionImageQuery
 
         protected override IQueryable<MissionImage> AppendQuery(IQueryable<MissionImage> query, MissionImageSyncQuery request)
         {
-            if (request.User == null) throw new EntityNotFoundException($"No user found");
+            if (request.User == null) throw new EntityNotFoundException($"No user provided");
 
             if (request.User.Role == "Oppdragsgiver") //Only allow employers missions if role is employer
                 query = query.Include(x => x.Mission).Where(x => x.Mission.EmployerId == request.User.EmployerId);

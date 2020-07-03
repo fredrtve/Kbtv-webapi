@@ -2,7 +2,7 @@
 
 namespace BjBygg.Application.Queries.DbSyncQueries.TimesheetQuery
 {
-    public class UserTimesheetSyncQuery : DbSyncQuery<TimesheetDto>
+    public class UserTimesheetSyncQuery : UserDbSyncQuery<TimesheetDto>
     {
     }
 }
