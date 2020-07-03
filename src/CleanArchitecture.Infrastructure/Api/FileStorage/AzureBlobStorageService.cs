@@ -1,4 +1,5 @@
 using CleanArchitecture.Core.Interfaces.Services;
+using CleanArchitecture.SharedKernel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -47,42 +48,29 @@ namespace CleanArchitecture.Infrastructure.Api.FileStorage
             return allBlobs;
         }
 
-        public async Task<IEnumerable<Uri>> UploadFilesAsync(IFormFileCollection files, string folder)
+        public async Task<IEnumerable<Uri>> UploadFilesAsync(DisposableList<BasicFileStream> streams, string folder)
         {
             var blobContainer = await _azureBlobConnectionFactory.GetBlobContainer(folder);
             var blobs = new List<Uri>();
-            for (int i = 0; i < files.Count; i++)
+            for (int i = 0; i < streams.Count; i++)
             {
-                var blob = blobContainer.GetBlockBlobReference(GetRandomBlobName(Path.GetExtension(files[i].FileName)));
-                using (var stream = files[i].OpenReadStream())
-                {
-                    await blob.UploadFromStreamAsync(stream);
-                }
+                var blob = blobContainer.GetBlockBlobReference(GetRandomBlobName(streams[i].FileExtension));
+        
+                await blob.UploadFromStreamAsync(streams[i].Stream);
+                
                 blobs.Add(blob.Uri);
             }
             return blobs;
         }
 
-        public async Task<Uri> UploadFileAsync(IFormFile file, string folder)
+        public async Task<Uri> UploadFileAsync(BasicFileStream stream, string folder)
         {
             var blobContainer = await _azureBlobConnectionFactory.GetBlobContainer(folder);
 
-            var blob = blobContainer.GetBlockBlobReference(GetRandomBlobName(Path.GetExtension(file.FileName)));
-                using (var stream = file.OpenReadStream())
-                {
-                    await blob.UploadFromStreamAsync(stream);
-                }   
-            return blob.Uri;
-        }
-        public async Task<Uri> UploadFileAsync(Stream stream, string extension, string folder)
-        {
-            var blobContainer = await _azureBlobConnectionFactory.GetBlobContainer(folder);
-
-            var blob = blobContainer.GetBlockBlobReference(GetRandomBlobName(extension));
-            using (var st = stream)
-            {
-                await blob.UploadFromStreamAsync(st);
-            }
+            var blob = blobContainer.GetBlockBlobReference(GetRandomBlobName(stream.FileExtension));
+ 
+            await blob.UploadFromStreamAsync(stream.Stream);         
+            
             return blob.Uri;
         }
 
