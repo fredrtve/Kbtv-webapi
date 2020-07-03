@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using CleanArchitecture.Core.Exceptions;
 using BjBygg.Application.Shared;
 using BjBygg.Application.Commands.UserCommands.NewPassword;
+using Microsoft.Extensions.Logging;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,12 +21,8 @@ namespace BjBygg.WebApi.Controllers.User
 {
     public class UsersController : BaseController
     {
-        private readonly IMediator _mediator;
-
-        public UsersController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        public UsersController(IMediator mediator, ILogger<UserTimesheetsController> logger) : 
+            base(mediator, logger) {}
 
         [HttpGet]
         [Route("/")]
@@ -45,50 +42,41 @@ namespace BjBygg.WebApi.Controllers.User
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<UserDto> Create([FromBody] CreateUserCommand command)
+        public async Task<UserDto> Create([FromBody] CreateUserCommand request)
         {
-            if (!ModelState.IsValid)
-                throw new BadRequestException(ModelState.Values.ToString());
-
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize(Roles = "Leder")]
         [HttpGet]
         [Route("api/[controller]/{UserName}")]
-        public async Task<UserDto> GetUser(UserByUserNameQuery query)
+        public async Task<UserDto> GetUser(UserByUserNameQuery request)
         {
-            return await _mediator.Send(query);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize(Roles = "Leder")]
         [HttpPut]
         [Route("api/[controller]/{UserName}")]
-        public async Task<UserDto> Update([FromBody] UpdateUserCommand command)
+        public async Task<UserDto> Update([FromBody] UpdateUserCommand request)
         {
-            if (!ModelState.IsValid)
-                throw new BadRequestException(ModelState.Values.ToString());
-
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize(Roles = "Leder")]
         [HttpPut]
         [Route("api/[controller]/{UserName}/[action]")]
-        public async Task<bool> NewPassword([FromBody] NewPasswordCommand command)
+        public async Task<bool> NewPassword([FromBody] NewPasswordCommand request)
         {
-            if (!ModelState.IsValid)
-                throw new BadRequestException(ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage);
-
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize(Roles = "Leder")]
         [HttpDelete]
         [Route("api/[controller]/{UserName}")]
-        public async Task<bool> Delete(DeleteUserCommand command)
+        public async Task<bool> Delete(DeleteUserCommand request)
         {
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
 
     }

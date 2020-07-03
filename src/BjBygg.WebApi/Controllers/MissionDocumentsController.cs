@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using BjBygg.Application.Commands.MissionCommands.Documents.Delete;
@@ -9,6 +10,7 @@ using BjBygg.Application.Queries.DbSyncQueries;
 using BjBygg.Application.Queries.DbSyncQueries.MissionDocumentQuery;
 using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Exceptions;
+using CleanArchitecture.SharedKernel;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,21 +21,15 @@ namespace BjBygg.WebApi.Controllers
 {
     public class MissionDocumentsController : BaseController
     {
-        private readonly IMediator _mediator;
-        private readonly ILogger<MissionDocumentsController> _logger;
-
-        public MissionDocumentsController(IMediator mediator, ILogger<MissionDocumentsController> logger)
-        {
-            _mediator = mediator;
-            _logger = logger;
-        }
+        public MissionDocumentsController(IMediator mediator, ILogger<MissionDocumentsController> logger) :
+            base(mediator, logger){}
 
         [Authorize]
         [HttpGet]
         [Route("api/[controller]/[action]")]
-        public async Task<DbSyncResponse<MissionDocumentDto>> Sync(MissionDocumentSyncQuery query)
+        public async Task<DbSyncResponse<MissionDocumentDto>> Sync(MissionDocumentSyncQuery request)
         {
-            return await _mediator.Send(query);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize(Roles = "Leder")]
@@ -50,43 +46,44 @@ namespace BjBygg.WebApi.Controllers
                 MissingMemberHandling = MissingMemberHandling.Ignore
             };
 
-            var command = new UploadMissionDocumentCommand()
+            var file = Request.Form.Files[0];
+
+            using (var stream = file.OpenReadStream())
             {
-                File = Request.Form.Files[0],
-                DocumentType = JsonConvert.DeserializeObject<DocumentTypeDto>(Request.Form["DocumentType"], settings),
-                MissionId = missionId
-            };
+                var request = new UploadMissionDocumentCommand()
+                {
+                    File = new BasicFileStream(stream, Path.GetExtension(file.FileName)),
+                    DocumentType = JsonConvert.DeserializeObject<DocumentTypeDto>(Request.Form["DocumentType"], settings),
+                    MissionId = missionId
+                };
 
-            if (!TryValidateModel(command))
-                throw new BadRequestException(ModelState.Values.ToString());
-
-
-            return await _mediator.Send(command);
+                return await ValidateAndExecute(request);
+            }   
         }
 
         [Authorize(Roles = "Leder")]
         [HttpDelete]
         [Route("api/[controller]/{id}")]
-        public async Task<bool> Delete(DeleteMissionDocumentCommand command)
+        public async Task<bool> Delete(DeleteMissionDocumentCommand request)
         {
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]/DeleteRange")]
-        public async Task<bool> DeleteRange([FromBody] DeleteRangeMissionDocumentCommand command)
+        public async Task<bool> DeleteRange([FromBody] DeleteRangeMissionDocumentCommand request)
         {
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
 
 
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]/SendDocuments")]
-        public async Task<bool> SendDocuments([FromBody] MailMissionDocumentsCommand command)
+        public async Task<bool> SendDocuments([FromBody] MailMissionDocumentsCommand request)
         {
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
 
     }

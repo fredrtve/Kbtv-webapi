@@ -12,24 +12,21 @@ using CleanArchitecture.Core.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace BjBygg.WebApi.Controllers
 {
     public class DocumentTypesController : BaseController
     {
-        private readonly IMediator _mediator;
-
-        public DocumentTypesController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        public DocumentTypesController(IMediator mediator, ILogger<DocumentTypesController> logger) :
+            base(mediator, logger) {}
 
         [Authorize]
         [HttpGet]
         [Route("api/[controller]/[action]")]
-        public async Task<DbSyncResponse<DocumentTypeDto>> Sync(DocumentTypeSyncQuery query)
+        public async Task<DbSyncResponse<DocumentTypeDto>> Sync(DocumentTypeSyncQuery request)
         {
-            return await _mediator.Send(query);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize]
@@ -43,39 +40,33 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<DocumentTypeDto> Create([FromBody] CreateDocumentTypeCommand command)
+        public async Task<DocumentTypeDto> Create([FromBody] CreateDocumentTypeCommand request)
         {
-            if (!ModelState.IsValid)
-                throw new BadRequestException(ModelState.Values.ToString());
-
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize(Roles = "Leder")]
         [HttpPut]
         [Route("api/[controller]/{Id}")]
-        public async Task<DocumentTypeDto> Update([FromBody] UpdateDocumentTypeCommand command)
+        public async Task<DocumentTypeDto> Update([FromBody] UpdateDocumentTypeCommand request)
         {
-            if (!ModelState.IsValid)
-                throw new BadRequestException(ModelState.Values.ToString());
-
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize(Roles = "Leder")]
         [HttpDelete]
         [Route("api/[controller]/{Id}")]
-        public async Task<bool> Delete(DeleteDocumentTypeCommand command)
+        public async Task<bool> Delete(DeleteDocumentTypeCommand request)
         {
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]/DeleteRange")]
-        public async Task<bool> DeleteRange([FromBody] DeleteRangeDocumentTypeCommand command)
+        public async Task<bool> DeleteRange([FromBody] DeleteRangeDocumentTypeCommand request)
         {
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
     }
 }

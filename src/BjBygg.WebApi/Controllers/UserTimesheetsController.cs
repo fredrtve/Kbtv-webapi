@@ -17,6 +17,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -24,52 +25,44 @@ namespace BjBygg.WebApi.Controllers
 {
     public class UserTimesheetsController : BaseController
     {
-        private readonly IMediator _mediator;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
 
-        public UserTimesheetsController(IMediator mediator, UserManager<ApplicationUser> userManager, IMapper mapper)
+        public UserTimesheetsController(
+            IMediator mediator, 
+            ILogger<UserTimesheetsController> logger, 
+            UserManager<ApplicationUser> userManager) : base(mediator, logger)
         {
-            _mediator = mediator;
             _userManager = userManager;
-            _mapper = mapper;
         }
 
         [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
         [HttpGet]
         [Route("api/[controller]/[action]")]
-        public async Task<DbSyncResponse<TimesheetDto>> Sync(UserTimesheetSyncQuery query)
+        public async Task<DbSyncResponse<TimesheetDto>> Sync(UserTimesheetSyncQuery request)
         {
             var user = await _userManager.FindByNameAsync(User.FindFirstValue(ClaimTypes.Name));
-            query.User = _mapper.Map<UserDto>(user);
-            query.User.Role = User.FindFirstValue(ClaimTypes.Role);
-            return await _mediator.Send(query);
+            request.User = _mapper.Map<UserDto>(user);
+            request.User.Role = User.FindFirstValue(ClaimTypes.Role);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<TimesheetDto> Create([FromBody] CreateTimesheetCommand command)
+        public async Task<TimesheetDto> Create([FromBody] CreateTimesheetCommand request)
         {
-            if (!ModelState.IsValid)
-                throw new BadRequestException(ModelState.Values.ToString());
-
-            command.UserName = User.FindFirstValue(ClaimTypes.Name);
-
-            return await _mediator.Send(command);
+            request.UserName = User.FindFirstValue(ClaimTypes.Name);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
         [HttpPut]
         [Route("api/[controller]/{Id}")]
-        public async Task<TimesheetDto> Update([FromBody] UpdateTimesheetCommand command)
+        public async Task<TimesheetDto> Update([FromBody] UpdateTimesheetCommand request)
         {
-            if (!ModelState.IsValid)
-                throw new BadRequestException(ModelState.Values.ToString());
-
-            command.UserName = User.FindFirstValue(ClaimTypes.Name);
-
-            return await _mediator.Send(command);
+            request.UserName = User.FindFirstValue(ClaimTypes.Name);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
@@ -77,11 +70,14 @@ namespace BjBygg.WebApi.Controllers
         [Route("api/[controller]/{Id}")]
         public async Task<bool> Delete(int Id)
         {
-            return await _mediator.Send(new DeleteTimesheetCommand() {
+            var request = new DeleteTimesheetCommand()
+            {
                 Id = Id,
                 UserName = User.FindFirstValue(ClaimTypes.Name),
                 Role = User.FindFirstValue(ClaimTypes.Role),
-            });
+            };
+
+            return await ValidateAndExecute(request);
         }
 
     }

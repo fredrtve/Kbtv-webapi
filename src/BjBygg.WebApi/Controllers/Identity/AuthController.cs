@@ -5,11 +5,11 @@ using BjBygg.Application.Commands.IdentityCommands.UpdatePassword;
 using BjBygg.Application.Commands.IdentityCommands.UpdateProfile;
 using BjBygg.Application.Queries.UserQueries;
 using BjBygg.Application.Shared;
-using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Infrastructure.Auth;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -18,28 +18,27 @@ namespace BjBygg.WebApi.Controllers.Identity
 {
     public class AuthController : BaseController
     {
-        private readonly IMediator _mediator;
         private readonly AuthSettings _authSettings;
 
-        public AuthController(IMediator mediator, IOptions<AuthSettings> authSettings)
+        public AuthController(IMediator mediator, ILogger<AuthController> logger, IOptions<AuthSettings> authSettings) : 
+            base(mediator, logger)
         {
-            _mediator = mediator;
             _authSettings = authSettings.Value;
         }
 
         [HttpPost]
         [Route("api/[controller]/refresh")]
-        public async Task<RefreshTokenResponse> Refresh([FromBody] RefreshTokenCommand command)
+        public async Task<RefreshTokenResponse> Refresh([FromBody] RefreshTokenCommand request)
         {
-            command.SigningKey = _authSettings.SecretKey;
-            return await _mediator.Send(command);
+            request.SigningKey = _authSettings.SecretKey;
+            return await ValidateAndExecute(request);
         }
 
         [HttpPost]
         [Route("api/[controller]/login")]
-        public async Task<LoginResponse> Login([FromBody] LoginCommand command)
+        public async Task<LoginResponse> Login([FromBody] LoginCommand request)
         {
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize]
@@ -47,40 +46,38 @@ namespace BjBygg.WebApi.Controllers.Identity
         [Route("api/[controller]")]
         public async Task<UserDto> Get()
         {
-            return await _mediator.Send(new UserByUserNameQuery() { UserName = User.FindFirstValue(ClaimTypes.Name) });
+            var request = new UserByUserNameQuery() { UserName = User.FindFirstValue(ClaimTypes.Name) };
+            return await ValidateAndExecute(request);
         }
 
         [Authorize]
         [HttpPut]
         [Route("api/[controller]")]
-        public async Task<UserDto> UpdateProfile([FromBody] UpdateProfileCommand command)
+        public async Task<UserDto> UpdateProfile([FromBody] UpdateProfileCommand request)
         {
-            command.UserName = User.FindFirstValue(ClaimTypes.Name);
+            request.UserName = User.FindFirstValue(ClaimTypes.Name);
 
-            if (!ModelState.IsValid)
-                throw new BadRequestException(ModelState.Values.ToString());
-
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize]
         [HttpPut]
         [Route("api/[controller]/changePassword")]
-        public async Task<Unit> UpdatePassword([FromBody] UpdatePasswordCommand command)
+        public async Task<Unit> UpdatePassword([FromBody] UpdatePasswordCommand request)
         {
-            command.UserName = User.FindFirstValue(ClaimTypes.Name);
+            request.UserName = User.FindFirstValue(ClaimTypes.Name);
 
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize]
         [HttpPost]
         [Route("api/[controller]/logout")]
-        public async Task<Unit> Logout([FromBody] LogoutCommand command)
+        public async Task<Unit> Logout([FromBody] LogoutCommand request)
         {
-            command.UserName = User.FindFirstValue(ClaimTypes.Name);
+            request.UserName = User.FindFirstValue(ClaimTypes.Name);
 
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
 
     }

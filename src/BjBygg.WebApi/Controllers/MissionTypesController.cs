@@ -12,6 +12,7 @@ using CleanArchitecture.Core.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,19 +20,15 @@ namespace BjBygg.WebApi.Controllers
 {
     public class MissionTypesController : BaseController
     {
-        private readonly IMediator _mediator;
-
-        public MissionTypesController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        public MissionTypesController(IMediator mediator, ILogger<MissionTypesController> logger) :
+            base(mediator, logger) {}
 
         [Authorize]
         [HttpGet]
         [Route("api/[controller]/[action]")]
-        public async Task<DbSyncResponse<MissionTypeDto>> Sync(MissionTypeSyncQuery query)
+        public async Task<DbSyncResponse<MissionTypeDto>> Sync(MissionTypeSyncQuery request)
         {
-            return await _mediator.Send(query);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize]
@@ -45,39 +42,33 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<MissionTypeDto> Create([FromBody] CreateMissionTypeCommand command)
+        public async Task<MissionTypeDto> Create([FromBody] CreateMissionTypeCommand request)
         {
-            if (!ModelState.IsValid)
-                throw new BadRequestException(ModelState.Values.ToString());
-
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize(Roles = "Leder")]
         [HttpPut]
         [Route("api/[controller]/{Id}")]
-        public async Task<MissionTypeDto> Update([FromBody] UpdateMissionTypeCommand command)
+        public async Task<MissionTypeDto> Update([FromBody] UpdateMissionTypeCommand request)
         {
-            if (!ModelState.IsValid)
-                throw new BadRequestException(ModelState.Values.ToString());
-
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize(Roles = "Leder")]
         [HttpDelete]
         [Route("api/[controller]/{Id}")]
-        public async Task<bool> Delete(DeleteMissionTypeCommand command)
+        public async Task<bool> Delete(DeleteMissionTypeCommand request)
         {
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]/DeleteRange")]
-        public async Task<bool> DeleteRange([FromBody] DeleteRangeMissionTypeCommand command)
+        public async Task<bool> DeleteRange([FromBody] DeleteRangeMissionTypeCommand request)
         {
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
     }
 }

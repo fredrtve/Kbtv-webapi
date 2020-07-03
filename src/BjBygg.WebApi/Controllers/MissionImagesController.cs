@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using BjBygg.Application.Commands.MissionCommands.Images.Delete;
@@ -12,30 +13,26 @@ using BjBygg.Application.Shared;
 using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.Core.Interfaces.Services;
+using CleanArchitecture.SharedKernel;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace BjBygg.WebApi.Controllers
 {
     public class MissionImagesController : BaseController
     {
-        private readonly IMediator _mediator;
-        private readonly IMailService _mailService;
-
-        public MissionImagesController(IMediator mediator, IMailService mailService)
-        {
-            _mediator = mediator;
-            _mailService = mailService;
-        }
+        public MissionImagesController(IMediator mediator, ILogger<MissionImagesController> logger) :
+            base(mediator, logger) {}
 
         [Authorize]
         [HttpGet]
         [Route("api/[controller]/[action]")]
-        public async Task<DbSyncResponse<MissionImageDto>> Sync(MissionImageSyncQuery query)
+        public async Task<DbSyncResponse<MissionImageDto>> Sync(MissionImageSyncQuery request)
         {
-            return await _mediator.Send(query);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
@@ -46,36 +43,44 @@ namespace BjBygg.WebApi.Controllers
             if (Request.Form.Files.Count() == 0)
                 throw new BadRequestException("No files received");
 
-            var command = new UploadMissionImageCommand();
-            command.Files = Request.Form.Files;
-            command.MissionId = missionId;
+            using (var streamList = new DisposableList<BasicFileStream>())
+            {
+                streamList.AddRange(Request.Form.Files.ToList()
+                    .Select(x => new BasicFileStream(x.OpenReadStream(), Path.GetExtension(x.FileName))));
 
-            return await _mediator.Send(command);
+                var request = new UploadMissionImageCommand()
+                {
+                    Files = streamList,
+                    MissionId = missionId
+                };
+
+                return await ValidateAndExecute(request);
+            }
         }
 
         [Authorize(Roles = "Leder")]
         [HttpDelete]
         [Route("api/[controller]/{id}")]
-        public async Task<bool> Delete(DeleteMissionImageCommand command)
+        public async Task<bool> Delete(DeleteMissionImageCommand request)
         {
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]/DeleteRange")]
-        public async Task<bool> DeleteRange([FromBody] DeleteRangeMissionImageCommand command)
+        public async Task<bool> DeleteRange([FromBody] DeleteRangeMissionImageCommand request)
         {
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
 
 
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]/SendImages")]
-        public async Task<bool> SendImages([FromBody] MailMissionImagesCommand command)
+        public async Task<bool> SendImages([FromBody] MailMissionImagesCommand request)
         {
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
     }
 }

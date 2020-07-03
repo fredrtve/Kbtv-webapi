@@ -13,62 +13,53 @@ using CleanArchitecture.Core.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace BjBygg.WebApi.Controllers
 {
     public class MissionNotesController : BaseController
     {
-        private readonly IMediator _mediator;
-
-        public MissionNotesController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        public MissionNotesController(IMediator mediator, ILogger<MissionNotesController> logger) :
+            base(mediator, logger) {}
 
         [Authorize]
         [HttpGet]
         [Route("api/[controller]/[action]")]
-        public async Task<DbSyncResponse<MissionNoteDto>> Sync(MissionNoteSyncQuery query)
+        public async Task<DbSyncResponse<MissionNoteDto>> Sync(MissionNoteSyncQuery request)
         {
-            return await _mediator.Send(query);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize]
         [HttpGet]
         [Route("api/[controller]/{Id}")]
-        public async Task<MissionNoteDto> GetNote(int id)
+        public async Task<MissionNoteDto> GetNote(MissionNoteByIdQuery request)
         {
-            return await _mediator.Send(new MissionNoteByIdQuery() { Id = id });
+            return await ValidateAndExecute(request);
         }
 
         [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<MissionNoteDto> Create([FromBody] CreateMissionNoteCommand command)
+        public async Task<MissionNoteDto> Create([FromBody] CreateMissionNoteCommand request)
         {
-            if (!ModelState.IsValid)
-                throw new BadRequestException(ModelState.Values.ToString());
-
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize(Roles = "Leder")]
         [HttpPut]
         [Route("api/[controller]/{Id}")]
-        public async Task<MissionNoteDto> Update([FromBody] UpdateMissionNoteCommand command)
+        public async Task<MissionNoteDto> Update([FromBody] UpdateMissionNoteCommand request)
         {
-            if (!ModelState.IsValid)
-                throw new BadRequestException(ModelState.Values.ToString());
-
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize(Roles = "Leder")]
         [HttpDelete]
         [Route("api/[controller]/{Id}")]
-        public async Task<bool> Delete(DeleteMissionNoteCommand command)
+        public async Task<bool> Delete(DeleteMissionNoteCommand request)
         {
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
     }
 }

@@ -16,54 +16,31 @@ namespace BjBygg.WebApi.Controllers
 {
     public class InboundEmailPasswordController : BaseController
     {
-        private readonly IMediator _mediator;
-        private readonly ILogger<InboundEmailPasswordController> _logger;
-
-        public InboundEmailPasswordController(IMediator mediator, ILogger<InboundEmailPasswordController> logger)
-        {
-            _mediator = mediator;
-            _logger = logger;
-        }
+        public InboundEmailPasswordController(IMediator mediator, ILogger<InboundEmailPasswordController> logger) :
+            base(mediator, logger){}
 
         [Authorize(Roles = "Leder")]
         [HttpGet]
         [Route("api/[controller]")]
-        public async Task<IEnumerable<InboundEmailPasswordDto>> GetAll(InboundEmailPasswordListQuery query)
+        public async Task<IEnumerable<InboundEmailPasswordDto>> GetAll(InboundEmailPasswordListQuery request)
         {
-            return await _mediator.Send(query);
+            return await _mediator.Send(request);
         }
 
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<InboundEmailPasswordDto> Create([FromBody] CreateInboundEmailPasswordCommand command)
+        public async Task<InboundEmailPasswordDto> Create([FromBody] CreateInboundEmailPasswordCommand request)
         {
-            if (!ModelState.IsValid)
-                throw new BadRequestException(ModelState.Values.ToString());
-
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
-
-        //[Authorize(Roles = "Leder")]
-        //[HttpPost]
-        //[Route("api/[controller]/[action]")]
-        //public async Task<bool> Verify(VerifyInboundEmailPasswordCommand command)
-        //{
-        //    if (!ModelState.IsValid)
-        //        throw new BadRequestException(ModelState.Values.ToString());
-
-        //    return await _mediator.Send(command);
-        //}
 
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]/DeleteRange")]
-        public async Task<bool> DeleteRange([FromBody] DeleteRangeInboundEmailPasswordCommand command)
+        public async Task<bool> DeleteRange([FromBody] DeleteRangeInboundEmailPasswordCommand request)
         {
-            if (!ModelState.IsValid)
-                throw new BadRequestException(ModelState.Values.ToString());
-            
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
 
 

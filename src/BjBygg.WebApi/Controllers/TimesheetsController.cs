@@ -14,6 +14,7 @@ using CleanArchitecture.Core.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,44 +22,31 @@ namespace BjBygg.WebApi.Controllers
 {
     public class TimesheetsController : BaseController
     {
-        private readonly IMediator _mediator;
-
-        public TimesheetsController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        public TimesheetsController(IMediator mediator, ILogger<TimesheetsController> logger) : 
+            base(mediator, logger) {}
 
         [Authorize(Roles = "Leder")]
         [HttpGet]
         [Route("api/[controller]")]
-        public async Task<IEnumerable<TimesheetDto>> Get(TimesheetQuery query)
+        public async Task<IEnumerable<TimesheetDto>> Get(TimesheetQuery request)
         {
-            //if (!ModelState.IsValid)
-            //    throw new BadRequestException(ModelState.Values.ToString());
-
-            return await _mediator.Send(query);
+            return await _mediator.Send(request);
         }
 
         [Authorize(Roles = "Leder")]
         [HttpPut]
         [Route("api/[controller]/{Id}/Status")]
-        public async Task<TimesheetDto> UpdateStatus([FromBody] UpdateTimesheetStatusCommand command)
+        public async Task<TimesheetDto> UpdateStatus([FromBody] UpdateTimesheetStatusCommand request)
         {
-            if (!ModelState.IsValid)
-                throw new BadRequestException(ModelState.Values.ToString());
-
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize(Roles = "Leder")]
         [HttpPut]
         [Route("api/[controller]/Status")]
-        public async Task<IEnumerable<TimesheetDto>> UpdateStatuses([FromBody] UpdateTimesheetStatusRangeCommand command)
+        public async Task<IEnumerable<TimesheetDto>> UpdateStatuses([FromBody] UpdateTimesheetStatusRangeCommand request)
         {
-            if (!ModelState.IsValid)
-                throw new BadRequestException(ModelState.Values.ToString());
-
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
     }
 }

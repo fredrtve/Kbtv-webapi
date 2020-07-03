@@ -12,6 +12,7 @@ using CleanArchitecture.Core.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,19 +20,15 @@ namespace BjBygg.WebApi.Controllers
 {
     public class EmployersController : BaseController
     {
-        private readonly IMediator _mediator;
-
-        public EmployersController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        public EmployersController(IMediator mediator, ILogger<EmployersController> logger) :
+            base(mediator, logger) {}
 
         [Authorize]
         [HttpGet]
         [Route("api/[controller]/[action]")]
-        public async Task<DbSyncResponse<EmployerDto>> Sync(EmployerSyncQuery query)
+        public async Task<DbSyncResponse<EmployerDto>> Sync(EmployerSyncQuery request)
         {
-            return await _mediator.Send(query);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize]
@@ -45,39 +42,33 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder, Mellomleder")]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<EmployerDto> Create([FromBody] CreateEmployerCommand command)
+        public async Task<EmployerDto> Create([FromBody] CreateEmployerCommand request)
         {
-            if (!ModelState.IsValid)
-                throw new BadRequestException(ModelState.Values.ToString());
-
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize(Roles = "Leder")]
         [HttpPut]
         [Route("api/[controller]/{Id}")]
-        public async Task<EmployerDto> Update([FromBody] UpdateEmployerCommand command)
+        public async Task<EmployerDto> Update([FromBody] UpdateEmployerCommand request)
         {
-            if (!ModelState.IsValid)
-                throw new BadRequestException(ModelState.Values.ToString());
-
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize(Roles = "Leder")]
         [HttpDelete]
         [Route("api/[controller]/{Id}")]
-        public async Task<bool> Delete(DeleteEmployerCommand command)
+        public async Task<bool> Delete(DeleteEmployerCommand request)
         {
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
 
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]/DeleteRange")]
-        public async Task<bool> DeleteRange([FromBody] DeleteRangeEmployerCommand command)
+        public async Task<bool> DeleteRange([FromBody] DeleteRangeEmployerCommand request)
         {
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
     }
 }

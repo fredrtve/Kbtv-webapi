@@ -4,24 +4,21 @@ using BjBygg.Application.Commands.ExportCsvCommands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace BjBygg.WebApi.Controllers
 {
     public class ExportJsonToCsvController : BaseController
     {
-        private readonly IMediator _mediator;
+        public ExportJsonToCsvController(IMediator mediator, ILogger<ExportJsonToCsvController> logger) :
+            base(mediator, logger) {}
 
-        public ExportJsonToCsvController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
- 
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<Uri> Export([FromBody] ExportJsonToCsvCommand command)
+        public async Task<Uri> Export([FromBody] ExportJsonToCsvCommand request)
         {
-            return await _mediator.Send(command);
+            return await ValidateAndExecute(request);
         }
 
     }
