@@ -7,7 +7,7 @@ using BjBygg.Application.Commands.MissionTypeCommands.Update;
 using BjBygg.Application.Queries.DbSyncQueries;
 using BjBygg.Application.Queries.DbSyncQueries.MissionTypeQuery;
 using BjBygg.Application.Queries.MissionTypeQueries.List;
-using BjBygg.Application.Shared;
+using BjBygg.Application.Common;
 using CleanArchitecture.Core.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

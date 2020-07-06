@@ -9,7 +9,7 @@ using BjBygg.Application.Commands.MissionCommands.Images.Mail;
 using BjBygg.Application.Commands.MissionCommands.Images.Upload;
 using BjBygg.Application.Queries.DbSyncQueries;
 using BjBygg.Application.Queries.DbSyncQueries.MissionImageQuery;
-using BjBygg.Application.Shared;
+using BjBygg.Application.Common;
 using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.Core.Interfaces.Services;

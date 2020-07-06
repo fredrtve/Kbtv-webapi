@@ -1,6 +1,8 @@
+using AutoMapper;
 using BjBygg.Application.Commands.BaseEntityCommands.Update;
-using BjBygg.Application.Shared;
+using BjBygg.Application.Common;
 using CleanArchitecture.Core.Entities;
+using CleanArchitecture.Infrastructure.Data;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -11,9 +13,11 @@ namespace BjBygg.Application.Commands.DocumentTypeCommands.Update
 {
     public class UpdateDocumentTypeCommand : UpdateCommand<DocumentTypeDto>
     {
-        [Required(ErrorMessage = "{0} må fylles ut.")]
-        [StringLength(45, ErrorMessage = "{0} kan maks være på {1} tegn.")]
-        [Display(Name = "Navn")]
         public string Name { get; set; }
+    }
+    public class UpdateDocumentTypeCommandHandler : UpdateHandler<DocumentType, UpdateDocumentTypeCommand, DocumentTypeDto>
+    {
+        public UpdateDocumentTypeCommandHandler(AppDbContext dbContext, IMapper mapper) :
+            base(dbContext, mapper) {}
     }
 }

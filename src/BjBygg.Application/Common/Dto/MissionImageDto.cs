@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BjBygg.Application.Shared
+namespace BjBygg.Application.Common
 {
     public class MissionImageDto : DbSyncDto
     {
@@ -11,8 +11,6 @@ namespace BjBygg.Application.Shared
         public int MissionId { get; set; }
 
         public Uri FileURL { get; set; }
-
-        public DateTime UpdatedAt { get; set; }
 
     }
 }

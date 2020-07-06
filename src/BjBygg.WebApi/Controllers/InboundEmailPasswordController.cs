@@ -2,7 +2,7 @@
 using BjBygg.Application.Commands.InboundEmailPasswordCommands.DeleteRange;
 using BjBygg.Application.Commands.InboundEmailPasswordCommands.Verify;
 using BjBygg.Application.Queries;
-using BjBygg.Application.Shared.Dto;
+using BjBygg.Application.Common.Dto;
 using CleanArchitecture.Core.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

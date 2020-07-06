@@ -1,5 +1,5 @@
 using BjBygg.Application.Commands.BaseEntityCommands.Create;
-using BjBygg.Application.Shared;
+using BjBygg.Application.Common;
 using System.ComponentModel.DataAnnotations;
 
 namespace BjBygg.Application.Commands.MissionTypeCommands.Create

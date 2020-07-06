@@ -1,4 +1,4 @@
-using BjBygg.Application.Shared;
+using BjBygg.Application.Common;
 using MediatR;
 
 namespace BjBygg.Application.Queries.MissionQueries

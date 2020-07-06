@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Commands.BaseEntityCommands.Create
 {
-    public class CreateHandler<TEntity, TCommand, TResponse> : IRequestHandler<TCommand, TResponse>
+    public abstract class CreateHandler<TEntity, TCommand, TResponse> : IRequestHandler<TCommand, TResponse>
         where TEntity : BaseEntity where TCommand : CreateCommand<TResponse>
     {
         private readonly DbContext _dbContext;

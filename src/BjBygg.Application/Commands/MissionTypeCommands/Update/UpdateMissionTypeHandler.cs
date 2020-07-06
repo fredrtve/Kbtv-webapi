@@ -1,6 +1,6 @@
 using AutoMapper;
 using BjBygg.Application.Commands.BaseEntityCommands.Update;
-using BjBygg.Application.Shared;
+using BjBygg.Application.Common;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Infrastructure.Data;
 

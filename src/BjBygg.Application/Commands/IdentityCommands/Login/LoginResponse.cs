@@ -1,4 +1,4 @@
-﻿using BjBygg.Application.Shared;
+﻿using BjBygg.Application.Common;
 using CleanArchitecture.Core.Dto;
 
 namespace BjBygg.Application.Commands.IdentityCommands.Login

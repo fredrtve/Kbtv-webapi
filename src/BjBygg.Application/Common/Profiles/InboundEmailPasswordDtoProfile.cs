@@ -1,8 +1,8 @@
 using AutoMapper;
-using BjBygg.Application.Shared.Dto;
+using BjBygg.Application.Common.Dto;
 using CleanArchitecture.Infrastructure.Identity;
 
-namespace BjBygg.Application.Shared
+namespace BjBygg.Application.Common
 {
     public class InboundEmailPasswordDtoProfile : Profile
     {

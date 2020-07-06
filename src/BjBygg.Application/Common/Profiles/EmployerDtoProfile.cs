@@ -1,7 +1,7 @@
 using AutoMapper;
 using CleanArchitecture.Core.Entities;
 
-namespace BjBygg.Application.Shared
+namespace BjBygg.Application.Common
 {
     public class EmployerDtoProfile : Profile
     {

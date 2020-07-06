@@ -11,7 +11,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using CleanArchitecture.Core.Exceptions;
-using BjBygg.Application.Shared;
+using BjBygg.Application.Common;
 using BjBygg.Application.Commands.UserCommands.NewPassword;
 using Microsoft.Extensions.Logging;
 

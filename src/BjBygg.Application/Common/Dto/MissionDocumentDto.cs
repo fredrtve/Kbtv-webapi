@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BjBygg.Application.Shared
+namespace BjBygg.Application.Common
 {
     public class MissionDocumentDto : DbSyncDto
     {
@@ -17,6 +17,5 @@ namespace BjBygg.Application.Shared
 
         public DocumentTypeDto DocumentType { get; set; }
 
-        public DateTime UpdatedAt { get; set; }
     }
 }

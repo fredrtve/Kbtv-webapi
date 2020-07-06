@@ -5,7 +5,7 @@ using AutoMapper;
 using CleanArchitecture.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
-using BjBygg.Application.Shared;
+using BjBygg.Application.Common;
 using CleanArchitecture.Core.Exceptions;
 
 namespace BjBygg.Application.Queries.UserQueries

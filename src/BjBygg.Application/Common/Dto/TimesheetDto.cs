@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BjBygg.Application.Shared
+namespace BjBygg.Application.Common
 {
     public class TimesheetDto : DbSyncDto
     {

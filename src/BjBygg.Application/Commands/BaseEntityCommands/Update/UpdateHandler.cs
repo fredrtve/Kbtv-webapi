@@ -3,13 +3,12 @@ using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.SharedKernel;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace BjBygg.Application.Commands.BaseEntityCommands.Update
 {
-    public class UpdateHandler<TEntity, TCommand, TResponse> : IRequestHandler<TCommand, TResponse>
+    public abstract class UpdateHandler<TEntity, TCommand, TResponse> : IRequestHandler<TCommand, TResponse>
         where TEntity : BaseEntity where TCommand : UpdateCommand<TResponse>
     {
         private readonly DbContext _dbContext;
@@ -34,12 +33,7 @@ namespace BjBygg.Application.Commands.BaseEntityCommands.Update
                 dbEntity.GetType().GetProperty(property.Name).SetValue(dbEntity, property.GetValue(request), null);
             }
 
-
-            try { await _dbContext.SaveChangesAsync(); }
-            catch (Exception ex)
-            {
-                throw new BadRequestException($"Something went wrong when storing your request");
-            }
+            await _dbContext.SaveChangesAsync();
 
             return _mapper.Map<TResponse>(dbEntity);
         }

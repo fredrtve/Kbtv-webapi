@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using CleanArchitecture.Infrastructure.Identity;
 using AutoMapper;
 using CleanArchitecture.Core.Exceptions;
-using BjBygg.Application.Shared;
+using BjBygg.Application.Common;
 
 namespace BjBygg.Application.Queries.DbSyncQueries.SyncAll
 {

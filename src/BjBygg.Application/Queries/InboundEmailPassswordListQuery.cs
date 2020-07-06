@@ -1,4 +1,4 @@
-﻿using BjBygg.Application.Shared.Dto;
+﻿using BjBygg.Application.Common.Dto;
 using MediatR;
 using System;
 using System.Collections.Generic;

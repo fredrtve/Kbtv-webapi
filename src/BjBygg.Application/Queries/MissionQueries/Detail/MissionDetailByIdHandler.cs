@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using BjBygg.Application.Shared;
+using BjBygg.Application.Common;
 using CleanArchitecture.Core.Exceptions;
 
 namespace BjBygg.Application.Queries.MissionQueries.Detail

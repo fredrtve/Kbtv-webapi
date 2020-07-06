@@ -4,7 +4,7 @@ using CleanArchitecture.Core.Entities;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using BjBygg.Application.Shared;
+using BjBygg.Application.Common;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using CleanArchitecture.Core.Exceptions;

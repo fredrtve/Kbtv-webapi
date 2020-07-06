@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace BjBygg.Application.Shared
+namespace BjBygg.Application.Common
 {
     public class MissionTypeDto : DbSyncDto
     {

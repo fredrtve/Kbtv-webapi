@@ -1,5 +1,5 @@
 using AutoMapper;
-using BjBygg.Application.Shared;
+using BjBygg.Application.Common;
 using CleanArchitecture.Core.Entities;
 
 namespace BjBygg.Application.Commands.MissionCommands.Create

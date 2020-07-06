@@ -1,5 +1,5 @@
 using AutoMapper;
-using BjBygg.Application.Shared;
+using BjBygg.Application.Common;
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Enums;

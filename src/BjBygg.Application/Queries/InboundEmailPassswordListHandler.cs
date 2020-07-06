@@ -1,4 +1,4 @@
-﻿using BjBygg.Application.Shared.Dto;
+﻿using BjBygg.Application.Common.Dto;
 using CleanArchitecture.Infrastructure.Identity;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

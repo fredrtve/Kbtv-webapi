@@ -4,7 +4,7 @@ using BjBygg.Application.Commands.IdentityCommands.RefreshToken;
 using BjBygg.Application.Commands.IdentityCommands.UpdatePassword;
 using BjBygg.Application.Commands.IdentityCommands.UpdateProfile;
 using BjBygg.Application.Queries.UserQueries;
-using BjBygg.Application.Shared;
+using BjBygg.Application.Common;
 using CleanArchitecture.Infrastructure.Auth;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

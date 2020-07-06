@@ -1,5 +1,5 @@
 using BjBygg.Application.Queries.UserQueries;
-using BjBygg.Application.Shared;
+using BjBygg.Application.Common;
 using CleanArchitecture.Core.Entities;
 using MediatR;
 using System;

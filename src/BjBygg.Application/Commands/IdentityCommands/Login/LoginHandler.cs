@@ -1,5 +1,5 @@
 using AutoMapper;
-using BjBygg.Application.Shared;
+using BjBygg.Application.Common;
 using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure.Auth;

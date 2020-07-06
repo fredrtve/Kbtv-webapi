@@ -1,4 +1,4 @@
-﻿using BjBygg.Application.Shared;
+﻿using BjBygg.Application.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

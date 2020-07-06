@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using CleanArchitecture.Infrastructure.Identity;
 
-namespace BjBygg.Application.Shared
+namespace BjBygg.Application.Common
 {
     public class UserDtoProfile : Profile
     {

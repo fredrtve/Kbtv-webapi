@@ -1,4 +1,4 @@
-using BjBygg.Application.Shared;
+using BjBygg.Application.Common;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Enums;
 using MediatR;

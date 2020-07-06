@@ -1,5 +1,5 @@
 
-using BjBygg.Application.Shared;
+using BjBygg.Application.Common;
 using CleanArchitecture.SharedKernel;
 using MediatR;
 using Microsoft.AspNetCore.Http;

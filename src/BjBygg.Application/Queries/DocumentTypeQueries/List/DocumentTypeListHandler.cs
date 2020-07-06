@@ -10,7 +10,7 @@ using AutoMapper;
 using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using BjBygg.Application.Shared;
+using BjBygg.Application.Common;
 
 namespace BjBygg.Application.Queries.DocumentTypeQueries.List
 {

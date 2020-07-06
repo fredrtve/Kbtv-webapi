@@ -7,7 +7,7 @@ using BjBygg.Application.Commands.EmployerCommands.Update;
 using BjBygg.Application.Queries.DbSyncQueries;
 using BjBygg.Application.Queries.DbSyncQueries.EmployerQuery;
 using BjBygg.Application.Queries.EmployerQueries.List;
-using BjBygg.Application.Shared;
+using BjBygg.Application.Common;
 using CleanArchitecture.Core.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

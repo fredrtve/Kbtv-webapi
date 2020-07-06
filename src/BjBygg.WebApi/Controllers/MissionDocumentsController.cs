@@ -8,7 +8,7 @@ using BjBygg.Application.Commands.MissionCommands.Documents.Mail;
 using BjBygg.Application.Commands.MissionCommands.Documents.Upload;
 using BjBygg.Application.Queries.DbSyncQueries;
 using BjBygg.Application.Queries.DbSyncQueries.MissionDocumentQuery;
-using BjBygg.Application.Shared;
+using BjBygg.Application.Common;
 using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.SharedKernel;
 using MediatR;

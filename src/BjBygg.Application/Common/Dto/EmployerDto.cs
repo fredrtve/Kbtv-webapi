@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace BjBygg.Application.Shared
+namespace BjBygg.Application.Common
 {
     public class EmployerDto : DbSyncDto
     {

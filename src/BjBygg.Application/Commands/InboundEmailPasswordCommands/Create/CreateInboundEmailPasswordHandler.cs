@@ -1,6 +1,6 @@
 using AutoMapper;
 using BjBygg.Application.Commands.BaseEntityCommands.Create;
-using BjBygg.Application.Shared.Dto;
+using BjBygg.Application.Common.Dto;
 using CleanArchitecture.Infrastructure.Identity;
 
 namespace BjBygg.Application.Commands.InboundEmailPasswordCommands.Create

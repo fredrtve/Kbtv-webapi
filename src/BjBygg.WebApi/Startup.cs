@@ -15,7 +15,7 @@ using CleanArchitecture.Infrastructure.Api.FileStorage;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using BjBygg.Application.Shared;
+using BjBygg.Application.Common;
 using CleanArchitecture.Infrastructure.Api.SendGridMailService;
 using Microsoft.AspNetCore.Http.Features;
 using System;

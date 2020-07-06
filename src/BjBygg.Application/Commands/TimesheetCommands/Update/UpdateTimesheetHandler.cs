@@ -1,6 +1,6 @@
 using AutoMapper;
 using BjBygg.Application.Queries.MissionQueries;
-using BjBygg.Application.Shared;
+using BjBygg.Application.Common;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Enums;
 using CleanArchitecture.Core.Exceptions;

@@ -1,18 +1,14 @@
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
 using CleanArchitecture.Core.Entities;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using BjBygg.Application.Queries.MissionTypeQueries.List;
-using BjBygg.Application.Queries.MissionTypeQueries;
-using BjBygg.Application.Shared;
+using BjBygg.Application.Common;
 
 namespace BjBygg.Application.Queries.MissionQueries.List
 {

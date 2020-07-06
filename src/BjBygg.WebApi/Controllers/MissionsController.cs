@@ -16,7 +16,7 @@ using BjBygg.Application.Queries.DbSyncQueries.MissionQuery;
 using BjBygg.Application.Queries.MissionQueries;
 using BjBygg.Application.Queries.MissionQueries.Detail;
 using BjBygg.Application.Queries.MissionQueries.List;
-using BjBygg.Application.Shared;
+using BjBygg.Application.Common;
 using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.SharedKernel;
 using MediatR;

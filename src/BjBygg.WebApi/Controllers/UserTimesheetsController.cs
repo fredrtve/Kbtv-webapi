@@ -10,7 +10,7 @@ using BjBygg.Application.Commands.TimesheetCommands.UpdateStatus;
 using BjBygg.Application.Commands.TimesheetCommands.UpdateStatusRange;
 using BjBygg.Application.Queries.DbSyncQueries;
 using BjBygg.Application.Queries.DbSyncQueries.TimesheetQuery;
-using BjBygg.Application.Shared;
+using BjBygg.Application.Common;
 using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Infrastructure.Identity;
 using MediatR;
