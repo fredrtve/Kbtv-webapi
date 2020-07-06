@@ -3,9 +3,9 @@ using CleanArchitecture.Core.Entities;
 
 namespace BjBygg.Application.Commands.DocumentTypeCommands.Update
 {
-    class UpdateDocumentTypeProfile : Profile
+    class UpdateDocumentTypeCommandProfile : Profile
     {
-        public UpdateDocumentTypeProfile()
+        public UpdateDocumentTypeCommandProfile()
         {
             CreateMap<UpdateDocumentTypeCommand, DocumentType>();
         }

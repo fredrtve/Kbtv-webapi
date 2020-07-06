@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Commands.IdentityCommands.Login
 {
-    public class LoginHandler : IRequestHandler<LoginCommand, LoginResponse>
+    public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
     {
         private readonly AuthSettings _authSettings;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -23,7 +23,7 @@ namespace BjBygg.Application.Commands.IdentityCommands.Login
         private readonly IJwtFactory _jwtFactory;
         private readonly ITokenFactory _tokenFactory;
 
-        public LoginHandler(
+        public LoginCommandHandler(
             IOptions<AuthSettings> authSettings,
             UserManager<ApplicationUser> userManager,
             AppIdentityDbContext dbContext,

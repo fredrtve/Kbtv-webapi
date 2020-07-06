@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Commands.BaseEntityCommands.Delete
 {
-    public abstract class DeleteHandler<TEntity, TCommand> : IRequestHandler<TCommand, bool>
+    public abstract class DeleteCommandHandler<TEntity, TCommand> : IRequestHandler<TCommand>
         where TEntity : BaseEntity where TCommand : DeleteCommand
     {
         private readonly DbContext _dbContext;
 
-        public DeleteHandler(DbContext dbContext)
+        public DeleteCommandHandler(DbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<bool> Handle(TCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(TCommand request, CancellationToken cancellationToken)
         {
             var entity = await _dbContext.Set<TEntity>().FindAsync(request.Id);
 
@@ -27,7 +27,7 @@ namespace BjBygg.Application.Commands.BaseEntityCommands.Delete
             
             await _dbContext.SaveChangesAsync();
 
-            return true;
+            return Unit.Value;
         }
     }
 }

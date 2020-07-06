@@ -4,35 +4,29 @@ using CleanArchitecture.Infrastructure.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace BjBygg.Application.Commands.IdentityCommands.RefreshToken
 {
-    public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, RefreshTokenResponse>
+    public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, RefreshTokenResponse>
     {
         private readonly IJwtTokenValidator _jwtTokenValidator;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly AppIdentityDbContext _dbContext;
         private readonly IJwtFactory _jwtFactory;
-        private readonly ITokenFactory _tokenFactory;
 
-        public RefreshTokenHandler(
+        public RefreshTokenCommandHandler(
             IJwtTokenValidator jwtTokenValidator,
             UserManager<ApplicationUser> userManager,
             AppIdentityDbContext dbContext,
-            IJwtFactory jwtFactory, 
-            ITokenFactory tokenFactory)
+            IJwtFactory jwtFactory )
         {
             _jwtTokenValidator = jwtTokenValidator;
             _userManager = userManager;
             _dbContext = dbContext;
             _jwtFactory = jwtFactory;
-            _tokenFactory = tokenFactory;
         }
 
         public async Task<RefreshTokenResponse> Handle(RefreshTokenCommand command, CancellationToken cancellationToken)

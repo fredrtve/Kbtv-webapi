@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Commands.BaseEntityCommands.Create
 {
-    public abstract class CreateHandler<TEntity, TCommand, TResponse> : IRequestHandler<TCommand, TResponse>
-        where TEntity : BaseEntity where TCommand : CreateCommand<TResponse>
+    public abstract class CreateCommandHandler<TEntity, TCommand> : IRequestHandler<TCommand, int>
+        where TEntity : BaseEntity where TCommand : CreateCommand
     {
         private readonly DbContext _dbContext;
         private readonly IMapper _mapper;
 
-        public CreateHandler(DbContext dbContext, IMapper mapper)
+        public CreateCommandHandler(DbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
         }
 
-        public async Task<TResponse> Handle(TCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(TCommand request, CancellationToken cancellationToken)
         {
             var entity = _mapper.Map<TEntity>(request);
 
@@ -27,7 +27,7 @@ namespace BjBygg.Application.Commands.BaseEntityCommands.Create
 
             await _dbContext.SaveChangesAsync();
 
-            return _mapper.Map<TResponse>(entity);
+            return entity.Id;
         }
     }
 }

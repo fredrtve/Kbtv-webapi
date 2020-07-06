@@ -3,9 +3,9 @@ using CleanArchitecture.Core.Entities;
 
 namespace BjBygg.Application.Commands.DocumentTypeCommands.Create
 {
-    public class CreateDocumentTypeProfile : Profile
+    public class CreateDocumentTypeCommandProfile : Profile
     {
-        public CreateDocumentTypeProfile()
+        public CreateDocumentTypeCommandProfile()
         {
             CreateMap<CreateDocumentTypeCommand, DocumentType>();
         }

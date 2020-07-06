@@ -6,9 +6,9 @@ using System.Text;
 
 namespace BjBygg.Application.Commands.EmployerCommands.Create
 {
-    class CreateEmployerProfile : Profile
+    class CreateEmployerCommandProfile : Profile
     {
-        public CreateEmployerProfile()
+        public CreateEmployerCommandProfile()
         {
             CreateMap<CreateEmployerCommand, Employer>();
         }

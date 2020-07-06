@@ -1,24 +1,20 @@
-using AutoMapper;
-using BjBygg.Application.Common;
 using CleanArchitecture.Core.Exceptions;
-using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace BjBygg.Application.Commands.IdentityCommands.Logout
 {
-    public class LogoutHandler : IRequestHandler<LogoutCommand, Unit>
+    public class LogoutCommandHandler : IRequestHandler<LogoutCommand, Unit>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly AppIdentityDbContext _dbContext;
 
-        public LogoutHandler(
+        public LogoutCommandHandler(
             UserManager<ApplicationUser> userManager,
             AppIdentityDbContext dbContext)
         {

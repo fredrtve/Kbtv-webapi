@@ -1,28 +1,20 @@
 using AutoMapper;
-using BjBygg.Application.Queries.UserQueries;
 using BjBygg.Application.Common;
-using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Exceptions;
-using CleanArchitecture.Infrastructure.Data;
 using CleanArchitecture.Infrastructure.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace BjBygg.Application.Commands.IdentityCommands.UpdateProfile
 {
-    public class UpdateProfileHandler : IRequestHandler<UpdateProfileCommand, UserDto>
+    public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand, UserDto>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
 
-        public UpdateProfileHandler(UserManager<ApplicationUser> userManager, IMapper mapper)
+        public UpdateProfileCommandHandler(UserManager<ApplicationUser> userManager, IMapper mapper)
         {
             _userManager = userManager;
             _mapper = mapper;
