@@ -1,11 +1,11 @@
-﻿using System;
+﻿using CleanArchitecture.Core.Dto;
+using CleanArchitecture.Core.Interfaces.Services;
+using Microsoft.Extensions.Options;
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
-using CleanArchitecture.Core.Dto;
-using CleanArchitecture.Core.Interfaces.Services;
-using Microsoft.Extensions.Options;
 
 namespace CleanArchitecture.Infrastructure.Auth
 {
@@ -44,7 +44,7 @@ namespace CleanArchitecture.Infrastructure.Auth
                 _jwtOptions.NotBefore,
                 _jwtOptions.Expiration,
                 _jwtOptions.SigningCredentials);
-          
+
             return new AccessToken(_jwtTokenHandler.WriteToken(jwt), (int)_jwtOptions.ValidFor.TotalSeconds);
         }
 
@@ -52,7 +52,7 @@ namespace CleanArchitecture.Infrastructure.Auth
         {
             return new ClaimsIdentity(new GenericIdentity(userName, "Token"), new[]
             {
-                new Claim(Constants.Strings.JwtClaimIdentifiers.Id, id),           
+                new Claim(Constants.Strings.JwtClaimIdentifiers.Id, id),
                 new Claim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess),
             });
         }

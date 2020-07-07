@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TimeZoneConverter;
@@ -30,7 +29,7 @@ namespace BjBygg.Application.Queries.TimesheetQueries
         {
             var query = _dbContext.Set<Timesheet>().AsQueryable();
 
-            if(request.MissionId != null)
+            if (request.MissionId != null)
                 query = query.Where(x => x.MissionId == request.MissionId);
 
             if (request.UserName != null)
@@ -49,7 +48,7 @@ namespace BjBygg.Application.Queries.TimesheetQueries
                 endDate = TimeZoneInfo.ConvertTime(endDate, timeInfo);
                 query = query.Where(x => x.StartTime.Date >= startDate.Date && x.StartTime.Date <= endDate.Date);
             }
-           
+
 
             return _mapper.Map<IEnumerable<TimesheetDto>>(await query.ToListAsync());
         }

@@ -1,14 +1,19 @@
+using AutoMapper;
 using BjBygg.Application.Commands.BaseEntityCommands.Update;
 using BjBygg.Application.Common;
-using System.ComponentModel.DataAnnotations;
+using CleanArchitecture.Core.Entities;
+using CleanArchitecture.Infrastructure.Data;
 
 namespace BjBygg.Application.Commands.MissionTypeCommands.Update
 {
     public class UpdateMissionTypeCommand : UpdateCommand<MissionTypeDto>
     {
-        [Required(ErrorMessage = "{0} må fylles ut.")]
-        [StringLength(45, ErrorMessage = "{0} kan maks være på {1} tegn.")]
-        [Display(Name = "Navn")]
         public string Name { get; set; }
+    }
+    public class UpdateMissionTypeCommandHandler : UpdateCommandHandler<MissionType, UpdateMissionTypeCommand, MissionTypeDto>
+    {
+        public UpdateMissionTypeCommandHandler(AppDbContext dbContext, IMapper mapper) :
+            base(dbContext, mapper)
+        { }
     }
 }

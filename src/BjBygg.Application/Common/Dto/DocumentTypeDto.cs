@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BjBygg.Application.Common
+﻿namespace BjBygg.Application.Common
 {
     public class DocumentTypeDto : DbSyncDto
     {

@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CleanArchitecture.Infrastructure.Identity
@@ -10,10 +8,10 @@ namespace CleanArchitecture.Infrastructure.Identity
     public class AppIdentityDbContextSeed
     {
         public static async Task SeedAsync(
-            UserManager<ApplicationUser> userManager, 
-            RoleManager<IdentityRole> roleManager, 
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager,
             AppIdentityDbContext context)
-        {           
+        {
             if (!roleManager.RoleExistsAsync("Ansatt").Result)
                 await roleManager.CreateAsync(new IdentityRole { Name = "Ansatt" });
 
@@ -29,7 +27,7 @@ namespace CleanArchitecture.Infrastructure.Identity
             if (userManager.FindByNameAsync("leder").Result == null)
             {
                 var user = new ApplicationUser { UserName = "leder", SecurityStamp = Guid.NewGuid().ToString(), Email = "test@test.com", FirstName = "Bjørn August", LastName = "Olafsson", PhoneNumber = "95546434" };
-                var result = await userManager.CreateAsync(user,"passord1");
+                var result = await userManager.CreateAsync(user, "passord1");
 
                 if (result.Succeeded)
                     userManager.AddToRoleAsync(user, "Leder").Wait();

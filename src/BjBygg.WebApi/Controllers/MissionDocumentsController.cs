@@ -1,35 +1,31 @@
-using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using BjBygg.Application.Commands.MissionCommands.Documents.Delete;
-using BjBygg.Application.Commands.MissionCommands.Documents.DeleteRange;
+using BjBygg.Application.Commands.MissionCommands.Documents;
 using BjBygg.Application.Commands.MissionCommands.Documents.Mail;
 using BjBygg.Application.Commands.MissionCommands.Documents.Upload;
-using BjBygg.Application.Queries.DbSyncQueries;
-using BjBygg.Application.Queries.DbSyncQueries.MissionDocumentQuery;
 using BjBygg.Application.Common;
+using BjBygg.Application.Queries.DbSyncQueries;
+using BjBygg.Application.Queries.DbSyncQueries.Common;
 using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.SharedKernel;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BjBygg.WebApi.Controllers
 {
     public class MissionDocumentsController : BaseController
     {
-        public MissionDocumentsController(IMediator mediator, ILogger<MissionDocumentsController> logger) :
-            base(mediator, logger){}
+        public MissionDocumentsController() { }
 
         [Authorize]
         [HttpGet]
         [Route("api/[controller]/[action]")]
         public async Task<DbSyncResponse<MissionDocumentDto>> Sync(MissionDocumentSyncQuery request)
         {
-            return await ValidateAndExecute(request);
+            return await Mediator.Send(request);
         }
 
         [Authorize(Roles = "Leder")]
@@ -57,33 +53,32 @@ namespace BjBygg.WebApi.Controllers
                     MissionId = missionId
                 };
 
-                return await ValidateAndExecute(request);
-            }   
+                return await Mediator.Send(request);
+            }
         }
 
         [Authorize(Roles = "Leder")]
         [HttpDelete]
         [Route("api/[controller]/{id}")]
-        public async Task<bool> Delete(DeleteMissionDocumentCommand request)
+        public async Task<Unit> Delete(DeleteMissionDocumentCommand request)
         {
-            return await ValidateAndExecute(request);
+            return await Mediator.Send(request);
         }
 
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]/DeleteRange")]
-        public async Task<bool> DeleteRange([FromBody] DeleteRangeMissionDocumentCommand request)
+        public async Task<Unit> DeleteRange([FromBody] DeleteRangeMissionDocumentCommand request)
         {
-            return await ValidateAndExecute(request);
+            return await Mediator.Send(request);
         }
-
 
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]/SendDocuments")]
-        public async Task<bool> SendDocuments([FromBody] MailMissionDocumentsCommand request)
+        public async Task<Unit> SendDocuments([FromBody] MailMissionDocumentsCommand request)
         {
-            return await ValidateAndExecute(request);
+            return await Mediator.Send(request);
         }
 
     }

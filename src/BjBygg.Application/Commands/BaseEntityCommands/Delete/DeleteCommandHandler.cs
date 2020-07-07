@@ -23,8 +23,8 @@ namespace BjBygg.Application.Commands.BaseEntityCommands.Delete
 
             if (entity == null) throw new EntityNotFoundException($"Entity does not exist with id {request.Id}");
 
-            _dbContext.Set<TEntity>().Remove(entity); 
-            
+            _dbContext.Set<TEntity>().Remove(entity);
+
             await _dbContext.SaveChangesAsync();
 
             return Unit.Value;

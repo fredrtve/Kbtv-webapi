@@ -3,30 +3,15 @@ using CleanArchitecture.Core.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BjBygg.WebApi.Controllers
 {
     [ApplicationExceptionFilter]
     public class BaseController : ControllerBase
     {
-        protected readonly IMediator _mediator;
-        protected readonly ILogger<BaseController> _logger;
-
-        public BaseController(IMediator mediator, ILogger<BaseController> logger) : base()
-        {
-            _mediator = mediator;
-            _logger = logger;
-        }
-
-        protected async Task<TResponse> ValidateAndExecute<TResponse>(IRequest<TResponse> request) 
-        {
-            if (!TryValidateModel(request))
-                throw new BadRequestException(ModelState.Values.ToString());
-
-            return await _mediator.Send(request);
-        }
+        private IMediator _mediator;
+        protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
     }
 
     public class ApplicationExceptionFilterAttribute : ExceptionFilterAttribute

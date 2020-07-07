@@ -1,4 +1,3 @@
-using CleanArchitecture.Core.Enums;
 using Microsoft.Extensions.Configuration;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;

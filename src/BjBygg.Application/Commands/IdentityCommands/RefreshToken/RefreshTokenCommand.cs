@@ -8,6 +8,6 @@ namespace BjBygg.Application.Commands.IdentityCommands.RefreshToken
         public string RefreshToken { get; set; }
         public string SigningKey { get; set; }
 
-        public RefreshTokenCommand(){}
+        public RefreshTokenCommand() { }
     }
 }

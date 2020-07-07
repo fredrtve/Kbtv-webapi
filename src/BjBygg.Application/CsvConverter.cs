@@ -1,8 +1,6 @@
 ﻿using CleanArchitecture.Core.Interfaces.Services;
-using ServiceStack.Text;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -16,7 +14,7 @@ namespace BjBygg.Application
             StringBuilder csv = new StringBuilder();
 
             string header = "";
-            for(var i = 0; i < propertyMap.Count; i++)
+            for (var i = 0; i < propertyMap.Count; i++)
             {
                 var propertyValue = propertyMap.ElementAt(i).Value;
                 if (i == 0) header = propertyValue; //Initial value no delimiter
@@ -32,7 +30,7 @@ namespace BjBygg.Application
                     var propertyKey = propertyMap.ElementAt(i).Key;
                     JsonElement property;
                     if (!json.TryGetProperty(propertyKey, out property)) continue;
-                    if(i == 0) line = property.GetRawText(); //Initial value no delimiter
+                    if (i == 0) line = property.GetRawText(); //Initial value no delimiter
                     else line = String.Concat(line, delimiter, property.GetRawText());
                 };
                 csv.AppendLine(line);
@@ -57,7 +55,7 @@ namespace BjBygg.Application
 
         //    header = header.Substring(0, header.Length - 2);
         //    sb.AppendLine(header);
-        
+
         //    foreach (var obj in objects)
         //    {
         //        sb = new StringBuilder();

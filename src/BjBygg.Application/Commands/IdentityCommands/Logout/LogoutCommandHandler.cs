@@ -1,4 +1,5 @@
 using CleanArchitecture.Core.Exceptions;
+using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -13,20 +14,23 @@ namespace BjBygg.Application.Commands.IdentityCommands.Logout
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly AppIdentityDbContext _dbContext;
+        private readonly ICurrentUserService _currentUserService;
 
         public LogoutCommandHandler(
             UserManager<ApplicationUser> userManager,
-            AppIdentityDbContext dbContext)
+            AppIdentityDbContext dbContext,
+            ICurrentUserService currentUserService)
         {
             _userManager = userManager;
             _dbContext = dbContext;
+            _currentUserService = currentUserService;
         }
 
         public async Task<Unit> Handle(LogoutCommand request, CancellationToken cancellationToken)
         {
             var user = await _dbContext.Users
                 .Include(x => x.RefreshTokens)
-                .FirstOrDefaultAsync(x => x.UserName == request.UserName);
+                .FirstOrDefaultAsync(x => x.UserName == _currentUserService.UserName);
 
             if (user == null) throw new BadRequestException("Cant find user");
 

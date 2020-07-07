@@ -21,7 +21,7 @@ namespace BjBygg.Application.Commands.IdentityCommands.RefreshToken
             IJwtTokenValidator jwtTokenValidator,
             UserManager<ApplicationUser> userManager,
             AppIdentityDbContext dbContext,
-            IJwtFactory jwtFactory )
+            IJwtFactory jwtFactory)
         {
             _jwtTokenValidator = jwtTokenValidator;
             _userManager = userManager;
@@ -35,7 +35,7 @@ namespace BjBygg.Application.Commands.IdentityCommands.RefreshToken
 
             // invalid token/signing key was passed and we can't extract user claims
             if (principal == null) throw new BadRequestException("invalid_grant");
- 
+
             var id = principal.Claims.First(c => c.Type == "id");
 
             var user = await _dbContext.Users
@@ -44,8 +44,8 @@ namespace BjBygg.Application.Commands.IdentityCommands.RefreshToken
 
             var roles = await _userManager.GetRolesAsync(user);
 
-            if (roles == null || roles.Count == 0) 
-                throw new UnauthorizedException("User has no roles"); 
+            if (roles == null || roles.Count == 0)
+                throw new UnauthorizedException("User has no roles");
 
             if (!user.HasValidRefreshToken(command.RefreshToken))
                 throw new BadRequestException("invalid_grant");

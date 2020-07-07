@@ -1,0 +1,20 @@
+﻿using FluentValidation;
+
+namespace BjBygg.Application.Commands.MissionCommands.Notes.Create
+{
+    public class CreateMissionNoteCommandValidator : AbstractValidator<CreateMissionNoteCommand>
+    {
+        public CreateMissionNoteCommandValidator()
+        {
+            RuleFor(v => v.MissionId)
+               .NotEmpty();
+
+            RuleFor(v => v.Title)
+                .MaximumLength(100);
+
+            RuleFor(v => v.Content)
+                .NotEmpty()
+                .MaximumLength(400);
+        }
+    }
+}

@@ -1,6 +1,5 @@
 using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.SharedKernel;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System;
@@ -55,9 +54,9 @@ namespace CleanArchitecture.Infrastructure.Api.FileStorage
             for (int i = 0; i < streams.Count; i++)
             {
                 var blob = blobContainer.GetBlockBlobReference(GetRandomBlobName(streams[i].FileExtension));
-        
+
                 await blob.UploadFromStreamAsync(streams[i].Stream);
-                
+
                 blobs.Add(blob.Uri);
             }
             return blobs;
@@ -68,9 +67,9 @@ namespace CleanArchitecture.Infrastructure.Api.FileStorage
             var blobContainer = await _azureBlobConnectionFactory.GetBlobContainer(folder);
 
             var blob = blobContainer.GetBlockBlobReference(GetRandomBlobName(stream.FileExtension));
- 
-            await blob.UploadFromStreamAsync(stream.Stream);         
-            
+
+            await blob.UploadFromStreamAsync(stream.Stream);
+
             return blob.Uri;
         }
 
@@ -78,5 +77,5 @@ namespace CleanArchitecture.Infrastructure.Api.FileStorage
         {
             return string.Format("{0:10}_{1}{2}", DateTime.Now.Ticks, Guid.NewGuid(), extension);
         }
-}
+    }
 }

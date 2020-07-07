@@ -1,6 +1,5 @@
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Enums;
-using CleanArchitecture.SharedKernel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -26,7 +25,7 @@ namespace CleanArchitecture.Infrastructure.Data
                     context.SaveChanges();
                     context.Database.CloseConnection();
                 }
-                
+
                 if (!context.MissionTypes.Any())
                 {
                     context.Database.OpenConnection();
@@ -158,7 +157,7 @@ namespace CleanArchitecture.Infrastructure.Data
                     PhoneNumber = "92278483",
                     Description = "Dette er en beskrivelse",
                     Address = $"Furuberget {i}, 1940 Bjørkelangen",
-                    EmployerId = random.Next(1,6),
+                    EmployerId = random.Next(1, 6),
                     MissionTypeId = i % 2 == 0 ? 1 : 2,
                 });
             }
@@ -169,7 +168,7 @@ namespace CleanArchitecture.Infrastructure.Data
         {
             var missionDocuments = new List<MissionDocument>();
 
-            for (var i = 1; i <= _numberOfMissions*2; i++)
+            for (var i = 1; i <= _numberOfMissions * 2; i++)
             {
                 missionDocuments.Add(new MissionDocument()
                 {
@@ -179,7 +178,7 @@ namespace CleanArchitecture.Infrastructure.Data
                     DocumentTypeId = i % 2 == 0 ? 1 : 2
                 });
             }
-     
+
             return missionDocuments;
         }
         static IEnumerable<MissionImage> GetPreconfiguredMissionImages()
@@ -191,7 +190,7 @@ namespace CleanArchitecture.Infrastructure.Data
                 new Uri("https://kbtv.blob.core.windows.net/images/1637271568378142015_fef915f9-5f35-45ea-96ae-898f33d79df2.jpg"),
                 new Uri("https://kbtv.blob.core.windows.net/images/1637125277915871387_33a58ce3-9b65-42c1-99aa-35bbbf200e82.jpg")
             };
-            for (var i = 1; i <= _numberOfMissions*4; i++)
+            for (var i = 1; i <= _numberOfMissions * 4; i++)
             {
                 missionImages.Add(new MissionImage()
                 {
@@ -211,14 +210,14 @@ namespace CleanArchitecture.Infrastructure.Data
 
             for (var i = 1; i <= _numberOfMissions; i++)
             {
-                    missionNotes.Add(new MissionNote()
-                    {
-                        Id = i,
-                        MissionId = random.Next(1, _numberOfMissions),
-                        Content = "Dette er ett veldig interessant notat. Veldig interessant. Det er også veldig viktig.",
-                        Title =  "Dette er ett notat",
-                        Pinned = i % 2 == 0 ? false : true
-                    });           
+                missionNotes.Add(new MissionNote()
+                {
+                    Id = i,
+                    MissionId = random.Next(1, _numberOfMissions),
+                    Content = "Dette er ett veldig interessant notat. Veldig interessant. Det er også veldig viktig.",
+                    Title = "Dette er ett notat",
+                    Pinned = i % 2 == 0 ? false : true
+                });
             }
 
             return missionNotes;
@@ -231,10 +230,25 @@ namespace CleanArchitecture.Infrastructure.Data
             var dayCounter = 0;
             var today = DateTime.UtcNow.Date.AddHours(6);
 
-            for (var n = 1; n <= _numberOfMissions*6; n++)
-            {        
-                    var startDate = today.AddDays(-dayCounter);
-                    var endDate = startDate.AddHours(random.Next(4, 10));
+            for (var n = 1; n <= _numberOfMissions * 6; n++)
+            {
+                var startDate = today.AddDays(-dayCounter);
+                var endDate = startDate.AddHours(random.Next(4, 10));
+                timesheets.Add(new Timesheet()
+                {
+                    Id = idCounter,
+                    MissionId = random.Next(1, _numberOfMissions),
+                    StartTime = startDate,
+                    EndTime = endDate,
+                    TotalHours = (endDate - startDate).TotalHours,
+                    Comment = "Dette er en kommentar til en time for leder for ett kult oppdrag",
+                    UserName = "leder",
+                    Status = n % 2 == 0 ? TimesheetStatus.Open : TimesheetStatus.Confirmed
+                });
+                idCounter++;
+
+                for (var user = 0; user <= 3; user++)
+                {
                     timesheets.Add(new Timesheet()
                     {
                         Id = idCounter,
@@ -242,44 +256,29 @@ namespace CleanArchitecture.Infrastructure.Data
                         StartTime = startDate,
                         EndTime = endDate,
                         TotalHours = (endDate - startDate).TotalHours,
-                        Comment = "Dette er en kommentar til en time for leder for ett kult oppdrag",
-                        UserName = "leder",
+                        Comment = "Dette er en kommentar til en time for ansatt",
+                        UserName = "ansatt" + user,
                         Status = n % 2 == 0 ? TimesheetStatus.Open : TimesheetStatus.Confirmed
                     });
                     idCounter++;
+                }
 
-                    for(var user = 0; user <= 3; user++)
-                    {
-                        timesheets.Add(new Timesheet()
-                        {
-                            Id = idCounter,
-                            MissionId = random.Next(1, _numberOfMissions),
-                            StartTime = startDate,
-                            EndTime = endDate,
-                            TotalHours = (endDate - startDate).TotalHours,
-                            Comment = "Dette er en kommentar til en time for ansatt",
-                            UserName = "ansatt" + user,
-                            Status = n % 2 == 0 ? TimesheetStatus.Open : TimesheetStatus.Confirmed
-                        });
-                        idCounter++;
-                    }
-     
 
-                    timesheets.Add(new Timesheet()
-                    {
-                        Id = idCounter,
-                        MissionId = random.Next(1, _numberOfMissions),
-                        StartTime = startDate,
-                        EndTime = endDate,
-                        TotalHours = (endDate - startDate).TotalHours,
-                        Comment = "Dette er en kommentar til en time for mellomleder for ett alle tiders oppdrag",
-                        UserName = "mellomleder",
-                        Status = n % 2 == 0 ? TimesheetStatus.Open : TimesheetStatus.Confirmed
-                    });
-                    idCounter++;
+                timesheets.Add(new Timesheet()
+                {
+                    Id = idCounter,
+                    MissionId = random.Next(1, _numberOfMissions),
+                    StartTime = startDate,
+                    EndTime = endDate,
+                    TotalHours = (endDate - startDate).TotalHours,
+                    Comment = "Dette er en kommentar til en time for mellomleder for ett alle tiders oppdrag",
+                    UserName = "mellomleder",
+                    Status = n % 2 == 0 ? TimesheetStatus.Open : TimesheetStatus.Confirmed
+                });
+                idCounter++;
 
-                    dayCounter++;              
-       
+                dayCounter++;
+
             }
 
 
@@ -287,5 +286,5 @@ namespace CleanArchitecture.Infrastructure.Data
             return timesheets;
         }
     }
- 
+
 }

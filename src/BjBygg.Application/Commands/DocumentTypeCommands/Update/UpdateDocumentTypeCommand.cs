@@ -3,11 +3,6 @@ using BjBygg.Application.Commands.BaseEntityCommands.Update;
 using BjBygg.Application.Common;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Infrastructure.Data;
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace BjBygg.Application.Commands.DocumentTypeCommands.Update
 {
@@ -15,9 +10,10 @@ namespace BjBygg.Application.Commands.DocumentTypeCommands.Update
     {
         public string Name { get; set; }
     }
-    public class UpdateDocumentTypeCommandHandler : UpdateHandler<DocumentType, UpdateDocumentTypeCommand, DocumentTypeDto>
+    public class UpdateDocumentTypeCommandHandler : UpdateCommandHandler<DocumentType, UpdateDocumentTypeCommand, DocumentTypeDto>
     {
         public UpdateDocumentTypeCommandHandler(AppDbContext dbContext, IMapper mapper) :
-            base(dbContext, mapper) {}
+            base(dbContext, mapper)
+        { }
     }
 }

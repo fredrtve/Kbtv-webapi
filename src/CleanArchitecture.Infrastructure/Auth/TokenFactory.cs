@@ -7,7 +7,7 @@ namespace CleanArchitecture.Infrastructure.Auth
 {
     public class TokenFactory : ITokenFactory
     {
-        public string GenerateToken(int size=32)
+        public string GenerateToken(int size = 32)
         {
             var randomNumber = new byte[size];
             using (var rng = RandomNumberGenerator.Create())

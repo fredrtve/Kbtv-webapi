@@ -2,7 +2,7 @@
 using CleanArchitecture.Core.Entities;
 
 namespace BjBygg.Application.Common
-{ 
+{
     public class MissionDtoProfile : Profile
     {
         public MissionDtoProfile()

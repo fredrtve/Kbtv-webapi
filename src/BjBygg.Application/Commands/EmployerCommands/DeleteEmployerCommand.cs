@@ -10,6 +10,7 @@ namespace BjBygg.Application.Commands.EmployerCommands
     public class DeleteEmployerCommandHandler : DeleteCommandHandler<Employer, DeleteEmployerCommand>
     {
         public DeleteEmployerCommandHandler(AppDbContext dbContext) :
-            base(dbContext) {}
+            base(dbContext)
+        { }
     }
 }

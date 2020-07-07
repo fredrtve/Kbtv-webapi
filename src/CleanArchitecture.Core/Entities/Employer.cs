@@ -7,7 +7,7 @@ namespace CleanArchitecture.Core.Entities
 {
     public class Employer : BaseEntity
     {
-        public Employer(){}
+        public Employer() { }
 
         public string Name { get; set; }
 

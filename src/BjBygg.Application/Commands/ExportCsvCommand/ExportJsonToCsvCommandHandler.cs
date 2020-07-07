@@ -18,7 +18,8 @@ namespace BjBygg.Application.Commands.ExportCsvCommands
         public ExportJsonToCsvCommandHandler(
             IBlobStorageService blobStorageService,
             ICsvConverter csvConverter
-        ){
+        )
+        {
             _blobStorageService = blobStorageService;
             _csvConverter = csvConverter;
         }
@@ -30,7 +31,7 @@ namespace BjBygg.Application.Commands.ExportCsvCommands
             // convert string to stream
             byte[] byteArray = Encoding.Default.GetBytes(csvString);
             Uri fileUrl;
-            using(var stream = new BasicFileStream(new MemoryStream(byteArray), ".csv"))
+            using (var stream = new BasicFileStream(new MemoryStream(byteArray), ".csv"))
             {
                 fileUrl = await _blobStorageService.UploadFileAsync(stream, ResourceFolderConstants.CsvTemp);
             }

@@ -12,9 +12,10 @@ namespace BjBygg.Application.Commands.EmployerCommands.Create
         public string? PhoneNumber { get; set; }
         public string? Address { get; set; }
     }
-    public class CreateEmployerCommandHandler : CreateHandler<Employer, CreateEmployerCommand, EmployerDto>
+    public class CreateEmployerCommandHandler : CreateCommandHandler<Employer, CreateEmployerCommand, EmployerDto>
     {
         public CreateEmployerCommandHandler(AppDbContext dbContext, IMapper mapper) :
-            base(dbContext, mapper) {}
+            base(dbContext, mapper)
+        { }
     }
 }

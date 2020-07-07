@@ -28,7 +28,7 @@ namespace BjBygg.Application.Commands.IdentityCommands.Login
             UserManager<ApplicationUser> userManager,
             AppIdentityDbContext dbContext,
             IMapper mapper,
-            IJwtFactory jwtFactory, 
+            IJwtFactory jwtFactory,
             ITokenFactory tokenFactory)
         {
             _authSettings = authSettings.Value;
@@ -57,14 +57,15 @@ namespace BjBygg.Application.Commands.IdentityCommands.Login
             user.AddRefreshToken(refreshToken, user.Id, _authSettings.RefreshTokenLifeTimeInDays);
             await _userManager.UpdateAsync(user);
 
-   
+
             var userReponse = _mapper.Map<UserDto>(user);
             userReponse.Role = roles.FirstOrDefault();
 
-            return new LoginResponse() { 
-                User = userReponse, 
+            return new LoginResponse()
+            {
+                User = userReponse,
                 AccessToken = await _jwtFactory.GenerateEncodedToken(user.Id, user.UserName, userReponse.Role),
-                RefreshToken = refreshToken 
+                RefreshToken = refreshToken
             };
         }
     }

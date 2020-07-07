@@ -1,7 +1,4 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BjBygg.Application.Commands.IdentityCommands.UpdatePassword
 {
@@ -9,9 +6,6 @@ namespace BjBygg.Application.Commands.IdentityCommands.UpdatePassword
     {
         public UpdatePasswordCommandValidator()
         {
-            RuleFor(v => v.UserName)
-               .NotEmpty();
-
             RuleFor(v => v.NewPassword)
                .NotEmpty()
                .MaximumLength(100);

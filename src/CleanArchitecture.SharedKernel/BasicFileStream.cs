@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace CleanArchitecture.SharedKernel
 {
@@ -18,6 +16,6 @@ namespace CleanArchitecture.SharedKernel
         public string FileExtension { get; set; }
 
         public void Dispose() => Stream.Dispose();
-        
+
     }
 }

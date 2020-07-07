@@ -1,10 +1,7 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace BjBygg.Application.Commands.EmployerCommands.Update 
-{ 
+namespace BjBygg.Application.Commands.EmployerCommands.Update
+{
     public class UpdateEmployerCommandValidator : AbstractValidator<UpdateEmployerCommand>
     {
         public UpdateEmployerCommandValidator()

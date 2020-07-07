@@ -12,9 +12,10 @@ namespace BjBygg.Application.Commands.EmployerCommands.Update
         public string? PhoneNumber { get; set; }
         public string? Address { get; set; }
     }
-    public class UpdateEmployerCommandHandler : UpdateHandler<Employer, UpdateEmployerCommand, EmployerDto>
+    public class UpdateEmployerCommandHandler : UpdateCommandHandler<Employer, UpdateEmployerCommand, EmployerDto>
     {
         public UpdateEmployerCommandHandler(AppDbContext dbContext, IMapper mapper) :
-            base(dbContext, mapper) {}
+            base(dbContext, mapper)
+        { }
     }
 }

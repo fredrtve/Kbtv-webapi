@@ -1,10 +1,6 @@
-using CleanArchitecture.Core.Enums;
 using CleanArchitecture.SharedKernel;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CleanArchitecture.Core.Interfaces.Services

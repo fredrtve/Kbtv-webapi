@@ -27,9 +27,9 @@ namespace CleanArchitecture.Infrastructure.Identity
 
         public bool HasValidRefreshToken(string refreshToken)
         {
-            return RefreshTokens.Any(rt => 
-                rt.Token == refreshToken && 
-                rt.Active && 
+            return RefreshTokens.Any(rt =>
+                rt.Token == refreshToken &&
+                rt.Active &&
                 DateTime.Compare(rt.Expires, DateTime.UtcNow) >= 0
             );
         }

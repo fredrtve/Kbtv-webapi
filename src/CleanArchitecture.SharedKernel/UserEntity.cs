@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CleanArchitecture.SharedKernel
+﻿namespace CleanArchitecture.SharedKernel
 {
     public abstract class UserEntity : BaseEntity
     {

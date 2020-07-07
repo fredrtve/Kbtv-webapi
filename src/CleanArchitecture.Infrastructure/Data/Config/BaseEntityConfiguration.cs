@@ -8,7 +8,7 @@ namespace CleanArchitecture.Infrastructure.Data.Config
     {
         public virtual void Configure(EntityTypeBuilder<TEntity> builder)
         {
-           builder.HasQueryFilter(m => m.Deleted == false);
+            builder.HasQueryFilter(m => m.Deleted == false);
         }
     }
 }

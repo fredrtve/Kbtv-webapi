@@ -1,16 +1,8 @@
-using CleanArchitecture.Core.Entities;
-using MediatR;
-using System.ComponentModel.DataAnnotations;
+using BjBygg.Application.Commands.BaseEntityCommands.Delete;
 
 namespace BjBygg.Application.Commands.TimesheetCommands.Delete
 {
-    public class DeleteTimesheetCommand : IRequest<bool>
+    public class DeleteTimesheetCommand : DeleteCommand
     {
-        [Required]
-        public string UserName { get; set; }
-        [Required]
-        public string Role { get; set; }
-        [Required]
-        public int Id { get; set; }
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BjBygg.Application.Common.Dto
+﻿namespace BjBygg.Application.Common.Dto
 {
     public class InboundEmailPasswordDto
     {

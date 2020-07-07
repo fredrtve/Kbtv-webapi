@@ -1,20 +1,19 @@
-using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.SharedKernel;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 
 namespace CleanArchitecture.Core.Entities
 {
     public class Mission : BaseEntity
     {
-        public Mission() {}
+        public Mission() { }
 
         public string? Name { get; set; }
         public string? PhoneNumber { get; set; }
-        public string? Description { get; set; }    
-        public string Address {
+        public string? Description { get; set; }
+        public string Address
+        {
             get { return this._address; }
             set { _address = new CultureInfo("nb-NO", false).TextInfo.ToTitleCase(value); }
         }

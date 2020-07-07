@@ -6,7 +6,7 @@ namespace CleanArchitecture.Core.Entities
 {
     public class MissionImage : BaseEntity, IMissionChildEntity, IFile
     {
-        public MissionImage() {}
+        public MissionImage() { }
 
         public Mission Mission { get; set; }
         public int MissionId { get; set; }

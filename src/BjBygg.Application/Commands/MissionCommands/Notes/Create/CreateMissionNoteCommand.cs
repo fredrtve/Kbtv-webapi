@@ -1,24 +1,23 @@
+using AutoMapper;
 using BjBygg.Application.Commands.BaseEntityCommands.Create;
 using BjBygg.Application.Common;
-using System.ComponentModel.DataAnnotations;
+using CleanArchitecture.Core.Entities;
+using CleanArchitecture.Infrastructure.Data;
 
 namespace BjBygg.Application.Commands.MissionCommands.Notes.Create
 {
     public class CreateMissionNoteCommand : CreateCommand<MissionNoteDto>
     {
-        [Required]
         public int MissionId { get; set; }
-
-        [StringLength(100, ErrorMessage = "{0} kan maks være på {1} tegn.")]
-        [Display(Name = "Tittel")]
         public string? Title { get; set; }
-
-        [Required(ErrorMessage = "{0} må fylles ut.")]
-        [StringLength(400, ErrorMessage = "{0} kan maks være på {1} tegn.")]
-        [Display(Name = "Innhold")]
         public string Content { get; set; }
-
-        [Display(Name = "Marker som viktig")]
         public bool? Pinned { get; set; }
+    }
+
+    public class CreateMissionNoteHandler : CreateCommandHandler<MissionNote, CreateMissionNoteCommand, MissionNoteDto>
+    {
+        public CreateMissionNoteHandler(AppDbContext dbContext, IMapper mapper) :
+            base(dbContext, mapper)
+        { }
     }
 }

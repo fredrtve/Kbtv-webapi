@@ -1,10 +1,10 @@
-﻿using CleanArchitecture.Core.Interfaces;
+﻿using CleanArchitecture.Core.Exceptions;
+using CleanArchitecture.Core.Interfaces;
+using CleanArchitecture.Core.Interfaces.Services;
+using Microsoft.Extensions.Configuration;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
-using CleanArchitecture.Core.Exceptions;
-using CleanArchitecture.Core.Interfaces.Services;
 
 namespace CleanArchitecture.Infrastructure.Api.SendGridMailService
 {
@@ -21,7 +21,7 @@ namespace CleanArchitecture.Infrastructure.Api.SendGridMailService
             var apiKey = _configuration.GetValue<string>("SendGridApiKey");
             var client = new SendGridClient(apiKey);
             var from = new EmailAddress("noreply@bjbygg.no", "Karl Brede Tvete");
-            var to = new EmailAddress(toEmail); 
+            var to = new EmailAddress(toEmail);
             var msg = MailHelper.CreateSingleEmail(from, to, subject, content, content);
             var response = await client.SendEmailAsync(msg);
         }

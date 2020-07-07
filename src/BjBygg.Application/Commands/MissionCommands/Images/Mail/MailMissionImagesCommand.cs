@@ -1,15 +1,8 @@
-using MediatR;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using BjBygg.Application.Commands.BaseEntityCommands.MailEntitiesCommand;
 
 namespace BjBygg.Application.Commands.MissionCommands.Images.Mail
 {
-    public class MailMissionImagesCommand : IRequest<bool>
+    public class MailMissionImagesCommand : MailEntitiesCommand
     {
-        [Required]
-        [EmailAddress]
-        public string ToEmail { get; set; }
-        [Required]
-        public IEnumerable<int> MissionImageIds { get; set; }
     }
 }

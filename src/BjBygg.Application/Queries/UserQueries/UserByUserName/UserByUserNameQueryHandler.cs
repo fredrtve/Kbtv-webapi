@@ -1,0 +1,36 @@
+using AutoMapper;
+using BjBygg.Application.Common;
+using CleanArchitecture.Core.Exceptions;
+using CleanArchitecture.Infrastructure.Identity;
+using MediatR;
+using Microsoft.AspNetCore.Identity;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace BjBygg.Application.Queries.UserQueries.UserByUserName
+{
+    public class UserByUserNameQueryHandler : IRequestHandler<UserByUserNameQuery, UserDto>
+    {
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IMapper _mapper;
+
+        public UserByUserNameQueryHandler(UserManager<ApplicationUser> userManager, IMapper mapper)
+        {
+            _userManager = userManager;
+            _mapper = mapper;
+        }
+
+        public async Task<UserDto> Handle(UserByUserNameQuery request, CancellationToken cancellationToken)
+        {
+            var user = await _userManager.FindByNameAsync(request.UserName);
+
+            if (user == null) throw new EntityNotFoundException($"User does not exist with username {request.UserName}");
+
+            var response = _mapper.Map<UserDto>(user);
+            response.Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+            return response;
+        }
+
+    }
+}

@@ -6,9 +6,6 @@ namespace BjBygg.Application.Commands.IdentityCommands.UpdateProfile
     {
         public UpdateProfileCommandValidator()
         {
-            RuleFor(v => v.UserName)
-                .NotEmpty();
-
             RuleFor(v => v.PhoneNumber)
                 .MaximumLength(12);
 

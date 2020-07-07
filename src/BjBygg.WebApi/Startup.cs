@@ -1,31 +1,29 @@
+using AutoMapper;
+using BjBygg.Application;
+using BjBygg.Application.Commands.MissionCommands.Create;
+using BjBygg.Application.Common;
+using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure;
+using CleanArchitecture.Infrastructure.Api.FileStorage;
+using CleanArchitecture.Infrastructure.Api.SendGridMailService;
+using CleanArchitecture.Infrastructure.Auth;
 using CleanArchitecture.Infrastructure.Identity;
+using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using AutoMapper;
-using MediatR;
-using System.Reflection;
-using BjBygg.Application.Queries.MissionQueries;
-using CleanArchitecture.Infrastructure.Api.FileStorage;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using BjBygg.Application.Common;
-using CleanArchitecture.Infrastructure.Api.SendGridMailService;
-using Microsoft.AspNetCore.Http.Features;
-using System;
-using CleanArchitecture.Infrastructure.Auth;
-using System.Threading.Tasks;
-using CleanArchitecture.Core.Interfaces.Services;
 using Microsoft.Extensions.Logging;
-using BjBygg.Application;
-using CleanArchitecture.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace BjBygg.WebApi
 {
@@ -107,7 +105,7 @@ namespace BjBygg.WebApi
                       {
                           if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
                           {
-                              context.Response.Headers.Add("Token-Expired", "true");   
+                              context.Response.Headers.Add("Token-Expired", "true");
                           }
                           return Task.CompletedTask;
                       }
@@ -123,14 +121,14 @@ namespace BjBygg.WebApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Kbtv API", Version = "v1" });
             });
 
-            services.Configure<FormOptions>(options => 
+            services.Configure<FormOptions>(options =>
             {
                 options.MemoryBufferThreshold = Int32.MaxValue;
             });
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(MissionDtoProfile)));
 
-            services.AddMediatR(Assembly.GetAssembly(typeof(MissionByIdQuery)));
+            services.AddMediatR(Assembly.GetAssembly(typeof(CreateMissionCommand)));
 
             services.AddTransient<IMailService, SendGridMailService>();
 
@@ -162,7 +160,7 @@ namespace BjBygg.WebApi
             );
 
             app.UseHttpsRedirection();
-          
+
             app.UseSwagger();
 
             app.UseSwaggerUI(c =>

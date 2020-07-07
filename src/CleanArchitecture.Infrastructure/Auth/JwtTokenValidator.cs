@@ -1,8 +1,8 @@
-﻿using System;
+﻿using CleanArchitecture.Core.Interfaces.Services;
+using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Security.Claims;
 using System.Text;
-using CleanArchitecture.Core.Interfaces.Services;
-using Microsoft.IdentityModel.Tokens;
 
 namespace CleanArchitecture.Infrastructure.Auth
 {

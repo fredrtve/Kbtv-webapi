@@ -11,6 +11,7 @@ namespace BjBygg.Application.Commands.DocumentTypeCommands
     public class DeleteDocumentTypeCommandHandler : DeleteCommandHandler<DocumentType, DeleteDocumentTypeCommand>
     {
         public DeleteDocumentTypeCommandHandler(AppDbContext dbContext) :
-            base(dbContext){}
+            base(dbContext)
+        { }
     }
 }

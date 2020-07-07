@@ -1,7 +1,5 @@
 ﻿using BjBygg.Application.Common;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using BjBygg.Application.Queries.DbSyncQueries.Common;
 
 namespace BjBygg.Application.Queries.DbSyncQueries.SyncAll
 {

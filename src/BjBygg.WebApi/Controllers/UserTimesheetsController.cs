@@ -1,23 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using AutoMapper;
 using BjBygg.Application.Commands.TimesheetCommands.Create;
 using BjBygg.Application.Commands.TimesheetCommands.Delete;
 using BjBygg.Application.Commands.TimesheetCommands.Update;
-using BjBygg.Application.Commands.TimesheetCommands.UpdateStatus;
-using BjBygg.Application.Commands.TimesheetCommands.UpdateStatusRange;
-using BjBygg.Application.Queries.DbSyncQueries;
-using BjBygg.Application.Queries.DbSyncQueries.TimesheetQuery;
 using BjBygg.Application.Common;
-using CleanArchitecture.Core.Exceptions;
+using BjBygg.Application.Queries.DbSyncQueries;
+using BjBygg.Application.Queries.DbSyncQueries.Common;
 using CleanArchitecture.Infrastructure.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -29,10 +23,10 @@ namespace BjBygg.WebApi.Controllers
         private readonly IMapper _mapper;
 
         public UserTimesheetsController(
-            IMediator mediator, 
-            ILogger<UserTimesheetsController> logger, 
-            UserManager<ApplicationUser> userManager) : base(mediator, logger)
+            IMapper mapper,
+            UserManager<ApplicationUser> userManager)
         {
+            _mapper = mapper;
             _userManager = userManager;
         }
 
@@ -44,7 +38,7 @@ namespace BjBygg.WebApi.Controllers
             var user = await _userManager.FindByNameAsync(User.FindFirstValue(ClaimTypes.Name));
             request.User = _mapper.Map<UserDto>(user);
             request.User.Role = User.FindFirstValue(ClaimTypes.Role);
-            return await ValidateAndExecute(request);
+            return await Mediator.Send(request);
         }
 
         [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
@@ -52,8 +46,7 @@ namespace BjBygg.WebApi.Controllers
         [Route("api/[controller]")]
         public async Task<TimesheetDto> Create([FromBody] CreateTimesheetCommand request)
         {
-            request.UserName = User.FindFirstValue(ClaimTypes.Name);
-            return await ValidateAndExecute(request);
+            return await Mediator.Send(request);
         }
 
         [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
@@ -61,23 +54,15 @@ namespace BjBygg.WebApi.Controllers
         [Route("api/[controller]/{Id}")]
         public async Task<TimesheetDto> Update([FromBody] UpdateTimesheetCommand request)
         {
-            request.UserName = User.FindFirstValue(ClaimTypes.Name);
-            return await ValidateAndExecute(request);
+            return await Mediator.Send(request);
         }
 
         [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
         [HttpDelete]
         [Route("api/[controller]/{Id}")]
-        public async Task<bool> Delete(int Id)
+        public async Task<Unit> Delete(DeleteTimesheetCommand request)
         {
-            var request = new DeleteTimesheetCommand()
-            {
-                Id = Id,
-                UserName = User.FindFirstValue(ClaimTypes.Name),
-                Role = User.FindFirstValue(ClaimTypes.Role),
-            };
-
-            return await ValidateAndExecute(request);
+            return await Mediator.Send(request);
         }
 
     }

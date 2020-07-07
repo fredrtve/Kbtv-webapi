@@ -1,41 +1,26 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using BjBygg.Application.Commands.MissionCommands.Notes;
 using BjBygg.Application.Commands.MissionCommands.Notes.Create;
-using BjBygg.Application.Commands.MissionCommands.Notes.Delete;
 using BjBygg.Application.Commands.MissionCommands.Notes.Update;
-using BjBygg.Application.Queries.DbSyncQueries;
-using BjBygg.Application.Queries.DbSyncQueries.MissionNoteQuery;
-using BjBygg.Application.Queries.MissionQueries.Note;
 using BjBygg.Application.Common;
-using CleanArchitecture.Core.Exceptions;
+using BjBygg.Application.Queries.DbSyncQueries;
+using BjBygg.Application.Queries.DbSyncQueries.Common;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace BjBygg.WebApi.Controllers
 {
     public class MissionNotesController : BaseController
     {
-        public MissionNotesController(IMediator mediator, ILogger<MissionNotesController> logger) :
-            base(mediator, logger) {}
+        public MissionNotesController() { }
 
         [Authorize]
         [HttpGet]
         [Route("api/[controller]/[action]")]
         public async Task<DbSyncResponse<MissionNoteDto>> Sync(MissionNoteSyncQuery request)
         {
-            return await ValidateAndExecute(request);
-        }
-
-        [Authorize]
-        [HttpGet]
-        [Route("api/[controller]/{Id}")]
-        public async Task<MissionNoteDto> GetNote(MissionNoteByIdQuery request)
-        {
-            return await ValidateAndExecute(request);
+            return await Mediator.Send(request);
         }
 
         [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
@@ -43,7 +28,7 @@ namespace BjBygg.WebApi.Controllers
         [Route("api/[controller]")]
         public async Task<MissionNoteDto> Create([FromBody] CreateMissionNoteCommand request)
         {
-            return await ValidateAndExecute(request);
+            return await Mediator.Send(request);
         }
 
         [Authorize(Roles = "Leder")]
@@ -51,15 +36,15 @@ namespace BjBygg.WebApi.Controllers
         [Route("api/[controller]/{Id}")]
         public async Task<MissionNoteDto> Update([FromBody] UpdateMissionNoteCommand request)
         {
-            return await ValidateAndExecute(request);
+            return await Mediator.Send(request);
         }
 
         [Authorize(Roles = "Leder")]
         [HttpDelete]
         [Route("api/[controller]/{Id}")]
-        public async Task<bool> Delete(DeleteMissionNoteCommand request)
+        public async Task<Unit> Delete(DeleteMissionNoteCommand request)
         {
-            return await ValidateAndExecute(request);
+            return await Mediator.Send(request);
         }
     }
 }

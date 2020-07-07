@@ -1,8 +1,6 @@
 ﻿using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.SharedKernel;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CleanArchitecture.Core.Entities
 {

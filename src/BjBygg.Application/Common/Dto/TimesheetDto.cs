@@ -1,8 +1,5 @@
 ﻿using CleanArchitecture.Core.Enums;
-using CleanArchitecture.SharedKernel;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BjBygg.Application.Common
 {

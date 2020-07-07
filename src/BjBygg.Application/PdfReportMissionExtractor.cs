@@ -1,22 +1,13 @@
 ﻿using CleanArchitecture.Core;
-using CleanArchitecture.Core.Entities;
-using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.Core.Interfaces.Services;
-using iText.Kernel.Colors;
-using iText.Kernel.Geom;
 using iText.Kernel.Pdf;
 using iText.Kernel.Pdf.Canvas.Parser;
-using iText.Kernel.Pdf.Canvas.Parser.Filter;
 using iText.Kernel.Pdf.Canvas.Parser.Listener;
 using iText.Kernel.Pdf.Xobject;
 using iText.Layout.Element;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace BjBygg.Application
 {
@@ -44,36 +35,36 @@ namespace BjBygg.Application
             {
                 mission = null;
             }
-  
+
             return mission;
         }
 
         private Stream GetImageStreamFromFirstPage(PdfPage page)
         {
-               var dict = page.GetPdfObject();
-                PdfDictionary pageResources = dict.GetAsDictionary(PdfName.Resources);
+            var dict = page.GetPdfObject();
+            PdfDictionary pageResources = dict.GetAsDictionary(PdfName.Resources);
 
-                var pageXObjects = pageResources.GetAsDictionary(PdfName.XObject);
+            var pageXObjects = pageResources.GetAsDictionary(PdfName.XObject);
 
-                var keys = pageXObjects.KeySet().ToArray();
-                PdfName imgName = keys.Last(); //Assume image is last on page 
-           
-                var stream = pageXObjects.GetAsStream(imgName);
-                stream.SetCompressionLevel(CompressionConstants.BEST_COMPRESSION);
-                var imgObject = new PdfImageXObject(stream);
-                var ext = imgObject.IdentifyImageFileExtension();
+            var keys = pageXObjects.KeySet().ToArray();
+            PdfName imgName = keys.Last(); //Assume image is last on page 
 
-                //var image = new Image(imgObject);
-                //image = ScaleImage(image, 400);
-                //image.SetBackgroundColor(Color.WHITE);
-       
-                //var xo = image.GetXObject();
-                //xo.SetModified();
-                //var img = new PdfStream(image.GetXObject().GetPdfObject().GetBytes());
-            
+            var stream = pageXObjects.GetAsStream(imgName);
+            stream.SetCompressionLevel(CompressionConstants.BEST_COMPRESSION);
+            var imgObject = new PdfImageXObject(stream);
+            var ext = imgObject.IdentifyImageFileExtension();
+
+            //var image = new Image(imgObject);
+            //image = ScaleImage(image, 400);
+            //image.SetBackgroundColor(Color.WHITE);
+
+            //var xo = image.GetXObject();
+            //xo.SetModified();
+            //var img = new PdfStream(image.GetXObject().GetPdfObject().GetBytes());
+
             //var strem = xo.GetPdfObject().GetBytes();
 
-            return new MemoryStream(imgObject.GetImageBytes());                     
+            return new MemoryStream(imgObject.GetImageBytes());
         }
 
 

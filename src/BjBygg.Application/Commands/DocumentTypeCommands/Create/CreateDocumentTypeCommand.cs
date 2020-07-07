@@ -10,7 +10,7 @@ namespace BjBygg.Application.Commands.DocumentTypeCommands.Create
     {
         public string Name { get; set; }
     }
-    public class CreateDocumentTypeCommandHandler : CreateHandler<DocumentType, CreateDocumentTypeCommand, DocumentTypeDto>
+    public class CreateDocumentTypeCommandHandler : CreateCommandHandler<DocumentType, CreateDocumentTypeCommand, DocumentTypeDto>
     {
         public CreateDocumentTypeCommandHandler(AppDbContext dbContext, IMapper mapper) :
             base(dbContext, mapper)
