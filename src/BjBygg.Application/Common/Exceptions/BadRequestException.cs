@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace CleanArchitecture.Core.Exceptions
+namespace BjBygg.Application.Common.Exceptions
 {
     public class BadRequestException : Exception
     {

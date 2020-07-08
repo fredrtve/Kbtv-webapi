@@ -1,6 +1,6 @@
 using AutoMapper;
 using BjBygg.Application.Common;
-using CleanArchitecture.Core.Exceptions;
+using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure.Identity;
 using MediatR;
@@ -13,25 +13,25 @@ namespace BjBygg.Application.Commands.IdentityCommands.UpdateProfile
     public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand, UserDto>
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ICurrentUserService _userService;
+        private readonly ICurrentUserService _currentUserService;
         private readonly IMapper _mapper;
 
         public UpdateProfileCommandHandler(
             UserManager<ApplicationUser> userManager,
-            ICurrentUserService userService,
+            ICurrentUserService currentUserService,
             IMapper mapper)
         {
             _userManager = userManager;
-            _userService = userService;
+            _currentUserService = currentUserService;
             _mapper = mapper;
         }
 
         public async Task<UserDto> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByNameAsync(_userService.UserName);
+            var user = await _userManager.FindByNameAsync(_currentUserService.UserName);
 
             if (user == null)
-                throw new EntityNotFoundException($"User does not exist with username {_userService.UserName}"); ;
+                throw new EntityNotFoundException(nameof(ApplicationUser), _currentUserService.UserName); 
 
             user.PhoneNumber = request.PhoneNumber;
             user.Email = request.Email;
@@ -39,7 +39,7 @@ namespace BjBygg.Application.Commands.IdentityCommands.UpdateProfile
             var result = await _userManager.UpdateAsync(user);
 
             if (!result.Succeeded)
-                throw new BadRequestException(result.Errors.ToString());
+                throw new BadRequestException("Something went wrong when trying to update profile");
 
             var response = _mapper.Map<UserDto>(user);
             return response;

@@ -2,7 +2,7 @@ using AutoMapper;
 using BjBygg.Application.Common;
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
-using CleanArchitecture.Core.Exceptions;
+using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
@@ -37,15 +37,9 @@ namespace BjBygg.Application.Commands.MissionCommands.Documents.Upload
                 document.DocumentType = null;
             }
 
-            try
-            {
-                await _dbContext.Set<MissionDocument>().AddAsync(document);
-                await _dbContext.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new EntityNotFoundException($"Invalid foreign key");
-            }
+            await _dbContext.Set<MissionDocument>().AddAsync(document);
+
+            await _dbContext.SaveChangesAsync();
 
             return _mapper.Map<MissionDocumentDto>(document);
         }

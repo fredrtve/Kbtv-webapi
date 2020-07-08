@@ -1,4 +1,5 @@
-using CleanArchitecture.Core.Exceptions;
+using BjBygg.Application.Common.Exceptions;
+using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure.Identity;
 using MediatR;
@@ -32,15 +33,12 @@ namespace BjBygg.Application.Commands.IdentityCommands.Logout
                 .Include(x => x.RefreshTokens)
                 .FirstOrDefaultAsync(x => x.UserName == _currentUserService.UserName);
 
-            if (user == null) throw new BadRequestException("Cant find user");
+            if (user == null) 
+                throw new EntityNotFoundException(nameof(ApplicationUser), _currentUserService.UserName); 
 
             user.RemoveRefreshToken(request.RefreshToken);
 
-            try { await _dbContext.SaveChangesAsync(); }
-            catch (Exception ex)
-            {
-                throw new BadRequestException($"Something went wrong while updating");
-            }
+            await _dbContext.SaveChangesAsync(); 
 
             return Unit.Value;
         }

@@ -4,7 +4,7 @@ using BjBygg.Application.Commands.MissionCommands.Documents.Upload;
 using BjBygg.Application.Common;
 using BjBygg.Application.Queries.DbSyncQueries;
 using BjBygg.Application.Queries.DbSyncQueries.Common;
-using CleanArchitecture.Core.Exceptions;
+using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.SharedKernel;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

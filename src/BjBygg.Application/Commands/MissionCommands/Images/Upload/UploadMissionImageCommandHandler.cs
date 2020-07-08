@@ -2,7 +2,7 @@ using AutoMapper;
 using BjBygg.Application.Common;
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
-using CleanArchitecture.Core.Exceptions;
+using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
@@ -31,24 +31,15 @@ namespace BjBygg.Application.Commands.MissionCommands.Images.Upload
         {
             List<MissionImage> images = new List<MissionImage>();
 
-            if (request.Files != null && request.Files.Count != 0)
-            {
-                var imageUrls = await _storageService.UploadFilesAsync(request.Files, ResourceFolderConstants.Image);
+            var imageUrls = await _storageService.UploadFilesAsync(request.Files, ResourceFolderConstants.Image);
 
-                images.AddRange(
-                    imageUrls.Select(url => new MissionImage() { MissionId = request.MissionId, FileURL = url }));
+            images.AddRange(
+                imageUrls.Select(url => new MissionImage() { MissionId = request.MissionId, FileURL = url }));
 
-                try
-                {
-                    _dbContext.Set<MissionImage>().AddRange(images);
-                    await _dbContext.SaveChangesAsync();
-                }
-                catch (Exception ex)
-                {
-                    throw new EntityNotFoundException($"Invalid foreign key");
-                }
-            }
+            _dbContext.Set<MissionImage>().AddRange(images);
 
+            await _dbContext.SaveChangesAsync();
+            
             return images.Select(x => _mapper.Map<MissionImageDto>(x));
         }
     }

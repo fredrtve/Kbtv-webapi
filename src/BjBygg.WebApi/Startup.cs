@@ -2,6 +2,7 @@ using AutoMapper;
 using BjBygg.Application;
 using BjBygg.Application.Commands.MissionCommands.Create;
 using BjBygg.Application.Common;
+using BjBygg.WebApi.Services;
 using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure;
 using CleanArchitecture.Infrastructure.Api.FileStorage;
@@ -42,6 +43,7 @@ namespace BjBygg.WebApi
             services.AddCors();
 
             services.AddIdentityDbContext();
+
 
             services.AddDefaultIdentity<ApplicationUser>(options =>
             {
@@ -126,9 +128,11 @@ namespace BjBygg.WebApi
                 options.MemoryBufferThreshold = Int32.MaxValue;
             });
 
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
+
             services.AddAutoMapper(Assembly.GetAssembly(typeof(MissionDtoProfile)));
 
-            services.AddMediatR(Assembly.GetAssembly(typeof(CreateMissionCommand)));
+            services.AddMediatR(Assembly.GetAssembly(typeof(CreateMissionCommand)));       
 
             services.AddTransient<IMailService, SendGridMailService>();
 

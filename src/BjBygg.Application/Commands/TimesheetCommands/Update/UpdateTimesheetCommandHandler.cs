@@ -1,7 +1,7 @@
 using AutoMapper;
 using BjBygg.Application.Common;
 using CleanArchitecture.Core.Enums;
-using CleanArchitecture.Core.Exceptions;
+using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
@@ -10,6 +10,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using TimeZoneConverter;
+using CleanArchitecture.Core.Entities;
 
 namespace BjBygg.Application.Commands.TimesheetCommands.Update
 {
@@ -31,13 +32,13 @@ namespace BjBygg.Application.Commands.TimesheetCommands.Update
             var dbTimesheet = await _dbContext.Timesheets.FirstOrDefaultAsync(x => x.Id == request.Id);
 
             if (dbTimesheet == null)
-                throw new EntityNotFoundException($"Entity does not exist with id {request.Id}");
+                throw new EntityNotFoundException(nameof(Timesheet), request.Id);
 
-            if (dbTimesheet.UserName != _currentUserService.UserName) //Cant change timesheet user identity
-                throw new UnauthorizedException($"Timesheet does not belong to user {_currentUserService.UserName}");
+            if (dbTimesheet.UserName != _currentUserService.UserName) //Can only update self
+                throw new ForbiddenException();
 
-            if (dbTimesheet.Status != TimesheetStatus.Open) //Cant change timesheet user identity
-                throw new UnauthorizedException($"Timesheet required to be open");
+            if (dbTimesheet.Status != TimesheetStatus.Open)
+                throw new BadRequestException($"Timesheet is closed for manipulation.");
 
             foreach (var property in request.GetType().GetProperties())
             {

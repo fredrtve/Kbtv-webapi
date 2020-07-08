@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CleanArchitecture.Core.Exceptions
+namespace BjBygg.Application.Common.Exceptions
 {
     public class UnauthorizedException : Exception
     {

@@ -1,4 +1,4 @@
-using CleanArchitecture.Core.Exceptions;
+using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Infrastructure.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -21,20 +21,20 @@ namespace BjBygg.Application.Commands.UserCommands.NewPassword
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
 
-            if (user == null) throw new EntityNotFoundException($"Cant find user with username {request.UserName}");
+            if (user == null) throw new EntityNotFoundException(nameof(ApplicationUser), request.UserName);
 
             var passwordValidator = new PasswordValidator<ApplicationUser>();
             var validationResult = await passwordValidator.ValidateAsync(_userManager, user, request.NewPassword);
 
             if (!validationResult.Succeeded)
-                throw new BadRequestException(validationResult.Errors.FirstOrDefault().ToString());
+                throw new BadRequestException("New password is invalid");
 
             var newPasswordHash = _userManager.PasswordHasher.HashPassword(user, request.NewPassword);
             user.PasswordHash = newPasswordHash;
             var updateResult = await _userManager.UpdateAsync(user);
 
             if (!updateResult.Succeeded)
-                throw new BadRequestException(updateResult.Errors.FirstOrDefault().ToString());
+                throw new BadRequestException("Something went wrong when trying to set new password");
 
             return Unit.Value;
         }

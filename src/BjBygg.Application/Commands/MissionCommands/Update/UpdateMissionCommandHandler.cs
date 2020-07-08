@@ -2,7 +2,7 @@ using AutoMapper;
 using BjBygg.Application.Common;
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
-using CleanArchitecture.Core.Exceptions;
+using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
@@ -34,7 +34,7 @@ namespace BjBygg.Application.Commands.MissionCommands.Update
                 .FirstOrDefaultAsync(x => x.Id == request.Id);
 
             if (dbMission == null)
-                throw new EntityNotFoundException($"Entity does not exist with id {request.Id}");
+                throw new EntityNotFoundException(nameof(Mission), request.Id);
 
             //var mission = _mapper.Map<Mission>(request);
             foreach (var property in request.GetType().GetProperties())

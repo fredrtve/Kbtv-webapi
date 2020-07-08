@@ -1,5 +1,5 @@
 using CleanArchitecture.Core.Entities;
-using CleanArchitecture.Core.Exceptions;
+using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
 using System.Linq;
@@ -21,7 +21,7 @@ namespace BjBygg.Application.Commands.MissionCommands.Delete
         {
             var mission = await _dbContext.Set<Mission>().FindAsync(request.Id);
 
-            if (mission == null) throw new EntityNotFoundException($"Entity does not exist with id {request.Id}");
+            if (mission == null) throw new EntityNotFoundException(nameof(Mission), request.Id);
 
             _dbContext.Set<Mission>().Remove(mission);
 

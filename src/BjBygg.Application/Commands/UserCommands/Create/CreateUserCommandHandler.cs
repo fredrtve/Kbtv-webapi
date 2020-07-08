@@ -1,6 +1,6 @@
 using AutoMapper;
 using BjBygg.Application.Common;
-using CleanArchitecture.Core.Exceptions;
+using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Infrastructure.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -24,8 +24,7 @@ namespace BjBygg.Application.Commands.UserCommands.Create
         public async Task<UserDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             //Not allowing new leaders
-            if (request.Role.ToLower() == "Leder")
-                throw new ForbiddenException($"Creating users with role {request.Role} is forbidden.");
+            if (request.Role.ToLower() == "Leder") throw new ForbiddenException();
 
             var user = _mapper.Map<ApplicationUser>(request);
 
@@ -34,7 +33,7 @@ namespace BjBygg.Application.Commands.UserCommands.Create
             var result = await _userManager.CreateAsync(user, request.Password);
 
             if (!result.Succeeded)
-                throw new BadRequestException(result.Errors.FirstOrDefault().Description);
+                throw new BadRequestException("Something went wrong when trying to create user");
 
             await _userManager.AddToRoleAsync(user, request.Role);
 

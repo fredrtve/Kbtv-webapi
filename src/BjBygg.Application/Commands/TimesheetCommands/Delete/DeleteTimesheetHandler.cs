@@ -1,6 +1,6 @@
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Enums;
-using CleanArchitecture.Core.Exceptions;
+using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
@@ -25,13 +25,13 @@ namespace BjBygg.Application.Commands.TimesheetCommands.Delete
             var timesheet = await _dbContext.Set<Timesheet>().FindAsync(request.Id);
 
             if (timesheet == null)
-                throw new EntityNotFoundException($"Timesheet does not exist with id {request.Id}");
+                throw new EntityNotFoundException(nameof(Timesheet), request.Id);
 
             if (_currentUserService.UserName != timesheet.UserName && _currentUserService.Role != "Leder") //Allow leader
-                throw new UnauthorizedException("Timesheet does not belong to user");
+                throw new ForbiddenException();
 
             if (timesheet.Status != TimesheetStatus.Open && _currentUserService.Role != "Leder") //Allow leader
-                throw new BadRequestException("Timesheet is not open & can't be deleted.");
+                throw new BadRequestException("Timesheet is closed for manipulation.");
 
             _dbContext.Set<Timesheet>().Remove(timesheet);
             await _dbContext.SaveChangesAsync();

@@ -1,4 +1,4 @@
-using CleanArchitecture.Core.Exceptions;
+using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Infrastructure.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -21,10 +21,10 @@ namespace BjBygg.Application.Commands.UserCommands.Delete
             var user = await _userManager.FindByNameAsync(request.UserName);
 
             if (user == null)
-                throw new EntityNotFoundException($"User does not exist with username {request.UserName}");
+                throw new EntityNotFoundException(nameof(ApplicationUser), request.UserName);
 
             if (await _userManager.IsInRoleAsync(user, "Leder"))
-                throw new ForbiddenException($"Deleting users with role Leder is forbidden.");
+                throw new ForbiddenException();
 
             await _userManager.DeleteAsync(user);
             return Unit.Value;

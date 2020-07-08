@@ -1,6 +1,6 @@
 using AutoMapper;
 using BjBygg.Application.Common;
-using CleanArchitecture.Core.Exceptions;
+using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Infrastructure.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -25,12 +25,12 @@ namespace BjBygg.Application.Commands.UserCommands.Update
         public async Task<UserDto> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
             if (request.Role == "Leder") //Not allowing new leaders
-                throw new ForbiddenException($"Updating to role Leder is forbidden.");
+                throw new BadRequestException($"Cant create users with role '{request.Role}'");
 
             var user = await _userManager.FindByNameAsync(request.UserName);
 
             if (user == null)
-                throw new EntityNotFoundException($"User does not exist with username {request.UserName}"); ;
+                throw new EntityNotFoundException(nameof(ApplicationUser), request.UserName);
 
             if (!String.IsNullOrEmpty(request.FirstName))
                 user.FirstName = request.FirstName;
@@ -47,7 +47,7 @@ namespace BjBygg.Application.Commands.UserCommands.Update
             var result = await _userManager.UpdateAsync(user);
 
             if (!result.Succeeded)
-                throw new BadRequestException(result.Errors.ToString());
+                throw new BadRequestException("Something went wrong when trying to update user");
 
             var currentRole = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
 

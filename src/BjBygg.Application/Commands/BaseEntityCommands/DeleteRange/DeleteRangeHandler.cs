@@ -1,4 +1,4 @@
-using CleanArchitecture.Core.Exceptions;
+using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.SharedKernel;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +23,8 @@ namespace BjBygg.Application.Commands.BaseEntityCommands.DeleteRange
         {
             var entities = _dbContext.Set<TEntity>().Where(x => request.Ids.Contains(x.Id)).ToList();
 
-            if (entities.Count() == 0) throw new EntityNotFoundException($"No entities found with given id's");
+            if (entities.Count() == 0) 
+                throw new EntityNotFoundException(nameof(TEntity), String.Join(", ", request.Ids.ToArray()));
 
             _dbContext.Set<TEntity>().RemoveRange(entities);
             await _dbContext.SaveChangesAsync();

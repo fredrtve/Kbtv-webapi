@@ -1,7 +1,7 @@
 using AutoMapper;
 using BjBygg.Application.Common;
 using CleanArchitecture.Core.Entities;
-using CleanArchitecture.Core.Exceptions;
+using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
 using System.Threading;
@@ -25,7 +25,7 @@ namespace BjBygg.Application.Commands.TimesheetCommands.UpdateStatus
             var dbTimesheet = await _dbContext.Set<Timesheet>().FindAsync(request.Id);
 
             if (dbTimesheet == null)
-                throw new EntityNotFoundException($"Entity does not exist with id {request.Id}");
+                throw new EntityNotFoundException(nameof(Timesheet), request.Id);
 
             dbTimesheet.Status = request.Status;
 

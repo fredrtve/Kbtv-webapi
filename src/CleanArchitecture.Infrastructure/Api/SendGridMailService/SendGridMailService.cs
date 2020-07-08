@@ -1,5 +1,4 @@
-﻿using CleanArchitecture.Core.Exceptions;
-using CleanArchitecture.Core.Interfaces;
+﻿using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.Core.Interfaces.Services;
 using Microsoft.Extensions.Configuration;
 using SendGrid;
@@ -36,7 +35,7 @@ namespace CleanArchitecture.Infrastructure.Api.SendGridMailService
 
             if (response.StatusCode != System.Net.HttpStatusCode.Accepted)
             {
-                throw new BadRequestException("Email not sent");
+                throw new BadRequestException();
             }
         }
     }

@@ -1,5 +1,5 @@
 using CleanArchitecture.Core.Entities;
-using CleanArchitecture.Core.Exceptions;
+using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
 using System.Threading;
@@ -20,7 +20,7 @@ namespace BjBygg.Application.Commands.MissionCommands.ToggleMissionFinish
         {
             var dbMission = await _dbContext.Set<Mission>().FindAsync(request.Id);
 
-            if (dbMission == null) throw new EntityNotFoundException($"Mission does not exist with id {request.Id}");
+            if (dbMission == null) throw new EntityNotFoundException(nameof(Mission), request.Id);
 
             dbMission.Finished = !dbMission.Finished;
 

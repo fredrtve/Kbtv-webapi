@@ -1,5 +1,5 @@
 using AutoMapper;
-using CleanArchitecture.Core.Exceptions;
+using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.SharedKernel;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -24,8 +24,8 @@ namespace BjBygg.Application.Commands.BaseEntityCommands.Update
         {
             var dbEntity = await _dbContext.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == request.Id);
 
-            if (dbEntity == null)
-                throw new EntityNotFoundException($"Entity does not exist with id {request.Id}");
+            if (dbEntity == null) 
+                throw new EntityNotFoundException(nameof(TEntity), request.Id);
 
             foreach (var property in request.GetType().GetProperties())
             {

@@ -2,7 +2,7 @@ using AutoMapper;
 using BjBygg.Application.Common;
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
-using CleanArchitecture.Core.Exceptions;
+using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure.Data;
 using CleanArchitecture.SharedKernel;
@@ -76,15 +76,9 @@ namespace BjBygg.Application.Commands.MissionCommands.CreateWithPdf
             dbMission.MissionDocuments = new List<MissionDocument>();
             dbMission.MissionDocuments.Add(report); //Add input report as document in new mission
 
-            try
-            {
-                await _dbContext.Set<Mission>().AddAsync(dbMission);
-                await _dbContext.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new EntityNotFoundException($"Invalid foreign key");
-            }
+            await _dbContext.Set<Mission>().AddAsync(dbMission);
+
+            await _dbContext.SaveChangesAsync();
 
             return _mapper.Map<MissionDto>(dbMission);
         }

@@ -1,4 +1,4 @@
-using CleanArchitecture.Core.Exceptions;
+using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.SharedKernel;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +21,7 @@ namespace BjBygg.Application.Commands.BaseEntityCommands.Delete
         {
             var entity = await _dbContext.Set<TEntity>().FindAsync(request.Id);
 
-            if (entity == null) throw new EntityNotFoundException($"Entity does not exist with id {request.Id}");
+            if (entity == null) throw new EntityNotFoundException(nameof(TEntity), request.Id);
 
             _dbContext.Set<TEntity>().Remove(entity);
 
