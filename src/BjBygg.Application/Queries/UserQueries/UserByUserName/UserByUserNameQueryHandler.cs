@@ -1,6 +1,6 @@
 using AutoMapper;
 using BjBygg.Application.Common;
-using BjBygg.Application.Common.Exceptions;
+using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Infrastructure.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -25,7 +25,7 @@ namespace BjBygg.Application.Queries.UserQueries.UserByUserName
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
 
-            if(user == null) 
+            if (user == null)
                 throw new EntityNotFoundException(nameof(ApplicationUser), request.UserName);
 
             var response = _mapper.Map<UserDto>(user);

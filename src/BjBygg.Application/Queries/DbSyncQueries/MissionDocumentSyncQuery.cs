@@ -2,11 +2,9 @@
 using BjBygg.Application.Common;
 using BjBygg.Application.Queries.DbSyncQueries.Common;
 using CleanArchitecture.Core.Entities;
-using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using CleanArchitecture.Infrastructure.Identity;
 
 namespace BjBygg.Application.Queries.DbSyncQueries
 {

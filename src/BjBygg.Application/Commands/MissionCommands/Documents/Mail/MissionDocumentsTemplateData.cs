@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.Core.Interfaces;
+﻿
+using CleanArchitecture.Core.Interfaces;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 

@@ -2,7 +2,7 @@ using AutoMapper;
 using BjBygg.Application.Common;
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
-using BjBygg.Application.Common.Exceptions;
+using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
@@ -71,15 +71,8 @@ namespace BjBygg.Application.Commands.MissionCommands.Update
                         break;
                 }
             }
-
-            try
-            {
-                await _dbContext.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new BadRequestException($"Something went wrong when trying to store your request.");
-            }
+ 
+            await _dbContext.SaveChangesAsync();
 
             return _mapper.Map<MissionDto>(dbMission);
         }

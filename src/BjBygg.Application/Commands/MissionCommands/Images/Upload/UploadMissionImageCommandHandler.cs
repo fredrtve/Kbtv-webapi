@@ -2,11 +2,9 @@ using AutoMapper;
 using BjBygg.Application.Common;
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
-using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -39,7 +37,7 @@ namespace BjBygg.Application.Commands.MissionCommands.Images.Upload
             _dbContext.Set<MissionImage>().AddRange(images);
 
             await _dbContext.SaveChangesAsync();
-            
+
             return images.Select(x => _mapper.Map<MissionImageDto>(x));
         }
     }

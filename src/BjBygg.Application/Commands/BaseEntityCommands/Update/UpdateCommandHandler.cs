@@ -1,10 +1,10 @@
 using AutoMapper;
-using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.SharedKernel;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
+using CleanArchitecture.Core.Exceptions;
 
 namespace BjBygg.Application.Commands.BaseEntityCommands.Update
 {
@@ -24,7 +24,7 @@ namespace BjBygg.Application.Commands.BaseEntityCommands.Update
         {
             var dbEntity = await _dbContext.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == request.Id);
 
-            if (dbEntity == null) 
+            if (dbEntity == null)
                 throw new EntityNotFoundException(nameof(TEntity), request.Id);
 
             foreach (var property in request.GetType().GetProperties())

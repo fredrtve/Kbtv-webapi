@@ -1,4 +1,4 @@
-﻿namespace CleanArchitecture.Core.Dto
+﻿namespace CleanArchitecture.Core
 {
     public sealed class AccessToken
     {

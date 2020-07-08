@@ -1,8 +1,7 @@
-using BjBygg.Application.Common.Exceptions;
+using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Infrastructure.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 

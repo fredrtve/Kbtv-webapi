@@ -2,11 +2,9 @@ using AutoMapper;
 using BjBygg.Application.Common;
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
-using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 

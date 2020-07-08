@@ -1,6 +1,5 @@
 using AutoMapper;
 using BjBygg.Application.Common;
-using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure.Auth;
 using CleanArchitecture.Infrastructure.Identity;
@@ -11,6 +10,7 @@ using Microsoft.Extensions.Options;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CleanArchitecture.Core.Exceptions;
 
 namespace BjBygg.Application.Commands.IdentityCommands.Login
 {

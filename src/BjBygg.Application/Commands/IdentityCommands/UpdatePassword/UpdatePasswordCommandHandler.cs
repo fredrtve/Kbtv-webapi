@@ -1,10 +1,8 @@
-using BjBygg.Application.Common.Exceptions;
+using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure.Identity;
-using FluentValidation.Results;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -34,7 +32,7 @@ namespace BjBygg.Application.Commands.IdentityCommands.UpdatePassword
                 throw new EntityNotFoundException(nameof(ApplicationUser), _currentUserService.UserName);
 
             var changePasswordResult = await _userManager.ChangePasswordAsync(user, request.OldPassword, request.NewPassword);
-       
+
             if (!changePasswordResult.Succeeded)
                 throw new BadRequestException("Something went wrong when trying to update password");
 

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using FluentValidation.Results;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using FluentValidation.Results;
 
 namespace BjBygg.Application.Common.Exceptions
 {
@@ -15,8 +15,8 @@ namespace BjBygg.Application.Common.Exceptions
         public ValidationException(string key, string message)
             : base("One or more validation failures have occurred.")
         {
-            Errors = new Dictionary<string, string[]>() { 
-                { key, new string[1] { message } } 
+            Errors = new Dictionary<string, string[]>() {
+                { key, new string[1] { message } }
             };
         }
 

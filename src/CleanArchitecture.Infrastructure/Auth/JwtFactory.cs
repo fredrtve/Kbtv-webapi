@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Core.Dto;
+﻿using CleanArchitecture.Core;
 using CleanArchitecture.Core.Interfaces.Services;
 using Microsoft.Extensions.Options;
 using System;

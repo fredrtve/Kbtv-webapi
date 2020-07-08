@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BjBygg.Application.Common.Exceptions
+namespace CleanArchitecture.Core.Exceptions
 {
     public class ForbiddenException : Exception
     {

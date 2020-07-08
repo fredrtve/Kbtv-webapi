@@ -1,5 +1,5 @@
 ﻿using BjBygg.Application.Common;
-using CleanArchitecture.Core.Dto;
+using CleanArchitecture.Core;
 
 namespace BjBygg.Application.Commands.IdentityCommands.Login
 {

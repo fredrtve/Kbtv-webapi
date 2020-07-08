@@ -1,5 +1,4 @@
-﻿using CleanArchitecture.Core.Dto;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace CleanArchitecture.Core.Interfaces.Services
 {

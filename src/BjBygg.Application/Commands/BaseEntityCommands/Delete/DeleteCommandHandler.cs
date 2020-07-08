@@ -1,4 +1,4 @@
-using BjBygg.Application.Common.Exceptions;
+using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.SharedKernel;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

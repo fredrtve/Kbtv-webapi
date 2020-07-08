@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace BjBygg.Application.Common.Exceptions
+namespace CleanArchitecture.Core.Exceptions
 {
     public class EntityNotFoundException : Exception
     {

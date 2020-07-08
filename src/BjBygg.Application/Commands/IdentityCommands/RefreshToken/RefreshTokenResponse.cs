@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Core.Dto;
+﻿using CleanArchitecture.Core;
 
 namespace BjBygg.Application.Commands.IdentityCommands.RefreshToken
 {

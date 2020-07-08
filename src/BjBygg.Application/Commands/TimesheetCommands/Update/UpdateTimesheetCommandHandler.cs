@@ -1,7 +1,8 @@
 using AutoMapper;
 using BjBygg.Application.Common;
+using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Enums;
-using BjBygg.Application.Common.Exceptions;
+using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
@@ -10,7 +11,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using TimeZoneConverter;
-using CleanArchitecture.Core.Entities;
 
 namespace BjBygg.Application.Commands.TimesheetCommands.Update
 {

@@ -1,6 +1,6 @@
 using AutoMapper;
 using BjBygg.Application.Common;
-using BjBygg.Application.Common.Exceptions;
+using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure.Identity;
 using MediatR;
@@ -31,7 +31,7 @@ namespace BjBygg.Application.Commands.IdentityCommands.UpdateProfile
             var user = await _userManager.FindByNameAsync(_currentUserService.UserName);
 
             if (user == null)
-                throw new EntityNotFoundException(nameof(ApplicationUser), _currentUserService.UserName); 
+                throw new EntityNotFoundException(nameof(ApplicationUser), _currentUserService.UserName);
 
             user.PhoneNumber = request.PhoneNumber;
             user.Email = request.Email;

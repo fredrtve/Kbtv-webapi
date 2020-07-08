@@ -1,5 +1,5 @@
 using CleanArchitecture.Core.Entities;
-using BjBygg.Application.Common.Exceptions;
+using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
 using System.Linq;

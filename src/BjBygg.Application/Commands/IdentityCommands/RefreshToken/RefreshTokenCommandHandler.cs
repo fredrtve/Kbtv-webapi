@@ -1,14 +1,12 @@
-﻿using BjBygg.Application.Common.Exceptions;
-using BjBygg.Application.Common.Exceptions;
-using CleanArchitecture.Core.Interfaces.Services;
+﻿using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CleanArchitecture.Core.Exceptions;
 
 namespace BjBygg.Application.Commands.IdentityCommands.RefreshToken
 {

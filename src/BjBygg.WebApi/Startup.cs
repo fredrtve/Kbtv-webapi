@@ -132,7 +132,7 @@ namespace BjBygg.WebApi
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(MissionDtoProfile)));
 
-            services.AddMediatR(Assembly.GetAssembly(typeof(CreateMissionCommand)));       
+            services.AddMediatR(Assembly.GetAssembly(typeof(CreateMissionCommand)));
 
             services.AddTransient<IMailService, SendGridMailService>();
 

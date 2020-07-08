@@ -1,13 +1,11 @@
-using BjBygg.Application.Common.Exceptions;
-using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
+using CleanArchitecture.Core.Exceptions;
 
 namespace BjBygg.Application.Commands.IdentityCommands.Logout
 {
@@ -33,12 +31,12 @@ namespace BjBygg.Application.Commands.IdentityCommands.Logout
                 .Include(x => x.RefreshTokens)
                 .FirstOrDefaultAsync(x => x.UserName == _currentUserService.UserName);
 
-            if (user == null) 
-                throw new EntityNotFoundException(nameof(ApplicationUser), _currentUserService.UserName); 
+            if (user == null)
+                throw new EntityNotFoundException(nameof(ApplicationUser), _currentUserService.UserName);
 
             user.RemoveRefreshToken(request.RefreshToken);
 
-            await _dbContext.SaveChangesAsync(); 
+            await _dbContext.SaveChangesAsync();
 
             return Unit.Value;
         }

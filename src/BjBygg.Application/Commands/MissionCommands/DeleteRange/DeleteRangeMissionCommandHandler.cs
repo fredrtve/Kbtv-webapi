@@ -1,11 +1,11 @@
 using CleanArchitecture.Core.Entities;
-using BjBygg.Application.Common.Exceptions;
+using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.Infrastructure.Data;
 using MediatR;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System;
 
 namespace BjBygg.Application.Commands.MissionCommands.DeleteRange
 {
@@ -22,7 +22,7 @@ namespace BjBygg.Application.Commands.MissionCommands.DeleteRange
         {
             var entities = _dbContext.Set<Mission>().Where(x => request.Ids.Contains(x.Id)).ToList();
 
-            if (entities.Count() == 0) 
+            if (entities.Count() == 0)
                 throw new EntityNotFoundException(nameof(Mission), String.Join(", ", request.Ids.ToArray()));
 
             _dbContext.Set<Mission>().RemoveRange(entities);
