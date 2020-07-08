@@ -13,7 +13,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<Uri> Export([FromBody] ExportJsonToCsvCommand request)
+        public async Task<ActionResult<Uri>> Export([FromBody] ExportJsonToCsvCommand request)
         {
             return await Mediator.Send(request);
         }

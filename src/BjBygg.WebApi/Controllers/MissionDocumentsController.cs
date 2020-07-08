@@ -6,7 +6,6 @@ using BjBygg.Application.Queries.DbSyncQueries;
 using BjBygg.Application.Queries.DbSyncQueries.Common;
 using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.SharedKernel;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -23,7 +22,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize]
         [HttpGet]
         [Route("api/[controller]/[action]")]
-        public async Task<DbSyncResponse<MissionDocumentDto>> Sync(MissionDocumentSyncQuery request)
+        public async Task<ActionResult<DbSyncResponse<MissionDocumentDto>>> Sync(MissionDocumentSyncQuery request)
         {
             return await Mediator.Send(request);
         }
@@ -31,7 +30,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<MissionDocumentDto> Upload(int missionId)
+        public async Task<ActionResult<MissionDocumentDto>> Upload(int missionId)
         {
             if (Request.Form.Files.Count() == 0)
                 throw new BadRequestException("No files received");
@@ -60,25 +59,28 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder")]
         [HttpDelete]
         [Route("api/[controller]/{id}")]
-        public async Task<Unit> Delete(DeleteMissionDocumentCommand request)
-        {
-            return await Mediator.Send(request);
+        public async Task<ActionResult> Delete(DeleteMissionDocumentCommand request)
+        { 
+            await Mediator.Send(request);
+            return NoContent();
         }
 
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]/DeleteRange")]
-        public async Task<Unit> DeleteRange([FromBody] DeleteRangeMissionDocumentCommand request)
+        public async Task<ActionResult> DeleteRange([FromBody] DeleteRangeMissionDocumentCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
 
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]/SendDocuments")]
-        public async Task<Unit> SendDocuments([FromBody] MailMissionDocumentsCommand request)
+        public async Task<ActionResult> SendDocuments([FromBody] MailMissionDocumentsCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
 
     }

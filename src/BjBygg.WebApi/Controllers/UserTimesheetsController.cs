@@ -33,7 +33,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
         [HttpGet]
         [Route("api/[controller]/[action]")]
-        public async Task<DbSyncResponse<TimesheetDto>> Sync(UserTimesheetSyncQuery request)
+        public async Task<ActionResult<DbSyncResponse<TimesheetDto>>> Sync(UserTimesheetSyncQuery request)
         {
             var user = await _userManager.FindByNameAsync(User.FindFirstValue(ClaimTypes.Name));
             request.User = _mapper.Map<UserDto>(user);
@@ -44,7 +44,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<TimesheetDto> Create([FromBody] CreateTimesheetCommand request)
+        public async Task<ActionResult<TimesheetDto>> Create([FromBody] CreateTimesheetCommand request)
         {
             return await Mediator.Send(request);
         }
@@ -52,7 +52,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
         [HttpPut]
         [Route("api/[controller]/{Id}")]
-        public async Task<TimesheetDto> Update([FromBody] UpdateTimesheetCommand request)
+        public async Task<ActionResult<TimesheetDto>> Update([FromBody] UpdateTimesheetCommand request)
         {
             return await Mediator.Send(request);
         }
@@ -60,9 +60,10 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
         [HttpDelete]
         [Route("api/[controller]/{Id}")]
-        public async Task<Unit> Delete(DeleteTimesheetCommand request)
+        public async Task<ActionResult> Delete(DeleteTimesheetCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
 
     }

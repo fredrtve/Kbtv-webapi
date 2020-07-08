@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace BjBygg.Application.Commands.TimesheetCommands.UpdateStatusRange
 {
-    public class UpdateTimesheetStatusRangeCommand : IRequest<IEnumerable<TimesheetDto>>
+    public class UpdateTimesheetStatusRangeCommand : IRequest<List<TimesheetDto>>
     {
         public IEnumerable<int> Ids { get; set; }
         public TimesheetStatus Status { get; set; }

@@ -20,7 +20,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize]
         [HttpGet]
         [Route("api/[controller]/[action]")]
-        public async Task<DbSyncResponse<MissionTypeDto>> Sync(MissionTypeSyncQuery request)
+        public async Task<ActionResult<DbSyncResponse<MissionTypeDto>>> Sync(MissionTypeSyncQuery request)
         {
             return await Mediator.Send(request);
         }
@@ -28,7 +28,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<MissionTypeDto> Create([FromBody] CreateMissionTypeCommand request)
+        public async Task<ActionResult<MissionTypeDto>> Create([FromBody] CreateMissionTypeCommand request)
         {
             return await Mediator.Send(request);
         }
@@ -36,7 +36,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder")]
         [HttpPut]
         [Route("api/[controller]/{Id}")]
-        public async Task<MissionTypeDto> Update([FromBody] UpdateMissionTypeCommand request)
+        public async Task<ActionResult<MissionTypeDto>> Update([FromBody] UpdateMissionTypeCommand request)
         {
             return await Mediator.Send(request);
         }
@@ -44,17 +44,19 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder")]
         [HttpDelete]
         [Route("api/[controller]/{Id}")]
-        public async Task<Unit> Delete(DeleteMissionTypeCommand request)
+        public async Task<ActionResult> Delete(DeleteMissionTypeCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
 
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]/DeleteRange")]
-        public async Task<Unit> DeleteRange([FromBody] DeleteRangeMissionTypeCommand request)
+        public async Task<ActionResult> DeleteRange([FromBody] DeleteRangeMissionTypeCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
     }
 }

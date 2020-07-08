@@ -17,7 +17,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder")]
         [HttpGet]
         [Route("api/[controller]")]
-        public async Task<IEnumerable<InboundEmailPasswordDto>> GetAll(InboundEmailPasswordListQuery request)
+        public async Task<ActionResult<List<InboundEmailPasswordDto>>> GetAll(InboundEmailPasswordListQuery request)
         {
             return await Mediator.Send(request);
         }
@@ -25,7 +25,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<InboundEmailPasswordDto> Create([FromBody] CreateInboundEmailPasswordCommand request)
+        public async Task<ActionResult<InboundEmailPasswordDto>> Create([FromBody] CreateInboundEmailPasswordCommand request)
         {
             return await Mediator.Send(request);
         }
@@ -33,9 +33,10 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]/DeleteRange")]
-        public async Task<Unit> DeleteRange([FromBody] DeleteRangeInboundEmailPasswordCommand request)
+        public async Task<ActionResult> DeleteRange([FromBody] DeleteRangeInboundEmailPasswordCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
 
 

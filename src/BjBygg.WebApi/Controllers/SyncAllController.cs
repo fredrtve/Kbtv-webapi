@@ -12,7 +12,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize]
         [HttpGet]
         [Route("api/[controller]")]
-        public async Task<SyncAllResponse> Get(SyncAllQuery request)
+        public async Task<ActionResult<SyncAllResponse>> Get(SyncAllQuery request)
         {
             return await Mediator.Send(request);
         }

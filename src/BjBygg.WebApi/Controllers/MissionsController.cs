@@ -36,7 +36,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize]
         [HttpGet]
         [Route("api/[controller]/[action]")]
-        public async Task<DbSyncResponse<MissionDto>> Sync(MissionSyncQuery request)
+        public async Task<ActionResult<DbSyncResponse<MissionDto>>> Sync(MissionSyncQuery request)
         {
             return await Mediator.Send(request);
         }
@@ -44,7 +44,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder, Mellomleder")]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<MissionDto> Create()
+        public async Task<ActionResult<MissionDto>> Create()
         {
             var settings = new JsonSerializerSettings
             {
@@ -67,7 +67,7 @@ namespace BjBygg.WebApi.Controllers
 
         [HttpPost]
         [Route("api/[controller]/[action]")]
-        public async Task<MissionDto> CreateFromInboundEmailPdfReport()
+        public async Task<ActionResult<MissionDto>> CreateFromInboundEmailPdfReport()
         {
             StringValues fromEmail;
             Request.Form.TryGetValue("from", out fromEmail);
@@ -107,7 +107,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]/[action]")]
-        public async Task<MissionDto> CreateFromPdfReport()
+        public async Task<ActionResult<MissionDto>> CreateFromPdfReport()
         {
             if (Request.Form.Files.Count() == 0)
                 throw new BadRequestException("No files received");
@@ -124,7 +124,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder")]
         [HttpPut]
         [Route("api/[controller]/{Id}")]
-        public async Task<MissionDto> Update()
+        public async Task<ActionResult<MissionDto>> Update()
         {
             var settings = new JsonSerializerSettings
             {
@@ -150,7 +150,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder")]
         [HttpGet]
         [Route("api/[controller]/{Id}/[action]")]
-        public async Task<bool> ToggleFinish(ToggleMissionFinishCommand request)
+        public async Task<ActionResult<bool>> ToggleFinish(ToggleMissionFinishCommand request)
         {
             return await Mediator.Send(request);
         }
@@ -158,17 +158,19 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder")]
         [HttpDelete]
         [Route("api/[controller]/{Id}")]
-        public async Task<Unit> Delete(DeleteMissionCommand request)
+        public async Task<ActionResult> Delete(DeleteMissionCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
 
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]/DeleteRange")]
-        public async Task<Unit> DeleteRange([FromBody] DeleteRangeMissionCommand request)
+        public async Task<ActionResult> DeleteRange([FromBody] DeleteRangeMissionCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
 
     }

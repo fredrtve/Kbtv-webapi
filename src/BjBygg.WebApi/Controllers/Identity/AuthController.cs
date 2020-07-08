@@ -26,7 +26,7 @@ namespace BjBygg.WebApi.Controllers.Identity
 
         [HttpPost]
         [Route("api/[controller]/refresh")]
-        public async Task<RefreshTokenResponse> Refresh([FromBody] RefreshTokenCommand request)
+        public async Task<ActionResult<RefreshTokenResponse>> Refresh([FromBody] RefreshTokenCommand request)
         {
             request.SigningKey = _authSettings.SecretKey;
             return await Mediator.Send(request);
@@ -34,7 +34,7 @@ namespace BjBygg.WebApi.Controllers.Identity
 
         [HttpPost]
         [Route("api/[controller]/login")]
-        public async Task<LoginResponse> Login([FromBody] LoginCommand request)
+        public async Task<ActionResult<LoginResponse>> Login([FromBody] LoginCommand request)
         {
             return await Mediator.Send(request);
         }
@@ -42,7 +42,7 @@ namespace BjBygg.WebApi.Controllers.Identity
         [Authorize]
         [HttpGet]
         [Route("api/[controller]")]
-        public async Task<UserDto> Get()
+        public async Task<ActionResult<UserDto>> Get()
         {
             var request = new UserByUserNameQuery() { UserName = User.FindFirstValue(ClaimTypes.Name) };
             return await Mediator.Send(request);
@@ -51,7 +51,7 @@ namespace BjBygg.WebApi.Controllers.Identity
         [Authorize]
         [HttpPut]
         [Route("api/[controller]")]
-        public async Task<UserDto> UpdateProfile([FromBody] UpdateProfileCommand request)
+        public async Task<ActionResult<UserDto>> UpdateProfile([FromBody] UpdateProfileCommand request)
         {
             return await Mediator.Send(request);
         }
@@ -59,17 +59,19 @@ namespace BjBygg.WebApi.Controllers.Identity
         [Authorize]
         [HttpPut]
         [Route("api/[controller]/changePassword")]
-        public async Task<Unit> UpdatePassword([FromBody] UpdatePasswordCommand request)
+        public async Task<ActionResult> UpdatePassword([FromBody] UpdatePasswordCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
 
         [Authorize]
         [HttpPost]
         [Route("api/[controller]/logout")]
-        public async Task<Unit> Logout([FromBody] LogoutCommand request)
+        public async Task<ActionResult> Logout([FromBody] LogoutCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
 
     }

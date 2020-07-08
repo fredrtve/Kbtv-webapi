@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace BjBygg.Application.Queries.TimesheetQueries
 {
-    public class TimesheetQuery : IRequest<IEnumerable<TimesheetDto>>
+    public class TimesheetQuery : IRequest<List<TimesheetDto>>
     {
         public int? MissionId { get; set; }
 

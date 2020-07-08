@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Queries.UserQueries
 {
-    public class UserListQuery : IRequest<IEnumerable<UserDto>> { }
+    public class UserListQuery : IRequest<List<UserDto>> { }
 
     public class UserListHandler : IRequestHandler<UserListQuery, IEnumerable<UserDto>>
     {

@@ -29,7 +29,7 @@ namespace BjBygg.WebApi.Controllers.User
         [Authorize(Roles = "Leder")]
         [HttpGet]
         [Route("api/[controller]")]
-        public async Task<IEnumerable<UserDto>> Index()
+        public async Task<ActionResult<IEnumerable<UserDto>>> Index()
         {
             return await Mediator.Send(new UserListQuery());
         }
@@ -37,7 +37,7 @@ namespace BjBygg.WebApi.Controllers.User
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<UserDto> Create([FromBody] CreateUserCommand request)
+        public async Task<ActionResult<UserDto>> Create([FromBody] CreateUserCommand request)
         {
             return await Mediator.Send(request);
         }
@@ -45,7 +45,7 @@ namespace BjBygg.WebApi.Controllers.User
         [Authorize(Roles = "Leder")]
         [HttpGet]
         [Route("api/[controller]/{UserName}")]
-        public async Task<UserDto> GetUser(UserByUserNameQuery request)
+        public async Task<ActionResult<UserDto>> GetUser(UserByUserNameQuery request)
         {
             return await Mediator.Send(request);
         }
@@ -53,7 +53,7 @@ namespace BjBygg.WebApi.Controllers.User
         [Authorize(Roles = "Leder")]
         [HttpPut]
         [Route("api/[controller]/{UserName}")]
-        public async Task<UserDto> Update([FromBody] UpdateUserCommand request)
+        public async Task<ActionResult<UserDto>> Update([FromBody] UpdateUserCommand request)
         {
             return await Mediator.Send(request);
         }
@@ -61,17 +61,19 @@ namespace BjBygg.WebApi.Controllers.User
         [Authorize(Roles = "Leder")]
         [HttpPut]
         [Route("api/[controller]/{UserName}/[action]")]
-        public async Task<Unit> NewPassword([FromBody] NewPasswordCommand request)
+        public async Task<ActionResult> NewPassword([FromBody] NewPasswordCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
 
         [Authorize(Roles = "Leder")]
         [HttpDelete]
         [Route("api/[controller]/{UserName}")]
-        public async Task<Unit> Delete(DeleteUserCommand request)
+        public async Task<ActionResult> Delete(DeleteUserCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
 
     }

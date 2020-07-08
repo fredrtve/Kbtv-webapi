@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace BjBygg.Application.Queries
 {
-    public class InboundEmailPasswordListQuery : IRequest<IEnumerable<InboundEmailPasswordDto>>
+    public class InboundEmailPasswordListQuery : IRequest<List<InboundEmailPasswordDto>>
     {
     }
 }

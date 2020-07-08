@@ -15,7 +15,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize]
         [HttpGet]
         [Route("api/[controller]")]
-        public async Task<IEnumerable<string>> Index()
+        public async Task<ActionResult<IEnumerable<string>>> Index()
         {
             return await Mediator.Send(new RoleListQuery());
         }

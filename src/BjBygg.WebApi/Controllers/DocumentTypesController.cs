@@ -18,7 +18,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize]
         [HttpGet]
         [Route("api/[controller]/[action]")]
-        public async Task<DbSyncResponse<DocumentTypeDto>> Sync(DocumentTypeSyncQuery request)
+        public async Task<ActionResult<DbSyncResponse<DocumentTypeDto>>> Sync(DocumentTypeSyncQuery request)
         {
             return await Mediator.Send(request);
         }
@@ -26,7 +26,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<DocumentTypeDto> Create([FromBody] CreateDocumentTypeCommand request)
+        public async Task<ActionResult<DocumentTypeDto>> Create([FromBody] CreateDocumentTypeCommand request)
         {
             return await Mediator.Send(request);
         }
@@ -34,7 +34,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder")]
         [HttpPut]
         [Route("api/[controller]/{Id}")]
-        public async Task<DocumentTypeDto> Update([FromBody] UpdateDocumentTypeCommand request)
+        public async Task<ActionResult<DocumentTypeDto>> Update([FromBody] UpdateDocumentTypeCommand request)
         {
             return await Mediator.Send(request);
         }
@@ -42,17 +42,19 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder")]
         [HttpDelete]
         [Route("api/[controller]/{Id}")]
-        public async Task<Unit> Delete(DeleteDocumentTypeCommand request)
+        public async Task<ActionResult> Delete(DeleteDocumentTypeCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
 
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]/DeleteRange")]
-        public async Task<Unit> DeleteRange([FromBody] DeleteRangeDocumentTypeCommand request)
+        public async Task<ActionResult> DeleteRange([FromBody] DeleteRangeDocumentTypeCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
     }
 }

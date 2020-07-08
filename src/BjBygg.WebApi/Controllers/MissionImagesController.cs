@@ -6,7 +6,6 @@ using BjBygg.Application.Queries.DbSyncQueries;
 using BjBygg.Application.Queries.DbSyncQueries.Common;
 using CleanArchitecture.Core.Exceptions;
 using CleanArchitecture.SharedKernel;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -23,7 +22,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize]
         [HttpGet]
         [Route("api/[controller]/[action]")]
-        public async Task<DbSyncResponse<MissionImageDto>> Sync(MissionImageSyncQuery request)
+        public async Task<ActionResult<DbSyncResponse<MissionImageDto>>> Sync(MissionImageSyncQuery request)
         {
             return await Mediator.Send(request);
         }
@@ -31,7 +30,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<IEnumerable<MissionImageDto>> Upload(int missionId)
+        public async Task<ActionResult<IEnumerable<MissionImageDto>>> Upload(int missionId)
         {
             if (Request.Form.Files.Count() == 0)
                 throw new BadRequestException("No files received");
@@ -54,25 +53,28 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder")]
         [HttpDelete]
         [Route("api/[controller]/{id}")]
-        public async Task<Unit> Delete(DeleteMissionImageCommand request)
+        public async Task<ActionResult> Delete(DeleteMissionImageCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
 
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]/DeleteRange")]
-        public async Task<Unit> DeleteRange([FromBody] DeleteRangeMissionImageCommand request)
+        public async Task<ActionResult> DeleteRange([FromBody] DeleteRangeMissionImageCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
 
         [Authorize(Roles = "Leder")]
         [HttpPost]
         [Route("api/[controller]/SendImages")]
-        public async Task<Unit> SendImages([FromBody] MailMissionImagesCommand request)
+        public async Task<ActionResult> SendImages([FromBody] MailMissionImagesCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
     }
 }

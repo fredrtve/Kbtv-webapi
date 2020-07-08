@@ -18,7 +18,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize]
         [HttpGet]
         [Route("api/[controller]/[action]")]
-        public async Task<DbSyncResponse<MissionNoteDto>> Sync(MissionNoteSyncQuery request)
+        public async Task<ActionResult<DbSyncResponse<MissionNoteDto>>> Sync(MissionNoteSyncQuery request)
         {
             return await Mediator.Send(request);
         }
@@ -26,7 +26,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<MissionNoteDto> Create([FromBody] CreateMissionNoteCommand request)
+        public async Task<ActionResult<MissionNoteDto>> Create([FromBody] CreateMissionNoteCommand request)
         {
             return await Mediator.Send(request);
         }
@@ -34,7 +34,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder")]
         [HttpPut]
         [Route("api/[controller]/{Id}")]
-        public async Task<MissionNoteDto> Update([FromBody] UpdateMissionNoteCommand request)
+        public async Task<ActionResult<MissionNoteDto>> Update([FromBody] UpdateMissionNoteCommand request)
         {
             return await Mediator.Send(request);
         }
@@ -42,9 +42,10 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = "Leder")]
         [HttpDelete]
         [Route("api/[controller]/{Id}")]
-        public async Task<Unit> Delete(DeleteMissionNoteCommand request)
+        public async Task<ActionResult> Delete(DeleteMissionNoteCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
     }
 }

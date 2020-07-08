@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Queries.UserQueries.RoleList
 {
-    public class RoleListQuery : IRequest<IEnumerable<string>>
+    public class RoleListQuery : IRequest<List<string>>
     {
     }
     public class RoleListQueryHandler : IRequestHandler<RoleListQuery, IEnumerable<string>>
