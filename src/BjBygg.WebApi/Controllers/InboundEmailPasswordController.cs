@@ -1,8 +1,7 @@
-﻿using BjBygg.Application.Commands.InboundEmailPasswordCommands.Create;
-using BjBygg.Application.Commands.InboundEmailPasswordCommands.DeleteRange;
-using BjBygg.Application.Common.Dto;
-using BjBygg.Application.Queries;
-using MediatR;
+﻿using BjBygg.Application.Identity.Commands.InboundEmailPasswordCommands.Create;
+using BjBygg.Application.Identity.Commands.InboundEmailPasswordCommands.DeleteRange;
+using BjBygg.Application.Identity.Common;
+using BjBygg.Application.Identity.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

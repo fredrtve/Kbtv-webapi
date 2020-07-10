@@ -1,6 +1,6 @@
-﻿using CleanArchitecture.Core.Exceptions;
+﻿using BjBygg.Application.Common.Exceptions;
+using BjBygg.Application.Common.Interfaces;
 using CleanArchitecture.Core.Interfaces;
-using CleanArchitecture.Core.Interfaces.Services;
 using Microsoft.Extensions.Configuration;
 using SendGrid;
 using SendGrid.Helpers.Mail;

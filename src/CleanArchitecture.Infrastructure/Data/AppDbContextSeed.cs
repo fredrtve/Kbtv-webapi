@@ -1,3 +1,4 @@
+using BjBygg.Application.Application.Common.Interfaces;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +12,7 @@ namespace CleanArchitecture.Infrastructure.Data
     {
         readonly static Random random = new Random();
         private static int _numberOfMissions;
-        public static void Seed(AppDbContext context, int numberOfMissions)
+        public static void Seed(IAppDbContext context, int numberOfMissions)
         {
             _numberOfMissions = numberOfMissions;
             try

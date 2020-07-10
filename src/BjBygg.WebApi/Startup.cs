@@ -1,20 +1,26 @@
 using AutoMapper;
-using BjBygg.Application;
-using BjBygg.Application.Commands.MissionCommands.Create;
-using BjBygg.Application.Common;
+using BjBygg.Application.Application;
+using BjBygg.Application.Application.Commands.MissionCommands.Create;
+using BjBygg.Application.Application.Common.Interfaces;
+using BjBygg.Application.Application.Common.Profiles;
+using BjBygg.Application.Common.Interfaces;
+using BjBygg.Application.Identity.Common.Interfaces;
+using BjBygg.Application.Identity.Common.Models;
 using BjBygg.WebApi.Services;
-using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Infrastructure;
 using CleanArchitecture.Infrastructure.Api.FileStorage;
 using CleanArchitecture.Infrastructure.Api.SendGridMailService;
 using CleanArchitecture.Infrastructure.Auth;
 using CleanArchitecture.Infrastructure.Identity;
+using CleanArchitecture.Infrastructure.Services;
 using MediatR;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,6 +31,7 @@ using System;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using BjBygg.Application;
 
 namespace BjBygg.WebApi
 {
@@ -42,85 +49,20 @@ namespace BjBygg.WebApi
         {
             services.AddCors();
 
-            services.AddIdentityDbContext();
+            services.AddApplicationInfrastructure();
+            services.AddIdentityInfrastructure(Configuration);
+            services.AddApplication();
 
+            
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
 
-            services.AddDefaultIdentity<ApplicationUser>(options =>
-            {
-                options.SignIn.RequireConfirmedAccount = false;
-                options.Password.RequireDigit = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequiredLength = 7;
-            })
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<AppIdentityDbContext>()
-                .AddDefaultTokenProviders();
-
-            var authSettings = Configuration.GetSection(nameof(AuthSettings));
-            services.Configure<AuthSettings>(authSettings);
-
-            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(authSettings[nameof(AuthSettings.SecretKey)]));
-
-            var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
-
-            // Configure JwtIssuerOptions
-            services.Configure<JwtIssuerOptions>(options =>
-            {
-                options.Issuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
-                options.Audience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)];
-                options.SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
-            });
-
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)],
-
-                ValidateAudience = true,
-                ValidAudience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)],
-
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = signingKey,
-
-                RequireExpirationTime = false,
-                ValidateLifetime = true,
-                ClockSkew = TimeSpan.Zero
-            };
-
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                //options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-              .AddJwtBearer(options =>
-              {
-                  options.ClaimsIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
-                  options.TokenValidationParameters = tokenValidationParameters;
-                  options.SaveToken = true;
-
-                  options.Events = new JwtBearerEvents
-                  {
-                      OnAuthenticationFailed = context =>
-                      {
-                          if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-                          {
-                              context.Response.Headers.Add("Token-Expired", "true");
-                          }
-                          return Task.CompletedTask;
-                      }
-                  };
-              });
-
-            services.AddAppDbContext();
+            services.AddHttpContextAccessor();
 
             services.AddControllers();
 
-            services.AddSwaggerGen(c =>
+            services.Configure<ApiBehaviorOptions>(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Kbtv API", Version = "v1" });
+                options.SuppressModelStateInvalidFilter = true;
             });
 
             services.Configure<FormOptions>(options =>
@@ -128,24 +70,10 @@ namespace BjBygg.WebApi
                 options.MemoryBufferThreshold = Int32.MaxValue;
             });
 
-            services.AddScoped<ICurrentUserService, CurrentUserService>();
-
-            services.AddAutoMapper(Assembly.GetAssembly(typeof(MissionDtoProfile)));
-
-            services.AddMediatR(Assembly.GetAssembly(typeof(CreateMissionCommand)));
-
-            services.AddTransient<IMailService, SendGridMailService>();
-
-            services.AddSingleton<IBlobStorageService, AzureBlobStorageService>();
-
-            services.AddTransient<IJwtTokenHandler, JwtTokenHandler>();
-            services.AddTransient<ITokenFactory, TokenFactory>();
-            services.AddTransient<IJwtFactory, JwtFactory>();
-            services.AddTransient<IJwtTokenValidator, JwtTokenValidator>();
-
-            services.AddTransient<ICsvConverter, CsvConverter>();
-            //services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            //services.AddScoped<IActionContextAccessor, ActionContextAccessor>();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Kbtv API", Version = "v1" });
+            });        
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

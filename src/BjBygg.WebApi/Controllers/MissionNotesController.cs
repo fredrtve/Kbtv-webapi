@@ -1,10 +1,9 @@
-using BjBygg.Application.Commands.MissionCommands.Notes;
-using BjBygg.Application.Commands.MissionCommands.Notes.Create;
-using BjBygg.Application.Commands.MissionCommands.Notes.Update;
-using BjBygg.Application.Common;
-using BjBygg.Application.Queries.DbSyncQueries;
-using BjBygg.Application.Queries.DbSyncQueries.Common;
-using MediatR;
+using BjBygg.Application.Application.Commands.MissionCommands.Notes;
+using BjBygg.Application.Application.Commands.MissionCommands.Notes.Create;
+using BjBygg.Application.Application.Commands.MissionCommands.Notes.Update;
+using BjBygg.Application.Application.Common.Dto;
+using BjBygg.Application.Application.Queries.DbSyncQueries;
+using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;

@@ -1,7 +1,8 @@
 using Ardalis.EFCore.Extensions;
+using BjBygg.Application.Application.Common.Interfaces;
+using BjBygg.Application.Common.Interfaces;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.SharedKernel;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -10,14 +11,14 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Infrastructure.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : DbContext, IAppDbContext
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ICurrentUserService _currentUserService;
 
-        public AppDbContext(DbContextOptions<AppDbContext> options, IHttpContextAccessor httpContextAccessor)
+        public AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUserService currentUserService)
             : base(options)
         {
-            this._httpContextAccessor = httpContextAccessor;
+            _currentUserService = currentUserService;
         }
 
         public DbSet<Employer> Employers { get; set; }
@@ -56,7 +57,7 @@ namespace CleanArchitecture.Infrastructure.Data
         private void OnBeforeSaving()
         {
             var now = DateTime.UtcNow;
-            var user = GetCurrentUser();
+            var user = _currentUserService.UserName;
 
             foreach (var entry in ChangeTracker.Entries())
             {
@@ -84,16 +85,6 @@ namespace CleanArchitecture.Infrastructure.Data
                     }
                 }
             }
-        }
-
-        private string GetCurrentUser()
-        {
-            var httpContext = _httpContextAccessor.HttpContext;
-            string user = null;
-
-            if (httpContext != null) user = httpContext.User.Identity.Name;
-
-            return user;
         }
     }
 }

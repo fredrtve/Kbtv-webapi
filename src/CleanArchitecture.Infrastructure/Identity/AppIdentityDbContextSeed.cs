@@ -1,3 +1,5 @@
+using BjBygg.Application.Identity.Common.Interfaces;
+using BjBygg.Application.Identity.Common.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,7 +12,7 @@ namespace CleanArchitecture.Infrastructure.Identity
         public static async Task SeedAsync(
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            AppIdentityDbContext context)
+            IAppIdentityDbContext context)
         {
             if (!roleManager.RoleExistsAsync("Ansatt").Result)
                 await roleManager.CreateAsync(new IdentityRole { Name = "Ansatt" });

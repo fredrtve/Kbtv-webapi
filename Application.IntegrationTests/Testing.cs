@@ -1,5 +1,8 @@
-﻿using BjBygg.Application.Queries.UserQueries;
-using BjBygg.Application.Shared;
+﻿using BjBygg.Application.Application.Common.Interfaces;
+using BjBygg.Application.Identity.Common;
+using BjBygg.Application.Identity.Common.Interfaces;
+using BjBygg.Application.Identity.Common.Models;
+using BjBygg.Application.Identity.Queries.UserQueries.UserByUserName;
 using BjBygg.WebApi;
 using CleanArchitecture.Infrastructure.Data;
 using CleanArchitecture.Infrastructure.Identity;
@@ -11,6 +14,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -61,6 +66,8 @@ namespace Application.IntegrationTests
             services.AddDbContext<AppIdentityDbContext>(options =>
                 options.UseSqlite("Data Source=testidentity.sqlite"));
 
+            services.AddSingleton<TestSeederCount>();
+
             _scopeFactory = services.BuildServiceProvider().GetService<IServiceScopeFactory>();
 
             await EnsureAppIdentityDb();
@@ -71,7 +78,7 @@ namespace Application.IntegrationTests
         {
             using var scope = _scopeFactory.CreateScope();
 
-            var idContext = scope.ServiceProvider.GetService<AppIdentityDbContext>();
+            var idContext = scope.ServiceProvider.GetService<IAppIdentityDbContext>();
             var userManager = scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
             var roleManager = scope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
             idContext.Database.EnsureDeleted();
@@ -80,14 +87,21 @@ namespace Application.IntegrationTests
             await AppIdentityDbContextSeed.SeedAsync(userManager, roleManager, idContext);
         }
 
-        public static async Task EnsureAppDbAsync(TestSeederConfig seedConfig)
+        public static async Task EnsureAppDbAsync()
         {
             using var scope = _scopeFactory.CreateScope();
 
-            var context = scope.ServiceProvider.GetService<AppDbContext>();
+            var context = scope.ServiceProvider.GetService<IAppDbContext>();
             context.Database.EnsureDeleted();
             context.Database.Migrate();
-            await TestSeeder.SeedAllAsync(context, seedConfig);
+            var seederCount = scope.ServiceProvider.GetService<TestSeederCount>();
+            await TestSeeder.SeedAllAsync(context, seederCount);
+        }
+
+        public static Dictionary<Type, int> GetSeederCount()
+        {
+            using var scope = _scopeFactory.CreateScope();
+            return scope.ServiceProvider.GetService<TestSeederCount>().SeedCounts;
         }
 
         public static async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)
@@ -126,9 +140,9 @@ namespace Application.IntegrationTests
         {
             using var scope = _scopeFactory.CreateScope();
 
-            var context = scope.ServiceProvider.GetService<AppDbContext>();
+            var context = scope.ServiceProvider.GetService<IAppDbContext>();
 
-            return await context.FindAsync<TEntity>(id);
+            return await context.Set<TEntity>().FindAsync(id);
         }
 
         public static async Task AddAsync<TEntity>(TEntity entity)
@@ -136,11 +150,20 @@ namespace Application.IntegrationTests
         {
             using var scope = _scopeFactory.CreateScope();
 
-            var context = scope.ServiceProvider.GetService<AppDbContext>();
+            var context = scope.ServiceProvider.GetService<IAppDbContext>();
 
-            context.Add(entity);
+            context.Set<TEntity>().Add(entity);
 
             await context.SaveChangesAsync();
+        }
+        public static async Task<List<TEntity>> GetAllAsync<TEntity>()
+            where TEntity : class
+        {
+            using var scope = _scopeFactory.CreateScope();
+
+            var context = scope.ServiceProvider.GetService<IAppDbContext>();
+
+            return await context.Set<TEntity>().ToListAsync();
         }
 
         [OneTimeTearDown]

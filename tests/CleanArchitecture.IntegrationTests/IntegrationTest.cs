@@ -1,20 +1,5 @@
-﻿using BjBygg.WebApi;
-using CleanArchitecture.Infrastructure.Data;
+﻿using System.Data.Common;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using BjBygg.Application.Commands.IdentityCommands.Login;
-using Newtonsoft.Json;
-using CleanArchitecture.Infrastructure.Identity;
-using Microsoft.AspNetCore.Identity;
-using System.Data.Common;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using System;
 
 namespace CleanArchitecture.IntegrationTests
 {
@@ -26,7 +11,7 @@ namespace CleanArchitecture.IntegrationTests
 
         //protected IntegrationTest()
         //{
-        //    var appOptions = new DbContextOptionsBuilder<AppDbContext>().UseSqlite(CreateInMemoryDatabase()).Options;
+        //    var appOptions = new DbContextOptionsBuilder<IAppDbContext>().UseSqlite(CreateInMemoryDatabase()).Options;
         //    var identityOptions = new DbContextOptionsBuilder().UseSqlite(CreateInMemoryDatabase()).Options;
 
         //    var appFactory = new WebApplicationFactory<Startup>()
@@ -34,9 +19,9 @@ namespace CleanArchitecture.IntegrationTests
         //        {
         //            builder.ConfigureServices(services =>
         //            {
-        //                services.RemoveAll(typeof(AppDbContext));
-        //                services.AddDbContext<AppDbContext>().AddOptions<DbContextOptions>(appOptions);
-        //                services.AddDbContext<AppIdentityDbContext>(identityOptions)    ; 
+        //                services.RemoveAll(typeof(IAppDbContext));
+        //                services.AddDbContext<IAppDbContext>().AddOptions<DbContextOptions>(appOptions);
+        //                services.AddDbContext<IAppIdentityDbContext>(identityOptions)    ; 
         //            });
         //        });
 
@@ -46,20 +31,20 @@ namespace CleanArchitecture.IntegrationTests
         //    {
         //        var services = scope.ServiceProvider;
 
-        //        using (var context = services.GetService<AppDbContext>())
+        //        using (var context = services.GetService<IAppDbContext>())
         //        {
         //            context.Database.EnsureCreated();
         //            context.Database.Migrate();
-        //            AppDbContextSeed.Seed(context, 5);
+        //            IAppDbContextSeed.Seed(context, 5);
         //        }
 
-        //        using (var context = services.GetService<AppIdentityDbContext>())
+        //        using (var context = services.GetService<IAppIdentityDbContext>())
         //        {
         //            context.Database.EnsureCreated();
         //            context.Database.Migrate();
         //            var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
         //            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-        //            AppIdentityDbContextSeed.SeedAsync(userManager, roleManager);
+        //            IAppIdentityDbContextSeed.SeedAsync(userManager, roleManager);
         //        }
         //    }
 

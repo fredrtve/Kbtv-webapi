@@ -10,7 +10,7 @@ namespace Application.IntegrationTests
         [SetUp]
         public async Task TestSetUp()
         {
-            await EnsureAppDbAsync(new TestSeederConfig());
+            await EnsureAppDbAsync();
         }
     }
 }

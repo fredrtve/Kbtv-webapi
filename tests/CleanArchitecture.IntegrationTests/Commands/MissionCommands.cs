@@ -1,15 +1,4 @@
-﻿using BjBygg.Application.Shared;
-using BjBygg.WebApi;
-using FluentAssertions;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.Hosting;
-using System.Collections.Generic;
-using System.Net;
-using System.Threading.Tasks;
-using Xunit;
-
-namespace CleanArchitecture.IntegrationTests.Commands
+﻿namespace CleanArchitecture.IntegrationTests.Commands
 {
     public class MissionCommands : IntegrationTest
     {

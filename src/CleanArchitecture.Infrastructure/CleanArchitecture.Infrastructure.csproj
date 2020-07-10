@@ -65,6 +65,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="itext7" />
     <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" />
     <PackageReference Include="Autofac" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" />
@@ -81,6 +82,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\BjBygg.Application\BjBygg.Application.csproj" />
     <ProjectReference Include="..\CleanArchitecture.Core\CleanArchitecture.Core.csproj" />
   </ItemGroup>
   

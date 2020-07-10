@@ -1,10 +1,10 @@
-using BjBygg.Application.Commands.MissionCommands.Documents;
-using BjBygg.Application.Commands.MissionCommands.Documents.Mail;
-using BjBygg.Application.Commands.MissionCommands.Documents.Upload;
-using BjBygg.Application.Common;
-using BjBygg.Application.Queries.DbSyncQueries;
-using BjBygg.Application.Queries.DbSyncQueries.Common;
-using CleanArchitecture.Core.Exceptions;
+using BjBygg.Application.Application.Commands.MissionCommands.Documents;
+using BjBygg.Application.Application.Commands.MissionCommands.Documents.Mail;
+using BjBygg.Application.Application.Commands.MissionCommands.Documents.Upload;
+using BjBygg.Application.Application.Common.Dto;
+using BjBygg.Application.Application.Queries.DbSyncQueries;
+using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
+using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.SharedKernel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -60,7 +60,7 @@ namespace BjBygg.WebApi.Controllers
         [HttpDelete]
         [Route("api/[controller]/{id}")]
         public async Task<ActionResult> Delete(DeleteMissionDocumentCommand request)
-        { 
+        {
             await Mediator.Send(request);
             return NoContent();
         }

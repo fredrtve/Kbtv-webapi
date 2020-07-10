@@ -1,5 +1,7 @@
+using BjBygg.Application.Common.Interfaces;
+using BjBygg.Application.Identity.Common.Interfaces;
+using BjBygg.Application.Identity.Common.Models;
 using CleanArchitecture.SharedKernel;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,13 +10,14 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Infrastructure.Identity
 {
-    public class AppIdentityDbContext : IdentityDbContext<ApplicationUser>
+    public class AppIdentityDbContext : IdentityDbContext<ApplicationUser>, IAppIdentityDbContext
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        public AppIdentityDbContext(DbContextOptions<AppIdentityDbContext> options, IHttpContextAccessor httpContextAccessor)
+        private readonly ICurrentUserService _currentUserService;
+
+        public AppIdentityDbContext(DbContextOptions<AppIdentityDbContext> options, ICurrentUserService currentUserService)
             : base(options)
         {
-            _httpContextAccessor = httpContextAccessor;
+            _currentUserService = currentUserService;
         }
 
         public DbSet<RefreshToken> RefreshTokens { get; set; }
@@ -42,7 +45,7 @@ namespace CleanArchitecture.Infrastructure.Identity
         private void OnBeforeSaving()
         {
             var now = DateTime.UtcNow;
-            var user = GetCurrentUser();
+            var user = _currentUserService.UserName;
 
             foreach (var entry in ChangeTracker.Entries())
             {
@@ -70,16 +73,6 @@ namespace CleanArchitecture.Infrastructure.Identity
                     }
                 }
             }
-        }
-
-        private string GetCurrentUser()
-        {
-            var httpContext = _httpContextAccessor.HttpContext;
-            string user = null;
-
-            if (httpContext != null) user = httpContext.User.Identity.Name;
-
-            return user;
         }
     }
 

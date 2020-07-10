@@ -1,7 +1,7 @@
-using BjBygg.Application.Commands.TimesheetCommands.UpdateStatus;
-using BjBygg.Application.Commands.TimesheetCommands.UpdateStatusRange;
-using BjBygg.Application.Common;
-using BjBygg.Application.Queries.TimesheetQueries;
+using BjBygg.Application.Application.Commands.TimesheetCommands.UpdateStatus;
+using BjBygg.Application.Application.Commands.TimesheetCommands.UpdateStatusRange;
+using BjBygg.Application.Application.Common.Dto;
+using BjBygg.Application.Application.Queries.TimesheetQueries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

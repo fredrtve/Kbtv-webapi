@@ -1,4 +1,4 @@
-using CleanArchitecture.Core.Interfaces.Services;
+using BjBygg.Application.Application.Common.Interfaces;
 using CleanArchitecture.SharedKernel;
 using Microsoft.Extensions.Configuration;
 using Microsoft.WindowsAzure.Storage.Blob;

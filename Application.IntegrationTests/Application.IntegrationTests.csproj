@@ -23,7 +23,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="CommandTests\ExportJsonToCsvTests\" />
+    <Folder Include="CommandTests\InboundEmailPasswordTests\" />
+    <Folder Include="CommandTests\MissionTests\" />
+    <Folder Include="CommandTests\MissionTests\MissionImageTests\" />
+    <Folder Include="CommandTests\MissionTests\MissionDocumentTests\" />
+    <Folder Include="CommandTests\MissionTests\MissionNoteTests\" />
+    <Folder Include="CommandTests\MissionTypeTests\" />
+    <Folder Include="CommandTests\TimesheetTests\" />
     <Folder Include="data\db\identity\" />
+    <Folder Include="data\db\main\" />
   </ItemGroup>
 
 </Project>

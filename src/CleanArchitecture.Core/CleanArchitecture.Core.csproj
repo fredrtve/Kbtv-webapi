@@ -14,4 +14,8 @@
     <Packagereference Include="System.Text.Json" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Exceptions\" />
+  </ItemGroup>
+
 </Project>

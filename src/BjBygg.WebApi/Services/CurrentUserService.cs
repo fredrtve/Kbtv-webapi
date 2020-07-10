@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Core.Interfaces.Services;
+﻿using BjBygg.Application.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 

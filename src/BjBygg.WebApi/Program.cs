@@ -15,13 +15,13 @@ namespace BjBygg.WebApi
             //{
             //    var services = scope.ServiceProvider;
 
-            //    using (var context = services.GetService<AppDbContext>())
+            //    using (var context = services.GetService<IAppDbContext>())
             //    {
             //        context.Database.Migrate();
-            //        AppDbContextSeed.Seed(context, 1500);
+            //        IAppDbContextSeed.Seed(context, 1500);
             //    }
 
-            //    //using (var context = services.GetService<AppIdentityDbContext>())
+            //    //using (var context = services.GetService<IAppIdentityDbContext>())
             //    //{
 
             //    //    context.Database.Migrate();
@@ -29,7 +29,7 @@ namespace BjBygg.WebApi
             //    //    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
             //    //    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-            //    //    AppIdentityDbContextSeed.SeedAsync(userManager, roleManager, context);
+            //    //    IAppIdentityDbContextSeed.SeedAsync(userManager, roleManager, context);
             //    //}
             //}
 

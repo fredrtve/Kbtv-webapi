@@ -1,5 +1,4 @@
-﻿
-using BjBygg.WebApi.Filters;
+﻿using BjBygg.WebApi.Filters;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;

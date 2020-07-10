@@ -1,5 +1,5 @@
-﻿using CleanArchitecture.Core;
-using CleanArchitecture.Core.Interfaces.Services;
+﻿using BjBygg.Application.Identity.Common.Interfaces;
+using BjBygg.Application.Identity.Common.Models;
 using Microsoft.Extensions.Options;
 using System;
 using System.IdentityModel.Tokens.Jwt;

@@ -1,4 +1,4 @@
-﻿using BjBygg.Application.Queries.DbSyncQueries.SyncAll;
+﻿using BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;

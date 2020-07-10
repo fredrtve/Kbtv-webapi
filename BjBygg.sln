@@ -10,6 +10,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Core", "src\CleanArchitecture.Core\CleanArchitecture.Core.csproj", "{4548EB20-1D1B-477B-AF6E-DD55653A6583}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Infrastructure", "src\CleanArchitecture.Infrastructure\CleanArchitecture.Infrastructure.csproj", "{220361D6-9C76-4E3F-BD34-3C7B50E2CA4D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7961475B-3753-4895-AD4F-A8976C734602} = {7961475B-3753-4895-AD4F-A8976C734602}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.UnitTests", "tests\CleanArchitecture.Tests\CleanArchitecture.UnitTests.csproj", "{AEE17BAB-D187-4BC5-B640-40CC0749566C}"
 EndProject
@@ -36,7 +39,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BjBygg.Application", "src\B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BjBygg.WebApi", "src\BjBygg.WebApi\BjBygg.WebApi.csproj", "{C7D0366E-7CE0-4604-917B-9A1D2C640E1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.IntegrationTests", "Application.IntegrationTests\Application.IntegrationTests.csproj", "{D94E0501-EE38-423D-85AB-1536F2745596}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.IntegrationTests", "Application.IntegrationTests\Application.IntegrationTests.csproj", "{D94E0501-EE38-423D-85AB-1536F2745596}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

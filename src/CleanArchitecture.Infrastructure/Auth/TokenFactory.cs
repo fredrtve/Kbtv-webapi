@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Core.Interfaces.Services;
+﻿using BjBygg.Application.Identity.Common.Interfaces;
 using System;
 using System.Security.Cryptography;
 

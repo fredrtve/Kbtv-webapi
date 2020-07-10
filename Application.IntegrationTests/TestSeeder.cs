@@ -1,10 +1,7 @@
-﻿using CleanArchitecture.Core.Entities;
-using CleanArchitecture.Core.Enums;
-using CleanArchitecture.Infrastructure.Data;
-using Microsoft.Data.Sqlite;
+﻿using BjBygg.Application.Application.Common.Interfaces;
+using CleanArchitecture.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Application.IntegrationTests
@@ -12,35 +9,35 @@ namespace Application.IntegrationTests
     public class TestSeeder
     {
 
-        public static async Task SeedAllAsync(AppDbContext context, TestSeederConfig config)
+        public static async Task SeedAllAsync(IAppDbContext context, TestSeederCount seederCount)
         {
             using (var ctx = context)
             {
-                await SetEmployersAsync(ctx, config.Employers);
-                await SetMissionTypesAsync(ctx, config.MissionTypes);
-                await SetDocumentTypesAsync(ctx, config.DocumentTypes);
-                await SetMissionsAsync(ctx, config.Missions);
-                await SetMissionDocumentsAsync(ctx, config.MissionDocuments);
-                await SetMissionImagesAsync(ctx, config.MissionImages);
-                await SetMissionNotesAsync(ctx, config.MissionNotes);
-                await SetTimesheetsAsync(ctx, config.Timesheets);
+                await SetEmployersAsync(ctx, seederCount.SeedCounts[typeof(Employer)]);
+                await SetMissionTypesAsync(ctx, seederCount.SeedCounts[typeof(MissionType)]);
+                await SetDocumentTypesAsync(ctx, seederCount.SeedCounts[typeof(DocumentType)]);
+                await SetMissionsAsync(ctx, seederCount.SeedCounts[typeof(Mission)]);
+                await SetMissionDocumentsAsync(ctx, seederCount.SeedCounts[typeof(MissionDocument)]);
+                await SetMissionImagesAsync(ctx, seederCount.SeedCounts[typeof(MissionImage)]);
+                await SetMissionNotesAsync(ctx, seederCount.SeedCounts[typeof(MissionNote)]);
+                await SetTimesheetsAsync(ctx, seederCount.SeedCounts[typeof(Timesheet)]);
             }
         }
 
-        static async Task SetEmployersAsync(AppDbContext context, int amount)
+        static async Task SetEmployersAsync(IAppDbContext context, int amount)
         {
             var command = "INSERT INTO Employers (Name, Deleted, CreatedAt, UpdatedAt) VALUES ";
-            for(int i = 0; i < amount; i++)
+            for (int i = 0; i < amount; i++)
             {
                 var date = DateTime.Now.AddYears(-i * 2).ToString("yyyy-MM-dd HH:mm:ss");
                 if (i < (amount - 1)) command = String.Concat(command, $"('NSU{i}', 0, '{date}', '{date}'),");
                 else command = String.Concat(command, $"('NSU{i}', 0, '{date}', '{date}')");
             }
- 
+
 
             await context.Database.ExecuteSqlRawAsync(command);
         }
-        static async Task SetMissionTypesAsync(AppDbContext context, int amount)
+        static async Task SetMissionTypesAsync(IAppDbContext context, int amount)
         {
             var command = "INSERT INTO MissionTypes (Name, Deleted, CreatedAt, UpdatedAt) VALUES ";
             for (int i = 0; i < amount; i++)
@@ -52,7 +49,7 @@ namespace Application.IntegrationTests
 
             await context.Database.ExecuteSqlRawAsync(command);
         }
-        static async Task SetDocumentTypesAsync(AppDbContext context, int amount)
+        static async Task SetDocumentTypesAsync(IAppDbContext context, int amount)
         {
             var command = "INSERT INTO DocumentTypes (Name, Deleted, CreatedAt, UpdatedAt) VALUES ";
             for (int i = 0; i < amount; i++)
@@ -63,32 +60,32 @@ namespace Application.IntegrationTests
             }
             await context.Database.ExecuteSqlRawAsync(command);
         }
-        static async Task SetMissionsAsync(AppDbContext context, int amount)
+        static async Task SetMissionsAsync(IAppDbContext context, int amount)
         {
             var command = "INSERT INTO Missions (Address, EmployerId, MissionTypeId, Deleted, CreatedAt, UpdatedAt) VALUES ";
 
             for (var i = 0; i < amount; i++)
             {
-                var date = DateTime.Now.AddYears(-i*2).ToString("yyyy-MM-dd HH:mm:ss");
-                if(i < (amount - 1)) command = String.Concat(command, $"('Furuberget {i}, 1940 Bjørkelangen', 1, 1, 0, '{date}', '{date}'),");
+                var date = DateTime.Now.AddYears(-i * 2).ToString("yyyy-MM-dd HH:mm:ss");
+                if (i < (amount - 1)) command = String.Concat(command, $"('Furuberget {i}, 1940 Bjørkelangen', 1, 1, 0, '{date}', '{date}'),");
                 else command = String.Concat(command, $"('Furuberget {i}, 1940 Bjørkelangen', NULL, 1, 0, '{date}', '{date}')");
             }
 
-            await context.Database.ExecuteSqlRawAsync(command); 
+            await context.Database.ExecuteSqlRawAsync(command);
         }
-        static async Task SetMissionDocumentsAsync(AppDbContext context, int amount)
+        static async Task SetMissionDocumentsAsync(IAppDbContext context, int amount)
         {
             var command = "INSERT INTO MissionDocuments (FileURL, MissionId, DocumentTypeId, Deleted, CreatedAt, UpdatedAt) VALUES ";
             for (var i = 0; i < amount; i++)
             {
                 var date = DateTime.Now.AddYears(-i * 2).ToString("yyyy-MM-dd HH:mm:ss");
-                if (i < (amount-1)) command = String.Concat(command, $"('https://test.com', 1, 1, 0, '{date}', '{date}'),");
+                if (i < (amount - 1)) command = String.Concat(command, $"('https://test.com', 1, 1, 0, '{date}', '{date}'),");
                 else command = String.Concat(command, $"('https://test.com', 1, 1, 0, '{date}', '{date}')");
             }
 
             await context.Database.ExecuteSqlRawAsync(command);
         }
-        static async Task SetMissionImagesAsync(AppDbContext context, int amount)
+        static async Task SetMissionImagesAsync(IAppDbContext context, int amount)
         {
             var command = "INSERT INTO MissionImages (FileURL, MissionId, Deleted, CreatedAt, UpdatedAt) VALUES ";
             for (var i = 0; i < amount; i++)
@@ -100,7 +97,7 @@ namespace Application.IntegrationTests
 
             await context.Database.ExecuteSqlRawAsync(command);
         }
-        static async Task SetMissionNotesAsync(AppDbContext context, int amount)
+        static async Task SetMissionNotesAsync(IAppDbContext context, int amount)
         {
             var command = "INSERT INTO MissionNotes (Content, MissionId, Pinned, Deleted, CreatedAt, UpdatedAt) VALUES ";
             for (var i = 0; i < amount; i++)
@@ -113,7 +110,7 @@ namespace Application.IntegrationTests
 
             await context.Database.ExecuteSqlRawAsync(command);
         }
-        static async Task SetTimesheetsAsync(AppDbContext context, int amount)
+        static async Task SetTimesheetsAsync(IAppDbContext context, int amount)
         {
             var command = "INSERT INTO Timesheets " +
                 "(MissionId, StartTime, EndTime, TotalHours, Comment, UserName, Status, Deleted, CreatedAt, UpdatedAt) " +
@@ -121,7 +118,7 @@ namespace Application.IntegrationTests
 
             var today = DateTime.UtcNow.Date.AddHours(6);
 
-            for(var d = 0; d < amount; d++)
+            for (var d = 0; d < amount; d++)
             {
                 var startDate = today.AddDays(-d);
                 var endDate = startDate.AddHours(4);
@@ -134,9 +131,9 @@ namespace Application.IntegrationTests
                     $"(1, '{startDateString}','{endDateString}',{totalHours}, 'test', 'leder', {status}, 0, '{startDateString}', '{startDateString}'),");
                 else
                     command = String.Concat(command,
-                    $"(1, '{startDateString}','{endDateString}',{totalHours}, 'test', 'mellomleder', {status}, 0, '{startDateString}', '{startDateString}')");             
+                    $"(1, '{startDateString}','{endDateString}',{totalHours}, 'test', 'mellomleder', {status}, 0, '{startDateString}', '{startDateString}')");
             }
-        
+
             await context.Database.ExecuteSqlRawAsync(command);
         }
     }

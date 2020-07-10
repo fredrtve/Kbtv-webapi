@@ -1,11 +1,10 @@
-using BjBygg.Application.Commands.UserCommands.Create;
-using BjBygg.Application.Commands.UserCommands.Delete;
-using BjBygg.Application.Commands.UserCommands.NewPassword;
-using BjBygg.Application.Commands.UserCommands.Update;
-using BjBygg.Application.Common;
-using BjBygg.Application.Queries.UserQueries;
-using BjBygg.Application.Queries.UserQueries.UserByUserName;
-using MediatR;
+using BjBygg.Application.Identity.Commands.UserCommands.Create;
+using BjBygg.Application.Identity.Commands.UserCommands.Delete;
+using BjBygg.Application.Identity.Commands.UserCommands.NewPassword;
+using BjBygg.Application.Identity.Commands.UserCommands.Update;
+using BjBygg.Application.Identity.Common;
+using BjBygg.Application.Identity.Queries.UserQueries;
+using BjBygg.Application.Identity.Queries.UserQueries.UserByUserName;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -13,7 +12,7 @@ using System.Threading.Tasks;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace BjBygg.WebApi.Controllers.User
+namespace BjBygg.WebApi.Controllers
 {
     public class UsersController : BaseController
     {

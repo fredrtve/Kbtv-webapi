@@ -1,5 +1,4 @@
 ﻿using BjBygg.Application.Common.Exceptions;
-using CleanArchitecture.Core.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;

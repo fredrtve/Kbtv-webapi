@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Core.Interfaces.Services;
+﻿using BjBygg.Application.Identity.Common.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Security.Claims;
