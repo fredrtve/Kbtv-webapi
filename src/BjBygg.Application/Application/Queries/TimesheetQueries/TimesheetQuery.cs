@@ -8,9 +8,9 @@ namespace BjBygg.Application.Application.Queries.TimesheetQueries
     {
         public int? MissionId { get; set; }
 
-        public double? StartDate { get; set; }
+        public long? StartDate { get; set; }
 
-        public double? EndDate { get; set; }
+        public long? EndDate { get; set; }
 
         public string? UserName { get; set; }
 

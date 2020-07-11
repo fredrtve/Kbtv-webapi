@@ -27,6 +27,7 @@
       <PackageReference Update="IdentityServer4.EntityFramework.Storage" Version="3.0.2" />
     <PackageReference Update="FluentAssertions" Version="5.10.3" />
     <PackageReference Update="System.Text.Json" Version="4.7.2" />
+    <PackageReference Update="TimeZoneConverter" Version="3.2.0" />
   </ItemGroup>
   
   <ItemGroup Condition="'$(TestProjectMode)' == 'true'">
@@ -49,6 +50,6 @@
     <PackageReference Include="itext7" Version="7.1.11" />
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
     <PackageReference Include="System.Text.Json" Version="4.7.2" />
-    
+    <PackageReference Include="TimeZoneConverter" Version="3.2.0" />
   </ItemGroup>
 </Project>

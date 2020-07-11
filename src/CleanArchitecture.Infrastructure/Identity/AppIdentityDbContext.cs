@@ -1,6 +1,7 @@
 using BjBygg.Application.Common.Interfaces;
 using BjBygg.Application.Identity.Common.Interfaces;
 using BjBygg.Application.Identity.Common.Models;
+using CleanArchitecture.Core;
 using CleanArchitecture.SharedKernel;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -44,7 +45,7 @@ namespace CleanArchitecture.Infrastructure.Identity
 
         private void OnBeforeSaving()
         {
-            var now = DateTime.UtcNow;
+            var now = DateTimeHelper.Now();
             var user = _currentUserService.UserName;
 
             foreach (var entry in ChangeTracker.Entries())

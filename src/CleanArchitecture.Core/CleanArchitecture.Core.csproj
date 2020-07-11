@@ -12,6 +12,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" />
     <Packagereference Include="System.Text.Json" />
+    <PackageReference Include="TimeZoneConverter" />
   </ItemGroup>
 
   <ItemGroup>

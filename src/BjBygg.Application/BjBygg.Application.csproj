@@ -4,17 +4,13 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-      
+  <ItemGroup>  
       <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
       
-      <PackageReference Include="FluentValidation" Version="9.0.0" />
-      
+      <PackageReference Include="FluentValidation" Version="9.0.0" />     
       <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="9.0.0" />
 
-      <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
-      <PackageReference Include="MediatR" Version="7.0.0" />
-      
+      <PackageReference Include="MediatR" Version="7.0.0" />  
       <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
       
       <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
@@ -23,7 +19,6 @@
       <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
       <PackageReference Include="System.Data.SqlClient" Version="4.8.0" />
       <PackageReference Include="System.Text.Json" Version="4.7.2" />
-      <PackageReference Include="TimeZoneConverter" Version="3.2.0" />
   </ItemGroup>
 
   <ItemGroup>

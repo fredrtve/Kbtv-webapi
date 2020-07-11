@@ -1,6 +1,7 @@
 using Ardalis.EFCore.Extensions;
 using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Application.Common.Interfaces;
+using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.SharedKernel;
 using Microsoft.EntityFrameworkCore;
@@ -56,7 +57,7 @@ namespace CleanArchitecture.Infrastructure.Data
 
         private void OnBeforeSaving()
         {
-            var now = DateTime.UtcNow;
+            var now = DateTimeHelper.Now(); 
             var user = _currentUserService.UserName;
 
             foreach (var entry in ChangeTracker.Entries())

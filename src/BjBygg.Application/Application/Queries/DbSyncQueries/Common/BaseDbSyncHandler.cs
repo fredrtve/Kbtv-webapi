@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using BjBygg.Application.Application.Common.Interfaces;
+using BjBygg.Application.Common.Interfaces;
+using CleanArchitecture.Core;
 using CleanArchitecture.SharedKernel;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +30,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.Common
         }
         public async Task<DbSyncResponse<TDto>> Handle(TQuery request, CancellationToken cancellationToken)
         {
-            var date = GetDateFromTimestamp(request.Timestamp ?? 0);
+            var date = DateTimeHelper.ConvertEpochToDate(request.Timestamp ?? 0);
 
             if (_checkMinDate)
                 date = CheckMinSyncDate(date, request.InitialNumberOfMonths ?? 48);
@@ -67,16 +69,10 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.Common
 
         private DateTime CheckMinSyncDate(DateTime date, int maxNumberOfMonths)
         {
-            var minDate = DateTime.UtcNow.AddMonths(-maxNumberOfMonths);
+            var minDate = DateTimeHelper.Now().AddMonths(-maxNumberOfMonths);
             //If date is older than min date, return min date. 
             if (DateTime.Compare(date, minDate) < 0) return minDate;
             else return date;
-        }
-
-        private DateTime GetDateFromTimestamp(double timestamp)
-        {
-            System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-            return dtDateTime.AddSeconds(timestamp);
         }
 
         private IQueryable<T> GetEntitiesLaterThan<T>(DateTime date, IQueryable<T> query) where T : BaseEntity

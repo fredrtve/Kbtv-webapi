@@ -3,14 +3,15 @@ using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Common.Interfaces;
+using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using TimeZoneConverter;
 
 namespace BjBygg.Application.Application.Commands.TimesheetCommands.Update
 {
@@ -40,16 +41,16 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Update
             if (dbTimesheet.Status != TimesheetStatus.Open)
                 throw new BadRequestException($"Timesheet is closed for manipulation.");
 
+            var ignoredProperties = new List<string>(){ "Id", "UserName", "StartTime", "EndTime" };
+
             foreach (var property in request.GetType().GetProperties())
             {
-                if (property.Name == "Id" || property.Name == "UserName") continue;
+                if (ignoredProperties.Contains(property.Name)) continue;
                 dbTimesheet.GetType().GetProperty(property.Name).SetValue(dbTimesheet, property.GetValue(request), null);
             }
 
-            TimeZoneInfo timeInfo = TZConvert.GetTimeZoneInfo("Central Europe Standard Time");
-
-            dbTimesheet.StartTime = TimeZoneInfo.ConvertTime(dbTimesheet.StartTime, timeInfo);
-            dbTimesheet.EndTime = TimeZoneInfo.ConvertTime(dbTimesheet.EndTime, timeInfo);
+            dbTimesheet.StartTime = DateTimeHelper.ConvertEpochToDate(request.StartTime);
+            dbTimesheet.EndTime = DateTimeHelper.ConvertEpochToDate(request.EndTime);
 
             dbTimesheet.TotalHours = (dbTimesheet.EndTime - dbTimesheet.StartTime).TotalHours;
 

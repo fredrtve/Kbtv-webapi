@@ -1,4 +1,5 @@
 using BjBygg.Application.Application.Common.Interfaces;
+using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -229,7 +230,7 @@ namespace CleanArchitecture.Infrastructure.Data
             var timesheets = new List<Timesheet>();
             var idCounter = 1;
             var dayCounter = 0;
-            var today = DateTime.UtcNow.Date.AddHours(6);
+            var today = DateTimeHelper.Now().Date.AddHours(6);
 
             for (var n = 1; n <= _numberOfMissions * 6; n++)
             {

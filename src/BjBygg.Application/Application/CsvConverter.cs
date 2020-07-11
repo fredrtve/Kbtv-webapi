@@ -35,7 +35,6 @@ namespace BjBygg.Application.Application
                 csv.AppendLine(line);
             }
 
-            var str = csv.ToString();
             return csv.ToString();
         }
 

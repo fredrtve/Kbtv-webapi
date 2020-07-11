@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
 using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Application.Common.Interfaces;
+using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using TimeZoneConverter;
 
 namespace BjBygg.Application.Application.Queries.TimesheetQueries
 {
@@ -35,20 +34,15 @@ namespace BjBygg.Application.Application.Queries.TimesheetQueries
             if (request.UserName != null)
                 query = query.Where(x => x.UserName == request.UserName);
 
-            TimeZoneInfo timeInfo = TZConvert.GetTimeZoneInfo("Central Europe Standard Time");
-            System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-            var startDate = dtDateTime.AddSeconds(request.StartDate ?? 0);
-            startDate = TimeZoneInfo.ConvertTime(startDate, timeInfo);
+            var startDate = DateTimeHelper.ConvertEpochToDate(request.StartDate ?? 0);
 
             if (request.EndDate == null)
                 query = query.Where(x => x.StartTime.Date >= startDate.Date);
             else
             {
-                var endDate = dtDateTime.AddSeconds(request.EndDate ?? 0);
-                endDate = TimeZoneInfo.ConvertTime(endDate, timeInfo);
+                var endDate = DateTimeHelper.ConvertEpochToDate(request.EndDate ?? 0);
                 query = query.Where(x => x.StartTime.Date >= startDate.Date && x.StartTime.Date <= endDate.Date);
             }
-
 
             return _mapper.Map<IEnumerable<TimesheetDto>>(await query.ToListAsync());
         }

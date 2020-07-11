@@ -1,3 +1,4 @@
+using CleanArchitecture.Core;
 using CleanArchitecture.SharedKernel;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -30,13 +31,13 @@ namespace BjBygg.Application.Identity.Common.Models
             return RefreshTokens.Any(rt =>
                 rt.Token == refreshToken &&
                 rt.Active &&
-                DateTime.Compare(rt.Expires, DateTime.UtcNow) >= 0
+                DateTime.Compare(rt.Expires, DateTimeHelper.Now()) >= 0
             );
         }
 
         public void AddRefreshToken(string token, string userId, double daysToExpire = 180)
         {
-            RefreshTokens.Add(new RefreshToken(token, DateTime.UtcNow.AddDays(daysToExpire), userId));
+            RefreshTokens.Add(new RefreshToken(token, DateTimeHelper.Now().AddDays(daysToExpire), userId));
         }
 
         public void RemoveRefreshToken(string refreshToken)

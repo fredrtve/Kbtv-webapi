@@ -1,5 +1,7 @@
-﻿using BjBygg.Application.Identity.Common.Interfaces;
+﻿using BjBygg.Application.Common.Interfaces;
+using BjBygg.Application.Identity.Common.Interfaces;
 using BjBygg.Application.Identity.Common.Models;
+using CleanArchitecture.Core;
 using Microsoft.Extensions.Options;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -29,7 +31,7 @@ namespace CleanArchitecture.Infrastructure.Auth
             {
                  new Claim(JwtRegisteredClaimNames.Sub, userName),
                  new Claim(JwtRegisteredClaimNames.Jti, await _jwtOptions.JtiGenerator()),
-                 new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64),
+                 new Claim(JwtRegisteredClaimNames.Iat, DateTimeHelper.ConvertDateToEpoch(_jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64),
                  new Claim(ClaimTypes.Role, role),
                  new Claim(ClaimTypes.Name, userName),
                  identity.FindFirst(Constants.Strings.JwtClaimIdentifiers.Rol),
@@ -56,12 +58,6 @@ namespace CleanArchitecture.Infrastructure.Auth
                 new Claim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess),
             });
         }
-
-        /// <returns>Date converted to seconds since Unix epoch (Jan 1, 1970, midnight UTC).</returns>
-        private static long ToUnixEpochDate(DateTime date)
-          => (long)Math.Round((date.ToUniversalTime() -
-                               new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero))
-                              .TotalSeconds);
 
         private static void ThrowIfInvalidOptions(JwtIssuerOptions options)
         {
