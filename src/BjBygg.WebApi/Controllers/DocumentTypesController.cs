@@ -4,6 +4,7 @@ using BjBygg.Application.Application.Commands.DocumentTypeCommands.Update;
 using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Application.Queries.DbSyncQueries;
 using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
+using BjBygg.Application.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -22,15 +23,16 @@ namespace BjBygg.WebApi.Controllers
             return await Mediator.Send(request);
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.DocumentTypeActions.Create)]
         [HttpPost]
         [Route("api/[controller]")]
         public async Task<ActionResult<DocumentTypeDto>> Create([FromBody] CreateDocumentTypeCommand request)
         {
+ 
             return await Mediator.Send(request);
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.DocumentTypeActions.Update)]
         [HttpPut]
         [Route("api/[controller]/{Id}")]
         public async Task<ActionResult<DocumentTypeDto>> Update([FromBody] UpdateDocumentTypeCommand request)
@@ -38,7 +40,7 @@ namespace BjBygg.WebApi.Controllers
             return await Mediator.Send(request);
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.DocumentTypeActions.Delete)]
         [HttpDelete]
         [Route("api/[controller]/{Id}")]
         public async Task<ActionResult> Delete(DeleteDocumentTypeCommand request)
@@ -47,7 +49,7 @@ namespace BjBygg.WebApi.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.DocumentTypeActions.Delete)]
         [HttpPost]
         [Route("api/[controller]/DeleteRange")]
         public async Task<ActionResult> DeleteRange([FromBody] DeleteRangeDocumentTypeCommand request)

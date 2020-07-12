@@ -27,7 +27,7 @@ namespace BjBygg.WebApi.Controllers
             return await Mediator.Send(request);
         }
 
-        [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
+        [Authorize(Roles = RolePermissions.MissionImageActions.Create)]
         [HttpPost]
         [Route("api/[controller]")]
         public async Task<ActionResult<IEnumerable<MissionImageDto>>> Upload(int missionId)
@@ -50,7 +50,7 @@ namespace BjBygg.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.MissionImageActions.Delete)]
         [HttpDelete]
         [Route("api/[controller]/{id}")]
         public async Task<ActionResult> Delete(DeleteMissionImageCommand request)
@@ -59,7 +59,7 @@ namespace BjBygg.WebApi.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.MissionImageActions.Delete)]
         [HttpPost]
         [Route("api/[controller]/DeleteRange")]
         public async Task<ActionResult> DeleteRange([FromBody] DeleteRangeMissionImageCommand request)
@@ -68,7 +68,7 @@ namespace BjBygg.WebApi.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.MissionImageActions.SendEmail)]
         [HttpPost]
         [Route("api/[controller]/SendImages")]
         public async Task<ActionResult> SendImages([FromBody] MailMissionImagesCommand request)

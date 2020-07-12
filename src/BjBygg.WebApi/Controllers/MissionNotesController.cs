@@ -22,7 +22,7 @@ namespace BjBygg.WebApi.Controllers
             return await Mediator.Send(request);
         }
 
-        [Authorize(Roles = "Leder, Mellomleder, Ansatt")]
+        [Authorize(Roles = RolePermissions.MissionNoteActions.Create)]
         [HttpPost]
         [Route("api/[controller]")]
         public async Task<ActionResult<MissionNoteDto>> Create([FromBody] CreateMissionNoteCommand request)
@@ -30,7 +30,7 @@ namespace BjBygg.WebApi.Controllers
             return await Mediator.Send(request);
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.MissionNoteActions.Update)]
         [HttpPut]
         [Route("api/[controller]/{Id}")]
         public async Task<ActionResult<MissionNoteDto>> Update([FromBody] UpdateMissionNoteCommand request)
@@ -38,7 +38,7 @@ namespace BjBygg.WebApi.Controllers
             return await Mediator.Send(request);
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.MissionNoteActions.Delete)]
         [HttpDelete]
         [Route("api/[controller]/{Id}")]
         public async Task<ActionResult> Delete(DeleteMissionNoteCommand request)

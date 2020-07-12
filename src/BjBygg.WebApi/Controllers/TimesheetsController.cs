@@ -15,7 +15,7 @@ namespace BjBygg.WebApi.Controllers
     {
         public TimesheetsController() { }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.TimesheetActions.Read)]
         [HttpGet]
         [Route("api/[controller]")]
         public async Task<ActionResult<IEnumerable<TimesheetDto>>> Get(TimesheetQuery request)
@@ -23,7 +23,7 @@ namespace BjBygg.WebApi.Controllers
             return await Mediator.Send(request);
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.TimesheetActions.Update)]
         [HttpPut]
         [Route("api/[controller]/{Id}/Status")]
         public async Task<ActionResult<TimesheetDto>> UpdateStatus([FromBody] UpdateTimesheetStatusCommand request)
@@ -31,7 +31,7 @@ namespace BjBygg.WebApi.Controllers
             return await Mediator.Send(request);
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.TimesheetActions.Update)]
         [HttpPut]
         [Route("api/[controller]/Status")]
         public async Task<ActionResult<IEnumerable<TimesheetDto>>> UpdateStatuses([FromBody] UpdateTimesheetStatusRangeCommand request)

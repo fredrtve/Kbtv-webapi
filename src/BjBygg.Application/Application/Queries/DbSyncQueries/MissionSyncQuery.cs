@@ -2,6 +2,7 @@
 using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
+using BjBygg.Application.Common;
 using CleanArchitecture.Core.Entities;
 using System.Linq;
 
@@ -18,7 +19,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries
 
         protected override IQueryable<Mission> AppendQuery(IQueryable<Mission> query, MissionSyncQuery request)
         {
-            if (request.User.Role == "Oppdragsgiver")//Only allow employers missions if role is employer
+            if (request.User.Role == Roles.Employer)//Only allow employers missions if role is employer
             {
                 query = query.Where(x => x.EmployerId == request.User.EmployerId);
             }

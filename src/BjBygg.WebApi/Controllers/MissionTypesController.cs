@@ -24,7 +24,7 @@ namespace BjBygg.WebApi.Controllers
             return await Mediator.Send(request);
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.MissionTypeActions.Create)]
         [HttpPost]
         [Route("api/[controller]")]
         public async Task<ActionResult<MissionTypeDto>> Create([FromBody] CreateMissionTypeCommand request)
@@ -32,7 +32,7 @@ namespace BjBygg.WebApi.Controllers
             return await Mediator.Send(request);
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.MissionTypeActions.Update)]
         [HttpPut]
         [Route("api/[controller]/{Id}")]
         public async Task<ActionResult<MissionTypeDto>> Update([FromBody] UpdateMissionTypeCommand request)
@@ -40,7 +40,7 @@ namespace BjBygg.WebApi.Controllers
             return await Mediator.Send(request);
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.MissionTypeActions.Delete)]
         [HttpDelete]
         [Route("api/[controller]/{Id}")]
         public async Task<ActionResult> Delete(DeleteMissionTypeCommand request)
@@ -49,7 +49,7 @@ namespace BjBygg.WebApi.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.MissionTypeActions.Delete)]
         [HttpPost]
         [Route("api/[controller]/DeleteRange")]
         public async Task<ActionResult> DeleteRange([FromBody] DeleteRangeMissionTypeCommand request)

@@ -25,7 +25,7 @@ namespace BjBygg.WebApi.Controllers
             return Redirect("/swagger");
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.UserActions.Read)]
         [HttpGet]
         [Route("api/[controller]")]
         public async Task<ActionResult<IEnumerable<UserDto>>> Index()
@@ -33,7 +33,7 @@ namespace BjBygg.WebApi.Controllers
             return await Mediator.Send(new UserListQuery());
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.UserActions.Create)]
         [HttpPost]
         [Route("api/[controller]")]
         public async Task<ActionResult<UserDto>> Create([FromBody] CreateUserCommand request)
@@ -41,7 +41,7 @@ namespace BjBygg.WebApi.Controllers
             return await Mediator.Send(request);
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.UserActions.Read)]
         [HttpGet]
         [Route("api/[controller]/{UserName}")]
         public async Task<ActionResult<UserDto>> GetUser(UserByUserNameQuery request)
@@ -49,7 +49,7 @@ namespace BjBygg.WebApi.Controllers
             return await Mediator.Send(request);
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.UserActions.Update)]
         [HttpPut]
         [Route("api/[controller]/{UserName}")]
         public async Task<ActionResult<UserDto>> Update([FromBody] UpdateUserCommand request)
@@ -57,7 +57,7 @@ namespace BjBygg.WebApi.Controllers
             return await Mediator.Send(request);
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.UserActions.Update)]
         [HttpPut]
         [Route("api/[controller]/{UserName}/[action]")]
         public async Task<ActionResult> NewPassword([FromBody] NewPasswordCommand request)
@@ -66,7 +66,7 @@ namespace BjBygg.WebApi.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.UserActions.Delete)]
         [HttpDelete]
         [Route("api/[controller]/{UserName}")]
         public async Task<ActionResult> Delete(DeleteUserCommand request)

@@ -1,3 +1,4 @@
+using BjBygg.Application.Common;
 using BjBygg.Application.Identity.Common.Interfaces;
 using BjBygg.Application.Identity.Common.Models;
 using Microsoft.AspNetCore.Identity;
@@ -14,17 +15,17 @@ namespace CleanArchitecture.Infrastructure.Identity
             RoleManager<IdentityRole> roleManager,
             IAppIdentityDbContext context)
         {
-            if (!roleManager.RoleExistsAsync("Ansatt").Result)
-                await roleManager.CreateAsync(new IdentityRole { Name = "Ansatt" });
+            if (!roleManager.RoleExistsAsync(Roles.Employee).Result)
+                await roleManager.CreateAsync(new IdentityRole { Name = Roles.Employee });
 
-            if (!roleManager.RoleExistsAsync("Mellomleder").Result)
-                await roleManager.CreateAsync(new IdentityRole { Name = "Mellomleder" });
+            if (!roleManager.RoleExistsAsync(Roles.Management).Result)
+                await roleManager.CreateAsync(new IdentityRole { Name = Roles.Management });
 
-            if (!roleManager.RoleExistsAsync("Leder").Result)
-                await roleManager.CreateAsync(new IdentityRole { Name = "Leder" });
+            if (!roleManager.RoleExistsAsync(Roles.Leader).Result)
+                await roleManager.CreateAsync(new IdentityRole { Name = Roles.Leader });
 
-            if (!roleManager.RoleExistsAsync("Oppdragsgiver").Result)
-                await roleManager.CreateAsync(new IdentityRole { Name = "Oppdragsgiver" });
+            if (!roleManager.RoleExistsAsync(Roles.Employer).Result)
+                await roleManager.CreateAsync(new IdentityRole { Name = Roles.Employer });
 
             if (userManager.FindByNameAsync("leder").Result == null)
             {
@@ -32,7 +33,7 @@ namespace CleanArchitecture.Infrastructure.Identity
                 var result = await userManager.CreateAsync(user, "passord1");
 
                 if (result.Succeeded)
-                    userManager.AddToRoleAsync(user, "Leder").Wait();
+                    userManager.AddToRoleAsync(user, Roles.Leader).Wait();
             }
 
             if (userManager.FindByNameAsync("mellomleder").Result == null)
@@ -41,7 +42,7 @@ namespace CleanArchitecture.Infrastructure.Identity
                 var result = await userManager.CreateAsync(user, "passord1");
 
                 if (result.Succeeded)
-                    userManager.AddToRoleAsync(user, "Mellomleder").Wait();
+                    userManager.AddToRoleAsync(user, Roles.Management).Wait();
             }
 
             if (userManager.FindByNameAsync("oppdragsgiver").Result == null)
@@ -50,7 +51,7 @@ namespace CleanArchitecture.Infrastructure.Identity
                 var result = await userManager.CreateAsync(user, "passord1");
 
                 if (result.Succeeded)
-                    userManager.AddToRoleAsync(user, "Oppdragsgiver").Wait();
+                    userManager.AddToRoleAsync(user, Roles.Employer).Wait();
             }
 
             if (userManager.FindByNameAsync("ansatt").Result == null)
@@ -59,7 +60,7 @@ namespace CleanArchitecture.Infrastructure.Identity
                 var result = await userManager.CreateAsync(user, "passord1");
 
                 if (result.Succeeded)
-                    userManager.AddToRoleAsync(user, "Ansatt").Wait();
+                    userManager.AddToRoleAsync(user, Roles.Employee).Wait();
             }
 
             if (userManager.FindByNameAsync("ansatt1").Result == null)
@@ -68,7 +69,7 @@ namespace CleanArchitecture.Infrastructure.Identity
                 var result = await userManager.CreateAsync(user, "passord1");
 
                 if (result.Succeeded)
-                    userManager.AddToRoleAsync(user, "Ansatt").Wait();
+                    userManager.AddToRoleAsync(user, Roles.Employee).Wait();
             }
 
             if (userManager.FindByNameAsync("ansatt2").Result == null)
@@ -77,7 +78,7 @@ namespace CleanArchitecture.Infrastructure.Identity
                 var result = await userManager.CreateAsync(user, "passord1");
 
                 if (result.Succeeded)
-                    userManager.AddToRoleAsync(user, "Ansatt").Wait();
+                    userManager.AddToRoleAsync(user, Roles.Employee).Wait();
             }
 
             if (userManager.FindByNameAsync("ansatt3").Result == null)
@@ -86,7 +87,7 @@ namespace CleanArchitecture.Infrastructure.Identity
                 var result = await userManager.CreateAsync(user, "passord1");
 
                 if (result.Succeeded)
-                    userManager.AddToRoleAsync(user, "Ansatt").Wait();
+                    userManager.AddToRoleAsync(user, Roles.Employee).Wait();
             }
 
             context.Database.OpenConnection();

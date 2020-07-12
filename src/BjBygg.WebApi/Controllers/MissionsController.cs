@@ -40,7 +40,7 @@ namespace BjBygg.WebApi.Controllers
             return await Mediator.Send(request);
         }
 
-        [Authorize(Roles = "Leder, Mellomleder")]
+        [Authorize(Roles = RolePermissions.MissionActions.Create)]
         [HttpPost]
         [Route("api/[controller]")]
         public async Task<ActionResult<MissionDto>> Create()
@@ -103,7 +103,7 @@ namespace BjBygg.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.MissionActions.CreateFromPdf)]
         [HttpPost]
         [Route("api/[controller]/[action]")]
         public async Task<ActionResult<MissionDto>> CreateFromPdfReport()
@@ -120,7 +120,7 @@ namespace BjBygg.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.MissionActions.Update)]
         [HttpPut]
         [Route("api/[controller]/{Id}")]
         public async Task<ActionResult<MissionDto>> Update()
@@ -146,7 +146,7 @@ namespace BjBygg.WebApi.Controllers
 
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.MissionActions.Update)]
         [HttpGet]
         [Route("api/[controller]/{Id}/[action]")]
         public async Task<ActionResult<bool>> ToggleFinish(ToggleMissionFinishCommand request)
@@ -154,7 +154,7 @@ namespace BjBygg.WebApi.Controllers
             return await Mediator.Send(request);
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.MissionActions.Delete)]
         [HttpDelete]
         [Route("api/[controller]/{Id}")]
         public async Task<ActionResult> Delete(DeleteMissionCommand request)
@@ -163,7 +163,7 @@ namespace BjBygg.WebApi.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.MissionActions.Delete)]
         [HttpPost]
         [Route("api/[controller]/DeleteRange")]
         public async Task<ActionResult> DeleteRange([FromBody] DeleteRangeMissionCommand request)

@@ -10,7 +10,7 @@ namespace BjBygg.WebApi.Controllers
     {
         public ExportJsonToCsvController() { }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.ExportJsonToCsvActions.Export)]
         [HttpPost]
         [Route("api/[controller]")]
         public async Task<ActionResult<Uri>> Export([FromBody] ExportJsonToCsvCommand request)

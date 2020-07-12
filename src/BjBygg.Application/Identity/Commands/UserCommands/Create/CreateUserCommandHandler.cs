@@ -1,4 +1,5 @@
 using AutoMapper;
+using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Identity.Common;
 using BjBygg.Application.Identity.Common.Models;
@@ -23,11 +24,11 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Create
         public async Task<UserDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             //Not allowing new leaders
-            if (request.Role.ToLower() == "Leder") throw new ForbiddenException();
+            if (request.Role.ToLower() == Roles.Leader) throw new ForbiddenException();
 
             var user = _mapper.Map<ApplicationUser>(request);
 
-            if (request.Role != "Oppdragsgiver") user.EmployerId = null;
+            if (request.Role != Roles.Employer) user.EmployerId = null;
 
             var result = await _userManager.CreateAsync(user, request.Password);
 

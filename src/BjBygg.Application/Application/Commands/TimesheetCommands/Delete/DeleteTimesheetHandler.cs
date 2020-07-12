@@ -1,4 +1,5 @@
 using BjBygg.Application.Application.Common.Interfaces;
+using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Common.Interfaces;
 using CleanArchitecture.Core.Entities;
@@ -27,12 +28,15 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Delete
             if (timesheet == null)
                 throw new EntityNotFoundException(nameof(Timesheet), request.Id);
 
-            if (_currentUserService.UserName != timesheet.UserName && _currentUserService.Role != "Leder") //Allow leader
-                throw new ForbiddenException();
+            if(_currentUserService.Role != Roles.Leader) //Allow leader
+            {
+                if (_currentUserService.UserName != timesheet.UserName) 
+                    throw new ForbiddenException();
 
-            if (timesheet.Status != TimesheetStatus.Open && _currentUserService.Role != "Leder") //Allow leader
-                throw new BadRequestException("Timesheet is closed for manipulation.");
-
+                if (timesheet.Status != TimesheetStatus.Open) 
+                    throw new BadRequestException("Timesheet is closed for manipulation.");
+            }
+    
             _dbContext.Set<Timesheet>().Remove(timesheet);
             await _dbContext.SaveChangesAsync();
 

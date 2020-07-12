@@ -27,7 +27,7 @@ namespace BjBygg.WebApi.Controllers
             return await Mediator.Send(request);
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.MissionDocumentActions.Create)]
         [HttpPost]
         [Route("api/[controller]")]
         public async Task<ActionResult<MissionDocumentDto>> Upload(int missionId)
@@ -56,7 +56,7 @@ namespace BjBygg.WebApi.Controllers
             }
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.MissionDocumentActions.Delete)]
         [HttpDelete]
         [Route("api/[controller]/{id}")]
         public async Task<ActionResult> Delete(DeleteMissionDocumentCommand request)
@@ -65,7 +65,7 @@ namespace BjBygg.WebApi.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.MissionDocumentActions.Delete)]
         [HttpPost]
         [Route("api/[controller]/DeleteRange")]
         public async Task<ActionResult> DeleteRange([FromBody] DeleteRangeMissionDocumentCommand request)
@@ -74,7 +74,7 @@ namespace BjBygg.WebApi.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Leder")]
+        [Authorize(Roles = RolePermissions.MissionDocumentActions.SendEmail)]
         [HttpPost]
         [Route("api/[controller]/SendDocuments")]
         public async Task<ActionResult> SendDocuments([FromBody] MailMissionDocumentsCommand request)

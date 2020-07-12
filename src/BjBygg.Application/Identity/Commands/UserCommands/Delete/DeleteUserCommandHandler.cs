@@ -1,3 +1,4 @@
+using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Identity.Common.Models;
 using MediatR;
@@ -23,7 +24,7 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Delete
             if (user == null)
                 throw new EntityNotFoundException(nameof(ApplicationUser), request.UserName);
 
-            if (await _userManager.IsInRoleAsync(user, "Leder"))
+            if (await _userManager.IsInRoleAsync(user, Roles.Leader))
                 throw new ForbiddenException();
 
             await _userManager.DeleteAsync(user);

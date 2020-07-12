@@ -1,4 +1,5 @@
 using AutoMapper;
+using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Identity.Common;
 using BjBygg.Application.Identity.Common.Models;
@@ -24,7 +25,7 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Update
 
         public async Task<UserDto> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            if (request.Role == "Leder") //Not allowing new leaders
+            if (request.Role == Roles.Leader) //Not allowing new leaders
                 throw new BadRequestException($"Cant create users with role '{request.Role}'");
 
             var user = await _userManager.FindByNameAsync(request.UserName);
@@ -41,7 +42,7 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Update
             user.PhoneNumber = request.PhoneNumber;
             user.Email = request.Email;
 
-            if (request.Role != "Oppdragsgiver") user.EmployerId = null;
+            if (request.Role != Roles.Employer) user.EmployerId = null;
             else user.EmployerId = request.EmployerId;
 
             var result = await _userManager.UpdateAsync(user);
@@ -51,7 +52,7 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Update
 
             var currentRole = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
 
-            if (currentRole != request.Role && currentRole != "Leder" && !String.IsNullOrEmpty(request.Role))
+            if (currentRole != request.Role && currentRole != Roles.Leader && !String.IsNullOrEmpty(request.Role))
             {
                 await _userManager.RemoveFromRoleAsync(user, currentRole);
                 await _userManager.AddToRoleAsync(user, request.Role);
