@@ -28,7 +28,7 @@ namespace BjBygg.Application.Application
                 {
                     var propertyKey = propertyMap.ElementAt(i).Key;
                     JsonElement property;
-                    if (!json.TryGetProperty(propertyKey, out property)) continue;
+                    if (json.ValueKind == JsonValueKind.Undefined || !json.TryGetProperty(propertyKey, out property)) continue;
                     if (i == 0) line = property.GetRawText(); //Initial value no delimiter
                     else line = string.Concat(line, delimiter, property.GetRawText());
                 };
@@ -37,8 +37,6 @@ namespace BjBygg.Application.Application
 
             return csv.ToString();
         }
-
-
 
         //public string ConvertObjectsToCsv<T>(List<T> objects)
         //{
