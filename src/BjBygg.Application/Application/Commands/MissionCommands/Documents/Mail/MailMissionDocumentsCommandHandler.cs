@@ -15,32 +15,20 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Mail
     {
         private readonly IAppDbContext _dbContext;
         private readonly IMailService _mailService;
-        private readonly IConfiguration _configuration;
 
-        public MailMissionDocumentsCommandHandler(IAppDbContext dbContext, IMailService mailService, IConfiguration configuration)
+        public MailMissionDocumentsCommandHandler(IAppDbContext dbContext, IMailService mailService)
         {
             _dbContext = dbContext;
             _mailService = mailService;
-            _configuration = configuration;
         }
 
         public async Task<Unit> Handle(MailMissionDocumentsCommand request, CancellationToken cancellationToken)
         {
             var documents = await _dbContext.Set<MissionDocument>()
                 .Include(x => x.DocumentType)
-                .Where(x => request.Ids.Contains(x.Id))
-                .Select(x => new MissionDocumentsTemplateDocumentDto()
-                {
-                    Id = x.Id,
-                    DocumentTypeName = x.DocumentType == null ? "Ukategorisert" : x.DocumentType.Name,
-                    Url = x.FileURL.ToString()
-                }).ToListAsync();
+                .Where(x => request.Ids.Contains(x.Id)).ToListAsync();
 
-            var templateData = new MissionDocumentsTemplateData() { Documents = documents };
-
-            var templateId = _configuration.GetValue<string>("SendGridMissionDocumentsTemplateId");
-
-            await _mailService.SendTemplateEmailAsync(request.ToEmail, templateId, templateData);
+            await _mailService.SendTemplateEmailAsync(request.ToEmail, new MissionDocumentsTemplate(documents));
 
             return Unit.Value;
         }
