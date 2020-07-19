@@ -10,6 +10,11 @@ namespace CleanArchitecture.SharedKernel
             Stream = stream;
             FileExtension = fileExtension;
         }
+        public BasicFileStream(byte[] bytes, string fileExtension)
+        {
+            Stream = new MemoryStream(bytes); 
+            FileExtension = fileExtension;
+        }
 
         public Stream Stream { get; set; }
 
