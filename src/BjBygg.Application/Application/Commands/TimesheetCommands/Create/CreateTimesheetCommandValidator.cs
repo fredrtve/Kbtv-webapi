@@ -10,10 +10,12 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Create
                 .NotEmpty();
 
             RuleFor(v => v.StartTime)
-                .NotEmpty();
+                .NotEmpty()
+                .LessThan(x => x.EndTime);
 
             RuleFor(v => v.EndTime)
-                .NotEmpty();
+                .NotEmpty()
+                .GreaterThan(x => x.StartTime);
 
             RuleFor(v => v.Comment)
                 .NotEmpty()

@@ -7,7 +7,9 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Create
     {
         public CreateTimesheetCommandProfile()
         {
-            CreateMap<CreateTimesheetCommand, Timesheet>();
+            CreateMap<CreateTimesheetCommand, Timesheet>()
+                .ForMember(x => x.StartTime, opt => opt.Ignore())
+                .ForMember(x => x.EndTime, opt => opt.Ignore());
         }
     }
 }
