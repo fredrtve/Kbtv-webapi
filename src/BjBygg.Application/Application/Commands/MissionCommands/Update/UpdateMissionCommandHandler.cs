@@ -43,19 +43,17 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Update
                     case "Id": break;
                     case "MissionType":
                         if (request.MissionType == null) continue;
-                        if ((request.MissionType.Id ?? 0) != 0) //If id is not 0 or null
+                        if ((request.MissionType.Id ?? 0) == 0 && !String.IsNullOrWhiteSpace(request.MissionType.Name)) //If id is not present but name is, create new entity
+                            dbMission.MissionType = new MissionType() { Name = request.MissionType.Name }; 
+                        else 
                             dbMission.MissionTypeId = request.MissionType.Id;
-                        else if (!String.IsNullOrWhiteSpace(request.MissionType.Name)) //If name is present but no id, create
-                            dbMission.MissionType = new MissionType() { Name = request.MissionType.Name };
-                        else dbMission.MissionType = null; //No new or existing added
                         break;
                     case "Employer":
                         if (request.Employer == null) continue;
-                        if ((request.Employer.Id ?? 0) != 0) //If id is not 0 or null
-                            dbMission.EmployerId = request.Employer.Id;
-                        else if (!String.IsNullOrWhiteSpace(request.Employer.Name)) //If name is present but no id, create
-                            dbMission.Employer = new Employer() { Name = request.Employer.Name };
-                        else dbMission.Employer = null; //No new or existing added
+                        if ((request.Employer.Id ?? 0) == 0 && !String.IsNullOrWhiteSpace(request.Employer.Name)) 
+                            dbMission.Employer = new Employer() { Name = request.Employer.Name };                       
+                        else 
+                            dbMission.EmployerId = request.Employer.Id;                  
                         break;
                     case "DeleteCurrentImage":
                         if (request.DeleteCurrentImage == true)
