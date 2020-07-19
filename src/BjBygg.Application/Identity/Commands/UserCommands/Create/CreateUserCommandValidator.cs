@@ -30,7 +30,8 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Create
                 .NotEmpty();
 
             RuleFor(v => v.Password)
-                .NotEmpty();
+                .NotEmpty()
+                .MinimumLength(7);
         }
     }
 }

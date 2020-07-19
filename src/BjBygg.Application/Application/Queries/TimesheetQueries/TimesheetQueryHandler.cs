@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Application.Queries.TimesheetQueries
 {
-    public class TimesheetQueryHandler : IRequestHandler<TimesheetQuery, IEnumerable<TimesheetDto>>
+    public class TimesheetQueryHandler : IRequestHandler<TimesheetQuery, List<TimesheetDto>>
     {
         private readonly IAppDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -24,7 +24,7 @@ namespace BjBygg.Application.Application.Queries.TimesheetQueries
             dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
-        public async Task<IEnumerable<TimesheetDto>> Handle(TimesheetQuery request, CancellationToken cancellationToken)
+        public async Task<List<TimesheetDto>> Handle(TimesheetQuery request, CancellationToken cancellationToken)
         {
             var query = _dbContext.Set<Timesheet>().AsQueryable();
 
@@ -44,7 +44,7 @@ namespace BjBygg.Application.Application.Queries.TimesheetQueries
                 query = query.Where(x => x.StartTime.Date >= startDate.Date && x.StartTime.Date <= endDate.Date);
             }
 
-            return _mapper.Map<IEnumerable<TimesheetDto>>(await query.ToListAsync());
+            return _mapper.Map<List<TimesheetDto>>(await query.ToListAsync());
         }
 
     }

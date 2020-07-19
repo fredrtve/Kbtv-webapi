@@ -14,7 +14,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Create
                  .MaximumLength(12);
 
             RuleFor(v => v.Description)
-                 .MaximumLength(400);
+                 .MaximumLength(400); 
         }
     }
 }

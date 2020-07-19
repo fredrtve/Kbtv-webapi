@@ -1,6 +1,6 @@
 ﻿using BjBygg.Application.Identity.Common.Models;
 
-namespace BjBygg.Application.Identity.Commands.IdentityCommands.RefreshToken
+namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.RefreshToken
 {
     public class RefreshTokenResponse
     {

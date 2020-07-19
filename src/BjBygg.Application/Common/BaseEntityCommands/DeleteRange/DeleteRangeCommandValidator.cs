@@ -2,7 +2,7 @@
 
 namespace BjBygg.Application.Common.BaseEntityCommands.DeleteRange
 {
-    public class DeleteRangeCommandValidator : AbstractValidator<DeleteRangeCommand>
+    public class DeleteRangeCommandValidator<T> : AbstractValidator<T> where T : DeleteRangeCommand
     {
         public DeleteRangeCommandValidator()
         {

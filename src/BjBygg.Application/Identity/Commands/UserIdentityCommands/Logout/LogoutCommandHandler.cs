@@ -8,20 +8,17 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BjBygg.Application.Identity.Commands.IdentityCommands.Logout
+namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.Logout
 {
     public class LogoutCommandHandler : IRequestHandler<LogoutCommand, Unit>
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IAppIdentityDbContext _dbContext;
         private readonly ICurrentUserService _currentUserService;
 
         public LogoutCommandHandler(
-            UserManager<ApplicationUser> userManager,
             IAppIdentityDbContext dbContext,
             ICurrentUserService currentUserService)
         {
-            _userManager = userManager;
             _dbContext = dbContext;
             _currentUserService = currentUserService;
         }

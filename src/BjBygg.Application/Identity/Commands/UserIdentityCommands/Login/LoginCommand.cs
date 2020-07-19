@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace BjBygg.Application.Identity.Commands.IdentityCommands.Login
+namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.Login
 {
     public class LoginCommand : IRequest<LoginResponse>
     {

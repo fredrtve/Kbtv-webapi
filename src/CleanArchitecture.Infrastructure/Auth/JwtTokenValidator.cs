@@ -24,7 +24,7 @@ namespace CleanArchitecture.Infrastructure.Auth
                 ValidateIssuerSigningKey = true,
                 ClockSkew = TimeSpan.Zero,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey)),
-                ValidateLifetime = false // we check expired tokens here
+                ValidateLifetime = false // manually checking expiration
             });
         }
     }

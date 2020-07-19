@@ -26,6 +26,9 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Create
             //Not allowing new leaders
             if (request.Role.ToLower() == Roles.Leader) throw new ForbiddenException();
 
+            if (!Roles.All.Contains(request.Role))
+                throw new EntityNotFoundException(nameof(IdentityRole), request.Role);
+
             var user = _mapper.Map<ApplicationUser>(request);
 
             if (request.Role != Roles.Employer) user.EmployerId = null;

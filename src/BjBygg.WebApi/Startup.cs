@@ -49,15 +49,16 @@ namespace BjBygg.WebApi
         {
             services.AddCors();
 
-            services.AddApplicationInfrastructure();
             services.AddIdentityInfrastructure(Configuration);
-            services.AddApplication();
-
-            
-            services.AddScoped<ICurrentUserService, CurrentUserService>();
 
             services.AddHttpContextAccessor();
 
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
+
+            services.AddApplication();
+
+            services.AddApplicationInfrastructure();
+ 
             services.AddControllers();
 
             services.Configure<ApiBehaviorOptions>(options =>

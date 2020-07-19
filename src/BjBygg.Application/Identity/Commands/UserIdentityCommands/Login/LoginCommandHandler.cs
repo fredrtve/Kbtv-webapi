@@ -11,7 +11,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BjBygg.Application.Identity.Commands.IdentityCommands.Login
+namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.Login
 {
     public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
     {
@@ -44,12 +44,12 @@ namespace BjBygg.Application.Identity.Commands.IdentityCommands.Login
                 .Include(x => x.RefreshTokens)
                 .FirstOrDefaultAsync(x => x.NormalizedUserName == request.UserName.ToUpper());
 
-            if (user == null || !(await this._userManager.CheckPasswordAsync(user, request.Password)))
+            if (user == null || !(await _userManager.CheckPasswordAsync(user, request.Password)))
                 throw new UnauthorizedException("Brukernavn eller passord er feil!");
 
             var roles = await _userManager.GetRolesAsync(user);
 
-            if (roles == null)
+            if (roles.Count == 0)
                 throw new UnauthorizedException("Konto har ingen rolle!");
 
             var refreshToken = _tokenFactory.GenerateToken();

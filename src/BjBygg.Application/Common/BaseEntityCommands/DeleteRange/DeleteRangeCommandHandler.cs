@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Common.BaseEntityCommands.DeleteRange
 {
-    public abstract class DeleteRangeHandler<TEntity, TCommand> : IRequestHandler<TCommand>
+    public abstract class DeleteRangeCommandHandler<TEntity, TCommand> : IRequestHandler<TCommand>
         where TEntity : BaseEntity where TCommand : DeleteRangeCommand
     {
         private readonly IDbContext _dbContext;
 
-        public DeleteRangeHandler(IDbContext dbContext)
+        public DeleteRangeCommandHandler(IDbContext dbContext)
         {
             _dbContext = dbContext;
         }

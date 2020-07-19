@@ -7,7 +7,8 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.NewPassword
         public NewPasswordCommandValidator()
         {
             RuleFor(v => v.NewPassword)
-                .NotEmpty();
+                .NotEmpty()
+                .MinimumLength(7);
 
             RuleFor(v => v.UserName)
                 .NotEmpty();

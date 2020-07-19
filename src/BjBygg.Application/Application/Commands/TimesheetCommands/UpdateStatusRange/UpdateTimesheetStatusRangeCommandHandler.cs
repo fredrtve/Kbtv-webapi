@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Application.Commands.TimesheetCommands.UpdateStatusRange
 {
-    public class UpdateTimesheetStatusRangeCommandHandler : IRequestHandler<UpdateTimesheetStatusRangeCommand, IEnumerable<TimesheetDto>>
+    public class UpdateTimesheetStatusRangeCommandHandler : IRequestHandler<UpdateTimesheetStatusRangeCommand, List<TimesheetDto>>
     {
         private readonly IAppDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -23,7 +23,7 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.UpdateStatus
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<TimesheetDto>> Handle(UpdateTimesheetStatusRangeCommand request, CancellationToken cancellationToken)
+        public async Task<List<TimesheetDto>> Handle(UpdateTimesheetStatusRangeCommand request, CancellationToken cancellationToken)
         {
             //Exclude timesheets that dont belong to user (if there are any), except for leader role
             var dbTimesheets = await _dbContext.Set<Timesheet>()
@@ -35,7 +35,7 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.UpdateStatus
             //_dbContext.Timesheets.UpdateRange(timesheets);
             await _dbContext.SaveChangesAsync();
 
-            return _mapper.Map<IEnumerable<TimesheetDto>>(dbTimesheets);
+            return _mapper.Map<List<TimesheetDto>>(dbTimesheets);
         }
     }
 }

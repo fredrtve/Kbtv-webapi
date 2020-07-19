@@ -1,7 +1,7 @@
 ﻿using BjBygg.Application.Identity.Common;
 using BjBygg.Application.Identity.Common.Models;
 
-namespace BjBygg.Application.Identity.Commands.IdentityCommands.Login
+namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.Login
 {
     public class LoginResponse
     {

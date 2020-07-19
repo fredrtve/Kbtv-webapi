@@ -1,7 +1,7 @@
 using BjBygg.Application.Identity.Common;
 using MediatR;
 
-namespace BjBygg.Application.Identity.Commands.IdentityCommands.UpdateProfile
+namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.UpdateProfile
 {
     public class UpdateProfileCommand : IRequest<UserDto>
     {

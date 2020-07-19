@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace BjBygg.Application.Identity.Commands.IdentityCommands.Login
+namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.Login
 {
     public class LoginCommandValidator : AbstractValidator<LoginCommand>
     {

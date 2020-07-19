@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Identity.Queries
 {
-    public class InboundEmailPasswordListHandler : IRequestHandler<InboundEmailPasswordListQuery, IEnumerable<InboundEmailPasswordDto>>
+    public class InboundEmailPasswordListHandler : IRequestHandler<InboundEmailPasswordListQuery, List<InboundEmailPasswordDto>>
     {
         private readonly IAppIdentityDbContext _dbContext;
 
@@ -19,7 +19,7 @@ namespace BjBygg.Application.Identity.Queries
             dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
-        public async Task<IEnumerable<InboundEmailPasswordDto>> Handle(InboundEmailPasswordListQuery request, CancellationToken cancellationToken)
+        public async Task<List<InboundEmailPasswordDto>> Handle(InboundEmailPasswordListQuery request, CancellationToken cancellationToken)
         {
             var passwords = await _dbContext.InboundEmailPasswords.Select(x => new InboundEmailPasswordDto()
             {

@@ -4,13 +4,11 @@ using CleanArchitecture.Core.Entities;
 
 namespace BjBygg.Application.Application.Commands.EmployerCommands
 {
-    public class DeleteRangeEmployerCommand : DeleteRangeCommand
-    {
-    }
-    public class DeleteRangeEmployerCommandHandler : DeleteRangeHandler<Employer, DeleteRangeEmployerCommand>
+    public class DeleteRangeEmployerCommand : DeleteRangeCommand {}
+    public class DeleteRangeEmployerCommandValidator : DeleteRangeCommandValidator<DeleteRangeEmployerCommand> {}
+    public class DeleteRangeEmployerCommandHandler : DeleteRangeCommandHandler<Employer, DeleteRangeEmployerCommand>
     {
         public DeleteRangeEmployerCommandHandler(IAppDbContext dbContext) :
-            base(dbContext)
-        { }
+            base(dbContext) {}
     }
 }

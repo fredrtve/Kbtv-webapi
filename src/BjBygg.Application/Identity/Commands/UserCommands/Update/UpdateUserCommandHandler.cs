@@ -25,8 +25,14 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Update
 
         public async Task<UserDto> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            if (request.Role == Roles.Leader) //Not allowing new leaders
-                throw new BadRequestException($"Cant create users with role '{request.Role}'");
+            if(!String.IsNullOrEmpty(request.Role))
+            {
+                if (request.Role == Roles.Leader) //Not allowing new leaders
+                    throw new ForbiddenException();
+
+                if (!Roles.All.Contains(request.Role))
+                    throw new EntityNotFoundException(nameof(IdentityRole), request.Role);
+            }
 
             var user = await _userManager.FindByNameAsync(request.UserName);
 
@@ -52,12 +58,19 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Update
 
             var currentRole = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
 
-            if (currentRole != request.Role && currentRole != Roles.Leader && !String.IsNullOrEmpty(request.Role))
+            if (!String.IsNullOrEmpty(request.Role))
             {
-                await _userManager.RemoveFromRoleAsync(user, currentRole);
-                await _userManager.AddToRoleAsync(user, request.Role);
-            }
+                //Not allowed to degrade role of leaders
+                if (request.Role != Roles.Leader && currentRole == Roles.Leader)
+                    throw new ForbiddenException();
 
+                if (currentRole != request.Role && currentRole != Roles.Leader)
+                {
+                    await _userManager.RemoveFromRoleAsync(user, currentRole);
+                    await _userManager.AddToRoleAsync(user, request.Role);
+                }
+            }
+  
             var response = _mapper.Map<UserDto>(user);
             response.Role = request.Role;
             return response;

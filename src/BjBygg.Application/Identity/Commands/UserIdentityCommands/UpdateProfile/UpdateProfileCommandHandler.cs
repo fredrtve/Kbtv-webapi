@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BjBygg.Application.Identity.Commands.IdentityCommands.UpdateProfile
+namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.UpdateProfile
 {
     public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand, UserDto>
     {

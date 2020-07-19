@@ -21,9 +21,6 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Update
 
             RuleFor(v => v.Email)
                 .EmailAddress();
-
-            RuleFor(v => v.Role)
-                .NotEmpty();
         }
     }
 }

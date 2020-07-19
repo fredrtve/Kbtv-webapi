@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace BjBygg.Application.Identity.Commands.IdentityCommands.RefreshToken
+namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.RefreshToken
 {
     public class RefreshTokenCommandValidator : AbstractValidator<RefreshTokenCommand>
     {
@@ -10,9 +10,6 @@ namespace BjBygg.Application.Identity.Commands.IdentityCommands.RefreshToken
                 .NotEmpty();
 
             RuleFor(v => v.RefreshToken)
-                .NotEmpty();
-
-            RuleFor(v => v.SigningKey)
                 .NotEmpty();
         }
     }

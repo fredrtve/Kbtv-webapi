@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace BjBygg.Application.Identity.Commands.IdentityCommands.UpdatePassword
+namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.UpdatePassword
 {
     public class UpdatePasswordCommandValidator : AbstractValidator<UpdatePasswordCommand>
     {
@@ -8,6 +8,7 @@ namespace BjBygg.Application.Identity.Commands.IdentityCommands.UpdatePassword
         {
             RuleFor(v => v.NewPassword)
                .NotEmpty()
+               .MinimumLength(7)
                .MaximumLength(100);
 
             RuleFor(v => v.OldPassword)

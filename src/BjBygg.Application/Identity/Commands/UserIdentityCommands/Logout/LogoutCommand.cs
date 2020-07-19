@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace BjBygg.Application.Identity.Commands.IdentityCommands.Logout
+namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.Logout
 {
     public class LogoutCommand : IRequest<Unit>
     {

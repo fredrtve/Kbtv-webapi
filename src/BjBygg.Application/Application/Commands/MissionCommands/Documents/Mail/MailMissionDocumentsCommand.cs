@@ -2,7 +2,6 @@ using BjBygg.Application.Common.BaseEntityCommands.MailEntitiesCommand;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Mail
 {
-    public class MailMissionDocumentsCommand : MailEntitiesCommand
-    {
-    }
+    public class MailMissionDocumentsCommand : MailEntitiesCommand {}
+    public class MailMissionDocumentsCommandValidator : MailEntitiesCommandValidator<MailMissionDocumentsCommand> {}
 }

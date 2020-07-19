@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace BjBygg.Application.Identity.Commands.IdentityCommands.UpdatePassword
+namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.UpdatePassword
 {
     public class UpdatePasswordCommand : IRequest<Unit>
     {

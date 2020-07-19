@@ -1,6 +1,11 @@
+using BjBygg.Application.Identity.Common.Models;
+using CleanArchitecture.Infrastructure.Data;
+using CleanArchitecture.Infrastructure.Identity;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace BjBygg.WebApi
@@ -15,22 +20,22 @@ namespace BjBygg.WebApi
             //{
             //    var services = scope.ServiceProvider;
 
-            //    using (var context = services.GetService<IAppDbContext>())
+            //    using (var context = services.GetService<AppDbContext>())
             //    {
-            //        context.Database.Migrate();
-            //        IAppDbContextSeed.Seed(context, 1500);
+            //        context.Database.EnsureCreated();
+            //        AppDbContextSeed.Seed(context, 1500);
             //    }
 
-            //    //using (var context = services.GetService<IAppIdentityDbContext>())
-            //    //{
+            //    using (var context = services.GetService<AppIdentityDbContext>())
+            //    {
 
-            //    //    context.Database.Migrate();
+            //        context.Database.EnsureCreated();
 
-            //    //    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-            //    //    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+            //        var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+            //        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-            //    //    IAppIdentityDbContextSeed.SeedAsync(userManager, roleManager, context);
-            //    //}
+            //        AppIdentityDbContextSeed.SeedAsync(userManager, roleManager, context);
+            //    }
             //}
 
             host.Run();

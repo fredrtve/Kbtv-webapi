@@ -2,7 +2,7 @@
 
 namespace BjBygg.Application.Common.BaseEntityCommands.MailEntitiesCommand
 {
-    public class MailEntitiesCommandValidator : AbstractValidator<MailEntitiesCommand>
+    public class MailEntitiesCommandValidator<T> : AbstractValidator<T> where T : MailEntitiesCommand
     {
         public MailEntitiesCommandValidator()
         {

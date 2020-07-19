@@ -26,7 +26,7 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.NewPassword
             var validationResult = await passwordValidator.ValidateAsync(_userManager, user, request.NewPassword);
 
             if (!validationResult.Succeeded)
-                throw new BadRequestException("New password is invalid");
+                throw new ValidationException("Invalid Password", "Provided password is not valid");
 
             var newPasswordHash = _userManager.PasswordHasher.HashPassword(user, request.NewPassword);
             user.PasswordHash = newPasswordHash;

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Upload
 {
-    public class UploadMissionImageCommandHandler : IRequestHandler<UploadMissionImageCommand, IEnumerable<MissionImageDto>>
+    public class UploadMissionImageCommandHandler : IRequestHandler<UploadMissionImageCommand, List<MissionImageDto>>
     {
         private readonly IAppDbContext _dbContext;
         private readonly IBlobStorageService _storageService;
@@ -24,7 +24,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Upload
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<MissionImageDto>> Handle(UploadMissionImageCommand request, CancellationToken cancellationToken)
+        public async Task<List<MissionImageDto>> Handle(UploadMissionImageCommand request, CancellationToken cancellationToken)
         {
             List<MissionImage> images = new List<MissionImage>();
 
@@ -37,7 +37,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Upload
 
             await _dbContext.SaveChangesAsync();
 
-            return images.Select(x => _mapper.Map<MissionImageDto>(x));
+            return images.Select(x => _mapper.Map<MissionImageDto>(x)).ToList();
         }
     }
 }
