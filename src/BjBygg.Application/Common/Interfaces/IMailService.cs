@@ -6,6 +6,6 @@ namespace BjBygg.Application.Common.Interfaces
     public interface IMailService
     {
         Task SendEmailAsync(string toEmail, string subject, string content);
-        Task SendTemplateEmailAsync(string toEmail, string templateId, ITemplateData data);
+        Task SendTemplateEmailAsync<T>(string toEmail, IMailTemplate<T> template);
     }
 }

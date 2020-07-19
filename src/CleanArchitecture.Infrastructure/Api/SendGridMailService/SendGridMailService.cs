@@ -25,13 +25,13 @@ namespace CleanArchitecture.Infrastructure.Api.SendGridMailService
             var msg = MailHelper.CreateSingleEmail(from, to, subject, content, content);
             var response = await client.SendEmailAsync(msg);
         }
-        public async Task SendTemplateEmailAsync(string toEmail, string templateId, ITemplateData data)
+        public async Task SendTemplateEmailAsync<T>(string toEmail, IMailTemplate<T> template)
         {
             var apiKey = _configuration.GetValue<string>("SendGridApiKey");
             var client = new SendGridClient(apiKey);
             var from = new EmailAddress("noreply@bjbygg.no", "BjBygg");
             var to = new EmailAddress(toEmail);
-            var msg = MailHelper.CreateSingleTemplateEmail(from, to, templateId, data);
+            var msg = MailHelper.CreateSingleTemplateEmail(from, to, template.Key, template.Data);
             var response = await client.SendEmailAsync(msg);
 
             if (response.StatusCode != System.Net.HttpStatusCode.Accepted)
