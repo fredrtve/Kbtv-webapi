@@ -1,8 +1,8 @@
-﻿using BjBygg.Application.Identity.Commands.IdentityCommands.Login;
-using BjBygg.Application.Identity.Commands.IdentityCommands.Logout;
-using BjBygg.Application.Identity.Commands.IdentityCommands.RefreshToken;
-using BjBygg.Application.Identity.Commands.IdentityCommands.UpdatePassword;
-using BjBygg.Application.Identity.Commands.IdentityCommands.UpdateProfile;
+﻿using BjBygg.Application.Identity.Commands.UserIdentityCommands.Login;
+using BjBygg.Application.Identity.Commands.UserIdentityCommands.Logout;
+using BjBygg.Application.Identity.Commands.UserIdentityCommands.RefreshToken;
+using BjBygg.Application.Identity.Commands.UserIdentityCommands.UpdatePassword;
+using BjBygg.Application.Identity.Commands.UserIdentityCommands.UpdateProfile;
 using BjBygg.Application.Identity.Common;
 using BjBygg.Application.Identity.Common.Models;
 using BjBygg.Application.Identity.Queries.UserQueries.UserByUserName;
@@ -16,18 +16,12 @@ namespace BjBygg.WebApi.Controllers.Identity
 {
     public class AuthController : BaseController
     {
-        private readonly AuthSettings _authSettings;
-
-        public AuthController(IOptions<AuthSettings> authSettings)
-        {
-            _authSettings = authSettings.Value;
-        }
+        public AuthController(){}
 
         [HttpPost]
         [Route("api/[controller]/refresh")]
         public async Task<ActionResult<RefreshTokenResponse>> Refresh([FromBody] RefreshTokenCommand request)
         {
-            request.SigningKey = _authSettings.SecretKey;
             return await Mediator.Send(request);
         }
 
