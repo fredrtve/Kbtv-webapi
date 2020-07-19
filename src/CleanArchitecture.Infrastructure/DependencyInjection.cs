@@ -48,6 +48,11 @@ namespace CleanArchitecture.Infrastructure
             services.AddTransient<IJwtTokenValidator, JwtTokenValidator>();
 
             var authSettings = configuration.GetSection(nameof(AuthSettings));
+
+            services.AddOptions<AuthSettings>()
+                .Bind(authSettings)
+                .ValidateDataAnnotations();
+
             services.Configure<AuthSettings>(authSettings);
 
             var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(authSettings[nameof(AuthSettings.SecretKey)]));
