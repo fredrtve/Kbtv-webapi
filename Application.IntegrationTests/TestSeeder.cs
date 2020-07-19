@@ -1,4 +1,6 @@
 ﻿using BjBygg.Application.Application.Common.Interfaces;
+using BjBygg.Application.Common;
+using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -67,8 +69,8 @@ namespace Application.IntegrationTests
             for (var i = 0; i < amount; i++)
             {
                 var date = DateTime.Now.AddYears(-i * 2).ToString("yyyy-MM-dd HH:mm:ss");
-                if (i < (amount - 1)) command = String.Concat(command, $"('Furuberget {i}, 1940 Bjørkelangen', 1, 1, 0, '{date}', '{date}'),");
-                else command = String.Concat(command, $"('Furuberget {i}, 1940 Bjørkelangen', NULL, 1, 0, '{date}', '{date}')");
+                if (i < (amount - 1)) command = String.Concat(command, $"('Furuberget {i}, 1940 Bjørkelangen', {i + 1}, 1, 0, '{date}', '{date}'),");
+                else command = String.Concat(command, $"('Furuberget {i}, 1940 Bjørkelangen', {i + 1}, 1, 0, '{date}', '{date}')");
             }
 
             await context.Database.ExecuteSqlRawAsync(command);
@@ -79,8 +81,8 @@ namespace Application.IntegrationTests
             for (var i = 0; i < amount; i++)
             {
                 var date = DateTime.Now.AddYears(-i * 2).ToString("yyyy-MM-dd HH:mm:ss");
-                if (i < (amount - 1)) command = String.Concat(command, $"('https://test.com', 1, 1, 0, '{date}', '{date}'),");
-                else command = String.Concat(command, $"('https://test.com', 1, 1, 0, '{date}', '{date}')");
+                if (i < (amount - 1)) command = String.Concat(command, $"('https://test.com', {i + 1}, 1, 0, '{date}', '{date}'),");
+                else command = String.Concat(command, $"('https://test.com', {i + 1}, 2, 0, '{date}', '{date}')");
             }
 
             await context.Database.ExecuteSqlRawAsync(command);
@@ -91,8 +93,8 @@ namespace Application.IntegrationTests
             for (var i = 0; i < amount; i++)
             {
                 var date = DateTime.Now.AddYears(-i * 2).ToString("yyyy-MM-dd HH:mm:ss");
-                if (i < (amount - 1)) command = String.Concat(command, $"('https://test.com', 1, 0, '{date}', '{date}'),");
-                else command = String.Concat(command, $"('https://test.com', 1, 0, '{date}', '{date}')");
+                if (i < (amount - 1)) command = String.Concat(command, $"('https://test.com', {i + 1}, 0, '{date}', '{date}'),");
+                else command = String.Concat(command, $"('https://test.com', {i + 1}, 0, '{date}', '{date}')");
             }
 
             await context.Database.ExecuteSqlRawAsync(command);
@@ -104,8 +106,8 @@ namespace Application.IntegrationTests
             {
                 var date = DateTime.Now.AddYears(-i * 2).ToString("yyyy-MM-dd HH:mm:ss");
                 var pinned = i % 2 == 0 ? 0 : 1;
-                if (i < (amount - 1)) command = String.Concat(command, $"('testnotat', 1, {pinned}, 0, '{date}', '{date}'),");
-                else command = String.Concat(command, $"('testnotat', 1, {pinned}, 0, '{date}', '{date}')");
+                if (i < (amount - 1)) command = String.Concat(command, $"('testnotat', {i + 1}, {pinned}, 0, '{date}', '{date}'),");
+                else command = String.Concat(command, $"('testnotat', {i + 1}, {pinned}, 0, '{date}', '{date}')");
             }
 
             await context.Database.ExecuteSqlRawAsync(command);
@@ -116,7 +118,7 @@ namespace Application.IntegrationTests
                 "(MissionId, StartTime, EndTime, TotalHours, Comment, UserName, Status, Deleted, CreatedAt, UpdatedAt) " +
                 "VALUES ";
 
-            var today = DateTime.UtcNow.Date.AddHours(6);
+            var today = DateTimeHelper.Now();
 
             for (var d = 0; d < amount; d++)
             {
@@ -128,10 +130,10 @@ namespace Application.IntegrationTests
                 var status = d % 2 == 0 ? 0 : 2;
                 if (d < (amount - 1))
                     command = String.Concat(command,
-                    $"(1, '{startDateString}','{endDateString}',{totalHours}, 'test', 'leder', {status}, 0, '{startDateString}', '{startDateString}'),");
+                    $"(1, '{startDateString}','{endDateString}',{totalHours}, 'test', '{Roles.Leader}', {status}, 0, '{startDateString}', '{startDateString}'),");
                 else
                     command = String.Concat(command,
-                    $"(1, '{startDateString}','{endDateString}',{totalHours}, 'test', 'mellomleder', {status}, 0, '{startDateString}', '{startDateString}')");
+                    $"(2, '{startDateString}','{endDateString}',{totalHours}, 'test', '{Roles.Management}', {status}, 0, '{startDateString}', '{startDateString}')");
             }
 
             await context.Database.ExecuteSqlRawAsync(command);
