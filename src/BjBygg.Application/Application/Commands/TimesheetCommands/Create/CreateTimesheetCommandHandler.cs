@@ -1,6 +1,7 @@
 using AutoMapper;
 using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Application.Common.Interfaces;
+using BjBygg.Application.Common.Interfaces;
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using MediatR;
@@ -13,11 +14,13 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Create
     {
         private readonly IAppDbContext _dbContext;
         private readonly IMapper _mapper;
+        private readonly ICurrentUserService _currentUserService;
 
-        public CreateTimesheetCommandHandler(IAppDbContext dbContext, IMapper mapper)
+        public CreateTimesheetCommandHandler(IAppDbContext dbContext, IMapper mapper, ICurrentUserService currentUserService)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            _currentUserService = currentUserService;
         }
 
         public async Task<TimesheetDto> Handle(CreateTimesheetCommand request, CancellationToken cancellationToken)
@@ -28,6 +31,8 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Create
             timesheet.EndTime = DateTimeHelper.ConvertEpochToDate(request.EndTime);
 
             timesheet.TotalHours = (timesheet.EndTime - timesheet.StartTime).TotalHours;
+
+            timesheet.UserName = _currentUserService.UserName;
 
             _dbContext.Set<Timesheet>().Add(timesheet);
             await _dbContext.SaveChangesAsync();
