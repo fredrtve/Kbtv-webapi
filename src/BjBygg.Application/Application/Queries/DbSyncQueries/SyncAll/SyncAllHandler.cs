@@ -75,8 +75,8 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
                         InitialNumberOfMonths = request.InitialNumberOfMonths
                     }
                 ),
+                EmployerSync = await _mediator.Send(new EmployerSyncQuery() { Timestamp = request.EmployerTimestamp, User = user }),
                 MissionTypeSync = await _mediator.Send(new MissionTypeSyncQuery() { Timestamp = request.MissionTypeTimestamp }),
-                EmployerSync = await _mediator.Send(new EmployerSyncQuery() { Timestamp = request.EmployerTimestamp }),
                 DocumentTypeSync = await _mediator.Send(new DocumentTypeSyncQuery() { Timestamp = request.DocumentTypeTimestamp }),
             };
         }
