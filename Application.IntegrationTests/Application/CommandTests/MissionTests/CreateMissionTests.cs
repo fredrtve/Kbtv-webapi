@@ -38,6 +38,7 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
                 Address = "Test",
                 MissionType = new MissionTypeDto() { Id = 1 },
                 Employer = new EmployerDto() { Id = 1 },
+                Image = new BasicFileStream(Encoding.UTF8.GetBytes("testimg"), ".img")
             };
 
             var entity = await SendAsync(command);
@@ -48,27 +49,10 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
             dbEntity.Address.Should().Be(command.Address);
             dbEntity.CreatedBy.Should().Be(user.UserName);
             dbEntity.MissionTypeId.Should().Be(command.MissionType.Id);
+            dbEntity.ImageURL.Should().BeOfType(typeof(Uri));
             dbEntity.EmployerId.Should().Be(command.Employer.Id);
             dbEntity.UpdatedAt.Should().BeCloseTo(DateTimeHelper.Now(), 10000);
         }
-
-        //[Test]
-        //public async Task ShouldCreateMissionWithImageUri()
-        //{
-        //    var stream = new BasicFileStream(new MemoryStream(Encoding.UTF8.GetBytes("hvorfor fungerer ikke dette")), ".img");
-
-        //    var command = new CreateMissionCommand() { 
-        //        Address = "Test", 
-        //        Image = stream
-        //    };
-
-        //    var entity = await SendAsync(command);
-
-        //    var dbEntity = await FindAsync<Mission>(entity.Id);
-
-        //    dbEntity.Should().NotBeNull();
-        //    dbEntity.ImageURL.Should().BeOfType(typeof(Uri));
-        //}
 
         [Test]
         public async Task ShouldCreateMissionWithNewEmployerAndMissionType()
