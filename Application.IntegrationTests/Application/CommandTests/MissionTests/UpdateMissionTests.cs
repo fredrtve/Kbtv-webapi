@@ -1,13 +1,16 @@
 ﻿using BjBygg.Application.Application.Commands.EmployerCommands.Update;
+using BjBygg.Application.Application.Commands.MissionCommands.Create;
 using BjBygg.Application.Application.Commands.MissionCommands.Update;
 using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
+using CleanArchitecture.SharedKernel;
 using FluentAssertions;
 using NUnit.Framework;
 using System;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.IntegrationTests.Application.CommandTests.MissionTests
@@ -34,24 +37,31 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
         {
             var user = await RunAsDefaultUserAsync(Roles.Leader);
 
+            var newMission = await SendAsync(new CreateMissionCommand { Address = "test" });
+
             var command = new UpdateMissionCommand
             {
-                Id = 1,
+                Id = newMission.Id,
                 Address = "Updated Address",
+                PhoneNumber = "92278483",
+                Description = "asdasd",
                 MissionType = new MissionTypeDto() { Id = 2 }, //Change type
                 Employer = new EmployerDto() { Id = null }, //Set employer to null
+                Image = new BasicFileStream(Encoding.UTF8.GetBytes("testimg"), ".img")
             };
 
             await SendAsync(command);
 
-            var entity = await FindAsync<Mission>(1);
-            
-            entity.Address.Should().Be(command.Address);
-            entity.MissionTypeId.Should().Be(command.MissionType.Id);
-            entity.EmployerId.Should().Be(null);
-            entity.UpdatedBy.Should().NotBeNull();
-            entity.UpdatedBy.Should().Be(user.UserName);
-            entity.UpdatedAt.Should().BeCloseTo(DateTimeHelper.Now(), 1000);
+            var dbMission = await FindAsync<Mission>(newMission.Id);
+
+            dbMission.Address.Should().Be(command.Address);
+            dbMission.PhoneNumber.Should().Be(command.PhoneNumber);
+            dbMission.MissionTypeId.Should().Be(command.MissionType.Id);
+            dbMission.EmployerId.Should().Be(null);
+            dbMission.ImageURL.Should().BeOfType(typeof(Uri));
+            dbMission.UpdatedBy.Should().NotBeNull();
+            dbMission.UpdatedBy.Should().Be(user.UserName);
+            dbMission.UpdatedAt.Should().BeCloseTo(DateTimeHelper.Now(), 1000);
         }
 
         [Test]
