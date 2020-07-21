@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,10 +23,11 @@ namespace BjBygg.Application.Common.Behaviours
                 return await next();
             }
             catch (Exception ex)
-            {
+            {          
                 var requestName = typeof(TRequest).Name;
 
-                _logger.LogError(ex, "BjBygg Request: Unhandled Exception for Request {Name} {@Request}", requestName, request);
+                if(!LoggerRequestBlackList.BlackList.Any(x => x.Name == requestName))
+                    _logger.LogError(ex, "BjBygg Request: Unhandled Exception for Request {Name} {@Request}", requestName, request);
 
                 throw;
             }
