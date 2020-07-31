@@ -101,7 +101,6 @@ namespace BjBygg.WebApi
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "KBTV WebAPI V1");
             });
 
-
             app.UseRouting();
 
             app.UseAuthentication();
