@@ -36,7 +36,7 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Create
             var result = await _userManager.CreateAsync(user, request.Password);
 
             if (!result.Succeeded)
-                throw new BadRequestException("Something went wrong when trying to create user");
+                throw new BadRequestException("Something went wrong while trying to create user");
 
             await _userManager.AddToRoleAsync(user, request.Role);
 

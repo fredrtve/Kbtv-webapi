@@ -20,7 +20,8 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Update
                 .MaximumLength(12);
 
             RuleFor(v => v.Email)
-                .EmailAddress();
+                .EmailAddress()
+                .When(x => !string.IsNullOrEmpty(x.Email));
         }
     }
 }

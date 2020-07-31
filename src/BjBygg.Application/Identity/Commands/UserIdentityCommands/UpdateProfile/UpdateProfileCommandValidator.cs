@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using System;
 
 namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.UpdateProfile
 {
@@ -10,7 +11,8 @@ namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.UpdateProfil
                 .MaximumLength(12);
 
             RuleFor(v => v.Email)
-                .EmailAddress();
+                .EmailAddress()
+                .When(x => !string.IsNullOrEmpty(x.Email));
         }
     }
 }

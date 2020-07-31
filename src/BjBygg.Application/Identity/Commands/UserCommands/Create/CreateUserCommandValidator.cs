@@ -19,12 +19,11 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Create
                 .MaximumLength(45);
 
             RuleFor(v => v.PhoneNumber)
-                .NotEmpty()
                 .MaximumLength(12);
 
             RuleFor(v => v.Email)
-                .NotEmpty()
-                .EmailAddress();
+                .EmailAddress()
+                .When(x => !string.IsNullOrEmpty(x.Email)); 
 
             RuleFor(v => v.Role)
                 .NotEmpty();

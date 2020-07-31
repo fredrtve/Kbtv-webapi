@@ -15,6 +15,10 @@ namespace BjBygg.Application.Application.Commands.EmployerCommands.Create
 
             RuleFor(v => v.Address)
                 .MaximumLength(100);
+
+            RuleFor(v => v.Email)
+                .EmailAddress()
+                .When(x => !string.IsNullOrEmpty(x.Email));
         }
     }
 }
