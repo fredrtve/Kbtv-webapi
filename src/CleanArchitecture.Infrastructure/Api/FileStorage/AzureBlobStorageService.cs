@@ -1,5 +1,6 @@
 using BjBygg.Application.Application.Common.Interfaces;
 using CleanArchitecture.SharedKernel;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System;
@@ -55,6 +56,8 @@ namespace CleanArchitecture.Infrastructure.Api.FileStorage
             {
                 var blob = blobContainer.GetBlockBlobReference(GetRandomBlobName(streams[i].FileExtension));
 
+                blob.Properties.ContentType = GetContentType(streams[i].FileExtension);
+
                 await blob.UploadFromStreamAsync(streams[i].Stream);
 
                 blobs.Add(blob.Uri);
@@ -68,9 +71,18 @@ namespace CleanArchitecture.Infrastructure.Api.FileStorage
 
             var blob = blobContainer.GetBlockBlobReference(GetRandomBlobName(stream.FileExtension));
 
+            blob.Properties.ContentType = GetContentType(stream.FileExtension);
+
             await blob.UploadFromStreamAsync(stream.Stream);
 
             return blob.Uri;
+        }
+
+        private string GetContentType(string extension)
+        {
+            string contentType;
+            new FileExtensionContentTypeProvider().TryGetContentType(extension, out contentType);
+            return contentType;
         }
 
         private string GetRandomBlobName(string extension)
