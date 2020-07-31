@@ -108,7 +108,7 @@ namespace BjBygg.WebApi.Filters
         }
         private void HandleUnauthorizedException(ExceptionContext context)
         {
-            var exception = context.Exception as EntityNotFoundException;
+            var exception = context.Exception as UnauthorizedException;
 
             var details = new ProblemDetails()
             {
