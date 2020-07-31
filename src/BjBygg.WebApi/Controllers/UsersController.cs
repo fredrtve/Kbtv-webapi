@@ -18,13 +18,6 @@ namespace BjBygg.WebApi.Controllers
     {
         public UsersController() { }
 
-        [HttpGet]
-        [Route("/")]
-        public IActionResult Home()
-        {
-            return Redirect("/swagger");
-        }
-
         [Authorize(Roles = RolePermissions.UserActions.Read)]
         [HttpGet]
         [Route("api/[controller]")]
