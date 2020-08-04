@@ -16,27 +16,27 @@ namespace BjBygg.WebApi
         {
             var host = CreateWebHostBuilder(args).Build();
 
-            //using (var scope = host.Services.CreateScope())
-            //{
-            //    var services = scope.ServiceProvider;
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
 
-            //    using (var context = services.GetService<AppDbContext>())
-            //    {
-            //        context.Database.EnsureCreated();
-            //        AppDbContextSeed.Seed(context, 1500);
-            //    }
+                using (var context = services.GetService<AppDbContext>())
+                {
+                    context.Database.EnsureCreated();
+                    AppDbContextSeed.Seed(context, 1500);
+                }
 
-            //    using (var context = services.GetService<AppIdentityDbContext>())
-            //    {
+                using (var context = services.GetService<AppIdentityDbContext>())
+                {
 
-            //        context.Database.EnsureCreated();
+                    context.Database.EnsureCreated();
 
-            //        var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-            //        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-            //        AppIdentityDbContextSeed.SeedAsync(userManager, roleManager, context);
-            //    }
-            //}
+                    AppIdentityDbContextSeed.SeedAsync(userManager, roleManager, context);
+                }
+            }
 
             host.Run();
         }

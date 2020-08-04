@@ -10,7 +10,7 @@ namespace BjBygg.Application.Identity.Common.Models
         public DateTime Expires { get; private set; }
         public string UserId { get; private set; }
         public ApplicationUser User { get; private set; }
-        public bool Active => DateTimeHelper.Now() <= Expires;
+        public bool Active => DateTime.UtcNow <= Expires;
 
         public RefreshToken(string token, DateTime expires, string userId)
         {

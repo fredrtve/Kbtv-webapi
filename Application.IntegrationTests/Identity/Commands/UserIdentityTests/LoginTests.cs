@@ -88,7 +88,7 @@ namespace Application.IntegrationTests.Identity.Commands.UserIdentityTests
             var principalUser = await FindAsync<ApplicationUser>(principal.Claims.First(c => c.Type == "id").Value);
 
             var dbRefreshToken = (await GetAllAsync<RefreshToken>()).Find(x => x.Token == response.RefreshToken);
-            var refreshTokenExpiration = DateTimeHelper.Now().AddDays(GetAuthOptions().RefreshTokenLifeTimeInDays);
+            var refreshTokenExpiration = DateTime.UtcNow.AddDays(GetAuthOptions().RefreshTokenLifeTimeInDays);
 
             response.Should().NotBeNull();
 
