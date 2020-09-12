@@ -5,7 +5,7 @@ namespace BjBygg.Application.Application.Common.Dto
 {
     public class EmployerDto : DbSyncDto
     {
-        public int? Id { get; set; }
+        public string? Id { get; set; }
 
         [StringLength(50, ErrorMessage = "{0} kan maks være på {1} tegn.")]
         public string? Name { get; set; }

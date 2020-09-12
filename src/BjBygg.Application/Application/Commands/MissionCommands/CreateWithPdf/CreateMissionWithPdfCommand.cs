@@ -5,7 +5,7 @@ using MediatR;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.CreateWithPdf
 {
-    public class CreateMissionWithPdfCommand : IRequest<MissionDto>
+    public class CreateMissionWithPdfCommand : IRequest
     {
         public CreateMissionWithPdfCommand() { }
         public CreateMissionWithPdfCommand(DisposableList<BasicFileStream> files)

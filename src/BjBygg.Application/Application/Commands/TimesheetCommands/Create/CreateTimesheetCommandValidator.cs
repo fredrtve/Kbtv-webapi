@@ -6,6 +6,9 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Create
     {
         public CreateTimesheetCommandValidator()
         {
+            RuleFor(v => v.Id)
+                 .NotEmpty();
+
             RuleFor(v => v.MissionId)
                 .NotEmpty();
 

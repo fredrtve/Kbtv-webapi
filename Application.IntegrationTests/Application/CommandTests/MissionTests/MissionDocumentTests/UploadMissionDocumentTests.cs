@@ -33,19 +33,20 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
             var user = await RunAsDefaultUserAsync(Roles.Leader);
 
             var command = new UploadMissionDocumentCommand{ 
-                MissionId = 1, 
-                DocumentType = new DocumentTypeDto { Id = 1 },
-                File = new BasicFileStream(Encoding.UTF8.GetBytes("testdocument"), ".pdf")
+                Id = "test",
+                MissionId = "test", 
+                DocumentType = new DocumentTypeDto { Id = "test" },
+                File = new BasicFileStream(Encoding.UTF8.GetBytes("testdocument"), "test.pdf")
             };
 
-            var entity = await SendAsync(command);
+            await SendAsync(command);
 
-            var dbEntity = await FindAsync<MissionDocument>(entity.Id);
+            var dbEntity = await FindAsync<MissionDocument>(command.Id);
 
             dbEntity.Should().NotBeNull();
             dbEntity.MissionId.Should().Be(command.MissionId);
             dbEntity.DocumentTypeId.Should().Be(command.DocumentType.Id);
-            dbEntity.FileURL.Should().BeOfType<Uri>();
+            dbEntity.FileUri.Should().BeOfType<Uri>();
             dbEntity.CreatedBy.Should().Be(user.UserName);
             dbEntity.UpdatedAt.Should().BeCloseTo(DateTimeHelper.Now(), 10000);
         }
@@ -57,15 +58,16 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
 
             var command = new UploadMissionDocumentCommand
             {
-                MissionId = 1,
-                DocumentType = new DocumentTypeDto { Name = "new type" },
+                Id = "test",
+                MissionId = "test",
+                DocumentType = new DocumentTypeDto { Id = "test", Name = "new type" },
                 File = new BasicFileStream(Encoding.UTF8.GetBytes("testdocument"), ".pdf")
             };
 
-            var entity = await SendAsync(command);
+            await SendAsync(command);
 
-            var dbEntity = await FindAsync<MissionDocument>(entity.Id);
-            var dbDocumentType = (await GetAllAsync<DocumentType>()).Find(x => x.Name == command.DocumentType.Name);
+            var dbEntity = await FindAsync<MissionDocument>(command.Id);
+            var dbDocumentType = await FindAsync<DocumentType>(command.DocumentType.Id); 
 
             dbDocumentType.Should().NotBeNull();
             dbEntity.Should().NotBeNull();

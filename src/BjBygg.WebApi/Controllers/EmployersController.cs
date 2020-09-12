@@ -27,17 +27,19 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = RolePermissions.EmployerActions.Create)]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<ActionResult<EmployerDto>> Create([FromBody] CreateEmployerCommand request)
+        public async Task<ActionResult> Create([FromBody] CreateEmployerCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
 
         [Authorize(Roles = RolePermissions.EmployerActions.Update)]
         [HttpPut]
         [Route("api/[controller]/{Id}")]
-        public async Task<ActionResult<EmployerDto>> Update([FromBody] UpdateEmployerCommand request)
+        public async Task<ActionResult> Update([FromBody] UpdateEmployerCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
 
         [Authorize(Roles = RolePermissions.EmployerActions.Delete)]

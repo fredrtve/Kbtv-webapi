@@ -1,3 +1,4 @@
+using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.SharedKernel;
 using System;
 using System.Collections.Generic;
@@ -5,7 +6,7 @@ using System.Globalization;
 
 namespace CleanArchitecture.Core.Entities
 {
-    public class Mission : BaseEntity
+    public class Mission : BaseEntity, IFile
     {
         public Mission() { }
 
@@ -26,9 +27,9 @@ namespace CleanArchitecture.Core.Entities
         public List<MissionNote> MissionNotes { get; set; }
         public List<Timesheet> Timesheets { get; set; }
         public MissionType MissionType { get; set; }
-        public int? MissionTypeId { get; set; }
+        public string? MissionTypeId { get; set; }
         public Employer Employer { get; set; }
-        public int? EmployerId { get; set; }
-        public Uri? ImageURL { get; set; }
+        public string? EmployerId { get; set; }
+        public Uri? FileUri { get; set; }
     }
 }

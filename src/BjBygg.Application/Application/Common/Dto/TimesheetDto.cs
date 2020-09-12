@@ -6,9 +6,9 @@ namespace BjBygg.Application.Application.Common.Dto
 {
     public class TimesheetDto : DbSyncDto
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
-        public int MissionId { get; set; }
+        public string MissionId { get; set; }
 
         public DateTime StartTime { get; set; }
 

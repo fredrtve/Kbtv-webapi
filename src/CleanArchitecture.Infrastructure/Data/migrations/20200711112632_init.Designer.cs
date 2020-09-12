@@ -123,7 +123,7 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                         .HasColumnType("INTEGER")
                         .HasDefaultValue(false);
 
-                    b.Property<string>("ImageURL")
+                    b.Property<string>("FileUri")
                         .HasColumnType("TEXT")
                         .HasMaxLength(400);
 
@@ -171,7 +171,7 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     b.Property<int>("DocumentTypeId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("FileURL")
+                    b.Property<string>("FileUri")
                         .IsRequired()
                         .HasColumnType("TEXT")
                         .HasMaxLength(400);
@@ -209,7 +209,7 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     b.Property<bool>("Deleted")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("FileURL")
+                    b.Property<string>("FileUri")
                         .IsRequired()
                         .HasColumnType("TEXT")
                         .HasMaxLength(400);

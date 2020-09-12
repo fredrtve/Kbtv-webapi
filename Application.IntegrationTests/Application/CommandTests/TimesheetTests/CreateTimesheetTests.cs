@@ -32,15 +32,15 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
             var totalHours = 4;
             
             var command = new CreateTimesheetCommand() { 
-                MissionId = 1, 
+                MissionId = "test", 
                 Comment = "test", 
                 StartTime = DateTimeHelper.ConvertDateToEpoch(endDate.AddHours(-totalHours)),
                 EndTime = DateTimeHelper.ConvertDateToEpoch(endDate)
             };
 
-            var entity = await SendAsync(command);
+            await SendAsync(command);
 
-            var dbEntity = await FindAsync<Timesheet>(entity.Id);
+            var dbEntity = await FindAsync<Timesheet>("test");
 
             dbEntity.Should().NotBeNull();
             dbEntity.Comment.Should().Be(command.Comment);

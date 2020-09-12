@@ -4,9 +4,9 @@ using MediatR;
 
 namespace BjBygg.Application.Application.Commands.TimesheetCommands.UpdateStatus
 {
-    public class UpdateTimesheetStatusCommand : IRequest<TimesheetDto>
+    public class UpdateTimesheetStatusCommand : IRequest
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public TimesheetStatus Status { get; set; }
     }
 }

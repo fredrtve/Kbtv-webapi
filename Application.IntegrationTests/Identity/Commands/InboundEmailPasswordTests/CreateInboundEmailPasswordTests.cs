@@ -30,11 +30,11 @@ namespace Application.IntegrationTests.Identity.Commands.InboundEmailPasswordTes
         {
             var user = await RunAsDefaultUserAsync(Roles.Leader);
 
-            var command = new CreateInboundEmailPasswordCommand() { Password = "Test" };
+            var command = new CreateInboundEmailPasswordCommand() { Id = "test", Password = "Test" };
 
-            var entity = await SendAsync(command);
+            await SendAsync(command);
             
-            var dbEntity = await FindAsync<InboundEmailPassword>(entity.Id);
+            var dbEntity = await FindAsync<InboundEmailPassword>(command.Id);
 
             dbEntity.Should().NotBeNull();
             dbEntity.Password.Should().Be(command.Password);

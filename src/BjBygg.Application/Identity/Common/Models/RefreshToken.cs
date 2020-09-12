@@ -4,8 +4,9 @@ using System;
 
 namespace BjBygg.Application.Identity.Common.Models
 {
-    public class RefreshToken : BaseEntity
+    public class RefreshToken 
     {
+        public int Id { get; set; }
         public string Token { get; private set; }
         public DateTime Expires { get; private set; }
         public string UserId { get; private set; }

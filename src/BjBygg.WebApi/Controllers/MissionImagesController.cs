@@ -30,7 +30,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = RolePermissions.MissionImageActions.Create)]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<ActionResult<List<MissionImageDto>>> Upload(int missionId)
+        public async Task<ActionResult> Upload(string missionId)
         {
             if (Request.Form.Files.Count() == 0)
                 throw new BadRequestException("No files received");
@@ -38,15 +38,15 @@ namespace BjBygg.WebApi.Controllers
             using (var streamList = new DisposableList<BasicFileStream>())
             {
                 streamList.AddRange(Request.Form.Files.ToList()
-                    .Select(x => new BasicFileStream(x.OpenReadStream(), Path.GetExtension(x.FileName))));
+                    .Select(x => new BasicFileStream(x.OpenReadStream(), x.FileName)));
 
                 var request = new UploadMissionImageCommand()
                 {
                     Files = streamList,
                     MissionId = missionId
                 };
-
-                return await Mediator.Send(request);
+                await Mediator.Send(request);
+                return NoContent();
             }
 
             

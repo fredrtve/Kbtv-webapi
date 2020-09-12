@@ -4,12 +4,13 @@ using BjBygg.Application.Application.Common.Interfaces;
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using MediatR;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Upload
 {
-    public class UploadMissionDocumentCommandHandler : IRequestHandler<UploadMissionDocumentCommand, MissionDocumentDto>
+    public class UploadMissionDocumentCommandHandler : IRequestHandler<UploadMissionDocumentCommand>
     {
         private readonly IAppDbContext _dbContext;
         private readonly IBlobStorageService _storageService;
@@ -22,23 +23,35 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Uplo
             _mapper = mapper;
         }
 
-        public async Task<MissionDocumentDto> Handle(UploadMissionDocumentCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UploadMissionDocumentCommand request, CancellationToken cancellationToken)
         {
             var document = _mapper.Map<MissionDocument>(request);
 
-            document.FileURL = await _storageService.UploadFileAsync(request.File, ResourceFolderConstants.Document);
+            var fileURL = await _storageService.UploadFileAsync(request.File, ResourceFolderConstants.Document);
+            if (fileURL == null) throw Exception("Failed to upload file");
+            document.FileUri = new Uri(request.File.FileName);
 
-            if (document.DocumentType.Id != 0)
-            {
-                document.DocumentTypeId = document.DocumentType.Id;
-                document.DocumentType = null;
-            }
+            //if (type != null && !String.IsNullOrEmpty(type.Id))
+            //{
+            //    var dbMissionType = await _dbContext.DocumentTypes.FindAsync(type.Id);
+            //    if (dbMissionType != null)
+            //    {
+            //        document.DocumentTypeId = type.Id;
+            //        document.DocumentType = null;
+            //    }
+            //    else if (String.IsNullOrEmpty(type.Name)) document.DocumentType = null;
+            //}
 
             await _dbContext.Set<MissionDocument>().AddAsync(document);
 
             await _dbContext.SaveChangesAsync();
 
-            return _mapper.Map<MissionDocumentDto>(document);
+            return Unit.Value;
+        }
+
+        private Exception Exception(string v)
+        {
+            throw new NotImplementedException();
         }
     }
 }

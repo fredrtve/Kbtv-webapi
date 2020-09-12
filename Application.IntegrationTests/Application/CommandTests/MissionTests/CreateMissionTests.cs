@@ -35,21 +35,22 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
             var user = await RunAsDefaultUserAsync(Roles.Leader);
 
             var command = new CreateMissionCommand() {
+                Id = "test",
                 Address = "Test",
-                MissionType = new MissionTypeDto() { Id = 1 },
-                Employer = new EmployerDto() { Id = 1 },
+                MissionType = new MissionTypeDto() { Id = "test" },
+                Employer = new EmployerDto() { Id = "test" },
                 Image = new BasicFileStream(Encoding.UTF8.GetBytes("testimg"), ".img")
             };
 
-            var entity = await SendAsync(command);
+            await SendAsync(command);
 
-            var dbEntity = await FindAsync<Mission>(entity.Id);
+            var dbEntity = await FindAsync<Mission>(command.Id);
 
             dbEntity.Should().NotBeNull();
             dbEntity.Address.Should().Be(command.Address);
             dbEntity.CreatedBy.Should().Be(user.UserName);
             dbEntity.MissionTypeId.Should().Be(command.MissionType.Id);
-            dbEntity.ImageURL.Should().BeOfType(typeof(Uri));
+            dbEntity.FileUri.Should().BeOfType(typeof(Uri));
             dbEntity.EmployerId.Should().Be(command.Employer.Id);
             dbEntity.UpdatedAt.Should().BeCloseTo(DateTimeHelper.Now(), 10000);
         }
@@ -59,20 +60,19 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
         {
             var command = new CreateMissionCommand()
             {
+                Id = "test",
                 Address = "Test",
-                MissionType = new MissionTypeDto() { Name = "ljkdngdggsdg" },
-                Employer = new EmployerDto() { Name = "gsdagasdgsd" }
+                MissionType = new MissionTypeDto() { Id = "newtest", Name = "ljkdngdggsdg" },
+                Employer = new EmployerDto() { Id = "newtest", Name = "gsdagasdgsd" }
             };
 
-            var response = await SendAsync(command);
+            await SendAsync(command);
 
-            var missionType = (await GetAllAsync<MissionType>())
-                .Find(x => x.Name == command.MissionType.Name); 
+            var missionType = await FindAsync<MissionType>(command.MissionType.Id); 
 
-            var employer = (await GetAllAsync<Employer>())
-                .Find(x => x.Name == command.Employer.Name);
+            var employer = await FindAsync<Employer>(command.Employer.Id); 
 
-            var mission = await FindAsync<Mission>(response.Id);
+            var mission = await FindAsync<Mission>(command.Id);
 
             missionType.Should().NotBeNull();
             missionType.Name.Should().Be(command.MissionType.Name);

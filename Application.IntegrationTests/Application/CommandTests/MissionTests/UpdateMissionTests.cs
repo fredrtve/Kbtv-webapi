@@ -24,7 +24,7 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
         {
             var command = new UpdateMissionCommand
             {
-                Id = 99,
+                Id = "notvalid",
                 Address = "New Address"
             };
 
@@ -37,28 +37,26 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
         {
             var user = await RunAsDefaultUserAsync(Roles.Leader);
 
-            var newMission = await SendAsync(new CreateMissionCommand { Address = "test" });
-
             var command = new UpdateMissionCommand
             {
-                Id = newMission.Id,
+                Id = "test",
                 Address = "Updated Address",
                 PhoneNumber = "92278483",
                 Description = "asdasd",
-                MissionType = new MissionTypeDto() { Id = 2 }, //Change type
+                MissionType = new MissionTypeDto() { Id = "test" }, //Change type
                 Employer = new EmployerDto() { Id = null }, //Set employer to null
-                Image = new BasicFileStream(Encoding.UTF8.GetBytes("testimg"), ".img")
+                //Image = new BasicFileStream(Encoding.UTF8.GetBytes("testimg"), ".img")
             };
 
             await SendAsync(command);
 
-            var dbMission = await FindAsync<Mission>(newMission.Id);
+            var dbMission = await FindAsync<Mission>(command.Id);
 
             dbMission.Address.Should().Be(command.Address);
             dbMission.PhoneNumber.Should().Be(command.PhoneNumber);
             dbMission.MissionTypeId.Should().Be(command.MissionType.Id);
             dbMission.EmployerId.Should().Be(null);
-            dbMission.ImageURL.Should().BeOfType(typeof(Uri));
+            //dbMission.FileUri.Should().BeOfType(typeof(Uri));
             dbMission.UpdatedBy.Should().NotBeNull();
             dbMission.UpdatedBy.Should().Be(user.UserName);
             dbMission.UpdatedAt.Should().BeCloseTo(DateTimeHelper.Now(), 1000);
@@ -69,21 +67,19 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
         {
             var command = new UpdateMissionCommand()
             {
-                Id = 1,
+                Id = "test",
                 Address = "Test",
-                MissionType = new MissionTypeDto() { Name = "ljkdngdggsdg" },
-                Employer = new EmployerDto() { Name = "gsdagasdgsd" }
+                MissionType = new MissionTypeDto() { Id = "newid", Name = "ljkdngdggsdg" },
+                Employer = new EmployerDto() { Id = "newid", Name = "gsdagasdgsd" }
             };
 
-            var response = await SendAsync(command);
+            await SendAsync(command);
 
-            var missionType = (await GetAllAsync<MissionType>())
-                .Find(x => x.Name == command.MissionType.Name);
+            var missionType = await FindAsync<MissionType>(command.MissionType.Id);
 
-            var employer = (await GetAllAsync<Employer>())
-                .Find(x => x.Name == command.Employer.Name);
+            var employer = await FindAsync<Employer>(command.Employer.Id);
 
-            var mission = await FindAsync<Mission>(response.Id);
+            var mission = await FindAsync<Mission>(command.Id);
 
             missionType.Should().NotBeNull();
             missionType.Name.Should().Be(command.MissionType.Name);

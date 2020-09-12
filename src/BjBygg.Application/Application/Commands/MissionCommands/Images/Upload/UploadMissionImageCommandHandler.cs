@@ -3,41 +3,52 @@ using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Application.Common.Interfaces;
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
+using CleanArchitecture.SharedKernel;
 using MediatR;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Upload
 {
-    public class UploadMissionImageCommandHandler : IRequestHandler<UploadMissionImageCommand, List<MissionImageDto>>
+    public class UploadMissionImageCommandHandler : IRequestHandler<UploadMissionImageCommand>
     {
         private readonly IAppDbContext _dbContext;
         private readonly IBlobStorageService _storageService;
-        private readonly IMapper _mapper;
 
-        public UploadMissionImageCommandHandler(IAppDbContext dbContext, IBlobStorageService storageService, IMapper mapper)
+        public UploadMissionImageCommandHandler(
+            IAppDbContext dbContext, 
+            IBlobStorageService storageService)
         {
             _dbContext = dbContext;
             _storageService = storageService;
-            _mapper = mapper;
         }
 
-        public async Task<List<MissionImageDto>> Handle(UploadMissionImageCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UploadMissionImageCommand request, CancellationToken cancellationToken)
         {
+            var imageUrls = await _storageService.UploadFilesAsync(request.Files, ResourceFolderConstants.Image);
+            if (imageUrls == null || imageUrls.Count() != request.Files.Count())
+                throw new Exception("Something went wrong trying to upload images");
+
             List<MissionImage> images = new List<MissionImage>();
 
-            var imageUrls = await _storageService.UploadFilesAsync(request.Files, ResourceFolderConstants.Image);
-
             images.AddRange(
-                imageUrls.Select(url => new MissionImage() { MissionId = request.MissionId, FileURL = url }));
+                request.Files.Select(file => new MissionImage() { 
+                    Id = file.FileNameNoExtension, 
+                    MissionId = request.MissionId, 
+                    FileUri = new Uri(file.FileName)
+                })
+            );
 
             _dbContext.Set<MissionImage>().AddRange(images);
 
             await _dbContext.SaveChangesAsync();
 
-            return images.Select(x => _mapper.Map<MissionImageDto>(x)).ToList();
+            return Unit.Value;
         }
     }
 }

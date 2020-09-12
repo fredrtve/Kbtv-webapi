@@ -6,6 +6,9 @@ namespace BjBygg.Application.Application.Commands.MissionTypeCommands.Create
     {
         public CreateMissionTypeCommandValidator()
         {
+            RuleFor(v => v.Id)
+                 .NotEmpty();
+
             RuleFor(v => v.Name)
                 .NotEmpty()
                 .MaximumLength(45);

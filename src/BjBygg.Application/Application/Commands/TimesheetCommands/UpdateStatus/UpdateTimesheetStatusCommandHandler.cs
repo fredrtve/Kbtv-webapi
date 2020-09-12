@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Application.Commands.TimesheetCommands.UpdateStatus
 {
-    public class UpdateTimesheetStatusCommandHandler : IRequestHandler<UpdateTimesheetStatusCommand, TimesheetDto>
+    public class UpdateTimesheetStatusCommandHandler : IRequestHandler<UpdateTimesheetStatusCommand>
     {
         private readonly IAppDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -20,7 +20,7 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.UpdateStatus
             _mapper = mapper;
         }
 
-        public async Task<TimesheetDto> Handle(UpdateTimesheetStatusCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateTimesheetStatusCommand request, CancellationToken cancellationToken)
         {
             var dbTimesheet = await _dbContext.Set<Timesheet>().FindAsync(request.Id);
 
@@ -31,7 +31,7 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.UpdateStatus
 
             await _dbContext.SaveChangesAsync();
 
-            return _mapper.Map<TimesheetDto>(dbTimesheet);
+            return Unit.Value;
         }
     }
 }

@@ -6,11 +6,15 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Create
     {
         public CreateMissionCommandValidator()
         {
+            RuleFor(v => v.Id)
+                .NotEmpty();
+
             RuleFor(v => v.Address)
                  .NotEmpty()
                  .MaximumLength(100);
 
             RuleFor(v => v.PhoneNumber)
+                 .MinimumLength(4)
                  .MaximumLength(12);
 
             RuleFor(v => v.Description)

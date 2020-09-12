@@ -5,11 +5,11 @@ namespace BjBygg.Application.Application.Common.Dto
 {
     public class MissionImageDto : DbSyncDto
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
-        public int MissionId { get; set; }
+        public string MissionId { get; set; }
 
-        public Uri FileURL { get; set; }
+        public Uri FileUri { get; set; }
 
     }
 }

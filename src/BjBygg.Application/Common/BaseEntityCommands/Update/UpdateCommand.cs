@@ -2,8 +2,8 @@ using MediatR;
 
 namespace BjBygg.Application.Common.BaseEntityCommands.Update
 {
-    public abstract class UpdateCommand<TResponse> : IRequest<TResponse>
+    public abstract class UpdateCommand : IRequest
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
     }
 }

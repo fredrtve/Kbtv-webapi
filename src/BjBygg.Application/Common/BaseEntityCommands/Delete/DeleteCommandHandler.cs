@@ -21,7 +21,7 @@ namespace BjBygg.Application.Common.BaseEntityCommands.Delete
         {
             var entity = await _dbContext.Set<TEntity>().FindAsync(request.Id);
 
-            if (entity == null) throw new EntityNotFoundException(nameof(TEntity), request.Id);
+            if (entity == null) return Unit.Value;
 
             _dbContext.Set<TEntity>().Remove(entity);
 

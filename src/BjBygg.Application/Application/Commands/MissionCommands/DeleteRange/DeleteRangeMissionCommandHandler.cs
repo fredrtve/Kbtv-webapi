@@ -22,9 +22,6 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.DeleteRange
         {
             var entities = _dbContext.Set<Mission>().Where(x => request.Ids.Contains(x.Id)).ToList();
 
-            if (entities.Count() == 0)
-                throw new EntityNotFoundException(nameof(Mission), String.Join(", ", request.Ids.ToArray()));
-
             _dbContext.Set<Mission>().RemoveRange(entities);
 
             _dbContext.Set<MissionImage>()

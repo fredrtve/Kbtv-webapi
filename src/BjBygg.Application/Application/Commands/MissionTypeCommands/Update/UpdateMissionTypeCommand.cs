@@ -6,11 +6,11 @@ using CleanArchitecture.Core.Entities;
 
 namespace BjBygg.Application.Application.Commands.MissionTypeCommands.Update
 {
-    public class UpdateMissionTypeCommand : UpdateCommand<MissionTypeDto>
+    public class UpdateMissionTypeCommand : UpdateCommand
     {
         public string Name { get; set; }
     }
-    public class UpdateMissionTypeCommandHandler : UpdateCommandHandler<MissionType, UpdateMissionTypeCommand, MissionTypeDto>
+    public class UpdateMissionTypeCommandHandler : UpdateCommandHandler<MissionType, UpdateMissionTypeCommand>
     {
         public UpdateMissionTypeCommandHandler(IAppDbContext dbContext, IMapper mapper) :
             base(dbContext, mapper)

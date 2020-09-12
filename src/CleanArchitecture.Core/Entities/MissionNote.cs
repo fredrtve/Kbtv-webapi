@@ -9,7 +9,7 @@ namespace CleanArchitecture.Core.Entities
         public string? Title { get; set; }
         public string Content { get; set; }
         public Mission Mission { get; set; }
-        public int MissionId { get; set; }
+        public string MissionId { get; set; }
         public bool Pinned { get; set; }
     }
 }

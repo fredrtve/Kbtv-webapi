@@ -119,8 +119,11 @@ namespace CleanArchitecture.Infrastructure
 
             services.AddSingleton<IBlobStorageService, AzureBlobStorageService>();
 
+            services.AddSingleton<IIdGenerator, IdGenerator>();
+
             services.AddTransient<IMailService, SendGridMailService>();
             services.AddTransient<IPdfReportMissionExtractor, PdfReportMissionExtractor>();
+            services.AddTransient<IImageResizer, ImageResizer>();
 
             return services;
         }

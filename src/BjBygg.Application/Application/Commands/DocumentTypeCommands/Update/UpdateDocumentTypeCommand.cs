@@ -6,11 +6,11 @@ using CleanArchitecture.Core.Entities;
 
 namespace BjBygg.Application.Application.Commands.DocumentTypeCommands.Update
 {
-    public class UpdateDocumentTypeCommand : UpdateCommand<DocumentTypeDto>
+    public class UpdateDocumentTypeCommand : UpdateCommand
     {
         public string Name { get; set; }
     }
-    public class UpdateDocumentTypeCommandHandler : UpdateCommandHandler<DocumentType, UpdateDocumentTypeCommand, DocumentTypeDto>
+    public class UpdateDocumentTypeCommandHandler : UpdateCommandHandler<DocumentType, UpdateDocumentTypeCommand>
     {
         public UpdateDocumentTypeCommandHandler(IAppDbContext dbContext, IMapper mapper) :
             base(dbContext, mapper)

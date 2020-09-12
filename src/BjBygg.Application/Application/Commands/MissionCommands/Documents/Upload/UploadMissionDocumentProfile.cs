@@ -10,7 +10,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Uplo
         {
             CreateMap<UploadMissionDocumentCommand, MissionDocument>()
                 .ForMember(dest => dest.DocumentType, opt => opt.MapFrom(src => src.DocumentType))
-                .ForMember(dest => dest.FileURL, opt => opt.Ignore())
+                .ForMember(dest => dest.FileUri, opt => opt.Ignore())
                 .ForSourceMember(src => src.File, dest => dest.DoNotValidate());
 
             CreateMap<MissionDocument, MissionDocumentDto>()

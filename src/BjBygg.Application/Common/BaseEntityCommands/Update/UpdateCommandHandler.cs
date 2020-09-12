@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Common.BaseEntityCommands.Update
 {
-    public abstract class UpdateCommandHandler<TEntity, TCommand, TResponse> : IRequestHandler<TCommand, TResponse>
-        where TEntity : BaseEntity where TCommand : UpdateCommand<TResponse>
+    public abstract class UpdateCommandHandler<TEntity, TCommand> : IRequestHandler<TCommand>
+        where TEntity : BaseEntity where TCommand : UpdateCommand
     {
         private readonly IDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -21,7 +21,7 @@ namespace BjBygg.Application.Common.BaseEntityCommands.Update
             _mapper = mapper;
         }
 
-        public async Task<TResponse> Handle(TCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(TCommand request, CancellationToken cancellationToken)
         {
             var dbEntity = await _dbContext.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == request.Id);
 
@@ -36,7 +36,7 @@ namespace BjBygg.Application.Common.BaseEntityCommands.Update
 
             await _dbContext.SaveChangesAsync();
 
-            return _mapper.Map<TResponse>(dbEntity);
+            return Unit.Value;
         }
     }
 }

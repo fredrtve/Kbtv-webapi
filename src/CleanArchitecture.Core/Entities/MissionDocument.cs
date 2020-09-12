@@ -4,16 +4,16 @@ using System;
 
 namespace CleanArchitecture.Core.Entities
 {
-    public class MissionDocument : BaseEntity, IMissionChildEntity, IDocument
+    public class MissionDocument : BaseEntity, IMissionChildEntity, IDocument, IFile
     {
         public MissionDocument()
         {
         }
 
         public Mission Mission { get; set; }
-        public int MissionId { get; set; }
-        public Uri FileURL { get; set; }
+        public string MissionId { get; set; }
+        public Uri FileUri { get; set; }
         public DocumentType DocumentType { get; set; }
-        public int DocumentTypeId { get; set; }
+        public string DocumentTypeId { get; set; }
     }
 }

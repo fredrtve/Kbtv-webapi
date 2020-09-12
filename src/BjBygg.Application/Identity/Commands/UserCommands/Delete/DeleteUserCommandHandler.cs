@@ -21,13 +21,13 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Delete
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
 
-            if (user == null)
-                throw new EntityNotFoundException(nameof(ApplicationUser), request.UserName);
+            if (user == null) return Unit.Value;
 
             if (await _userManager.IsInRoleAsync(user, Roles.Leader))
                 throw new ForbiddenException();
 
             await _userManager.DeleteAsync(user);
+
             return Unit.Value;
         }
     }

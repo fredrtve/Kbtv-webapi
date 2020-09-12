@@ -28,11 +28,11 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTypeTests
         {
             var user = await RunAsDefaultUserAsync(Roles.Leader);
 
-            var command = new CreateMissionTypeCommand() { Name = "Test" };
+            var command = new CreateMissionTypeCommand() { Id = "test", Name = "Test" };
 
-            var entity = await SendAsync(command);
+            await SendAsync(command);
 
-            var dbEntity = await FindAsync<MissionType>(entity.Id);
+            var dbEntity = await FindAsync<MissionType>(command.Id);
 
             dbEntity.Should().NotBeNull();
             dbEntity.Name.Should().Be(command.Name);

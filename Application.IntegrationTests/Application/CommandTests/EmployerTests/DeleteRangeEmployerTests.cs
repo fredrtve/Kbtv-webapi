@@ -12,18 +12,18 @@ namespace Application.IntegrationTests.Application.CommandTests.EmployerTests
     public class DeleteRangeEmployerTests : AppTestBase
     {
         [Test]
-        public void ShouldRequireAtleastOneValidEmployerId()
+        public void ShouldNotRequireValidEmployerId()
         {
-            var command = new DeleteRangeEmployerCommand { Ids = new int[] { 45, 46 } };
+            var command = new DeleteRangeEmployerCommand { Ids = new string[] { "notvalid", "notvalid1" } };
 
             FluentActions.Invoking(() =>
-                SendAsync(command)).Should().Throw<EntityNotFoundException>();
+                SendAsync(command)).Should().NotThrow();
         }
 
         [Test]
         public async Task ShouldDeleteEmployers()
         {
-            var ids = new int[] { 1, 2 };
+            var ids = new string[] { "test", "test1" };
 
             await SendAsync(new DeleteRangeEmployerCommand { Ids = ids });
 

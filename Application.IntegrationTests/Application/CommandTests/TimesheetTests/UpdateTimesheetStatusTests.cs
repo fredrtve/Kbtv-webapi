@@ -22,7 +22,7 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
         {
             var command = new UpdateTimesheetStatusCommand
             {
-                Id = 99,
+                Id = "notvalid",
                 Status = TimesheetStatus.Confirmed
             };
 
@@ -34,22 +34,24 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
         public async Task ShouldUpdateTimesheetStatus()
         {
             await RunAsDefaultUserAsync(Roles.Leader);
-
-            var timesheet = await SendAsync(new CreateTimesheetCommand()
+            var command = new CreateTimesheetCommand()
             {
-                MissionId = 1,
+                Id = "test",
+                MissionId = "test",
                 Comment = "test",
                 StartTime = 111,
                 EndTime = 112
-            });
+            };
 
-            timesheet = await SendAsync(new UpdateTimesheetStatusCommand
+            await SendAsync(command);
+
+            await SendAsync(new UpdateTimesheetStatusCommand
             {
-                Id = timesheet.Id,
+                Id = command.Id,
                 Status = TimesheetStatus.Confirmed
             });
 
-            var entity = await FindAsync<Timesheet>(timesheet.Id);
+            var entity = await FindAsync<Timesheet>(command.Id);
 
             entity.Should().NotBeNull();
             entity.Status.Should().Be(TimesheetStatus.Confirmed);

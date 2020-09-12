@@ -6,6 +6,9 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Notes.Create
     {
         public CreateMissionNoteCommandValidator()
         {
+            RuleFor(v => v.Id)
+                .NotEmpty();
+
             RuleFor(v => v.MissionId)
                .NotEmpty();
 

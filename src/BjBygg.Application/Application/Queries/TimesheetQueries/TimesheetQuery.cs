@@ -6,7 +6,7 @@ namespace BjBygg.Application.Application.Queries.TimesheetQueries
 {
     public class TimesheetQuery : IRequest<List<TimesheetDto>>
     {
-        public int? MissionId { get; set; }
+        public string? MissionId { get; set; }
 
         public long? StartDate { get; set; }
 

@@ -16,7 +16,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Mail
                {
                    Id = x.Id,
                    DocumentTypeName = x.DocumentType == null ? "Ukategorisert" : x.DocumentType.Name,
-                   Url = x.FileURL.ToString()
+                   Url = x.FileUri.ToString()
                });
         }
 
@@ -29,7 +29,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Mail
     public class MissionDocumentsTemplateDocument
     {
         [JsonProperty("id")]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [JsonProperty("documentTypeName")]
         public string DocumentTypeName { get; set; }

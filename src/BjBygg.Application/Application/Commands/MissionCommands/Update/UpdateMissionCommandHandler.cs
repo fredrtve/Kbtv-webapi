@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.Update
 {
-    public class UpdateMissionCommandHandler : IRequestHandler<UpdateMissionCommand, MissionDto>
+    public class UpdateMissionCommandHandler : IRequestHandler<UpdateMissionCommand>
     {
         private readonly IAppDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -25,7 +25,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Update
             _storageService = storageService;
         }
 
-        public async Task<MissionDto> Handle(UpdateMissionCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateMissionCommand request, CancellationToken cancellationToken)
         {
             var dbMission = await _dbContext.Missions
                 .Include(x => x.MissionType)
@@ -42,26 +42,14 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Update
                 {
                     case "Id": break;
                     case "MissionType":
-                        if (request.MissionType == null) continue;
-                        if ((request.MissionType.Id ?? 0) == 0 && !String.IsNullOrWhiteSpace(request.MissionType.Name)) //If id is not present but name is, create new entity
-                            dbMission.MissionType = new MissionType() { Name = request.MissionType.Name }; 
-                        else 
-                            dbMission.MissionTypeId = request.MissionType.Id;
+                        dbMission = await CheckMissionTypeProperty(dbMission);
                         break;
                     case "Employer":
-                        if (request.Employer == null) continue;
-                        if ((request.Employer.Id ?? 0) == 0 && !String.IsNullOrWhiteSpace(request.Employer.Name)) 
-                            dbMission.Employer = new Employer() { Name = request.Employer.Name };                       
-                        else 
-                            dbMission.EmployerId = request.Employer.Id;                  
+                        dbMission = await CheckEmployerProperty(dbMission);
                         break;
                     case "DeleteCurrentImage":
                         if (request.DeleteCurrentImage == true)
-                            dbMission.ImageURL = null;
-                        break;
-                    case "Image":
-                        if (request.Image != null)
-                            dbMission.ImageURL = await _storageService.UploadFileAsync(request.Image, ResourceFolderConstants.Image);
+                            dbMission.FileUri = null;
                         break;
                     default:
                         dbMission.GetType().GetProperty(property.Name).SetValue(dbMission, property.GetValue(request), null);
@@ -71,7 +59,54 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Update
 
             await _dbContext.SaveChangesAsync();
 
-            return _mapper.Map<MissionDto>(dbMission);
+            return Unit.Value;
+        }
+
+        private async Task<Mission> CheckMissionTypeProperty(Mission mission)
+        {
+            if (mission == null || mission.MissionType == null)
+                return mission;
+
+            if (String.IsNullOrWhiteSpace(mission.MissionType.Id))
+            {
+                mission.MissionType = null;
+                return mission;
+            }
+
+            var type = mission.MissionType;
+            
+            var dbMissionType = await _dbContext.MissionTypes.FindAsync(type.Id);
+            if (dbMissionType != null)
+            {
+                    mission.MissionTypeId = type.Id;
+                    mission.MissionType = null;
+            }
+            else if (String.IsNullOrWhiteSpace(type.Name)) mission.MissionType = null;
+
+            return mission;       
+        }
+        private async Task<Mission> CheckEmployerProperty(Mission mission)
+        {
+            if (mission == null || mission.Employer == null)
+                return mission;
+
+            if (String.IsNullOrWhiteSpace(mission.MissionType.Id))
+            {
+                mission.Employer = null;
+                return mission;
+            }
+
+            var employer = mission.Employer;
+
+            var dbEmployer = await _dbContext.Employers.FindAsync(employer.Id);
+            if (dbEmployer != null)
+            {
+                mission.EmployerId = employer.Id;
+                mission.Employer = null;
+            }
+            else if (String.IsNullOrWhiteSpace(employer.Name)) mission.Employer = null;
+
+            return mission;
         }
     }
 }

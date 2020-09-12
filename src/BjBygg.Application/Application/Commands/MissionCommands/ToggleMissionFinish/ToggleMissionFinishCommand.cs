@@ -2,8 +2,8 @@ using MediatR;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.ToggleMissionFinish
 {
-    public class ToggleMissionFinishCommand : IRequest<bool>
+    public class ToggleMissionFinishCommand : IRequest
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
     }
 }

@@ -14,6 +14,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Update
                  .MaximumLength(100);
 
             RuleFor(v => v.PhoneNumber)
+                 .MinimumLength(4)
                  .MaximumLength(12);
 
             RuleFor(v => v.Description)

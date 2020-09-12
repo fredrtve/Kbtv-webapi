@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Application.Commands.TimesheetCommands.Create
 {
-    public class CreateTimesheetCommandHandler : IRequestHandler<CreateTimesheetCommand, TimesheetDto>
+    public class CreateTimesheetCommandHandler : IRequestHandler<CreateTimesheetCommand>
     {
         private readonly IAppDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -23,7 +23,7 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Create
             _currentUserService = currentUserService;
         }
 
-        public async Task<TimesheetDto> Handle(CreateTimesheetCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(CreateTimesheetCommand request, CancellationToken cancellationToken)
         {
             var timesheet = _mapper.Map<Timesheet>(request);
 
@@ -37,7 +37,7 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Create
             _dbContext.Set<Timesheet>().Add(timesheet);
             await _dbContext.SaveChangesAsync();
 
-            return _mapper.Map<TimesheetDto>(timesheet);
+            return Unit.Value;
         }
     }
 }

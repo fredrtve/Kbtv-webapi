@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Application.Commands.TimesheetCommands.Update
 {
-    public class UpdateTimesheetCommandHandler : IRequestHandler<UpdateTimesheetCommand, TimesheetDto>
+    public class UpdateTimesheetCommandHandler : IRequestHandler<UpdateTimesheetCommand>
     {
         private readonly IAppDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -28,7 +28,7 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Update
             _currentUserService = currentUserService;
         }
 
-        public async Task<TimesheetDto> Handle(UpdateTimesheetCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateTimesheetCommand request, CancellationToken cancellationToken)
         {
             var dbTimesheet = await _dbContext.Timesheets.FirstOrDefaultAsync(x => x.Id == request.Id);
 
@@ -41,14 +41,15 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Update
             if (dbTimesheet.Status != TimesheetStatus.Open)
                 throw new BadRequestException($"Timesheet is closed for manipulation.");
 
-            var ignoredProperties = new List<string>(){ "Id", "UserName", "StartTime", "EndTime" };
+            var ignoredProperties = new List<string>(){ "Id", "UserName", "StartTime", "EndTime", "MissionId" };
 
             foreach (var property in request.GetType().GetProperties())
             {
                 if (ignoredProperties.Contains(property.Name)) continue;
-                dbTimesheet.GetType().GetProperty(property.Name).SetValue(dbTimesheet, property.GetValue(request), null);
+                dbTimesheet.GetType().GetProperty(property.Name).SetValue(dbTimesheet, property.GetValue(request), null);       
             }
 
+            dbTimesheet.MissionId = request.MissionId;
             dbTimesheet.StartTime = DateTimeHelper.ConvertEpochToDate(request.StartTime);
             dbTimesheet.EndTime = DateTimeHelper.ConvertEpochToDate(request.EndTime);
 
@@ -56,8 +57,7 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Update
 
             await _dbContext.SaveChangesAsync(); 
 
-            //Assign values after creation to prevent unwanted changes
-            return _mapper.Map<TimesheetDto>(dbTimesheet);
+            return Unit.Value;
         }
     }
 }

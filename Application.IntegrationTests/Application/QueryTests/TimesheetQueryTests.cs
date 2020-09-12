@@ -52,7 +52,7 @@ namespace Application.IntegrationTests.Application.QueryTests
         {
             var query = new TimesheetQuery()
             {
-                MissionId = 2
+                MissionId = "test"
             };
 
             var timesheets = await SendAsync(query);

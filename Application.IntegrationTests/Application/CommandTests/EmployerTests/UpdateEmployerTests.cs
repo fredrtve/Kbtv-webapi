@@ -19,7 +19,7 @@ namespace Application.IntegrationTests.Application.CommandTests.EmployerTests
         {
             var command = new UpdateEmployerCommand
             {
-                Id = 99,
+                Id = "notvalid",
                 Name = "New Name"
             };
 
@@ -34,13 +34,13 @@ namespace Application.IntegrationTests.Application.CommandTests.EmployerTests
 
             var command = new UpdateEmployerCommand
             {
-                Id = 1,
+                Id = "test",
                 Name = "Updated Name"
             };
 
             await SendAsync(command);
 
-            var entity = await FindAsync<Employer>(1);
+            var entity = await FindAsync<Employer>("test");
 
             entity.Name.Should().Be(command.Name);
             entity.UpdatedBy.Should().NotBeNull();

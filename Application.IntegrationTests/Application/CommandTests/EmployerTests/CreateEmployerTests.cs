@@ -29,9 +29,9 @@ namespace Application.IntegrationTests.Application.CommandTests.EmployerTests
 
             var command = new CreateEmployerCommand() { Name = "Test" };
 
-            var entity = await SendAsync(command);
+            await SendAsync(command);
 
-            var dbEntity = await FindAsync<Employer>(entity.Id);
+            var dbEntity = await FindAsync<Employer>(command.Id);
 
             dbEntity.Should().NotBeNull();
             dbEntity.Name.Should().Be(command.Name);

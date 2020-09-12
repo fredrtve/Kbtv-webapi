@@ -6,6 +6,9 @@ namespace BjBygg.Application.Identity.Commands.InboundEmailPasswordCommands.Crea
     {
         public CreateInboundEmailPasswordCommandValidator()
         {
+            RuleFor(v => v.Id)
+                 .NotEmpty();
+
             RuleFor(v => v.Password)
                .NotEmpty()
                .MaximumLength(45);

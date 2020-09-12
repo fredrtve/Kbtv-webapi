@@ -16,21 +16,18 @@ namespace Application.IntegrationTests.Identity.Commands.InboundEmailPasswordTes
     public class DeleteRangeInboundEmailPasswordTests : IdentityTestBase
     {
         [Test]
-        public void ShouldRequireAtleastOneValidInboundEmailPasswordId()
+        public void ShouldNotRequireValidInboundEmailPasswordId()
         {
-            var command = new DeleteRangeInboundEmailPasswordCommand { Ids = new int[] { 45, 46 } };
+            var command = new DeleteRangeInboundEmailPasswordCommand { Ids = new string[] { "notvalid", "notvalid2" } };
 
             FluentActions.Invoking(() =>
-                SendAsync(command)).Should().Throw<EntityNotFoundException>();
+                SendAsync(command)).Should().NotThrow();
         }
 
         [Test]
         public async Task ShouldDeleteInboundEmailPasswords()
         {
-            var pw1 = await SendAsync(new CreateInboundEmailPasswordCommand() { Password = "Test1" });
-            var pw2 = await SendAsync(new CreateInboundEmailPasswordCommand() { Password = "Test2" });
-
-            var ids = new int[] { pw1.Id, pw2.Id };
+            var ids = new string[] { "test", "test2" };
 
             await SendAsync(new DeleteRangeInboundEmailPasswordCommand { Ids = ids });
 

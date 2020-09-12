@@ -77,7 +77,7 @@ namespace Application.IntegrationTests
         }
         static async Task SetMissionDocumentsAsync(IAppDbContext context, int amount)
         {
-            var command = "INSERT INTO MissionDocuments (FileURL, MissionId, DocumentTypeId, Deleted, CreatedAt, UpdatedAt) VALUES ";
+            var command = "INSERT INTO MissionDocuments (FileUri, MissionId, DocumentTypeId, Deleted, CreatedAt, UpdatedAt) VALUES ";
             for (var i = 0; i < amount; i++)
             {
                 var date = DateTime.Now.AddYears(-i * 2).ToString("yyyy-MM-dd HH:mm:ss");
@@ -89,7 +89,7 @@ namespace Application.IntegrationTests
         }
         static async Task SetMissionImagesAsync(IAppDbContext context, int amount)
         {
-            var command = "INSERT INTO MissionImages (FileURL, MissionId, Deleted, CreatedAt, UpdatedAt) VALUES ";
+            var command = "INSERT INTO MissionImages (FileUri, MissionId, Deleted, CreatedAt, UpdatedAt) VALUES ";
             for (var i = 0; i < amount; i++)
             {
                 var date = DateTime.Now.AddYears(-i * 2).ToString("yyyy-MM-dd HH:mm:ss");

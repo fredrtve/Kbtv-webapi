@@ -9,7 +9,7 @@ namespace CleanArchitecture.Core.Entities
         public MissionImage() { }
 
         public Mission Mission { get; set; }
-        public int MissionId { get; set; }
-        public Uri FileURL { get; set; }
+        public string MissionId { get; set; }
+        public Uri FileUri { get; set; }
     }
 }

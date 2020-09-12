@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.UpdateProfile
 {
-    public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand, UserDto>
+    public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ICurrentUserService _currentUserService;
@@ -27,7 +27,7 @@ namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.UpdateProfil
             _mapper = mapper;
         }
 
-        public async Task<UserDto> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByNameAsync(_currentUserService.UserName);
 
@@ -42,8 +42,7 @@ namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.UpdateProfil
             if (!result.Succeeded)
                 throw new BadRequestException("Something went wrong when trying to update profile");
 
-            var response = _mapper.Map<UserDto>(user);
-            return response;
+            return Unit.Value;
         }
     }
 }

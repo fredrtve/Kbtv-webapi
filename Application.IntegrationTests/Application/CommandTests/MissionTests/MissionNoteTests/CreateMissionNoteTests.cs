@@ -30,14 +30,15 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
 
             var command = new CreateMissionNoteCommand() 
             { 
-                MissionId = 1,
+                Id = "test",
+                MissionId = "test",
                 Content = "New content",
                 Title = "New title"
             };
 
-            var entity = await SendAsync(command);
+            await SendAsync(command);
 
-            var dbEntity = await FindAsync<MissionNote>(entity.Id);
+            var dbEntity = await FindAsync<MissionNote>(command.Id);
 
             dbEntity.Should().NotBeNull();
             dbEntity.Content.Should().Be(command.Content);

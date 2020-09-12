@@ -6,6 +6,9 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Uplo
     {
         public UploadMissionDocumentCommandValidator()
         {
+            RuleFor(v => v.Id)
+                .NotEmpty();
+
             RuleFor(v => v.DocumentType)
                .NotEmpty();
 

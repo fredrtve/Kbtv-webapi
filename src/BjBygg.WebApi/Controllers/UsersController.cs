@@ -29,9 +29,10 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = RolePermissions.UserActions.Create)]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<ActionResult<UserDto>> Create([FromBody] CreateUserCommand request)
+        public async Task<ActionResult> Create([FromBody] CreateUserCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
 
         [Authorize(Roles = RolePermissions.UserActions.Read)]
@@ -45,9 +46,10 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = RolePermissions.UserActions.Update)]
         [HttpPut]
         [Route("api/[controller]/{UserName}")]
-        public async Task<ActionResult<UserDto>> Update([FromBody] UpdateUserCommand request)
+        public async Task<ActionResult> Update([FromBody] UpdateUserCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
 
         [Authorize(Roles = RolePermissions.UserActions.Update)]

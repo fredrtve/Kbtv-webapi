@@ -34,23 +34,21 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
         {
             var user = await RunAsDefaultUserAsync(Roles.Leader);
 
-            var newMission = await SendAsync(new CreateMissionCommand { Address = "new mission" });
-
             await SendAsync(new UploadMissionImageCommand()
             {
-                MissionId = newMission.Id,
+                MissionId = "test",
                 Files = new DisposableList<BasicFileStream>() {
-                    new BasicFileStream(Encoding.UTF8.GetBytes("testimage1"), ".jpg"),
-                    new BasicFileStream(Encoding.UTF8.GetBytes("testimage2"), ".jpg"),
+                    new BasicFileStream(Encoding.UTF8.GetBytes("testimage1"), "test.jpg")
                 }
             });
 
-            var dbEntities = (await GetAllAsync<MissionImage>()).Where(x => x.MissionId == newMission.Id);
+            var dbEntities = (await GetAllAsync<MissionImage>()).Where(x => x.MissionId == "test");
 
             dbEntities.Should().NotBeNull();
-            dbEntities.Should().HaveCount(2);
+            dbEntities.Should().HaveCount(1);
 
-            dbEntities.First().FileURL.Should().BeOfType<Uri>();
+            dbEntities.First().Id.Should().Be("test");
+            dbEntities.First().FileUri.Should().BeOfType<Uri>();
             dbEntities.First().CreatedBy.Should().Be(user.UserName);
             dbEntities.First().UpdatedAt.Should().BeCloseTo(DateTimeHelper.Now(), 10000);
         }

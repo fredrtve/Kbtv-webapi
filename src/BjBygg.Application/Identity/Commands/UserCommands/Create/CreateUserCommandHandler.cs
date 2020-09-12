@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Identity.Commands.UserCommands.Create
 {
-    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserDto>
+    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
@@ -21,7 +21,7 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Create
             _mapper = mapper;
         }
 
-        public async Task<UserDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             //Not allowing new leaders
             if (request.Role.ToLower() == Roles.Leader) throw new ForbiddenException();
@@ -40,10 +40,7 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Create
 
             await _userManager.AddToRoleAsync(user, request.Role);
 
-            var response = _mapper.Map<UserDto>(user);
-            response.Role = request.Role;
-
-            return response;
+            return Unit.Value;
         }
     }
 }

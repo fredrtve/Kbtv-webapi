@@ -13,12 +13,12 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
     public class ToggleMissionFinishTests : AppTestBase
     {
         [Test]
-        public void ShouldRequireValidMissionId()
+        public void ShouldNotRequireValidMissionId()
         {
-            var command = new ToggleMissionFinishCommand{ Id = 99 };
+            var command = new ToggleMissionFinishCommand{ Id = "notvalid" };
 
             FluentActions.Invoking(() =>
-                SendAsync(command)).Should().Throw<EntityNotFoundException>();
+                SendAsync(command)).Should().NotThrow();
         }
 
         [Test]
@@ -26,13 +26,13 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
         {
             var user = await RunAsDefaultUserAsync(Roles.Leader);
 
-            var entityBefore = await FindAsync<Mission>(1);
+            var entityBefore = await FindAsync<Mission>("test");
 
-            var command = new ToggleMissionFinishCommand{ Id = 1 };
+            var command = new ToggleMissionFinishCommand{ Id = "test" };
 
             await SendAsync(command);
 
-            var entityAfter = await FindAsync<Mission>(1);
+            var entityAfter = await FindAsync<Mission>("test");
 
             entityAfter.Finished.Should().Be(!entityBefore.Finished);
             entityAfter.UpdatedBy.Should().NotBeNull();

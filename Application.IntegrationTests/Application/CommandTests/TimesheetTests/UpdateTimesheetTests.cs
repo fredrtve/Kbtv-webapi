@@ -23,7 +23,7 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
         {
             var command = new UpdateTimesheetCommand
             {
-                Id = 99
+                Id = "notvalid"
             };
 
             FluentActions.Invoking(() =>
@@ -34,42 +34,46 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
         public async Task ShouldThrowBadRequestExceptionIfTimesheetStatusNotOpen()
         {
             await RunAsDefaultUserAsync(Roles.Leader);
-
-            var newTimesheet = await SendAsync(new CreateTimesheetCommand()
+            var command = new CreateTimesheetCommand()
             {
-                MissionId = 1,
+                Id = "test",
+                MissionId = "test",
                 Comment = "test",
                 StartTime = 111,
                 EndTime = 112
-            });
+            };
 
-            await SendAsync(new UpdateTimesheetStatusCommand() { Id = newTimesheet.Id, Status = TimesheetStatus.Confirmed });
+            await SendAsync(command);
 
-            var command = new UpdateTimesheetCommand { Id = newTimesheet.Id };
+            await SendAsync(new UpdateTimesheetStatusCommand() { Id = command.Id, Status = TimesheetStatus.Confirmed });
+
+            var updateCommand = new UpdateTimesheetCommand { Id = command.Id };
 
             FluentActions.Invoking(() =>
-              SendAsync(command)).Should().Throw<BadRequestException>();
+              SendAsync(updateCommand)).Should().Throw<BadRequestException>();
         }
 
         [Test]
         public async Task ShouldThrowForbiddenExceptionIfTimesheetNotBelongingToUser()
         {
             await RunAsDefaultUserAsync(Roles.Leader);
-
-            var newTimesheet = await SendAsync(new CreateTimesheetCommand()
+            var command = new CreateTimesheetCommand()
             {
-                MissionId = 1,
+                Id = "test",
+                MissionId = "test",
                 Comment = "test",
                 StartTime = 111,
                 EndTime = 112
-            });
+            };
+
+            await SendAsync(command);
 
             await RunAsDefaultUserAsync(Roles.Employee);
 
-            var command = new UpdateTimesheetCommand { Id = newTimesheet.Id };
+            var updateCommand = new UpdateTimesheetCommand { Id = command.Id };
 
             FluentActions.Invoking(() =>
-              SendAsync(command)).Should().Throw<ForbiddenException>();
+              SendAsync(updateCommand)).Should().Throw<ForbiddenException>();
         }
 
         [Test]
@@ -82,7 +86,7 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
 
             var command = new UpdateTimesheetCommand
             {
-                Id = 1,
+                Id = "test",
                 Comment = "test",
                 StartTime = DateTimeHelper.ConvertDateToEpoch(endDate.AddHours(-totalHours)),
                 EndTime = DateTimeHelper.ConvertDateToEpoch(endDate)
@@ -90,7 +94,7 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
 
             await SendAsync(command);
 
-            var entity = await FindAsync<Timesheet>(1);
+            var entity = await FindAsync<Timesheet>("test");
 
             entity.Should().NotBeNull();
             entity.Comment.Should().Be(command.Comment);

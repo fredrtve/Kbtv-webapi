@@ -25,17 +25,19 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = RolePermissions.MissionNoteActions.Create)]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<ActionResult<MissionNoteDto>> Create([FromBody] CreateMissionNoteCommand request)
+        public async Task<ActionResult> Create([FromBody] CreateMissionNoteCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
 
         [Authorize(Roles = RolePermissions.MissionNoteActions.Update)]
         [HttpPut]
         [Route("api/[controller]/{Id}")]
-        public async Task<ActionResult<MissionNoteDto>> Update([FromBody] UpdateMissionNoteCommand request)
+        public async Task<ActionResult> Update([FromBody] UpdateMissionNoteCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
 
         [Authorize(Roles = RolePermissions.MissionNoteActions.Delete)]

@@ -20,7 +20,7 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTypeTests
         {
             var command = new UpdateMissionTypeCommand
             {
-                Id = 99,
+                Id = "notvalid",
                 Name = "New Name"
             };
 
@@ -35,13 +35,13 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTypeTests
 
             var command = new UpdateMissionTypeCommand
             {
-                Id = 1,
+                Id = "test",
                 Name = "Updated Name"
             };
 
             await SendAsync(command);
 
-            var entity = await FindAsync<MissionType>(1);
+            var entity = await FindAsync<MissionType>("test");
 
             entity.Name.Should().Be(command.Name);
             entity.UpdatedBy.Should().NotBeNull();

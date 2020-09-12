@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
 using BjBygg.Application.Common.Interfaces;
 using BjBygg.Application.Identity.Common;
 using BjBygg.Application.Identity.Common.Models;
+using CleanArchitecture.Core;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -36,6 +38,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
 
             return new SyncAllResponse()
             {
+                CurrentUserSync = SyncCurrentUser(user, request.CurrentUserTimestamp ?? 0),
                 MissionSync = await _mediator.Send(
                     new MissionSyncQuery()
                     {
@@ -80,6 +83,14 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
                 MissionTypeSync = await _mediator.Send(new MissionTypeSyncQuery() { Timestamp = request.MissionTypeTimestamp }),
                 DocumentTypeSync = await _mediator.Send(new DocumentTypeSyncQuery() { Timestamp = request.DocumentTypeTimestamp }),
             };
+        }
+
+        private DbSyncResponse<UserDto> SyncCurrentUser(UserDto user, long timestamp)      
+        {
+            var date = DateTimeHelper.ConvertEpochToDate(timestamp);
+            var syncResponse = new DbSyncResponse<UserDto>(new UserDto[] { }, null);
+            if (DateTime.Compare(user.UpdatedAt, date) >= 0) syncResponse.Entities = new [] {user};
+            return syncResponse;
         }
     }
 }

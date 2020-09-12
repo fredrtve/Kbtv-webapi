@@ -6,6 +6,9 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Notes.Update
     {
         public UpdateMissionNoteCommandValidator()
         {
+            RuleFor(v => v.Id)
+                .NotEmpty();
+
             RuleFor(v => v.Title)
                 .MaximumLength(100);
 

@@ -3,7 +3,7 @@ using MediatR;
 
 namespace BjBygg.Application.Identity.Commands.UserCommands.Create
 {
-    public class CreateUserCommand : IRequest<UserDto>
+    public class CreateUserCommand : IRequest
     {
         public string UserName { get; set; }
         public string FirstName { get; set; }

@@ -26,18 +26,19 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = RolePermissions.DocumentTypeActions.Create)]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<ActionResult<DocumentTypeDto>> Create([FromBody] CreateDocumentTypeCommand request)
+        public async Task<ActionResult> Create([FromBody] CreateDocumentTypeCommand request)
         {
- 
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
 
         [Authorize(Roles = RolePermissions.DocumentTypeActions.Update)]
         [HttpPut]
         [Route("api/[controller]/{Id}")]
-        public async Task<ActionResult<DocumentTypeDto>> Update([FromBody] UpdateDocumentTypeCommand request)
+        public async Task<ActionResult> Update([FromBody] UpdateDocumentTypeCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
 
         [Authorize(Roles = RolePermissions.DocumentTypeActions.Delete)]

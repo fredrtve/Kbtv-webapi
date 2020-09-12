@@ -1,4 +1,5 @@
 using BjBygg.Application.Application.Common.Interfaces;
+using BjBygg.Application.Common.BaseEntityCommands.MailEntitiesCommand;
 using BjBygg.Application.Common.Interfaces;
 using CleanArchitecture.Core.Entities;
 using MediatR;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Mail
 {
-    public class MailMissionDocumentsCommandHandler : IRequestHandler<MailMissionDocumentsCommand>
+    public class MailMissionDocumentsCommandHandler : MailEntitiesCommandHandler<MailMissionDocumentsCommand>
     {
         private readonly IAppDbContext _dbContext;
         private readonly IMailService _mailService;
@@ -22,7 +23,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Mail
             _mailService = mailService;
         }
 
-        public async Task<Unit> Handle(MailMissionDocumentsCommand request, CancellationToken cancellationToken)
+        public override async Task<Unit> Handle(MailMissionDocumentsCommand request, CancellationToken cancellationToken)
         {
             var documents = await _dbContext.Set<MissionDocument>()
                 .Include(x => x.DocumentType)

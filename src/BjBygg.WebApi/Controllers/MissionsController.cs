@@ -4,6 +4,7 @@ using BjBygg.Application.Application.Commands.MissionCommands.Delete;
 using BjBygg.Application.Application.Commands.MissionCommands.DeleteRange;
 using BjBygg.Application.Application.Commands.MissionCommands.ToggleMissionFinish;
 using BjBygg.Application.Application.Commands.MissionCommands.Update;
+using BjBygg.Application.Application.Commands.MissionCommands.UpdateHeaderImage;
 using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Application.Queries.DbSyncQueries;
 using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
@@ -43,30 +44,36 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = RolePermissions.MissionActions.Create)]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<ActionResult<MissionDto>> Create()
+        public async Task<ActionResult<MissionDto>> Create([FromBody] CreateMissionCommand request)
         {
-            var settings = new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            };
+            await Mediator.Send(request);
+            return NoContent();
+            //var settings = new JsonSerializerSettings
+            //{
+            //    NullValueHandling = NullValueHandling.Ignore,
+            //    MissingMemberHandling = MissingMemberHandling.Ignore
+            //};
 
-            var request = JsonConvert.DeserializeObject<CreateMissionCommand>(Request.Form["command"], settings);
+            //var request = JsonConvert.DeserializeObject<CreateMissionCommand>(Request.Form["command"], settings);
 
-            if (Request.Form.Files.Count() == 0) return await Mediator.Send(request);
+            //if (Request.Form.Files.Count() == 0)
+            //{
+            //    await Mediator.Send(request);
+            //    return NoContent();
+            //};
 
-            var file = Request.Form.Files[0];
-            using (var stream = file.OpenReadStream())
-            {
-                request.Image = new BasicFileStream(stream, Path.GetExtension(file.FileName));
-
-                return await Mediator.Send(request);
-            }
+            //var file = Request.Form.Files[0];
+            //using (var stream = file.OpenReadStream())
+            //{
+            //    request.Image = new BasicFileStream(stream, file.FileName);
+            //    await Mediator.Send(request);
+            //    return NoContent();
+            //}
         }
 
         [HttpPost]
         [Route("api/[controller]/[action]")]
-        public async Task<ActionResult<MissionDto>> CreateFromInboundEmailPdfReport()
+        public async Task<ActionResult> CreateFromInboundEmailPdfReport()
         {
             StringValues fromEmail;
             Request.Form.TryGetValue("from", out fromEmail);
@@ -98,15 +105,16 @@ namespace BjBygg.WebApi.Controllers
             using (var streamList = new DisposableList<BasicFileStream>())
             {
                 streamList.AddRange(Request.Form.Files.ToList()
-                    .Select(x => new BasicFileStream(x.OpenReadStream(), Path.GetExtension(x.FileName))));
-                return await Mediator.Send(new CreateMissionWithPdfCommand(streamList));
+                    .Select(x => new BasicFileStream(x.OpenReadStream(), x.FileName)));
+                await Mediator.Send(new CreateMissionWithPdfCommand(streamList));
+                return NoContent();
             }
         }
 
         [Authorize(Roles = RolePermissions.MissionActions.CreateFromPdf)]
         [HttpPost]
         [Route("api/[controller]/[action]")]
-        public async Task<ActionResult<MissionDto>> CreateFromPdfReport()
+        public async Task<ActionResult> CreateFromPdfReport()
         {
             if (Request.Form.Files.Count() == 0)
                 throw new BadRequestException("No files received");
@@ -114,34 +122,49 @@ namespace BjBygg.WebApi.Controllers
             using (var streamList = new DisposableList<BasicFileStream>())
             {
                 streamList.AddRange(Request.Form.Files.ToList()
-                    .Select(x => new BasicFileStream(x.OpenReadStream(), Path.GetExtension(x.FileName))));
+                    .Select(x => new BasicFileStream(x.OpenReadStream(), x.FileName)));
 
-                return await Mediator.Send(new CreateMissionWithPdfCommand(streamList));
+                await Mediator.Send(new CreateMissionWithPdfCommand(streamList));
+                return NoContent();
             }
         }
 
         [Authorize(Roles = RolePermissions.MissionActions.Update)]
         [HttpPut]
         [Route("api/[controller]/{Id}")]
-        public async Task<ActionResult<MissionDto>> Update()
+        public async Task<ActionResult> Update([FromBody] UpdateMissionCommand request)
         {
-            var settings = new JsonSerializerSettings
+            await Mediator.Send(request);
+            return NoContent();
+        }
+
+        [Authorize(Roles = RolePermissions.MissionActions.UpdateHeaderImage)]
+        [HttpPut]
+        [Route("api/[controller]/{Id}/[action]")]
+        public async Task<ActionResult> UpdateHeaderImage(string id)
+        {
+            //var settings = new JsonSerializerSettings
+            //{
+            //    NullValueHandling = NullValueHandling.Ignore,
+            //    MissingMemberHandling = MissingMemberHandling.Ignore
+            //};
+
+            //var request = JsonConvert.DeserializeObject<UpdateMissionHeaderImageCommand>(Request.Form["command"], settings);
+            var request = new UpdateMissionHeaderImageCommand() { Id = id };
+            if (Request.Form.Files.Count() == 0)
             {
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            };
-
-            var request = JsonConvert.DeserializeObject<UpdateMissionCommand>(Request.Form["command"], settings);
-
-            if (Request.Form.Files.Count() == 0) return await Mediator.Send(request);
+                await Mediator.Send(request);
+                return NoContent();
+            }//Let validator throw exception
 
             var file = Request.Form.Files[0];
 
             using (var stream = file.OpenReadStream())
             {
-                request.Image = new BasicFileStream(stream, Path.GetExtension(file.FileName));
+                request.Image = new BasicFileStream(stream, file.FileName);
 
-                return await Mediator.Send(request);
+                await Mediator.Send(request);
+                return NoContent();
             }
 
         }
@@ -149,9 +172,10 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = RolePermissions.MissionActions.Update)]
         [HttpGet]
         [Route("api/[controller]/{Id}/[action]")]
-        public async Task<ActionResult<bool>> ToggleFinish(ToggleMissionFinishCommand request)
+        public async Task<ActionResult> ToggleFinish(ToggleMissionFinishCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
 
         [Authorize(Roles = RolePermissions.MissionActions.Delete)]

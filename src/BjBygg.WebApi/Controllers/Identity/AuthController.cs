@@ -44,9 +44,10 @@ namespace BjBygg.WebApi.Controllers.Identity
         [Authorize]
         [HttpPut]
         [Route("api/[controller]")]
-        public async Task<ActionResult<UserDto>> UpdateProfile([FromBody] UpdateProfileCommand request)
+        public async Task<ActionResult> UpdateProfile([FromBody] UpdateProfileCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
 
         [Authorize]

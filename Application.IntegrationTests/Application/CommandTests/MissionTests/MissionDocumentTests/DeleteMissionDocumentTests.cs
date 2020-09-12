@@ -13,19 +13,19 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
     public class DeleteMissionDocumentTests : AppTestBase
     {
         [Test]
-        public void ShouldRequireValidMissionDocumentId()
+        public void ShouldNotRequireValidMissionDocumentId()
         {
-            var command = new DeleteMissionDocumentCommand { Id = 77 };
+            var command = new DeleteMissionDocumentCommand { Id = "notvalid" };
 
             FluentActions.Invoking(() =>
-                SendAsync(command)).Should().Throw<EntityNotFoundException>();
+                SendAsync(command)).Should().NotThrow();
         }
         [Test]
         public async Task ShouldDeleteMissionDocument()
         {
-            await SendAsync(new DeleteMissionDocumentCommand { Id = 1 });
+            await SendAsync(new DeleteMissionDocumentCommand { Id = "test" });
 
-            var entity = await FindAsync<MissionDocument>(1);
+            var entity = await FindAsync<MissionDocument>("test");
 
             entity.Should().BeNull();
         }

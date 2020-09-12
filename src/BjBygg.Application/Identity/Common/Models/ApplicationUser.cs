@@ -18,7 +18,7 @@ namespace BjBygg.Application.Identity.Common.Models
 
         public List<RefreshToken> RefreshTokens { get; set; }
 
-        public int? EmployerId { get; set; }
+        public string? EmployerId { get; set; }
 
         public bool Deleted { get; set; }
         public DateTime CreatedAt { get; set; }

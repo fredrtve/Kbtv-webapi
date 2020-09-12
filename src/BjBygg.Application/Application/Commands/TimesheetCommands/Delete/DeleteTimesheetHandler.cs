@@ -25,10 +25,9 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Delete
         {
             var timesheet = await _dbContext.Set<Timesheet>().FindAsync(request.Id);
 
-            if (timesheet == null)
-                throw new EntityNotFoundException(nameof(Timesheet), request.Id);
+            if (timesheet == null) return Unit.Value;
 
-            if(_currentUserService.Role != Roles.Leader) //Allow leader
+            if (_currentUserService.Role != Roles.Leader) //Allow leader
             {
                 if (_currentUserService.UserName != timesheet.UserName) 
                     throw new ForbiddenException();

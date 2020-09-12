@@ -15,7 +15,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Mail
             {
                 Id = x.Key.Id,
                 Address = x.Key.Address,
-                Images = x.Select(x => x.FileURL.ToString()).ToList(),
+                Images = x.Select(x => x.FileUri.ToString()).ToList(),
             });
         }
 
@@ -28,7 +28,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Mail
     public class MissionImagesTemplateMission
     {
         [JsonProperty("id")]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [JsonProperty("address")]
         public string Address { get; set; }

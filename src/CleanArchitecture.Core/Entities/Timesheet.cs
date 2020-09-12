@@ -6,7 +6,7 @@ namespace CleanArchitecture.Core.Entities
 {
     public class Timesheet : UserEntity
     {
-        public int MissionId { get; set; }
+        public string MissionId { get; set; }
 
         public Mission Mission { get; set; }
 

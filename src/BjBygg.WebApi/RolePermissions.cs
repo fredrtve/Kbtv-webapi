@@ -50,6 +50,7 @@ namespace BjBygg.WebApi
             public const string CreateFromPdf = Roles.Leader;
             public const string Delete = Roles.Leader;
             public const string Update = Roles.Leader;
+            public const string UpdateHeaderImage = Roles.Leader;
         }
         public static class MissionTypeActions
         {

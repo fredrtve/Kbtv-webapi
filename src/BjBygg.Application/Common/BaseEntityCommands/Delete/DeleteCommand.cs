@@ -4,6 +4,6 @@ namespace BjBygg.Application.Common.BaseEntityCommands.Delete
 {
     public abstract class DeleteCommand : IRequest
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
     }
 }

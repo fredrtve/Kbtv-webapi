@@ -25,7 +25,7 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
         {
             var command = new MailMissionDocumentsCommand() { 
                 ToEmail = "test@gmail.com", 
-                Ids = new int[] { 1, 2, 3 } 
+                Ids = new string[] { "test", "test2" } 
             };
 
             FluentActions.Invoking(() =>

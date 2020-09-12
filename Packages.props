@@ -28,6 +28,7 @@
     <PackageReference Update="FluentAssertions" Version="5.10.3" />
     <PackageReference Update="System.Text.Json" Version="4.7.2" />
     <PackageReference Update="TimeZoneConverter" Version="3.2.0" />
+    <PackageReference Update="SixLabors.ImageSharp" Version="1.0.0-beta0007" />
   </ItemGroup>
   
   <ItemGroup Condition="'$(TestProjectMode)' == 'true'">
@@ -51,5 +52,6 @@
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
     <PackageReference Include="System.Text.Json" Version="4.7.2" />
     <PackageReference Include="TimeZoneConverter" Version="3.2.0" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0007" />
   </ItemGroup>
 </Project>

@@ -26,17 +26,19 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = RolePermissions.TimesheetActions.Update)]
         [HttpPut]
         [Route("api/[controller]/{Id}/Status")]
-        public async Task<ActionResult<TimesheetDto>> UpdateStatus([FromBody] UpdateTimesheetStatusCommand request)
+        public async Task<ActionResult> UpdateStatus([FromBody] UpdateTimesheetStatusCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
 
         [Authorize(Roles = RolePermissions.TimesheetActions.Update)]
         [HttpPut]
         [Route("api/[controller]/Status")]
-        public async Task<ActionResult<IEnumerable<TimesheetDto>>> UpdateStatuses([FromBody] UpdateTimesheetStatusRangeCommand request)
+        public async Task<ActionResult> UpdateStatuses([FromBody] UpdateTimesheetStatusRangeCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
     }
 }

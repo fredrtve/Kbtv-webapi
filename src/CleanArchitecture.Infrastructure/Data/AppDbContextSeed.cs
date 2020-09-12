@@ -1,4 +1,6 @@
 using BjBygg.Application.Application.Common.Interfaces;
+using BjBygg.Application.Common;
+using BjBygg.Application.Common.Interfaces;
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Enums;
@@ -6,287 +8,193 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CleanArchitecture.Infrastructure.Data
 {
     public class AppDbContextSeed
     {
-        readonly static Random random = new Random();
-        private static int _numberOfMissions;
-        public static void Seed(IAppDbContext context, int numberOfMissions)
+        private static Dictionary<Type, List<string>> _generatedIds = new Dictionary<Type, List<string>>();
+        private static Random rnd = new Random();
+
+        public static async Task SeedAllAsync(IAppDbContext context, IIdGenerator idGenerator)
         {
-            _numberOfMissions = numberOfMissions;
-            try
-            {
-                if (!context.Employers.Any())
-                {
-                    context.Database.OpenConnection();
-                    context.Employers.AddRange(
-                        GetPreconfiguredEmployers());
-
-                    context.SaveChanges();
-                    context.Database.CloseConnection();
-                }
-
-                if (!context.MissionTypes.Any())
-                {
-                    context.Database.OpenConnection();
-                    context.MissionTypes.AddRange(
-                        GetPreconfiguredMissionTypes());
-
-                    context.SaveChanges();
-                    context.Database.CloseConnection();
-                }
-                if (!context.DocumentTypes.Any())
-                {
-                    context.Database.OpenConnection();
-                    context.DocumentTypes.AddRange(
-                        GetPreconfiguredDocumentTypes());
-
-                    context.SaveChanges();
-                    context.Database.CloseConnection();
-                }
-                if (!context.Missions.Any())
-                {
-                    context.Database.OpenConnection();
-                    context.Missions.AddRange(
-                        GetPreconfiguredMissions());
-
-                    context.SaveChanges();
-                    context.Database.CloseConnection();
-                }
-                if (!context.MissionDocuments.Any())
-                {
-                    context.Database.OpenConnection();
-                    context.MissionDocuments.AddRange(
-                        GetPreconfiguredMissionDocuments());
-
-                    context.SaveChanges();
-                    context.Database.CloseConnection();
-                }
-                if (!context.MissionImages.Any())
-                {
-                    context.Database.OpenConnection();
-                    context.MissionImages.AddRange(
-                        GetPreconfiguredMissionImages());
-
-                    context.SaveChanges();
-                    context.Database.CloseConnection();
-                }
-                if (!context.MissionNotes.Any())
-                {
-                    context.Database.OpenConnection();
-                    context.MissionNotes.AddRange(
-                        GetPreconfiguredMissionNotes());
-
-                    context.SaveChanges();
-                    context.Database.CloseConnection();
-                }
-                if (!context.Timesheets.Any())
-                {
-                    context.Database.OpenConnection();
-                    context.Timesheets.AddRange(
-                        GetPreconfiguredTimesheets());
-
-                    context.SaveChanges();
-                    context.Database.CloseConnection();
-                }
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            using var ctx = context;
+            var seederCount = new SeederCount();
+            await SetEmployersAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(Employer)]);
+            await SetMissionTypesAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(MissionType)]);
+            await SetDocumentTypesAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(DocumentType)]);
+            await SetMissionsAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(Mission)]);
+            await SetMissionDocumentsAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(MissionDocument)]);
+            await SetMissionImagesAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(MissionImage)]);
+            await SetMissionNotesAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(MissionNote)]);
+            await SetTimesheetsAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(Timesheet)]);
         }
-        static IEnumerable<Employer> GetPreconfiguredEmployers()
+
+        static void AddGeneratedId(string id, Type type)
         {
-            return new List<Employer>()
+            if (!_generatedIds.ContainsKey(type)) _generatedIds.Add(type, new List<string> { id });
+            else _generatedIds[type].Add(id);       
+        }
+
+        static string GetGeneratedId(Type type)
+        {
+            var ids = _generatedIds[type];
+            if (ids == null || ids.Count == 0) throw new Exception($"No ids for type {type} when seeding. Check seeding order.");
+            return ids[rnd.Next(ids.Count)];
+        }
+
+        static async Task SetEmployersAsync(IAppDbContext context, IIdGenerator idGenerator, int amount)
+        {
+            var command = "INSERT INTO Employers (Id, Name, Deleted, CreatedAt, UpdatedAt) VALUES ";
+            for (int i = 0; i < amount; i++)
             {
-                new Employer() { Id = 1, Name = "NSU", Email = "NSU@test.no" },
-                new Employer() { Id = 2, Name = "BSU", Email = "BSU@test.no" },
-                new Employer() { Id = 3, Name = "RSU", Email = "RSU@test.no" },
-                new Employer() { Id = 4, Name = "TSU", Email = "TSU@test.no" },
-                new Employer() { Id = 5, Name = "Privat", Email = "Privat@test.no" },
-                new Employer() { Id = 6, Name = "Jens Bjarne AS", Email = "jens@test.no" },
-                new Employer() { Id = 7, Name = "NSU2", Email = "NSU2@test.no" },
-                new Employer() { Id = 8, Name = "BSU2", Email = "BSU2@test.no" },
-                new Employer() { Id = 9, Name = "RSU2", Email = "RSU2@test.no" },
-                new Employer() { Id = 10, Name = "TSU2", Email = "TSU2@test.no" },
-                new Employer() { Id = 11, Name = "Privat2", Email = "Privat2@test.no" },
+                var id = idGenerator.Generate();
+                AddGeneratedId(id, typeof(Employer));
+                var date = DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
+                command = String.Concat(command, $"('{id}', 'NSU{i}', 0, '{date}', '{date}')");
+                if (i < (amount - 1)) command = String.Concat(command, ",");
+            }
+            await context.Database.ExecuteSqlRawAsync(command);
+        }
+        static async Task SetMissionTypesAsync(IAppDbContext context, IIdGenerator idGenerator, int amount)
+        {
+            var command = "INSERT INTO MissionTypes (Id, Name, Deleted, CreatedAt, UpdatedAt) VALUES ";
+            for (int i = 0; i < amount; i++)
+            {
+                var id = idGenerator.Generate();
+                AddGeneratedId(id, typeof(MissionType));
+                var date = DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
+                command = String.Concat(command, $"('{id}', 'Riving{i}', 0, '{date}', '{date}')");
+                if (i < (amount - 1)) command = String.Concat(command, ",");
+            }
+            await context.Database.ExecuteSqlRawAsync(command);
+        }
+        static async Task SetDocumentTypesAsync(IAppDbContext context, IIdGenerator idGenerator, int amount)
+        {
+            var command = "INSERT INTO DocumentTypes (Id, Name, Deleted, CreatedAt, UpdatedAt) VALUES ";
+            for (int i = 0; i < amount; i++)
+            {
+                var id = idGenerator.Generate();
+                AddGeneratedId(id, typeof(DocumentType));
+                var date = DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
+                command = String.Concat(command, $"('{id}', 'Skaderapport{i}', 0, '{date}', '{date}')");
+                if (i < (amount - 1)) command = String.Concat(command, ",");
+            }
+            await context.Database.ExecuteSqlRawAsync(command);
+        }
+        static async Task SetMissionsAsync(IAppDbContext context, IIdGenerator idGenerator, int amount)
+        {
+            var command = "INSERT INTO Missions (Id, Address, EmployerId, MissionTypeId, Deleted, CreatedAt, UpdatedAt) VALUES ";
+
+            for (var i = 0; i < amount; i++)
+            {
+                var id = idGenerator.Generate();
+                AddGeneratedId(id, typeof(Mission));
+                var employerId = GetGeneratedId(typeof(Employer));
+                var typeId = GetGeneratedId(typeof(MissionType));
+                var date = DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
+                command = String.Concat(command, $"('{id}', 'Furuberget {i}, 1940 Bjørkelangen', '{employerId}', '{typeId}', 0, '{date}', '{date}')");
+                if (i < (amount - 1)) command = String.Concat(command, ",");
+            }
+            await context.Database.ExecuteSqlRawAsync(command);
+        }
+        static async Task SetMissionDocumentsAsync(IAppDbContext context, IIdGenerator idGenerator, int amount)
+        {
+            var command = "INSERT INTO MissionDocuments (Id, FileUri, MissionId, DocumentTypeId, Deleted, CreatedAt, UpdatedAt) VALUES ";
+            string[] documents = { 
+                "https://kbtv.blob.core.windows.net/images/1637271568378142015_fef915f9-5f35-45ea-96ae-898f33d79df2.jpg",
+                "https://kbtv.blob.core.windows.net/images/1637125277915871387_33a58ce3-9b65-42c1-99aa-35bbbf200e82.jpg",
+                "https://kbtv.blob.core.windows.net/images/1637271568376872507_90030357-a167-426d-8ca2-fd669e17888b.jpg",
             };
-        }
-        static IEnumerable<MissionType> GetPreconfiguredMissionTypes()
-        {
-            return new List<MissionType>()
+            for (var i = 0; i < amount; i++)
             {
-                new MissionType() { Id = 1, Name = "Riving" },
-                new MissionType() { Id = 2, Name = "Oppbygging" },
-                new MissionType() { Id = 3, Name = "Riving2" },
-                new MissionType() { Id = 4, Name = "Oppbygging2" },
-                new MissionType() { Id = 5, Name = "Riving3" },
-                new MissionType() { Id = 6, Name = "Oppbygging3" },
-                new MissionType() { Id = 7, Name = "Oppbygging4" },
-                new MissionType() { Id = 8, Name = "Riving4" },
-                new MissionType() { Id = 9, Name = "Oppbygging5" },
-                new MissionType() { Id = 10, Name = "Riving5" },
+                var id = idGenerator.Generate();
+                AddGeneratedId(id, typeof(MissionDocument));
+                var date = DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
+                var document = documents[rnd.Next(0, documents.Length)];
+                var typeId = GetGeneratedId(typeof(DocumentType));
+                var missionId = GetGeneratedId(typeof(Mission));
+                command = String.Concat(command, 
+                    $"('{id}', '{document}', '{missionId}', '{typeId}', 0, '{date}', '{date}')");
+
+                if (i < (amount - 1)) command = String.Concat(command, ",");
+            }
+
+            await context.Database.ExecuteSqlRawAsync(command);
+        }
+        static async Task SetMissionImagesAsync(IAppDbContext context, IIdGenerator idGenerator, int amount)
+        {
+            var command = "INSERT INTO MissionImages (Id, FileUri, MissionId, Deleted, CreatedAt, UpdatedAt) VALUES ";
+            string[] images = {
+                "https://kbtv.blob.core.windows.net/images/1637271568378142015_fef915f9-5f35-45ea-96ae-898f33d79df2.jpg",
+                "https://kbtv.blob.core.windows.net/images/1637125277915871387_33a58ce3-9b65-42c1-99aa-35bbbf200e82.jpg",
+                "https://kbtv.blob.core.windows.net/images/1637271568376872507_90030357-a167-426d-8ca2-fd669e17888b.jpg",
             };
-        }
-
-        static IEnumerable<DocumentType> GetPreconfiguredDocumentTypes()
-        {
-            return new List<DocumentType>()
+            for (var i = 0; i < amount; i++)
             {
-                new DocumentType() { Id = 1, Name = "Skaderapport" },
-                new DocumentType() { Id = 2, Name = "Tørkerapport" },
-                new DocumentType() { Id = 3, Name = "Skaderapport1" },
-                new DocumentType() { Id = 4, Name = "Tørkerapport1" },
-                new DocumentType() { Id = 5, Name = "Skaderapport2" },
-                new DocumentType() { Id = 6, Name = "Tørkerapport2" },
-                new DocumentType() { Id = 7, Name = "Skaderapport3" },
-                new DocumentType() { Id = 8, Name = "Tørkerapport3" },
-            };
-        }
+                var id = idGenerator.Generate();
+                AddGeneratedId(id, typeof(MissionImage));
+                var date = DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
+                var image = images[rnd.Next(0, images.Length)];
+                var missionId = GetGeneratedId(typeof(Mission));
+                command = 
+                    String.Concat(command, $"('{id}', '{image}', '{missionId}', 0, '{date}', '{date}')");
 
-        static IEnumerable<Mission> GetPreconfiguredMissions()
-        {
-            var missions = new List<Mission>();
-            for (var i = 1; i <= _numberOfMissions; i++)
-            {
-                missions.Add(new Mission()
-                {
-                    Id = i,
-                    Name = $"Oppdrag {i}",
-                    PhoneNumber = "92278483",
-                    Description = "Dette er en beskrivelse",
-                    Address = $"Furuberget {i}, 1940 Bjørkelangen",
-                    EmployerId = random.Next(1, 6),
-                    MissionTypeId = i % 2 == 0 ? 1 : 2,
-                });
+                if (i < (amount - 1)) command = String.Concat(command, ",");
             }
 
-            return missions;
+            await context.Database.ExecuteSqlRawAsync(command);
         }
-        static IEnumerable<MissionDocument> GetPreconfiguredMissionDocuments()
+        static async Task SetMissionNotesAsync(IAppDbContext context, IIdGenerator idGenerator, int amount)
         {
-            var missionDocuments = new List<MissionDocument>();
+            var command = "INSERT INTO MissionNotes (Id, Content, MissionId, Pinned, Deleted, CreatedAt, UpdatedAt) VALUES ";
 
-            for (var i = 1; i <= _numberOfMissions * 2; i++)
+            for (var i = 0; i < amount; i++)
             {
-                missionDocuments.Add(new MissionDocument()
-                {
-                    Id = i,
-                    FileURL = new Uri("https://kbtv.blob.core.windows.net/images/28e89dfa-8d9b-422f-81fd-ee1f7aafbbe7.jpg"),
-                    MissionId = random.Next(1, _numberOfMissions),
-                    DocumentTypeId = i % 2 == 0 ? 1 : 2
-                });
+                var id = idGenerator.Generate();
+                AddGeneratedId(id, typeof(MissionNote));
+                var date = DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
+                var pinned = i % 2 == 0 ? 0 : 1;
+                var missionId = GetGeneratedId(typeof(Mission));
+                command = 
+                    String.Concat(command, $"('{id}', 'testnotat', '{missionId}', {pinned}, 0, '{date}', '{date}')");
+
+                if (i < (amount - 1)) command = String.Concat(command, ",");
             }
 
-            return missionDocuments;
+            await context.Database.ExecuteSqlRawAsync(command);
         }
-        static IEnumerable<MissionImage> GetPreconfiguredMissionImages()
+        static async Task SetTimesheetsAsync(IAppDbContext context, IIdGenerator idGenerator, int amount)
         {
-            var missionImages = new List<MissionImage>();
-            var imageUrls = new List<Uri>
+            var command = "INSERT INTO Timesheets " +
+                "(Id, MissionId, StartTime, EndTime, TotalHours, Comment, UserName, Status, Deleted, CreatedAt, UpdatedAt) " +
+                "VALUES ";
+
+            var today = DateTimeHelper.Now();
+
+            string[] users = {Roles.Leader, Roles.Employee, Roles.Management};
+
+            for (var i = 0; i < amount; i++)
             {
-                new Uri("https://kbtv.blob.core.windows.net/images/1637271568376872507_90030357-a167-426d-8ca2-fd669e17888b.jpg"),
-                new Uri("https://kbtv.blob.core.windows.net/images/1637271568378142015_fef915f9-5f35-45ea-96ae-898f33d79df2.jpg"),
-                new Uri("https://kbtv.blob.core.windows.net/images/1637125277915871387_33a58ce3-9b65-42c1-99aa-35bbbf200e82.jpg")
-            };
-            for (var i = 1; i <= _numberOfMissions * 4; i++)
-            {
-                missionImages.Add(new MissionImage()
-                {
-                    Id = i,
-                    MissionId = random.Next(1, _numberOfMissions),
-                    FileURL = imageUrls[random.Next(imageUrls.Count)]
-                });
+                var id = idGenerator.Generate();
+                AddGeneratedId(id, typeof(Timesheet));
+                var startDate = today.AddDays(-i);
+                var endDate = startDate.AddHours(rnd.Next(4, 10));
+                var totalHours = (endDate - startDate).TotalHours;
+                var startDateString = startDate.ToString("yyyy-MM-dd HH:mm:ss");
+                var endDateString = endDate.ToString("yyyy-MM-dd HH:mm:ss");
+                var status = i % 2 == 0 ? 0 : 2;
+                var missionId = GetGeneratedId(typeof(Mission));
+                var userName = users[rnd.Next(0, users.Length)];
+                command = String.Concat(command,
+                $"('{id}', '{missionId}', '{startDateString}','{endDateString}',{totalHours}, 'test', '{userName}', {status}, 0, '{startDateString}', '{startDateString}')");
+                if (i < (amount - 1)) command = String.Concat(command, ",");
             }
 
-            return missionImages;
+            await context.Database.ExecuteSqlRawAsync(command);
         }
 
-
-        static IEnumerable<MissionNote> GetPreconfiguredMissionNotes()
-        {
-            var missionNotes = new List<MissionNote>();
-
-            for (var i = 1; i <= _numberOfMissions; i++)
-            {
-                missionNotes.Add(new MissionNote()
-                {
-                    Id = i,
-                    MissionId = random.Next(1, _numberOfMissions),
-                    Content = "Dette er ett veldig interessant notat. Veldig interessant. Det er også veldig viktig.",
-                    Title = "Dette er ett notat",
-                    Pinned = i % 2 == 0 ? false : true
-                });
-            }
-
-            return missionNotes;
-        }
-
-        static IEnumerable<Timesheet> GetPreconfiguredTimesheets()
-        {
-            var timesheets = new List<Timesheet>();
-            var idCounter = 1;
-            var dayCounter = 0;
-            var today = DateTimeHelper.Now().Date.AddHours(6);
-
-            for (var n = 1; n <= _numberOfMissions * 6; n++)
-            {
-                var startDate = today.AddDays(-dayCounter);
-                var endDate = startDate.AddHours(random.Next(4, 10));
-                timesheets.Add(new Timesheet()
-                {
-                    Id = idCounter,
-                    MissionId = random.Next(1, _numberOfMissions),
-                    StartTime = startDate,
-                    EndTime = endDate,
-                    TotalHours = (endDate - startDate).TotalHours,
-                    Comment = "Dette er en kommentar til en time for leder for ett kult oppdrag",
-                    UserName = "leder",
-                    Status = n % 2 == 0 ? TimesheetStatus.Open : TimesheetStatus.Confirmed
-                });
-                idCounter++;
-
-                for (var user = 0; user <= 3; user++)
-                {
-                    timesheets.Add(new Timesheet()
-                    {
-                        Id = idCounter,
-                        MissionId = random.Next(1, _numberOfMissions),
-                        StartTime = startDate,
-                        EndTime = endDate,
-                        TotalHours = (endDate - startDate).TotalHours,
-                        Comment = "Dette er en kommentar til en time for ansatt",
-                        UserName = "ansatt" + user,
-                        Status = n % 2 == 0 ? TimesheetStatus.Open : TimesheetStatus.Confirmed
-                    });
-                    idCounter++;
-                }
-
-
-                timesheets.Add(new Timesheet()
-                {
-                    Id = idCounter,
-                    MissionId = random.Next(1, _numberOfMissions),
-                    StartTime = startDate,
-                    EndTime = endDate,
-                    TotalHours = (endDate - startDate).TotalHours,
-                    Comment = "Dette er en kommentar til en time for mellomleder for ett alle tiders oppdrag",
-                    UserName = "mellomleder",
-                    Status = n % 2 == 0 ? TimesheetStatus.Open : TimesheetStatus.Confirmed
-                });
-                idCounter++;
-
-                dayCounter++;
-
-            }
-
-
-
-            return timesheets;
-        }
     }
 
 }

@@ -6,6 +6,9 @@ namespace BjBygg.Application.Application.Commands.EmployerCommands.Create
     {
         public CreateEmployerCommandValidator()
         {
+            RuleFor(v => v.Id)
+                .NotEmpty();
+
             RuleFor(v => v.Name)
                 .NotEmpty()
                 .MaximumLength(45);

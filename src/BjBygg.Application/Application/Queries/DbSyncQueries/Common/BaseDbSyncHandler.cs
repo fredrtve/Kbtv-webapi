@@ -56,7 +56,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.Common
 
         private DbSyncResponse<TDto> CreateSyncResponse(IEnumerable<TEntity> entities, bool isInitial)
         {
-            List<int> deletedEntities = new List<int>();
+            List<string> deletedEntities = new List<string>();
 
             if (!isInitial)
             {

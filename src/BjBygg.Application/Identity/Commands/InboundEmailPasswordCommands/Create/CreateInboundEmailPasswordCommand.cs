@@ -6,12 +6,12 @@ using BjBygg.Application.Identity.Common.Models;
 
 namespace BjBygg.Application.Identity.Commands.InboundEmailPasswordCommands.Create
 {
-    public class CreateInboundEmailPasswordCommand : CreateCommand<InboundEmailPasswordDto>
+    public class CreateInboundEmailPasswordCommand : CreateCommand
     {
         public string Password { get; set; }
     }
     public class CreateInboundEmailPasswordCommandHandler :
-        CreateCommandHandler<InboundEmailPassword, CreateInboundEmailPasswordCommand, InboundEmailPasswordDto>
+        CreateCommandHandler<InboundEmailPassword, CreateInboundEmailPasswordCommand>
     {
         public CreateInboundEmailPasswordCommandHandler(IAppIdentityDbContext dbContext, IMapper mapper) :
             base(dbContext, mapper)

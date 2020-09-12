@@ -24,9 +24,10 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = RolePermissions.InboundEmailPasswordActions.Create)]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<ActionResult<InboundEmailPasswordDto>> Create([FromBody] CreateInboundEmailPasswordCommand request)
+        public async Task<ActionResult> Create([FromBody] CreateInboundEmailPasswordCommand request)
         {
-            return await Mediator.Send(request);
+            await Mediator.Send(request);
+            return NoContent();
         }
 
         [Authorize(Roles = RolePermissions.InboundEmailPasswordActions.Delete)]

@@ -28,13 +28,14 @@ namespace Application.IntegrationTests.Application.CommandTests.DocumentTypeTest
         {
             var user = await RunAsDefaultUserAsync(Roles.Leader);
 
-            var command = new CreateDocumentTypeCommand() { Name = "Test" };
+            var command = new CreateDocumentTypeCommand() { Id = "dsadasd", Name = "Test" };
 
-            var entity = await SendAsync(command);
+            await SendAsync(command);
 
-            var dbEntity = await FindAsync<DocumentType>(entity.Id);
+            var dbEntity = await FindAsync<DocumentType>(command.Id);
 
             dbEntity.Should().NotBeNull();
+            dbEntity.Id.Should().Be(command.Id);
             dbEntity.Name.Should().Be(command.Name);
             dbEntity.CreatedBy.Should().Be(user.UserName);
             dbEntity.UpdatedAt.Should().BeCloseTo(DateTimeHelper.Now(), 10000);

@@ -34,28 +34,21 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
             var projectDir = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
  
             var bytes = await File.ReadAllBytesAsync(projectDir + "\\data\\files\\pdf_report_test.pdf");
-
+            var preCreationMissions = await GetAllAsync<Mission>();
             var command = new CreateMissionWithPdfCommand()
             {
                 Files = new DisposableList<BasicFileStream>{ 
-                    { new BasicFileStream(new MemoryStream(bytes), ".pdf") } 
+                    { new BasicFileStream(new MemoryStream(bytes), "test.pdf") } 
                 }
             };
 
-            var entity = await SendAsync(command);
+            await SendAsync(command);
 
-            var dbEntity = await FindAsync<Mission>(entity.Id);
+            var pastCreationMissions = await GetAllAsync<Mission>();
+            var newMissionsCount = pastCreationMissions.Count - preCreationMissions.Count;
+            //(await GetAllAsync<MissionDocument>()).Find(x => x.MissionId == response.Mission.Id);
 
-            var missionDocument = 
-                (await GetAllAsync<MissionDocument>()).Find(x => x.MissionId == entity.Id);
-
-            dbEntity.Should().NotBeNull();
-            dbEntity.ImageURL.Should().BeOfType<Uri>();
-            dbEntity.CreatedBy.Should().Be(user.UserName);
-            dbEntity.UpdatedAt.Should().BeCloseTo(DateTimeHelper.Now(), 10000);
-
-            missionDocument.Should().NotBeNull();
-            missionDocument.FileURL.Should().BeOfType<Uri>();
+            newMissionsCount.Should().Be(1);
         }
 
         [Test]

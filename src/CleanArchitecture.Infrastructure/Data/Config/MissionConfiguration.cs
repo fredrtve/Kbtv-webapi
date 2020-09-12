@@ -11,7 +11,7 @@ namespace CleanArchitecture.Infrastructure.Data.Config
             base.Configure(builder);
             builder.Property(e => e.Address).IsRequired().HasMaxLength(100);
             builder.Property(e => e.Name).HasMaxLength(50);
-            builder.Property(mi => mi.ImageURL).HasMaxLength(400);
+            builder.Property(mi => mi.FileUri).HasMaxLength(400);
             builder.Property(e => e.PhoneNumber).HasMaxLength(12);
             builder.Property(e => e.Description).HasMaxLength(400);
             builder.Property(e => e.Finished).HasDefaultValue(false);

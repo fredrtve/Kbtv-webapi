@@ -6,15 +6,15 @@ using CleanArchitecture.Core.Entities;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.Notes.Create
 {
-    public class CreateMissionNoteCommand : CreateCommand<MissionNoteDto>
+    public class CreateMissionNoteCommand : CreateCommand
     {
-        public int MissionId { get; set; }
+        public string MissionId { get; set; }
         public string? Title { get; set; }
         public string Content { get; set; }
         public bool? Pinned { get; set; }
     }
 
-    public class CreateMissionNoteHandler : CreateCommandHandler<MissionNote, CreateMissionNoteCommand, MissionNoteDto>
+    public class CreateMissionNoteHandler : CreateCommandHandler<MissionNote, CreateMissionNoteCommand>
     {
         public CreateMissionNoteHandler(IAppDbContext dbContext, IMapper mapper) :
             base(dbContext, mapper)

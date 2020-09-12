@@ -17,12 +17,12 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
     public class DeleteTimesheetTests : AppTestBase
     {
         [Test]
-        public void ShouldRequireValidTimesheetId()
+        public void ShouldNotRequireValidTimesheetId()
         {
-            var command = new DeleteTimesheetCommand { Id = 77 };
+            var command = new DeleteTimesheetCommand { Id = "notvalid" };
 
             FluentActions.Invoking(() =>
-                SendAsync(command)).Should().Throw<EntityNotFoundException>();
+                SendAsync(command)).Should().NotThrow();
         }
 
         [Test]
@@ -30,19 +30,22 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
         {
             await RunAsDefaultUserAsync(Roles.Leader);
 
-            var newTimesheet = await SendAsync(new CreateTimesheetCommand()
+            var command = new CreateTimesheetCommand()
             {
-                MissionId = 1,
+                Id = "test",
+                MissionId = "test",
                 Comment = "test",
                 StartTime = 111,
                 EndTime = 112
-            });
+            };
 
-            await SendAsync(new UpdateTimesheetStatusCommand() { Id = newTimesheet.Id, Status = TimesheetStatus.Confirmed });
+            await SendAsync(command);
 
-            await SendAsync(new DeleteTimesheetCommand { Id = newTimesheet.Id });
+            await SendAsync(new UpdateTimesheetStatusCommand() { Id = command.Id, Status = TimesheetStatus.Confirmed });
 
-            var dbTimesheet = await FindAsync<Timesheet>(newTimesheet.Id);
+            await SendAsync(new DeleteTimesheetCommand { Id = command.Id });
+
+            var dbTimesheet = await FindAsync<Timesheet>(command.Id);
 
             dbTimesheet.Should().BeNull();
         }
@@ -52,44 +55,49 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
         {
             await RunAsDefaultUserAsync(Roles.Employee);
 
-            var newTimesheet = await SendAsync(new CreateTimesheetCommand()
+            var command = new CreateTimesheetCommand()
             {
-                MissionId = 1,
+                Id = "test",
+                MissionId = "test",
                 Comment = "test",
                 StartTime = 111,
                 EndTime = 112
-            });
+            };
+
+            await SendAsync(command);
 
             await RunAsDefaultUserAsync(Roles.Leader);
 
-            await SendAsync(new UpdateTimesheetStatusCommand() { Id = newTimesheet.Id, Status = TimesheetStatus.Confirmed });
+            await SendAsync(new UpdateTimesheetStatusCommand() { Id = command.Id, Status = TimesheetStatus.Confirmed });
 
             await RunAsDefaultUserAsync(Roles.Employee);
 
-            var command = new DeleteTimesheetCommand { Id = newTimesheet.Id };
+            var deleteCommand = new DeleteTimesheetCommand { Id = command.Id };
 
             FluentActions.Invoking(() =>
-              SendAsync(command)).Should().Throw<BadRequestException>();
+              SendAsync(deleteCommand)).Should().Throw<BadRequestException>();
         }
 
         [Test]
         public async Task ShouldDeleteTimesheetNotBelongingToUserIfUserIsLeader()
         {
             await RunAsDefaultUserAsync(Roles.Management);
-
-            var newTimesheet = await SendAsync(new CreateTimesheetCommand()
+            var command = new CreateTimesheetCommand()
             {
-                MissionId = 1,
+                Id = "test",
+                MissionId = "test",
                 Comment = "test",
                 StartTime = 111,
                 EndTime = 112
-            });
+            };
+
+            await SendAsync(command);
 
             await RunAsDefaultUserAsync(Roles.Leader);
 
-            await SendAsync(new DeleteTimesheetCommand { Id = newTimesheet.Id });
+            await SendAsync(new DeleteTimesheetCommand { Id = command.Id });
 
-            var dbTimesheet = await FindAsync<Timesheet>(newTimesheet.Id);
+            var dbTimesheet = await FindAsync<Timesheet>(command.Id);
 
             dbTimesheet.Should().BeNull();
         }
@@ -98,39 +106,42 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
         public async Task ShouldThrowForbiddenExceptionIfTimesheetNotBelongingToUser()
         {
             await RunAsDefaultUserAsync(Roles.Management);
-
-            var newTimesheet = await SendAsync(new CreateTimesheetCommand()
+            var command = new CreateTimesheetCommand()
             {
-                MissionId = 1,
+                Id = "test",
+                MissionId = "test",
                 Comment = "test",
                 StartTime = 111,
                 EndTime = 112
-            }); 
+            };
+            await SendAsync(command); 
 
             await RunAsDefaultUserAsync(Roles.Employee);
 
-            var command = new DeleteTimesheetCommand { Id = newTimesheet.Id };
+            var deleteCommand = new DeleteTimesheetCommand { Id = command.Id };
 
             FluentActions.Invoking(() =>
-              SendAsync(command)).Should().Throw<ForbiddenException>();
+              SendAsync(deleteCommand)).Should().Throw<ForbiddenException>();
         }
 
         [Test]
         public async Task ShouldDeleteTimesheet()
         {
             await RunAsDefaultUserAsync(Roles.Employee);
-
-            var newTimesheet = await SendAsync(new CreateTimesheetCommand()
+            var command = new CreateTimesheetCommand()
             {
-                MissionId = 1,
+                Id = "test",
+                MissionId = "test",
                 Comment = "test",
                 StartTime = 111,
                 EndTime = 112
-            });
+            };
 
-            await SendAsync(new DeleteTimesheetCommand { Id = newTimesheet.Id });
+            await SendAsync(command);
 
-            var dbTimesheet = await FindAsync<Timesheet>(newTimesheet.Id);
+            await SendAsync(new DeleteTimesheetCommand { Id = command.Id });
+
+            var dbTimesheet = await FindAsync<Timesheet>(command.Id);
 
             dbTimesheet.Should().BeNull();
         }

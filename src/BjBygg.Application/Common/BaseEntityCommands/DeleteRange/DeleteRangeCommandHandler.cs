@@ -22,10 +22,6 @@ namespace BjBygg.Application.Common.BaseEntityCommands.DeleteRange
         public async Task<Unit> Handle(TCommand request, CancellationToken cancellationToken)
         {
             var entities = _dbContext.Set<TEntity>().Where(x => request.Ids.Contains(x.Id)).ToList();
-
-            if (entities.Count() == 0)
-                throw new EntityNotFoundException(nameof(TEntity), String.Join(", ", request.Ids.ToArray()));
-
             _dbContext.Set<TEntity>().RemoveRange(entities);
             await _dbContext.SaveChangesAsync();
             return Unit.Value;

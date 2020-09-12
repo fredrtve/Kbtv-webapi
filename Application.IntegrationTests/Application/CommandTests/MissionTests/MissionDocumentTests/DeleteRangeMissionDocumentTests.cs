@@ -13,18 +13,18 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
     public class DeleteRangeMissionDocumentTests : AppTestBase
     {
         [Test]
-        public void ShouldRequireAtleastOneValidMissionDocumentId()
+        public void ShouldNotRequireValidMissionDocumentId()
         {
-            var command = new DeleteRangeMissionDocumentCommand { Ids = new int[] { 45, 46 } };
+            var command = new DeleteRangeMissionDocumentCommand { Ids = new string[] { "notvalid", "notvalid" } };
 
             FluentActions.Invoking(() =>
-                SendAsync(command)).Should().Throw<EntityNotFoundException>();
+                SendAsync(command)).Should().NotThrow();
         }
 
         [Test]
         public async Task ShouldDeleteMissionDocuments()
         {
-            var ids = new int[] { 1, 2 };
+            var ids = new string[] { "test", "test2" };
 
             await SendAsync(new DeleteRangeMissionDocumentCommand { Ids = ids });
 

@@ -12,19 +12,20 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
     public class DeleteMissionImageTests : AppTestBase
     {
         [Test]
-        public void ShouldRequireValidEmployerId()
+        public void ShouldNotRequireValidEmployerId()
         {
-            var command = new DeleteEmployerCommand { Id = 77 };
+            var command = new DeleteEmployerCommand { Id = "notvalid" };
 
             FluentActions.Invoking(() =>
-                SendAsync(command)).Should().Throw<EntityNotFoundException>();
+                SendAsync(command)).Should().NotThrow();
         }
+
         [Test]
         public async Task ShouldDeleteEmployer()
         {
-            await SendAsync(new DeleteEmployerCommand { Id = 1 });
+            await SendAsync(new DeleteEmployerCommand { Id = "test" });
 
-            var entity = await FindAsync<Employer>(1);
+            var entity = await FindAsync<Employer>("test");
 
             entity.Should().BeNull();
         }

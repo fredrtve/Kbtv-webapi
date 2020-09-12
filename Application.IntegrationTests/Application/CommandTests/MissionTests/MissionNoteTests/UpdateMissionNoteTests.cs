@@ -20,7 +20,7 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
         {
             var command = new UpdateMissionNoteCommand
             {
-                Id = 99,
+                Id = "test",
                 Content = "New content"
             };
 
@@ -35,14 +35,14 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
 
             var command = new UpdateMissionNoteCommand
             {
-                Id = 1,
+                Id = "test",
                 Content = "New content",
                 Title =  "New title"
             };
 
             await SendAsync(command);
 
-            var entity = await FindAsync<MissionNote>(1);
+            var entity = await FindAsync<MissionNote>(command.Id);
 
             entity.Content.Should().Be(command.Content);
             entity.Title.Should().Be(command.Title);

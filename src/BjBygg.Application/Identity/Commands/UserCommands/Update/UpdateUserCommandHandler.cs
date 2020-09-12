@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Identity.Commands.UserCommands.Update
 {
-    public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserDto>
+    public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
@@ -23,7 +23,7 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Update
             _mapper = mapper;
         }
 
-        public async Task<UserDto> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
             if(!String.IsNullOrEmpty(request.Role))
             {
@@ -70,10 +70,8 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Update
                     await _userManager.AddToRoleAsync(user, request.Role);
                 }
             }
-  
-            var response = _mapper.Map<UserDto>(user);
-            response.Role = request.Role;
-            return response;
+
+            return Unit.Value;
         }
     }
 }

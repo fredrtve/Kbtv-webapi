@@ -32,25 +32,15 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
         public async Task ShouldUpdateTimesheetStatuses()
         {
             await RunAsDefaultUserAsync(Roles.Leader);
-            var command = new CreateTimesheetCommand()
-            {
-                MissionId = 1,
-                Comment = "test",
-                StartTime = 111,
-                EndTime = 112
-            };
-
-            var timesheet1 = await SendAsync(command);
-            var timesheet2 = await SendAsync(command);
 
             await SendAsync(new UpdateTimesheetStatusRangeCommand
             {
-                Ids = new int[] { timesheet1.Id, timesheet2.Id },
+                Ids = new string[] { "test", "test2" },
                 Status = TimesheetStatus.Confirmed
             });
 
-            var dbTimesheet1 = await FindAsync<Timesheet>(timesheet1.Id);
-            var dbTimesheet2 = await FindAsync<Timesheet>(timesheet2.Id);
+            var dbTimesheet1 = await FindAsync<Timesheet>("test");
+            var dbTimesheet2 = await FindAsync<Timesheet>("test2");
 
             dbTimesheet1.Should().NotBeNull();
             dbTimesheet1.Status.Should().Be(TimesheetStatus.Confirmed);

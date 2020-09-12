@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.ToggleMissionFinish
 {
-    public class ToggleMissionFinishHandler : IRequestHandler<ToggleMissionFinishCommand, bool>
+    public class ToggleMissionFinishHandler : IRequestHandler<ToggleMissionFinishCommand>
     {
         private readonly IAppDbContext _dbContext;
 
@@ -16,7 +16,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.ToggleMissionF
             _dbContext = dbContext;
         }
 
-        public async Task<bool> Handle(ToggleMissionFinishCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(ToggleMissionFinishCommand request, CancellationToken cancellationToken)
         {
             var dbMission = await _dbContext.Set<Mission>().FindAsync(request.Id);
 
@@ -26,7 +26,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.ToggleMissionF
 
             await _dbContext.SaveChangesAsync();
 
-            return dbMission.Finished;
+            return Unit.Value;
         }
     }
 }

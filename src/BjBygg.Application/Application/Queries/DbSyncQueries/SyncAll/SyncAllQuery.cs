@@ -22,5 +22,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
 
         public long? UserTimesheetTimestamp { get; set; }
 
+        public long? CurrentUserTimestamp { get; set; }
+
     }
 }

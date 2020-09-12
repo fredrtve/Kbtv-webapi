@@ -1,3 +1,4 @@
+using BjBygg.Application.Common.Interfaces;
 using BjBygg.Application.Identity.Common.Models;
 using CleanArchitecture.Infrastructure.Data;
 using CleanArchitecture.Infrastructure.Identity;
@@ -7,36 +8,39 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace BjBygg.WebApi
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var host = CreateWebHostBuilder(args).Build();
 
-            using (var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
+            //using (var scope = host.Services.CreateScope())
+            //{
+            //    var services = scope.ServiceProvider;
 
-                using (var context = services.GetService<AppDbContext>())
-                {
-                    context.Database.EnsureCreated();
-                    AppDbContextSeed.Seed(context, 1500);
-                }
+            //    using (var context = services.GetService<AppDbContext>())
+            //    {
+            //        context.Database.EnsureCreated();
+            //        var idGenerator = services.GetService<IIdGenerator>();
+            //        await AppDbContextSeed.SeedAllAsync(context, idGenerator);
+            //    }
 
-                using (var context = services.GetService<AppIdentityDbContext>())
-                {
+            //    using (var context = services.GetService<AppIdentityDbContext>())
+            //    {
 
-                    context.Database.EnsureCreated();
+            //        context.Database.EnsureCreated();
 
-                    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+            //        var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+            //        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+            //        var idGenerator = services.GetService<IIdGenerator>();
 
-                    AppIdentityDbContextSeed.SeedAsync(userManager, roleManager, context);
-                }
-            }
+            //        await AppIdentityDbContextSeed.SeedAsync(userManager, roleManager, context, idGenerator);
+            //    }
+            //}
 
             host.Run();
         }

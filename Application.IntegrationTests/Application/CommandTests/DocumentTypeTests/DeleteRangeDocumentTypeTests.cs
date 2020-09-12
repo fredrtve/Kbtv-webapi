@@ -13,9 +13,10 @@ namespace Application.IntegrationTests.Application.CommandTests.DocumentTypeTest
     public class DeleteRangeDocumentTypeTests : AppTestBase
     {
         [Test]
-        public void ShouldRequireAtleastOneValidDocumentTypeId()
+        public void ShouldNotRequireValidDocumentTypeId()
         {
-            var command = new DeleteRangeDocumentTypeCommand { Ids = new int[] { 45, 46 } };
+            var command = new DeleteRangeDocumentTypeCommand { Ids = new string[] { "notvalid", "notvalid1" } };
+        
 
             FluentActions.Invoking(() =>
                 SendAsync(command)).Should().Throw<EntityNotFoundException>();
@@ -23,8 +24,8 @@ namespace Application.IntegrationTests.Application.CommandTests.DocumentTypeTest
 
         [Test]
         public async Task ShouldDeleteDocumentTypes()
-        {       
-            var ids = new int[] { 1, 2 };
+        {
+            var ids = new string[] { "test", "test1" };
 
             await SendAsync(new DeleteRangeDocumentTypeCommand { Ids = ids });
 

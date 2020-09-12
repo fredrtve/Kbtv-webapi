@@ -6,14 +6,14 @@ using CleanArchitecture.Core.Entities;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.Notes.Update
 {
-    public class UpdateMissionNoteCommand : UpdateCommand<MissionNoteDto>
+    public class UpdateMissionNoteCommand : UpdateCommand
     {
         public string? Title { get; set; }
         public string Content { get; set; }
         public bool? Pinned { get; set; }
 
     }
-    public class UpdateMissionNoteCommandHandler : UpdateCommandHandler<MissionNote, UpdateMissionNoteCommand, MissionNoteDto>
+    public class UpdateMissionNoteCommandHandler : UpdateCommandHandler<MissionNote, UpdateMissionNoteCommand>
     {
         public UpdateMissionNoteCommandHandler(IAppDbContext dbContext, IMapper mapper) :
             base(dbContext, mapper)
