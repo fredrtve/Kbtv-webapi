@@ -54,10 +54,12 @@ namespace CleanArchitecture.Infrastructure.Api.FileStorage
             var blobs = new List<Uri>();
             for (int i = 0; i < streams.Count; i++)
             {
-                var blob = blobContainer.GetBlockBlobReference(GetRandomBlobName(streams[i].FileExtension));
+                var blob = blobContainer.GetBlockBlobReference(streams[i].FileName);
 
-                blob.Properties.ContentType = GetContentType(streams[i].FileExtension);
-
+                //Content disposition not working? Client needs file links to download
+                //blob.Properties.ContentType = GetContentType(streams[i].FileExtension);
+                //blob.Properties.ContentDisposition = "attachment";
+                
                 await blob.UploadFromStreamAsync(streams[i].Stream);
 
                 blobs.Add(blob.Uri);
@@ -69,7 +71,7 @@ namespace CleanArchitecture.Infrastructure.Api.FileStorage
         {
             var blobContainer = await _azureBlobConnectionFactory.GetBlobContainer(folder);
 
-            var blob = blobContainer.GetBlockBlobReference(GetRandomBlobName(stream.FileExtension));
+            var blob = blobContainer.GetBlockBlobReference(stream.FileName);
 
             blob.Properties.ContentType = GetContentType(stream.FileExtension);
 
