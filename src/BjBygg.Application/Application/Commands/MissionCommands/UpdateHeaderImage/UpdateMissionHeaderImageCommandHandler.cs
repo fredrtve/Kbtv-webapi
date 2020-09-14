@@ -17,12 +17,14 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.UpdateHeaderIm
         private readonly IAppDbContext _dbContext;
         private readonly IMapper _mapper;
         private readonly IBlobStorageService _storageService;
+        private readonly IImageResizer _imageResizer;
 
-        public UpdateMissionHeaderImageCommandHandler(IAppDbContext dbContext, IMapper mapper, IBlobStorageService storageService)
+        public UpdateMissionHeaderImageCommandHandler(IAppDbContext dbContext, IMapper mapper, IBlobStorageService storageService, IImageResizer imageResizer)
         {
             _dbContext = dbContext;
             _mapper = mapper;
             _storageService = storageService;
+            _imageResizer = imageResizer;
         }
 
         public async Task<Unit> Handle(UpdateMissionHeaderImageCommand request, CancellationToken cancellationToken)
@@ -32,13 +34,17 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.UpdateHeaderIm
             if (dbMission == null)
                 throw new EntityNotFoundException(nameof(Mission), request.Id);
 
-            dbMission.FileUri = await _storageService.UploadFileAsync(request.Image, ResourceFolderConstants.MissionHeader);
+            var resized = _imageResizer.ResizeImage(request.Image, 700);
+
+            await _storageService.UploadFileAsync(resized, ResourceFolderConstants.MissionHeader);
+
+            dbMission.FileName = resized.FileName;
             //if (request.Image != null)
             //{
             //    var resized = _imageResizer.ResizeImage(request.Image, 700);
             //    resized.FileName = $"{mission.Id}.{resized.FileExtension}";
             //    var res = await _storageService.UploadFileAsync(resized, ResourceFolderConstants.MissionHeader);
-            //    if (res != null) mission.FileUri = new Uri(resized.FileName);
+            //    if (res != null) mission.FileName = new Uri(resized.FileName);
             //}
             await _dbContext.SaveChangesAsync();
 

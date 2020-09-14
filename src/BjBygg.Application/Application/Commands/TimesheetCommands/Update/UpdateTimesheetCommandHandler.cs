@@ -41,14 +41,7 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Update
             if (dbTimesheet.Status != TimesheetStatus.Open)
                 throw new BadRequestException($"Timesheet is closed for manipulation.");
 
-            var ignoredProperties = new List<string>(){ "Id", "UserName", "StartTime", "EndTime", "MissionId" };
-
-            foreach (var property in request.GetType().GetProperties())
-            {
-                if (ignoredProperties.Contains(property.Name)) continue;
-                dbTimesheet.GetType().GetProperty(property.Name).SetValue(dbTimesheet, property.GetValue(request), null);       
-            }
-
+            dbTimesheet.Comment = request.Comment;
             dbTimesheet.MissionId = request.MissionId;
             dbTimesheet.StartTime = DateTimeHelper.ConvertEpochToDate(request.StartTime);
             dbTimesheet.EndTime = DateTimeHelper.ConvertEpochToDate(request.EndTime);

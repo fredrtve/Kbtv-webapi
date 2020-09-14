@@ -43,7 +43,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.CreateWithPdf
                 throw new BadRequestException("No file found.");
 
             MissionPdfDto missionPdfDto = null;
-            BasicFileStream extractedFile = null;
+            BasicFileStream extractedDocument = null;
 
             //Loop over files and break if one fits extraction scheme
             //Helps when email clients append additional files that get extracted instead.
@@ -52,7 +52,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.CreateWithPdf
                 missionPdfDto = _pdfReportMissionExtractor.TryExtract(file.Stream);
                 if (missionPdfDto != null)
                 {
-                    extractedFile = file; //Save extracted file to add to mission later
+                    extractedDocument = file; //Save extracted file to add to mission later
                     break;
                 };
             }
@@ -68,18 +68,25 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.CreateWithPdf
             };
 
             if (missionPdfDto.Image != null)
-                dbMission.FileUri = await _storageService.UploadFileAsync(
-                    new BasicFileStream(missionPdfDto.Image, $"{dbMission.Id}.jpg"),
-                    ResourceFolderConstants.Image);
+            {
+                var fileStream = new BasicFileStream(missionPdfDto.Image, $"{dbMission.Id}.jpg");
+                await _storageService.UploadFileAsync(fileStream, ResourceFolderConstants.MissionHeader);
+                dbMission.FileName = fileStream.FileName;
+            }
+       
 
             var documentType = await _dbContext.Set<DocumentType>().Where(x => x.Name == "Skaderapport").FirstOrDefaultAsync();
 
             var report = new MissionDocument
             {
-                FileUri = await _storageService.UploadFileAsync(extractedFile, ResourceFolderConstants.Document),
+                Id = _idGenerator.Generate(),
                 DocumentType = documentType
             };
+            report.FileName = $"{report.Id}.{extractedDocument.FileExtension}";
 
+            var modifiedFile = new BasicFileStream(extractedDocument.Stream, report.FileName);
+            await _storageService.UploadFileAsync(modifiedFile, ResourceFolderConstants.Document);
+            
             dbMission.MissionDocuments = new List<MissionDocument>();
             dbMission.MissionDocuments.Add(report); //Add input report as document in new mission
 

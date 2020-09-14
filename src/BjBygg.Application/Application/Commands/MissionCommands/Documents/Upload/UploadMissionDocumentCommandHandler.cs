@@ -28,19 +28,10 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Uplo
             var document = _mapper.Map<MissionDocument>(request);
 
             var fileURL = await _storageService.UploadFileAsync(request.File, ResourceFolderConstants.Document);
-            if (fileURL == null) throw Exception("Failed to upload file");
-            document.FileUri = new Uri(request.File.FileName);
 
-            //if (type != null && !String.IsNullOrEmpty(type.Id))
-            //{
-            //    var dbMissionType = await _dbContext.DocumentTypes.FindAsync(type.Id);
-            //    if (dbMissionType != null)
-            //    {
-            //        document.DocumentTypeId = type.Id;
-            //        document.DocumentType = null;
-            //    }
-            //    else if (String.IsNullOrEmpty(type.Name)) document.DocumentType = null;
-            //}
+            if (fileURL == null) throw Exception("Failed to upload file");
+
+            document.FileName = request.File.FileName;
 
             await _dbContext.Set<MissionDocument>().AddAsync(document);
 

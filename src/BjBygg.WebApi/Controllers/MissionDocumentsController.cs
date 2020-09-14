@@ -30,7 +30,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = RolePermissions.MissionDocumentActions.Create)]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<ActionResult> Upload(string missionId)
+        public async Task<ActionResult> Upload()
         {
             if (Request.Form.Files.Count() == 0)
                 throw new BadRequestException("No files received");
@@ -43,15 +43,11 @@ namespace BjBygg.WebApi.Controllers
 
             var file = Request.Form.Files[0];
 
+            var request = JsonConvert.DeserializeObject<UploadMissionDocumentCommand>(Request.Form["Command"], settings);
+
             using (var stream = file.OpenReadStream())
             {
-                var request = new UploadMissionDocumentCommand()
-                {
-                    File = new BasicFileStream(stream, file.FileName),
-                    DocumentType = JsonConvert.DeserializeObject<DocumentTypeDto>(Request.Form["DocumentType"], settings),
-                    MissionId = missionId
-                };
-
+                request.File = new BasicFileStream(stream, file.FileName);
                 await Mediator.Send(request);
                 return NoContent();
             }

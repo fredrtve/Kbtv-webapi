@@ -6,9 +6,6 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Upload
     {
         public UploadMissionImageCommandValidator()
         {
-            RuleFor(v => v.Id)
-                .NotEmpty();
-
             RuleFor(v => v.Files)
                .NotEmpty();
 

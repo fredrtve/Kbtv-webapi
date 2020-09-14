@@ -14,7 +14,9 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Update
         public string? Description { get; set; }
         public bool? Finished { get; set; }
         public MissionTypeDto MissionType { get; set; }
+        public string? MissionTypeId { get; set; }
         public EmployerDto Employer { get; set; }
-        public Boolean? DeleteCurrentImage { get; set; }
+        public string? EmployerId { get; set; }
+        public string? FileName { get; set; }
     }
 }

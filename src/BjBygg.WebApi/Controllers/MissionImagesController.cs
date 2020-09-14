@@ -45,6 +45,7 @@ namespace BjBygg.WebApi.Controllers
                     Files = streamList,
                     MissionId = missionId
                 };
+
                 await Mediator.Send(request);
                 return NoContent();
             }

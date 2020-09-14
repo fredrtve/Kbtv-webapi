@@ -40,7 +40,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Upload
                 request.Files.Select(file => new MissionImage() { 
                     Id = file.FileNameNoExtension, 
                     MissionId = request.MissionId, 
-                    FileUri = new Uri(file.FileName)
+                    FileName = file.FileName,
                 })
             );
 

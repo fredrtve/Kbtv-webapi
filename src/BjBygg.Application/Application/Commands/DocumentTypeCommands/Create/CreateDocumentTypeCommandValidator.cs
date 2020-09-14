@@ -6,6 +6,9 @@ namespace BjBygg.Application.Application.Commands.DocumentTypeCommands.Create
     {
         public CreateDocumentTypeCommandValidator()
         {
+            RuleFor(v => v.Id)
+                .NotEmpty();
+
             RuleFor(v => v.Name)
                 .NotEmpty()
                 .MaximumLength(45);
