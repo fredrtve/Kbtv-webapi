@@ -23,6 +23,6 @@ namespace BjBygg.Application.Application.Common.Dto
 
         public EmployerDto Employer { get; set; }
 
-        public Uri? FileUri { get; set; }
+        public Uri? FileName { get; set; }
     }
 }

@@ -1,6 +1,9 @@
-﻿using CleanArchitecture.Core.Entities;
+﻿using BjBygg.Application.Application.Common;
+using CleanArchitecture.Core;
+using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Interfaces;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,8 +18,10 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Mail
             {
                 Id = x.Key.Id,
                 Address = x.Key.Address,
-                Images = x.Select(x => x.FileUri.ToString()).ToList(),
-            });
+                Images = x.Select(x => 
+                    new StorageFileUrl(x.FileName, ResourceFolderConstants.Image).FileUrl
+                ).ToList(),
+            }).ToList();
         }
 
         public string Key => "d-d6066dc9b4cc495aa8b2b9c1e0dd8afc";
@@ -34,7 +39,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Mail
         public string Address { get; set; }
 
         [JsonProperty("images")]
-        public IEnumerable<string> Images { get; set; }
+        public IEnumerable<Uri> Images { get; set; }
     }
 
 }

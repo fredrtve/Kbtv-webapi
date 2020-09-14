@@ -9,7 +9,7 @@ namespace BjBygg.Application.Application.Common.Dto
 
         public string MissionId { get; set; }
 
-        public Uri FileUri { get; set; }
+        public Uri FileName { get; set; }
 
     }
 }

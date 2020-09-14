@@ -29,7 +29,9 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Mail
                 .Include(x => x.DocumentType)
                 .Where(x => request.Ids.Contains(x.Id)).ToListAsync();
 
-            await _mailService.SendTemplateEmailAsync(request.ToEmail, new MissionDocumentsTemplate(documents));
+            var template = new MissionDocumentsTemplate(documents);
+
+            await _mailService.SendTemplateEmailAsync(request.ToEmail, template);
 
             return Unit.Value;
         }
