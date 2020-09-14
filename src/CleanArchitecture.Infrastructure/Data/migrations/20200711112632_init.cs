@@ -82,7 +82,7 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     Finished = table.Column<bool>(nullable: false, defaultValue: false),
                     MissionTypeId = table.Column<int>(nullable: true),
                     EmployerId = table.Column<int>(nullable: true),
-                    FileUri = table.Column<string>(maxLength: 400, nullable: true)
+                    FileName = table.Column<string>(maxLength: 400, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -113,7 +113,7 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     UpdatedAt = table.Column<DateTime>(nullable: false),
                     UpdatedBy = table.Column<string>(nullable: true),
                     MissionId = table.Column<int>(nullable: false),
-                    FileUri = table.Column<string>(maxLength: 400, nullable: false),
+                    FileName = table.Column<string>(maxLength: 400, nullable: false),
                     DocumentTypeId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -145,7 +145,7 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     UpdatedAt = table.Column<DateTime>(nullable: false),
                     UpdatedBy = table.Column<string>(nullable: true),
                     MissionId = table.Column<int>(nullable: false),
-                    FileUri = table.Column<string>(maxLength: 400, nullable: false)
+                    FileName = table.Column<string>(maxLength: 400, nullable: false)
                 },
                 constraints: table =>
                 {

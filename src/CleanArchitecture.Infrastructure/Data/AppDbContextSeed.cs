@@ -101,11 +101,11 @@ namespace CleanArchitecture.Infrastructure.Data
         }
         static async Task SetMissionDocumentsAsync(IAppDbContext context, IIdGenerator idGenerator, int amount)
         {
-            var command = "INSERT INTO MissionDocuments (Id, FileUri, MissionId, DocumentTypeId, Deleted, CreatedAt, UpdatedAt) VALUES ";
+            var command = "INSERT INTO MissionDocuments (Id, FileName, MissionId, DocumentTypeId, Deleted, CreatedAt, UpdatedAt) VALUES ";
             string[] documents = { 
-                "https://kbtv.blob.core.windows.net/images/1637271568378142015_fef915f9-5f35-45ea-96ae-898f33d79df2.jpg",
-                "https://kbtv.blob.core.windows.net/images/1637125277915871387_33a58ce3-9b65-42c1-99aa-35bbbf200e82.jpg",
-                "https://kbtv.blob.core.windows.net/images/1637271568376872507_90030357-a167-426d-8ca2-fd669e17888b.jpg",
+                "1637271568378142015_fef915f9-5f35-45ea-96ae-898f33d79df2.jpg",
+                "1637125277915871387_33a58ce3-9b65-42c1-99aa-35bbbf200e82.jpg",
+                "1637271568376872507_90030357-a167-426d-8ca2-fd669e17888b.jpg",
             };
             for (var i = 0; i < amount; i++)
             {
@@ -125,11 +125,11 @@ namespace CleanArchitecture.Infrastructure.Data
         }
         static async Task SetMissionImagesAsync(IAppDbContext context, IIdGenerator idGenerator, int amount)
         {
-            var command = "INSERT INTO MissionImages (Id, FileUri, MissionId, Deleted, CreatedAt, UpdatedAt) VALUES ";
+            var command = "INSERT INTO MissionImages (Id, FileName, MissionId, Deleted, CreatedAt, UpdatedAt) VALUES ";
             string[] images = {
-                "https://kbtv.blob.core.windows.net/images/1637271568378142015_fef915f9-5f35-45ea-96ae-898f33d79df2.jpg",
-                "https://kbtv.blob.core.windows.net/images/1637125277915871387_33a58ce3-9b65-42c1-99aa-35bbbf200e82.jpg",
-                "https://kbtv.blob.core.windows.net/images/1637271568376872507_90030357-a167-426d-8ca2-fd669e17888b.jpg",
+                "1637271568378142015_fef915f9-5f35-45ea-96ae-898f33d79df2.jpg",
+                "1637125277915871387_33a58ce3-9b65-42c1-99aa-35bbbf200e82.jpg",
+                "1637271568376872507_90030357-a167-426d-8ca2-fd669e17888b.jpg",
             };
             for (var i = 0; i < amount; i++)
             {

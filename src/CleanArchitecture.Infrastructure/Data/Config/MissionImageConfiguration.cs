@@ -10,10 +10,8 @@ namespace CleanArchitecture.Infrastructure.Data.Config
         {
             base.Configure(builder);
 
-            builder.Property(mi => mi.FileUri).IsRequired().HasMaxLength(400);
+            builder.Property(mi => mi.FileName).IsRequired().HasMaxLength(40);
             builder.Property(mi => mi.MissionId).IsRequired();
-
-            builder.Property(mi => mi.FileUri).HasConversion(v => v.ToString(), v => new Uri(v));
         }
     }
 }
