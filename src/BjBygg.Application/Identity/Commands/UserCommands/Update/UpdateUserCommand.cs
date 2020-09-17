@@ -1,9 +1,10 @@
+using BjBygg.Application.Common.Interfaces;
 using BjBygg.Application.Identity.Common;
 using MediatR;
 
 namespace BjBygg.Application.Identity.Commands.UserCommands.Update
 {
-    public class UpdateUserCommand : IRequest
+    public class UpdateUserCommand : IOptimisticCommand
     {
         public string UserName { get; set; }
         public string FirstName { get; set; }

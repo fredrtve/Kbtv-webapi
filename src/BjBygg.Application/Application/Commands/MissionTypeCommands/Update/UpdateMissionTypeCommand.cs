@@ -12,8 +12,8 @@ namespace BjBygg.Application.Application.Commands.MissionTypeCommands.Update
     }
     public class UpdateMissionTypeCommandHandler : UpdateCommandHandler<MissionType, UpdateMissionTypeCommand>
     {
-        public UpdateMissionTypeCommandHandler(IAppDbContext dbContext, IMapper mapper) :
-            base(dbContext, mapper)
+        public UpdateMissionTypeCommandHandler(IAppDbContext dbContext) :
+            base(dbContext)
         { }
     }
 }

@@ -13,12 +13,10 @@ namespace BjBygg.Application.Common.BaseEntityCommands.Update
         where TEntity : BaseEntity where TCommand : UpdateCommand
     {
         private readonly IDbContext _dbContext;
-        private readonly IMapper _mapper;
-
-        public UpdateCommandHandler(IDbContext dbContext, IMapper mapper)
+  
+        public UpdateCommandHandler(IDbContext dbContext)
         {
             _dbContext = dbContext;
-            _mapper = mapper;
         }
 
         public async Task<Unit> Handle(TCommand request, CancellationToken cancellationToken)

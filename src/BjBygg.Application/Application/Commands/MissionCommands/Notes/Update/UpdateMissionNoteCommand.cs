@@ -15,8 +15,8 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Notes.Update
     }
     public class UpdateMissionNoteCommandHandler : UpdateCommandHandler<MissionNote, UpdateMissionNoteCommand>
     {
-        public UpdateMissionNoteCommandHandler(IAppDbContext dbContext, IMapper mapper) :
-            base(dbContext, mapper)
+        public UpdateMissionNoteCommandHandler(IAppDbContext dbContext) :
+            base(dbContext)
         { }
 
     }

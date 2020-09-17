@@ -12,8 +12,8 @@ namespace BjBygg.Application.Application.Commands.DocumentTypeCommands.Update
     }
     public class UpdateDocumentTypeCommandHandler : UpdateCommandHandler<DocumentType, UpdateDocumentTypeCommand>
     {
-        public UpdateDocumentTypeCommandHandler(IAppDbContext dbContext, IMapper mapper) :
-            base(dbContext, mapper)
+        public UpdateDocumentTypeCommandHandler(IAppDbContext dbContext) :
+            base(dbContext)
         { }
     }
 }

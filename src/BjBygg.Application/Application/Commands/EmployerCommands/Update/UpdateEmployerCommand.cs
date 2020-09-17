@@ -15,8 +15,8 @@ namespace BjBygg.Application.Application.Commands.EmployerCommands.Update
     }
     public class UpdateEmployerCommandHandler : UpdateCommandHandler<Employer, UpdateEmployerCommand>
     {
-        public UpdateEmployerCommandHandler(IAppDbContext dbContext, IMapper mapper) :
-            base(dbContext, mapper)
+        public UpdateEmployerCommandHandler(IAppDbContext dbContext) :
+            base(dbContext)
         { }
     }
 }
