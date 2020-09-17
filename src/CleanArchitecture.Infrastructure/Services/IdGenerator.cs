@@ -13,7 +13,7 @@ namespace CleanArchitecture.Infrastructure.Services
         public string Generate()
         {
             const string chars = "abcdefghijklmnopqrstuvwxyz0123456789";
-            return new string(Enumerable.Repeat(chars, 5)
+            return new string(Enumerable.Repeat(chars, 7)
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }

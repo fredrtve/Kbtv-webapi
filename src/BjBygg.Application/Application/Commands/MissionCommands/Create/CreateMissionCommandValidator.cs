@@ -18,7 +18,13 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Create
                  .MaximumLength(12);
 
             RuleFor(v => v.Description)
-                 .MaximumLength(400); 
+                 .MaximumLength(400);
+
+            RuleFor(v => v.Employer)
+              .Must(v => (v == null) || !(string.IsNullOrWhiteSpace(v.Id) || string.IsNullOrWhiteSpace(v.Name)));
+
+            RuleFor(v => v.MissionType)
+              .Must(v => (v == null) || !(string.IsNullOrWhiteSpace(v.Id) || string.IsNullOrWhiteSpace(v.Name)));
         }
     }
 }
