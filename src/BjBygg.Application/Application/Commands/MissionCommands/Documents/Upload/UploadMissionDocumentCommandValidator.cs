@@ -10,8 +10,8 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Uplo
                 .NotEmpty();
 
             RuleFor(v => v.DocumentType)
-               .NotEmpty().When(v => string.IsNullOrEmpty(v.DocumentTypeId));
-            
+               .Must(v => (v == null) || !(string.IsNullOrWhiteSpace(v.Id) || string.IsNullOrWhiteSpace(v.Name)));
+
             RuleFor(v => v.DocumentTypeId)
                .NotEmpty().When(v => v.DocumentType == null || string.IsNullOrEmpty(v.DocumentType.Id));
 

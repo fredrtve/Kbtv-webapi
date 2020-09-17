@@ -20,16 +20,17 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.DeleteRange
 
         public async Task<Unit> Handle(DeleteRangeMissionCommand request, CancellationToken cancellationToken)
         {
-            var entities = _dbContext.Set<Mission>().Where(x => request.Ids.Contains(x.Id)).ToList();
+            _dbContext.Set<Mission>().RemoveRange(
+                _dbContext.Set<Mission>().Where(x => request.Ids.Contains(x.Id)).ToList());
 
-            _dbContext.Set<Mission>().RemoveRange(entities);
+            _dbContext.Set<MissionImage>().RemoveRange(
+                _dbContext.Set<MissionImage>().Where(x => request.Ids.Contains(x.MissionId)));
 
-            _dbContext.Set<MissionImage>()
-                .RemoveRange(_dbContext.Set<MissionImage>().Where(x => request.Ids.Contains(x.MissionId)));
-            _dbContext.Set<MissionNote>()
-                .RemoveRange(_dbContext.Set<MissionNote>().Where(x => request.Ids.Contains(x.MissionId)));
-            _dbContext.Set<MissionDocument>()
-                .RemoveRange(_dbContext.Set<MissionDocument>().Where(x => request.Ids.Contains(x.MissionId)));
+            _dbContext.Set<MissionNote>().RemoveRange(
+                _dbContext.Set<MissionNote>().Where(x => request.Ids.Contains(x.MissionId)));
+
+            _dbContext.Set<MissionDocument>().RemoveRange(
+                _dbContext.Set<MissionDocument>().Where(x => request.Ids.Contains(x.MissionId)));
 
             await _dbContext.SaveChangesAsync();
 

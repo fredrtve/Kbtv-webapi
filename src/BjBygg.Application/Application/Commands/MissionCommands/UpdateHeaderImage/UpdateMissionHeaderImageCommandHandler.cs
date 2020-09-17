@@ -36,7 +36,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.UpdateHeaderIm
 
             var resized = _imageResizer.ResizeImage(request.Image, 700);
 
-            await _storageService.UploadFileAsync(resized, ResourceFolderConstants.MissionHeader);
+            var fileUrl = await _storageService.UploadFileAsync(resized, ResourceFolderConstants.MissionHeader);
 
             dbMission.FileName = resized.FileName;
             //if (request.Image != null)

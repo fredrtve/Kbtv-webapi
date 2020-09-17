@@ -28,17 +28,17 @@ namespace BjBygg.Application.Common.BaseEntityCommands.Update
             if (dbEntity == null)
                 throw new EntityNotFoundException(nameof(TEntity), request.Id);
 
-            var requestEntity = _mapper.Map<TEntity>(request);
-
-            foreach (var property in requestEntity.GetType().GetProperties())
+            foreach (var property in request.GetType().GetProperties())
             {
-                if (property.Name == "Id") continue;
-                dbEntity.GetType().GetProperty(property.Name).SetValue(dbEntity, property.GetValue(requestEntity), null);
+                if(property.Name == "Id") continue;
+                dbEntity.GetType().GetProperty(property.Name).SetValue(dbEntity, property.GetValue(request), null);
             }
 
             await _dbContext.SaveChangesAsync();
 
             return Unit.Value;
         }
+
+        
     }
 }

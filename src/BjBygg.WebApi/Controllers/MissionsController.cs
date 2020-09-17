@@ -48,27 +48,6 @@ namespace BjBygg.WebApi.Controllers
         {
             await Mediator.Send(request);
             return NoContent();
-            //var settings = new JsonSerializerSettings
-            //{
-            //    NullValueHandling = NullValueHandling.Ignore,
-            //    MissingMemberHandling = MissingMemberHandling.Ignore
-            //};
-
-            //var request = JsonConvert.DeserializeObject<CreateMissionCommand>(Request.Form["command"], settings);
-
-            //if (Request.Form.Files.Count() == 0)
-            //{
-            //    await Mediator.Send(request);
-            //    return NoContent();
-            //};
-
-            //var file = Request.Form.Files[0];
-            //using (var stream = file.OpenReadStream())
-            //{
-            //    request.Image = new BasicFileStream(stream, file.FileName);
-            //    await Mediator.Send(request);
-            //    return NoContent();
-            //}
         }
 
         [HttpPost]
