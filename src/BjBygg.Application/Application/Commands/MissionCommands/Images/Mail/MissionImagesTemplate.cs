@@ -10,24 +10,35 @@ using System.Linq;
 namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Mail
 {
 
-    public class MissionImagesTemplate : IMailTemplate<IEnumerable<MissionImagesTemplateMission>>
+    public class MissionImagesTemplate : IMailTemplate<MissionImagesTemplateData>
     {
         public MissionImagesTemplate(IEnumerable<MissionImage> images)
         {
-            Data = images.GroupBy(x => x.Mission).Select(x => new MissionImagesTemplateMission
+            Data = new MissionImagesTemplateData(images.GroupBy(x => x.Mission).Select(x => new MissionImagesTemplateMission
             {
                 Id = x.Key.Id,
                 Address = x.Key.Address,
                 Images = x.Select(x => 
-                    new StorageFileUrl(x.FileName, ResourceFolderConstants.Image).FileUrl
+                    new StorageFileUrl(x.FileName, ResourceFolderConstants.Image).FileUrl.ToString()
                 ).ToList(),
-            }).ToList();
+            }).ToList());
         }
 
         public string Key => "d-d6066dc9b4cc495aa8b2b9c1e0dd8afc";
 
         [JsonProperty("data")]
-        public IEnumerable<MissionImagesTemplateMission> Data { get; set; }
+        public MissionImagesTemplateData Data { get; set; }
+    }
+
+    public class MissionImagesTemplateData
+    {
+        public MissionImagesTemplateData(IEnumerable<MissionImagesTemplateMission> missions) 
+        {
+            Missions = missions;
+        }
+
+        [JsonProperty("missions")]
+        public IEnumerable<MissionImagesTemplateMission> Missions { get; set; }
     }
 
     public class MissionImagesTemplateMission
@@ -39,7 +50,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Mail
         public string Address { get; set; }
 
         [JsonProperty("images")]
-        public IEnumerable<Uri> Images { get; set; }
+        public IEnumerable<string> Images { get; set; }
     }
 
 }

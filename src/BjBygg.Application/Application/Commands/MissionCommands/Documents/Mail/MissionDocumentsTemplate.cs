@@ -11,22 +11,33 @@ using System.Linq;
 namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Mail
 {
 
-    public class MissionDocumentsTemplate : IMailTemplate<IEnumerable<MissionDocumentsTemplateDocument>>
+    public class MissionDocumentsTemplate : IMailTemplate<MissionDocumentsTemplateData>
     {
         public MissionDocumentsTemplate(IEnumerable<MissionDocument> documents)
         {
-            Data = documents.Select(x => new MissionDocumentsTemplateDocument()
+            Data = new MissionDocumentsTemplateData(documents.Select(x => new MissionDocumentsTemplateDocument()
                {
                    Id = x.Id,
                    DocumentTypeName = x.DocumentType == null ? "Ukategorisert" : x.DocumentType.Name,
-                   Url = new StorageFileUrl(x.FileName, ResourceFolderConstants.Document).FileUrl
-               }).ToList();
+                   Url = new StorageFileUrl(x.FileName, ResourceFolderConstants.Document).FileUrl.ToString()
+            }).ToList());
         }
 
         public string Key => "d-2d52ec6ee61044f0a705e04ca87740d2";
 
         [JsonProperty("data")]
-        public IEnumerable<MissionDocumentsTemplateDocument> Data { get; set; }
+        public MissionDocumentsTemplateData Data { get; set; }
+    }
+
+    public class MissionDocumentsTemplateData
+    {
+        public MissionDocumentsTemplateData(IEnumerable<MissionDocumentsTemplateDocument> documents)
+        {
+            Documents = documents;
+        }
+
+        [JsonProperty("documents")]
+        public IEnumerable<MissionDocumentsTemplateDocument> Documents { get; set; }
     }
 
     public class MissionDocumentsTemplateDocument
@@ -38,7 +49,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Mail
         public string DocumentTypeName { get; set; }
 
         [JsonProperty("url")]
-        public Uri Url { get; set; }
+        public string Url { get; set; }
     }
 
 
