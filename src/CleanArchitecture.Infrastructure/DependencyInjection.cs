@@ -118,6 +118,7 @@ namespace CleanArchitecture.Infrastructure
             services.AddScoped<IAppDbContext>(provider => provider.GetService<AppDbContext>());
 
             services.AddSingleton<IIdGenerator, IdGenerator>();
+            services.AddSingleton<IFileZipper, AzureBlobStorageZipper>();
 
             services.AddTransient<IBlobStorageService, AzureBlobStorageService>();
             services.AddTransient<IMailService, SendGridMailService>();

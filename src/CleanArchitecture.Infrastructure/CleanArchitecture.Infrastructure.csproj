@@ -42,6 +42,8 @@
     <Compile Remove="Data\migrations\20200529085314_init.Designer.cs" />
     <Compile Remove="Data\migrations\20200529123915_init.cs" />
     <Compile Remove="Data\migrations\20200529123915_init.Designer.cs" />
+    <Compile Remove="Data\migrations\20200711112632_init.cs" />
+    <Compile Remove="Data\migrations\20200711112632_init.Designer.cs" />
     <Compile Remove="Identity\Migrations\20191121173213_init.cs" />
     <Compile Remove="Identity\Migrations\20191121173213_init.Designer.cs" />
     <Compile Remove="Identity\Migrations\20191121173832_init.cs" />
@@ -62,6 +64,8 @@
     <Compile Remove="Identity\Migrations\20200601192523_init.Designer.cs" />
     <Compile Remove="Identity\Migrations\20200602180741_init.cs" />
     <Compile Remove="Identity\Migrations\20200602180741_init.Designer.cs" />
+    <Compile Remove="Identity\Migrations\20200711112656_init.cs" />
+    <Compile Remove="Identity\Migrations\20200711112656_init.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -76,6 +80,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" PrivateAssets="all" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
     <PackageReference Include="SendGrid" />
+    <PackageReference Include="SharpZipLib" />
     <PackageReference Include="SQLite" />
     <PackageReference Include="SixLabors.ImageSharp" />
     <PackageReference Include="NETStandard.Library" />

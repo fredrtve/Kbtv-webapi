@@ -42,7 +42,8 @@ namespace CleanArchitecture.Infrastructure.identity.migrations
                     AccessFailedCount = table.Column<int>(nullable: false),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
-                    EmployerId = table.Column<int>(nullable: true),
+                    EmployerId = table.Column<string>(nullable: true),
+                    LastCommandStatus = table.Column<bool>(nullable: true),
                     Deleted = table.Column<bool>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     CreatedBy = table.Column<string>(nullable: true),
@@ -58,8 +59,7 @@ namespace CleanArchitecture.Infrastructure.identity.migrations
                 name: "InboundEmailPasswords",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<string>(nullable: false),
                     Deleted = table.Column<bool>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     CreatedBy = table.Column<string>(nullable: true),
@@ -184,11 +184,6 @@ namespace CleanArchitecture.Infrastructure.identity.migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Deleted = table.Column<bool>(nullable: false),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    CreatedBy = table.Column<string>(nullable: true),
-                    UpdatedAt = table.Column<DateTime>(nullable: false),
-                    UpdatedBy = table.Column<string>(nullable: true),
                     Token = table.Column<string>(nullable: true),
                     Expires = table.Column<DateTime>(nullable: false),
                     UserId = table.Column<string>(nullable: true)

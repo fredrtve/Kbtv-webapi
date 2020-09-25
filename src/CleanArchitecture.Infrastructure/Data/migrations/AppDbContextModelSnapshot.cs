@@ -18,9 +18,8 @@ namespace CleanArchitecture.Infrastructure.data.migrations
 
             modelBuilder.Entity("CleanArchitecture.Core.Entities.DocumentType", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
@@ -49,9 +48,8 @@ namespace CleanArchitecture.Infrastructure.data.migrations
 
             modelBuilder.Entity("CleanArchitecture.Core.Entities.Employer", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Address")
                         .HasColumnType("TEXT")
@@ -91,9 +89,8 @@ namespace CleanArchitecture.Infrastructure.data.migrations
 
             modelBuilder.Entity("CleanArchitecture.Core.Entities.Mission", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -113,20 +110,20 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(400);
 
-                    b.Property<int?>("EmployerId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("EmployerId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(40);
 
                     b.Property<bool>("Finished")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
                         .HasDefaultValue(false);
 
-                    b.Property<string>("FileName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(400);
-
-                    b.Property<int?>("MissionTypeId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("MissionTypeId")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT")
@@ -153,9 +150,8 @@ namespace CleanArchitecture.Infrastructure.data.migrations
 
             modelBuilder.Entity("CleanArchitecture.Core.Entities.MissionDocument", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
@@ -166,16 +162,17 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     b.Property<bool>("Deleted")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("DocumentTypeId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("DocumentTypeId")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("FileName")
                         .IsRequired()
                         .HasColumnType("TEXT")
-                        .HasMaxLength(400);
+                        .HasMaxLength(40);
 
-                    b.Property<int>("MissionId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("MissionId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
@@ -194,9 +191,8 @@ namespace CleanArchitecture.Infrastructure.data.migrations
 
             modelBuilder.Entity("CleanArchitecture.Core.Entities.MissionImage", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
@@ -210,10 +206,11 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     b.Property<string>("FileName")
                         .IsRequired()
                         .HasColumnType("TEXT")
-                        .HasMaxLength(400);
+                        .HasMaxLength(40);
 
-                    b.Property<int>("MissionId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("MissionId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
@@ -230,9 +227,8 @@ namespace CleanArchitecture.Infrastructure.data.migrations
 
             modelBuilder.Entity("CleanArchitecture.Core.Entities.MissionNote", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -248,8 +244,9 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     b.Property<bool>("Deleted")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("MissionId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("MissionId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("Pinned")
                         .HasColumnType("INTEGER");
@@ -273,9 +270,8 @@ namespace CleanArchitecture.Infrastructure.data.migrations
 
             modelBuilder.Entity("CleanArchitecture.Core.Entities.MissionType", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
@@ -304,9 +300,8 @@ namespace CleanArchitecture.Infrastructure.data.migrations
 
             modelBuilder.Entity("CleanArchitecture.Core.Entities.Timesheet", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Comment")
                         .IsRequired()
@@ -325,8 +320,9 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("MissionId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("MissionId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("TEXT");
@@ -373,8 +369,7 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     b.HasOne("CleanArchitecture.Core.Entities.DocumentType", "DocumentType")
                         .WithMany("MissionDocuments")
                         .HasForeignKey("DocumentTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("CleanArchitecture.Core.Entities.Mission", "Mission")
                         .WithMany("MissionDocuments")

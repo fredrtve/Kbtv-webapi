@@ -10,7 +10,6 @@ namespace CleanArchitecture.Infrastructure.Api.FileStorage
     {
         private readonly IConfiguration _configuration;
         private CloudBlobClient _blobClient;
-        private CloudBlobContainer _blobContainer;
 
         public AzureBlobConnectionFactory(IConfiguration configuration)
         {
@@ -19,9 +18,6 @@ namespace CleanArchitecture.Infrastructure.Api.FileStorage
 
         public async Task<CloudBlobContainer> GetBlobContainer(string folder)
         {
-            if (_blobContainer != null)
-                return _blobContainer;
-
             if (string.IsNullOrWhiteSpace(folder))
             {
                 throw new ArgumentException("Configuration must contain ContainerName");
@@ -29,12 +25,12 @@ namespace CleanArchitecture.Infrastructure.Api.FileStorage
 
             var blobClient = GetClient();
 
-            _blobContainer = blobClient.GetContainerReference(folder);
-            if (await _blobContainer.CreateIfNotExistsAsync())
+            var blobContainer = blobClient.GetContainerReference(folder);
+            if (await blobContainer.CreateIfNotExistsAsync())
             {
-                await _blobContainer.SetPermissionsAsync(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
+                await blobContainer.SetPermissionsAsync(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
             }
-            return _blobContainer;
+            return blobContainer;
         }
 
         private CloudBlobClient GetClient()

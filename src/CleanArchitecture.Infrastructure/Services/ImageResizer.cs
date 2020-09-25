@@ -53,7 +53,7 @@ namespace CleanArchitecture.Infrastructure.Services
             return encoder;
         }
 
-        public BasicFileStream ResizeImage(BasicFileStream input, int width)
+        public BasicFileStream ResizeImage(BasicFileStream input, int width = 0, int maxWidth = 0)
         {
             if (input == null) throw new ArgumentNullException();
 
@@ -63,7 +63,13 @@ namespace CleanArchitecture.Infrastructure.Services
 
             using var output = new MemoryStream();
             using Image<Rgba32> image = Image.Load<Rgba32>(input.Stream);
-            var divisor = image.Width / width;
+  
+            if (width == 0) width = image.Width;
+
+            if (maxWidth != 0 && maxWidth < width) width = maxWidth;
+
+            decimal divisor = (decimal)image.Width / width;
+
             var imageHeight = Convert.ToInt32(Math.Round((decimal)(image.Height / divisor)));
 
             image.Mutate(x => x.Resize(width, imageHeight));

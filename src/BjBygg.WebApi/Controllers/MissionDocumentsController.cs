@@ -32,25 +32,29 @@ namespace BjBygg.WebApi.Controllers
         [Route("api/[controller]")]
         public async Task<ActionResult> Upload()
         {
-            if (Request.Form.Files.Count() == 0)
-                throw new BadRequestException("No files received");
-
             var settings = new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore,
                 MissingMemberHandling = MissingMemberHandling.Ignore
             };
 
-            var file = Request.Form.Files[0];
-
             var request = JsonConvert.DeserializeObject<UploadMissionDocumentCommand>(Request.Form["Command"], settings);
+
+            if (Request.Form.Files.Count() == 0)
+            {
+                await Mediator.Send(request);//Let validator throw exception
+                return NoContent();
+            }
+
+            var file = Request.Form.Files[0];
 
             using (var stream = file.OpenReadStream())
             {
                 request.File = new BasicFileStream(stream, file.FileName);
-                await Mediator.Send(request);
-                return NoContent();
+                await Mediator.Send(request);         
             }
+
+            return NoContent();
         }
 
         [Authorize(Roles = RolePermissions.MissionDocumentActions.Delete)]

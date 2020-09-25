@@ -32,7 +32,15 @@ namespace CleanArchitecture.Infrastructure.Api.SendGridMailService
             var from = new EmailAddress("noreply@bjbygg.no", "BjBygg");
             var to = new EmailAddress(toEmail);
             var msg = MailHelper.CreateSingleTemplateEmail(from, to, template.Key, template.Data);
-            var response = await client.SendEmailAsync(msg);
+
+            Response response;
+            if(template.Attachment == null )
+                response = await client.SendEmailAsync(msg);
+            else
+            {          
+               await msg.AddAttachmentAsync(template.Attachment.FileName, template.Attachment.Stream);
+               response = await client.SendEmailAsync(msg);             
+            }
 
             if (response.StatusCode != System.Net.HttpStatusCode.Accepted)
             {

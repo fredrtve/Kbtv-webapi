@@ -11,8 +11,7 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                 name: "DocumentTypes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<string>(nullable: false),
                     Deleted = table.Column<bool>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     CreatedBy = table.Column<string>(nullable: true),
@@ -29,8 +28,7 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                 name: "Employers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<string>(nullable: false),
                     Deleted = table.Column<bool>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     CreatedBy = table.Column<string>(nullable: true),
@@ -50,8 +48,7 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                 name: "MissionTypes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<string>(nullable: false),
                     Deleted = table.Column<bool>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     CreatedBy = table.Column<string>(nullable: true),
@@ -68,8 +65,7 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                 name: "Missions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<string>(nullable: false),
                     Deleted = table.Column<bool>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     CreatedBy = table.Column<string>(nullable: true),
@@ -80,9 +76,9 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     Description = table.Column<string>(maxLength: 400, nullable: true),
                     Address = table.Column<string>(maxLength: 100, nullable: false),
                     Finished = table.Column<bool>(nullable: false, defaultValue: false),
-                    MissionTypeId = table.Column<int>(nullable: true),
-                    EmployerId = table.Column<int>(nullable: true),
-                    FileName = table.Column<string>(maxLength: 400, nullable: true)
+                    MissionTypeId = table.Column<string>(nullable: true),
+                    EmployerId = table.Column<string>(nullable: true),
+                    FileName = table.Column<string>(maxLength: 40, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -105,16 +101,15 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                 name: "MissionDocuments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<string>(nullable: false),
                     Deleted = table.Column<bool>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     CreatedBy = table.Column<string>(nullable: true),
                     UpdatedAt = table.Column<DateTime>(nullable: false),
                     UpdatedBy = table.Column<string>(nullable: true),
-                    MissionId = table.Column<int>(nullable: false),
-                    FileName = table.Column<string>(maxLength: 400, nullable: false),
-                    DocumentTypeId = table.Column<int>(nullable: false)
+                    MissionId = table.Column<string>(nullable: false),
+                    FileName = table.Column<string>(maxLength: 40, nullable: false),
+                    DocumentTypeId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -137,15 +132,14 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                 name: "MissionImages",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<string>(nullable: false),
                     Deleted = table.Column<bool>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     CreatedBy = table.Column<string>(nullable: true),
                     UpdatedAt = table.Column<DateTime>(nullable: false),
                     UpdatedBy = table.Column<string>(nullable: true),
-                    MissionId = table.Column<int>(nullable: false),
-                    FileName = table.Column<string>(maxLength: 400, nullable: false)
+                    MissionId = table.Column<string>(nullable: false),
+                    FileName = table.Column<string>(maxLength: 40, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -162,8 +156,7 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                 name: "MissionNotes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<string>(nullable: false),
                     Deleted = table.Column<bool>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     CreatedBy = table.Column<string>(nullable: true),
@@ -171,7 +164,7 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     UpdatedBy = table.Column<string>(nullable: true),
                     Title = table.Column<string>(maxLength: 75, nullable: true),
                     Content = table.Column<string>(maxLength: 400, nullable: false),
-                    MissionId = table.Column<int>(nullable: false),
+                    MissionId = table.Column<string>(nullable: false),
                     Pinned = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -189,15 +182,14 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                 name: "Timesheets",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<string>(nullable: false),
                     Deleted = table.Column<bool>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     CreatedBy = table.Column<string>(nullable: true),
                     UpdatedAt = table.Column<DateTime>(nullable: false),
                     UpdatedBy = table.Column<string>(nullable: true),
                     UserName = table.Column<string>(nullable: false),
-                    MissionId = table.Column<int>(nullable: false),
+                    MissionId = table.Column<string>(nullable: false),
                     StartTime = table.Column<DateTime>(nullable: false),
                     EndTime = table.Column<DateTime>(nullable: false),
                     TotalHours = table.Column<double>(nullable: false),
