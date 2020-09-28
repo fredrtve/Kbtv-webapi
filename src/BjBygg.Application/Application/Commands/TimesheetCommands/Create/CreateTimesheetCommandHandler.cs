@@ -5,6 +5,7 @@ using BjBygg.Application.Common.Interfaces;
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using MediatR;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,7 +31,7 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Create
             timesheet.StartTime = DateTimeHelper.ConvertEpochToDate(request.StartTime); 
             timesheet.EndTime = DateTimeHelper.ConvertEpochToDate(request.EndTime);
 
-            timesheet.TotalHours = (timesheet.EndTime - timesheet.StartTime).TotalHours;
+            timesheet.TotalHours = Math.Round((timesheet.EndTime - timesheet.StartTime).TotalHours, 1);
 
             timesheet.UserName = _currentUserService.UserName;
 
