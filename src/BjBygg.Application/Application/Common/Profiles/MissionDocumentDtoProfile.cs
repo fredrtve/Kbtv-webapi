@@ -5,13 +5,13 @@ using CleanArchitecture.Core.Entities;
 
 namespace BjBygg.Application.Application.Common.Profiles
 {
-    public class TimesheetDtoProfile : Profile
+    public class MissionDocumentDtoProfile : Profile
     {
-        public TimesheetDtoProfile()
+        public MissionDocumentDtoProfile()
         {
-            CreateMap<Timesheet, TimesheetDto>();
+            CreateMap<MissionDocument, MissionDocumentDto>();
 
-            CreateMap<TimesheetDto, Timesheet>();
+            CreateMap<MissionDocumentDto, MissionDocument>();
         }
     }
 }

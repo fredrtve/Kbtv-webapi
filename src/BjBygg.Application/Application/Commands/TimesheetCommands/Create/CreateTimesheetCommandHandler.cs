@@ -28,9 +28,6 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Create
         {
             var timesheet = _mapper.Map<Timesheet>(request);
 
-            timesheet.StartTime = DateTimeHelper.ConvertEpochToDate(request.StartTime); 
-            timesheet.EndTime = DateTimeHelper.ConvertEpochToDate(request.EndTime);
-
             timesheet.TotalHours = Math.Round((timesheet.EndTime - timesheet.StartTime).TotalHours, 1);
 
             timesheet.UserName = _currentUserService.UserName;

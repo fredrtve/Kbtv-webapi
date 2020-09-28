@@ -1,4 +1,6 @@
 using AutoMapper;
+using BjBygg.Application.Application.Common.Dto;
+using BjBygg.Application.Common;
 using CleanArchitecture.Core.Entities;
 
 namespace BjBygg.Application.Application.Common.Profiles
@@ -7,8 +9,8 @@ namespace BjBygg.Application.Application.Common.Profiles
     {
         public MissionTypeDtoProfile()
         {
-            CreateMap<MissionType, MissionTypeDtoProfile>();
-            CreateMap<MissionTypeDtoProfile, MissionType>();
+            CreateMap<MissionType, MissionTypeDto>();
+            CreateMap<MissionTypeDto, MissionType>();
         }
     }
 }

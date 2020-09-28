@@ -87,9 +87,10 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
 
         private DbSyncResponse<UserDto> SyncCurrentUser(UserDto user, long timestamp)      
         {
-            var date = DateTimeHelper.ConvertEpochToDate(timestamp);
             var syncResponse = new DbSyncResponse<UserDto>(new UserDto[] { }, null);
-            if (DateTime.Compare(user.UpdatedAt, date) >= 0) syncResponse.Entities = new [] {user};
+
+            if (user.UpdatedAt >= timestamp) syncResponse.Entities = new [] {user};
+
             return syncResponse;
         }
     }

@@ -10,9 +10,9 @@ namespace BjBygg.Application.Application.Common.Dto
 
         public string MissionId { get; set; }
 
-        public DateTime StartTime { get; set; }
+        public long StartTime { get; set; }
 
-        public DateTime EndTime { get; set; }
+        public long EndTime { get; set; }
 
         public double TotalHours { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BjBygg.Application.Common;
 using CleanArchitecture.Core.Entities;
 
 namespace BjBygg.Application.Application.Commands.TimesheetCommands.Create
@@ -7,9 +8,7 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Create
     {
         public CreateTimesheetCommandProfile()
         {
-            CreateMap<CreateTimesheetCommand, Timesheet>()
-                .ForMember(x => x.StartTime, opt => opt.Ignore())
-                .ForMember(x => x.EndTime, opt => opt.Ignore());
+            CreateMap<CreateTimesheetCommand, Timesheet>();
         }
     }
 }
