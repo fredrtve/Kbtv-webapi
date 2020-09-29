@@ -9,11 +9,13 @@ namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.UpdatePasswo
             RuleFor(v => v.NewPassword)
                .NotEmpty()
                .MinimumLength(7)
-               .MaximumLength(100);
+               .MaximumLength(100)
+               .WithName("Nytt Passord");
 
             RuleFor(v => v.OldPassword)
               .NotEmpty()
-              .MaximumLength(100);
+              .MaximumLength(100)
+              .WithName("Gammelt Passord");
         }
     }
 }

@@ -64,6 +64,7 @@ namespace BjBygg.WebApi.Filters
 
             var details = new ValidationProblemDetails(exception.Errors)
             {
+                Title = "En eller flere valideringsfeil har oppstått.",
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
             };
 

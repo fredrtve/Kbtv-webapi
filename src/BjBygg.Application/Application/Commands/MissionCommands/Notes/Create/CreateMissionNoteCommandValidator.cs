@@ -10,14 +10,17 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Notes.Create
                 .NotEmpty();
 
             RuleFor(v => v.MissionId)
-               .NotEmpty();
+               .NotEmpty()
+               .WithName("Oppdrag");
 
             RuleFor(v => v.Title)
-                .MaximumLength(100);
+                .MaximumLength(100)
+                .WithName("Tittel");
 
             RuleFor(v => v.Content)
                 .NotEmpty()
-                .MaximumLength(400);
+                .MaximumLength(400)
+                .WithName("Innhold");
         }
     }
 }

@@ -10,7 +10,8 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.UpdateHeaderIm
                  .NotEmpty();
 
             RuleFor(v => v.Image)
-                 .NotEmpty();
+                 .NotEmpty()
+                 .WithName("Bilde");
         }
     }
 }

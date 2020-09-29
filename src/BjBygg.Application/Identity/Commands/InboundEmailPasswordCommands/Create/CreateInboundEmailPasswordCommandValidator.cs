@@ -11,7 +11,8 @@ namespace BjBygg.Application.Identity.Commands.InboundEmailPasswordCommands.Crea
 
             RuleFor(v => v.Password)
                .NotEmpty()
-               .MaximumLength(45);
+               .MaximumLength(45)
+               .WithName("Passord");
         }
     }
 }

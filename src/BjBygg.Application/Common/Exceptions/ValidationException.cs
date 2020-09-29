@@ -8,12 +8,12 @@ namespace BjBygg.Application.Common.Exceptions
     public class ValidationException : Exception
     {
         public ValidationException()
-            : base("One or more validation failures have occurred.")
+            : base("En eller flere valideringsfeil har oppstått.")
         {
             Errors = new Dictionary<string, string[]>();
         }
         public ValidationException(string key, string message)
-            : base("One or more validation failures have occurred.")
+            : base("En eller flere valideringsfeil har oppstått.")
         {
             Errors = new Dictionary<string, string[]>() {
                 { key, new string[1] { message } }

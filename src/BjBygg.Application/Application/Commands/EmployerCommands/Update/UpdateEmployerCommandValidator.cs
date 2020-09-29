@@ -11,17 +11,21 @@ namespace BjBygg.Application.Application.Commands.EmployerCommands.Update
 
             RuleFor(v => v.Name)
                     .NotEmpty()
-                    .MaximumLength(45);
+                    .MaximumLength(45)
+                    .WithName("Navn"); 
 
             RuleFor(v => v.PhoneNumber)
-                .MaximumLength(12);
+                .MaximumLength(12)
+                .WithName("Mobilnummer");
 
             RuleFor(v => v.Address)
-                .MaximumLength(100);
+                .MaximumLength(100)
+                .WithName("Adresse");
 
             RuleFor(v => v.Email)
                 .EmailAddress()
-                .When(x => !string.IsNullOrEmpty(x.Email));
+                .When(x => !string.IsNullOrEmpty(x.Email))
+                .WithName("Epost");
         }
     }
 }

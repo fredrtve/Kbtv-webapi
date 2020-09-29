@@ -8,11 +8,13 @@ namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.UpdateProfil
         public UpdateProfileCommandValidator()
         {
             RuleFor(v => v.PhoneNumber)
-                .MaximumLength(12);
+                .MaximumLength(12)
+                .WithName("Mobilnummer");
 
             RuleFor(v => v.Email)
                 .EmailAddress()
-                .When(x => !string.IsNullOrEmpty(x.Email));
+                .When(x => !string.IsNullOrEmpty(x.Email))
+                .WithName("Epost");
         }
     }
 }

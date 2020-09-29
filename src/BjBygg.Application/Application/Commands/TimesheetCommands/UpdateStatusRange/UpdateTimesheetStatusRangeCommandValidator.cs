@@ -12,7 +12,8 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.UpdateStatus
                 .NotEmpty();
 
             RuleFor(v => v.Status)
-                .NotEmpty();
+                .NotEmpty()
+                .WithName("Status");
         }
     }
 }

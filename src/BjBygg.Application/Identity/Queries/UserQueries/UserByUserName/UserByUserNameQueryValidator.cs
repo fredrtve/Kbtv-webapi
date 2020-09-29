@@ -7,7 +7,8 @@ namespace BjBygg.Application.Identity.Queries.UserQueries.UserByUserName
         public UserByUserNameQueryValidator()
         {
             RuleFor(v => v.UserName)
-                .NotEmpty();
+                .NotEmpty()
+                .WithName("Brukernavn");
         }
     }
 }

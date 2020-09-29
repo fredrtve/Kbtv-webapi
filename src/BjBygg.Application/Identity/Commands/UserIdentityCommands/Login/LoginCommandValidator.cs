@@ -7,10 +7,12 @@ namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.Login
         public LoginCommandValidator()
         {
             RuleFor(v => v.UserName)
-               .NotEmpty();
+               .NotEmpty()
+               .WithName("Brukernavn");
 
             RuleFor(v => v.Password)
-                .NotEmpty();
+                .NotEmpty()
+                .WithName("Passord");
         }
     }
 }

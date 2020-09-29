@@ -32,6 +32,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using BjBygg.Application;
+using System.Globalization;
 
 namespace BjBygg.WebApi
 {
@@ -108,6 +109,8 @@ namespace BjBygg.WebApi
             //app.UseIdentityServer();
 
             app.UseAuthorization();
+
+            CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("nb-NO");
 
             app.UseEndpoints(endpoints =>
             {

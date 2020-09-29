@@ -8,7 +8,8 @@ namespace BjBygg.Application.Common.BaseEntityCommands.MailEntitiesCommand
         {
             RuleFor(v => v.ToEmail)
                .NotEmpty()
-               .EmailAddress();
+               .EmailAddress()
+               .WithName("Epost");
 
             RuleFor(v => v.Ids)
                .NotEmpty();

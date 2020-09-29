@@ -7,7 +7,8 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Delete
         public DeleteUserCommandValidator()
         {
             RuleFor(v => v.UserName)
-                .NotEmpty();
+                .NotEmpty()
+                .WithName("Brukernavn");
         }
     }
 }

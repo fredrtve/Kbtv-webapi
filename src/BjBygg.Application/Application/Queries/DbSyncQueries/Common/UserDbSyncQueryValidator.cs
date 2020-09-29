@@ -7,7 +7,8 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.Common
         public UserDbSyncQueryValidator()
         {
             RuleFor(v => v.User)
-                .NotEmpty();
+                .NotEmpty()
+                .WithName("Bruker");
         }
     }
 }

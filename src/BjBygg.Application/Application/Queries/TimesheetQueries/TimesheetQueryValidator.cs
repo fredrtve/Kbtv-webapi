@@ -7,10 +7,12 @@ namespace BjBygg.Application.Application.Queries.TimesheetQueries
         public TimesheetQueryValidator()
         {
             RuleFor(x => x.StartDate)
-                .LessThanOrEqualTo(x => x.EndDate);
+                .LessThanOrEqualTo(x => x.EndDate)
+                .WithName("Startdato");
 
             RuleFor(x => x.EndDate)
-                .GreaterThanOrEqualTo(x => x.StartDate);
+                .GreaterThanOrEqualTo(x => x.StartDate)
+                .WithName("Sluttdato");
         }
     }
 }

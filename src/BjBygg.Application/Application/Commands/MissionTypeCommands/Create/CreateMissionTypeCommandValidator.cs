@@ -11,7 +11,8 @@ namespace BjBygg.Application.Application.Commands.MissionTypeCommands.Create
 
             RuleFor(v => v.Name)
                 .NotEmpty()
-                .MaximumLength(45);
+                .MaximumLength(45)
+                .WithName("Navn");
         }
     }
 }

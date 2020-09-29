@@ -10,7 +10,8 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.UpdateStatus
                 .NotEmpty();
 
             RuleFor(v => v.Status)
-                .IsInEnum();
+                .IsInEnum()
+                .WithName("Status");
         }
     }
 }

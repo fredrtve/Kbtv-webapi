@@ -8,10 +8,12 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.NewPassword
         {
             RuleFor(v => v.NewPassword)
                 .NotEmpty()
-                .MinimumLength(7);
+                .MinimumLength(7)
+                .WithName("Passord");
 
             RuleFor(v => v.UserName)
-                .NotEmpty();
+                .NotEmpty()
+                .WithName("Brukernavn");
         }
     }
 }

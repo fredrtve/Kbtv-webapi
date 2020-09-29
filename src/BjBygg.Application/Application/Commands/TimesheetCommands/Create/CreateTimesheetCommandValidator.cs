@@ -10,19 +10,23 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Create
                  .NotEmpty();
 
             RuleFor(v => v.MissionId)
-                .NotEmpty();
+                .NotEmpty()
+                .WithName("Oppdrag");
 
             RuleFor(v => v.StartTime)
                 .NotEmpty()
-                .LessThan(x => x.EndTime);
+                .LessThan(x => x.EndTime)
+                .WithName("Starttidspunkt"); 
 
             RuleFor(v => v.EndTime)
                 .NotEmpty()
-                .GreaterThan(x => x.StartTime);
+                .GreaterThan(x => x.StartTime)
+                .WithName("Sluttidspunkt");
 
             RuleFor(v => v.Comment)
                 .NotEmpty()
-                .MaximumLength(400);
+                .MaximumLength(400)
+                .WithName("Kommentar");
         }
     }
 }

@@ -7,10 +7,12 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Upload
         public UploadMissionImageCommandValidator()
         {
             RuleFor(v => v.Files)
-               .NotEmpty();
+               .NotEmpty()
+               .WithName("Filer");
 
             RuleFor(v => v.MissionId)
-               .NotEmpty();
+               .NotEmpty()
+               .WithName("Oppdrag");
         }
     }
 }

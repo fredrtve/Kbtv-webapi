@@ -10,7 +10,8 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Update
                 .NotEmpty();
 
             RuleFor(v => v.Comment)
-                .MaximumLength(400);
+                .MaximumLength(400)
+                .WithName("Kommentar");
         }
     }
 }

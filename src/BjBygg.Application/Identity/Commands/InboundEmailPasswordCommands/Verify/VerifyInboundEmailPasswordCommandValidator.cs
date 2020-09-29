@@ -7,7 +7,8 @@ namespace BjBygg.Application.Identity.Commands.InboundEmailPasswordCommands.Veri
         public VerifyInboundEmailPasswordCommandValidator()
         {
             RuleFor(v => v.Password)
-                .NotEmpty();
+                .NotEmpty()
+                .WithName("Passord");
         }
     }
 }

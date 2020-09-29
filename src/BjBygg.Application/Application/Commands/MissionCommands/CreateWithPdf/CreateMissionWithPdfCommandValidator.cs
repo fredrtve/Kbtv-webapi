@@ -7,7 +7,8 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.CreateWithPdf
         public CreateMissionWithPdfCommandValidator()
         {
             RuleFor(v => v.Files)
-               .NotEmpty();
+               .NotEmpty()
+               .WithName("Filer");
         }
     }
 }
