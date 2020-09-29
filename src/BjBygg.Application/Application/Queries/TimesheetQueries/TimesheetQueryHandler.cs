@@ -34,13 +34,13 @@ namespace BjBygg.Application.Application.Queries.TimesheetQueries
             if (request.UserName != null)
                 query = query.Where(x => x.UserName == request.UserName);
 
-            var startDate = DateTimeHelper.ConvertEpochToDate(request.StartDate ?? 0);
+            var startDate = DateTimeHelper.ConvertEpochToDate((request.StartDate / 1000) ?? 0);
 
             if (request.EndDate == null)
                 query = query.Where(x => x.StartTime.Date >= startDate.Date);
             else
             {
-                var endDate = DateTimeHelper.ConvertEpochToDate(request.EndDate ?? 0);
+                var endDate = DateTimeHelper.ConvertEpochToDate((request.EndDate / 1000) ?? 0);
                 query = query.Where(x => x.StartTime.Date >= startDate.Date && x.StartTime.Date <= endDate.Date);
             }
 

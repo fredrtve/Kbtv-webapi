@@ -9,9 +9,9 @@ namespace BjBygg.Application.Common
     {
         public DateTimeProfile()
         {
-            CreateMap<DateTime, long>().ConvertUsing(new EpochDateTimeFormatter());
+            CreateMap<DateTime, long>().ConvertUsing(new DateTimeToEpochMillisecondsFormatter());
 
-            CreateMap<long, DateTime>().ConvertUsing(new DateTimeEpochFormatter());
+            CreateMap<long, DateTime>().ConvertUsing(new EpochMillisecondsToDateTimeFormatter());
         }
     }
 }
