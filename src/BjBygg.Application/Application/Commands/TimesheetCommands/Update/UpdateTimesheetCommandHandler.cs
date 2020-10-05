@@ -43,8 +43,8 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Update
 
             dbTimesheet.Comment = request.Comment;
             dbTimesheet.MissionId = request.MissionId;
-            dbTimesheet.StartTime = DateTimeHelper.ConvertEpochToDate(request.StartTime);
-            dbTimesheet.EndTime = DateTimeHelper.ConvertEpochToDate(request.EndTime);
+            dbTimesheet.StartTime = DateTimeHelper.ConvertEpochToDate(request.StartTime / 1000);
+            dbTimesheet.EndTime = DateTimeHelper.ConvertEpochToDate(request.EndTime / 1000);
 
             dbTimesheet.TotalHours = (dbTimesheet.EndTime - dbTimesheet.StartTime).TotalHours;
 

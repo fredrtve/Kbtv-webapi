@@ -17,6 +17,5 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Update
         public string? MissionTypeId { get; set; }
         public EmployerDto Employer { get; set; }
         public string? EmployerId { get; set; }
-        public string? FileName { get; set; }
     }
 }

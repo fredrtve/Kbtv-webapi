@@ -10,8 +10,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Update
         {
             CreateMap<UpdateMissionCommand, Mission>()
                 .ForMember(dest => dest.MissionType, opt => opt.MapFrom(src => src.MissionType))
-                .ForMember(dest => dest.Employer, opt => opt.MapFrom(src => src.Employer))
-                .ForMember(dest => dest.FileName, opt => opt.Ignore());
+                .ForMember(dest => dest.Employer, opt => opt.MapFrom(src => src.Employer));
 
             CreateMap<MissionTypeDto, MissionType>();
             CreateMap<EmployerDto, Employer>();
