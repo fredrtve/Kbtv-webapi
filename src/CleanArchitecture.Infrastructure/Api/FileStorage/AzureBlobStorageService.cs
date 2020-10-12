@@ -54,13 +54,15 @@ namespace CleanArchitecture.Infrastructure.Api.FileStorage
             var blobs = new List<Uri>();
             for (int i = 0; i < streams.Count; i++)
             {
-                var blob = blobContainer.GetBlockBlobReference(streams[i].FileName);
+                var fileStream = streams[i];
+                var blob = blobContainer.GetBlockBlobReference(fileStream.FileName);
 
-                //Content disposition not working? Client needs file links to download
-                //blob.Properties.ContentType = GetContentType(streams[i].FileExtension);
-                //blob.Properties.ContentDisposition = "attachment";
-                
-                await blob.UploadFromStreamAsync(streams[i].Stream);
+                await blob.UploadFromStreamAsync(fileStream.Stream);
+
+                //Content disposition not working? Wont download file for client
+                //blob.Properties.ContentType = GetContentType(fileStream.FileExtension);
+                //blob.Properties.ContentDisposition = "attachment; filename=" + fileStream.FileName;              
+                //await blob.SetPropertiesAsync(); //Unneccesary?
 
                 blobs.Add(blob.Uri);
             }
@@ -73,10 +75,13 @@ namespace CleanArchitecture.Infrastructure.Api.FileStorage
 
             var blob = blobContainer.GetBlockBlobReference(stream.FileName);
 
-            blob.Properties.ContentType = GetContentType(stream.FileExtension);
-
             await blob.UploadFromStreamAsync(stream.Stream);
 
+            //Content disposition not working? Wont download file for client
+            //blob.Properties.ContentType = GetContentType(stream.FileExtension);
+            //blob.Properties.ContentDisposition = "attachment; filename=" + stream.FileName;
+            //await blob.SetPropertiesAsync(); //Unneccesary?
+            
             return blob.Uri;
         }
 
