@@ -22,6 +22,8 @@ namespace Application.IntegrationTests.Application.CommandTests.EmployerTests
         [Test]
         public async Task ShouldDeleteEmployer()
         {
+            await AddAsync(new Employer() { Id = "test", Name = "test435" });
+
             await SendAsync(new DeleteEmployerCommand { Id = "test" });
 
             var type = await FindAsync<Employer>("test");

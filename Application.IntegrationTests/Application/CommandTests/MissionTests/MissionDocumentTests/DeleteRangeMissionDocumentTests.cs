@@ -24,7 +24,12 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
         [Test]
         public async Task ShouldDeleteMissionDocuments()
         {
+            await AddAsync(new Mission() { Id = "test", Address = "test435" });
+
             var ids = new string[] { "test", "test2" };
+
+            await AddAsync(new MissionDocument() { Id = ids[0], MissionId = "test", FileName = "test435" });
+            await AddAsync(new MissionDocument() { Id = ids[1], MissionId = "test", FileName = "test435" });
 
             await SendAsync(new DeleteRangeMissionDocumentCommand { Ids = ids });
 

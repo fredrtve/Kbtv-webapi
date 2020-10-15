@@ -23,6 +23,8 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTypeTests
         [Test]
         public async Task ShouldDeleteMissionType()
         {
+            await AddAsync(new MissionType() { Id = "test", Name = "test435" });
+
             await SendAsync(new DeleteMissionTypeCommand { Id = "test" });
 
             var type = await FindAsync<MissionType>("test");

@@ -22,6 +22,8 @@ namespace Application.IntegrationTests.Application.CommandTests.DocumentTypeTest
         [Test]
         public async Task ShouldDeleteDocumentType()
         {
+            await AddAsync(new DocumentType() { Id = "test", Name = "test435" });
+
             await SendAsync(new DeleteDocumentTypeCommand{Id = "test"});
 
             var type = await FindAsync<DocumentType>("test");

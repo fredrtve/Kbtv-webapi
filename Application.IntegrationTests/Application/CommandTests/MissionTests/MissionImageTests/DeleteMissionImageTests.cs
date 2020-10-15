@@ -1,4 +1,5 @@
 ﻿using BjBygg.Application.Application.Commands.EmployerCommands;
+using BjBygg.Application.Application.Commands.MissionCommands.Images;
 using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core.Entities;
 using FluentAssertions;
@@ -12,7 +13,7 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
     public class DeleteMissionImageTests : AppTestBase
     {
         [Test]
-        public void ShouldNotRequireValidEmployerId()
+        public void ShouldNotRequireValidMissionImageId()
         {
             var command = new DeleteEmployerCommand { Id = "notvalid" };
 
@@ -21,11 +22,14 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
         }
 
         [Test]
-        public async Task ShouldDeleteEmployer()
+        public async Task ShouldDeleteMissionImage()
         {
-            await SendAsync(new DeleteEmployerCommand { Id = "test" });
+            await AddAsync(new Mission() { Id = "test", Address = "test435" });
+            await AddAsync(new MissionImage() { Id = "test", MissionId = "test", FileName = "test435" });
 
-            var entity = await FindAsync<Employer>("test");
+            await SendAsync(new DeleteMissionImageCommand { Id = "test" });
+
+            var entity = await FindAsync<MissionImage>("test");
 
             entity.Should().BeNull();
         }

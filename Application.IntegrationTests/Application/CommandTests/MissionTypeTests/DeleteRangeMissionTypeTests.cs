@@ -26,6 +26,9 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTypeTests
         {
             var ids = new string[] { "test", "test2" };
 
+            await AddAsync(new MissionType() { Id = ids[0], Name = "test435" });
+            await AddAsync(new MissionType() { Id = ids[1], Name = "test435" });
+
             await SendAsync(new DeleteRangeMissionTypeCommand { Ids = ids });
 
             var types = (await GetAllAsync<MissionType>())
