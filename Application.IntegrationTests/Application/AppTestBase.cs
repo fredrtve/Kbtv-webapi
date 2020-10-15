@@ -8,9 +8,9 @@ namespace Application.IntegrationTests.Application
     public class AppTestBase
     {
         [SetUp]
-        public async Task TestSetUp()
+        public void TestSetUp()
         {
-            await EnsureAppDbAsync();
+            EnsureAppDbAsync();
         }
     }
 }

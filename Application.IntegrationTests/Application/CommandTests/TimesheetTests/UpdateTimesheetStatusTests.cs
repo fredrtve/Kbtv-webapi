@@ -34,6 +34,9 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
         public async Task ShouldUpdateTimesheetStatus()
         {
             await RunAsDefaultUserAsync(Roles.Leader);
+
+            await AddAsync(new Mission() { Id = "test", Address = "test" });
+
             var command = new CreateTimesheetCommand()
             {
                 Id = "test",

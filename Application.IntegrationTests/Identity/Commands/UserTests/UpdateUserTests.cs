@@ -16,8 +16,10 @@ namespace Application.IntegrationTests.Identity.Commands.UserTests
     public class UpdateUserTests : IdentityTestBase
     {
         [Test]
-        public void ShouldRequireValidUserName()
+        public async Task ShouldRequireValidUserName()
         {
+            await RunAsDefaultUserAsync(Roles.Leader);
+
             var command = new UpdateUserCommand{ UserName = "asdasd" };
 
             FluentActions.Invoking(() =>

@@ -32,6 +32,8 @@ namespace Application.IntegrationTests.Application.CommandTests.EmployerTests
         {
             var user = await RunAsDefaultUserAsync(Roles.Leader);
 
+            await AddAsync(new Employer() { Id = "test", Name = "Test" });
+
             var command = new UpdateEmployerCommand
             {
                 Id = "test",

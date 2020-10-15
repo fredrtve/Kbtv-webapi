@@ -6,8 +6,10 @@ using BjBygg.Application.Identity.Common.Interfaces;
 using BjBygg.Application.Identity.Common.Models;
 using BjBygg.Application.Identity.Queries.UserQueries.UserByUserName;
 using BjBygg.WebApi;
+using CleanArchitecture.Infrastructure.Api.FileStorage;
 using CleanArchitecture.Infrastructure.Data;
 using CleanArchitecture.Infrastructure.Identity;
+using CleanArchitecture.Infrastructure.Services;
 using CleanArchitecture.SharedKernel;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
@@ -82,6 +84,8 @@ namespace Application.IntegrationTests.Application
 
             MockMailService(services);
 
+            MockFileZipper(services);
+
             _scopeFactory = services.BuildServiceProvider().GetService<IServiceScopeFactory>();
 
             await EnsureAppIdentityDb();
@@ -97,15 +101,16 @@ namespace Application.IntegrationTests.Application
             var roleManager = scope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
             await TestIdentitySeeder.SeedRolesAsync(roleManager);
         }
-        public static async Task EnsureAppDbAsync()
+        public static void EnsureAppDbAsync()
         {
             using var scope = _scopeFactory.CreateScope();
 
             var context = scope.ServiceProvider.GetService<IAppDbContext>();
             context.Database.EnsureDeleted();
             context.Database.Migrate();
-            var seederCount = scope.ServiceProvider.GetService<TestSeederCount>();
-            await TestSeeder.SeedAllAsync(context, seederCount);
+            //var seederCount = scope.ServiceProvider.GetService<TestSeederCount>();
+            //var idGenerator = scope.ServiceProvider.GetService<IIdGenerator>();
+            //await AppDbContextSeed.SeedAllAsync(context, idGenerator, new SeederCount(5,5,5,5,5,5,5,5));
         }
         public static Dictionary<Type, int> GetSeederCount()
         {
@@ -128,17 +133,17 @@ namespace Application.IntegrationTests.Application
 
             return await mediator.Send(new UserByUserNameQuery() { UserName = userName });
         }
-        public static async Task<UserDto> RunAsDefaultUserAsync(string role)
+        public static async Task<UserDto> RunAsDefaultUserAsync(string role, string employerId = null)
         {
-            return await RunAsUserAsync(role, "test1234", role);
+            return await RunAsUserAsync(role, "test1234", role, employerId);
         }
-        public static async Task<UserDto> RunAsUserAsync(string userName, string password, string role)
+        public static async Task<UserDto> RunAsUserAsync(string userName, string password, string role, string employerId = null)
         {
             using var scope = _scopeFactory.CreateScope();
 
             var userManager = scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
 
-            var user = new ApplicationUser { UserName = userName, Email = userName, EmployerId = "test" };
+            var user = new ApplicationUser { UserName = userName, Email = userName, EmployerId = employerId };
 
             var result = await userManager.CreateAsync(user, password);
 
@@ -177,6 +182,14 @@ namespace Application.IntegrationTests.Application
 
             return await context.Set<TEntity>().ToListAsync();
         }
+
+        public static async Task AddSqlRaw(string rawSql)
+        {
+            using var scope = _scopeFactory.CreateScope();
+            var context = scope.ServiceProvider.GetService<IAppDbContext>();
+            await context.Database.ExecuteSqlRawAsync(rawSql);
+        }
+
         private static ServiceCollection MockBlobStorage(ServiceCollection services)
         {
             var blobStorageServiceDescriptor = services.FirstOrDefault(d =>
@@ -196,17 +209,6 @@ namespace Application.IntegrationTests.Application
 
             return services;
         }
-        private static ServiceCollection MockMailService(ServiceCollection services)
-        {
-            var mailServiceDescriptor = services.FirstOrDefault(d =>
-                d.ServiceType == typeof(IMailService));
-
-            services.Remove(mailServiceDescriptor);
-
-            services.AddTransient(provider => Mock.Of<IMailService>());
-
-            return services;
-        }
         private static IEnumerable<Uri> GenerateUriArray(int count)
         {
             var uriArray = new Uri[count];
@@ -218,6 +220,19 @@ namespace Application.IntegrationTests.Application
 
             return uriArray;
         }
+
+        private static ServiceCollection MockMailService(ServiceCollection services)
+        {
+            var mailServiceDescriptor = services.FirstOrDefault(d =>
+                d.ServiceType == typeof(IMailService));
+
+            services.Remove(mailServiceDescriptor);
+
+            services.AddTransient(provider => Mock.Of<IMailService>());
+
+            return services;
+        }
+
         private static ServiceCollection MockUserService(ServiceCollection services)
         {
             var currentUserServiceDescriptor = services.FirstOrDefault(d =>
@@ -230,6 +245,19 @@ namespace Application.IntegrationTests.Application
 
             return services;
         }
+        private static ServiceCollection MockFileZipper(ServiceCollection services)
+        {
+            var currentUserServiceDescriptor = services.FirstOrDefault(d =>
+                d.ServiceType == typeof(IFileZipper));
+
+            services.Remove(currentUserServiceDescriptor);
+
+            services.AddTransient(provider =>
+                Mock.Of<IFileZipper>());
+
+            return services;
+        }
+
         [OneTimeTearDown]
         public void RunAfterAnyTests()
         {

@@ -16,8 +16,9 @@ namespace Application.IntegrationTests.Identity.Commands.InboundEmailPasswordTes
     public class DeleteRangeInboundEmailPasswordTests : IdentityTestBase
     {
         [Test]
-        public void ShouldNotRequireValidInboundEmailPasswordId()
+        public async Task ShouldNotRequireValidInboundEmailPasswordId()
         {
+            var user = await RunAsDefaultUserAsync(Roles.Leader);
             var command = new DeleteRangeInboundEmailPasswordCommand { Ids = new string[] { "notvalid", "notvalid2" } };
 
             FluentActions.Invoking(() =>
@@ -27,8 +28,12 @@ namespace Application.IntegrationTests.Identity.Commands.InboundEmailPasswordTes
         [Test]
         public async Task ShouldDeleteInboundEmailPasswords()
         {
+            var user = await RunAsDefaultUserAsync(Roles.Leader);
             var ids = new string[] { "test", "test2" };
 
+            await AddAsync(new InboundEmailPassword() { Id = ids[0], Password = "test435" });
+            await AddAsync(new InboundEmailPassword() { Id = ids[1], Password = "test22435" });
+   
             await SendAsync(new DeleteRangeInboundEmailPasswordCommand { Ids = ids });
 
             var types = (await GetAllAsync<InboundEmailPassword>())

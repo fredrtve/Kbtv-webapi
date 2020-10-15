@@ -14,12 +14,14 @@ namespace Application.IntegrationTests.Identity.Commands.UserTests
     public class DeleteUserTests : IdentityTestBase
     {
         [Test]
-        public void ShouldRequireValidUserName()
+        public async Task ShouldNotRequireValidUserName()
         {
+            await RunAsDefaultUserAsync(Roles.Leader);
+
             var command = new DeleteUserCommand { UserName = "asdadas" };
 
             FluentActions.Invoking(() =>
-                SendAsync(command)).Should().Throw<EntityNotFoundException>();
+                SendAsync(command)).Should().NotThrow();
         }
 
         [Test]
@@ -37,6 +39,7 @@ namespace Application.IntegrationTests.Identity.Commands.UserTests
         public async Task ShouldDeleteUser()
         {
             await RunAsDefaultUserAsync(Roles.Employee);
+            await RunAsDefaultUserAsync(Roles.Leader);
 
             var command = new DeleteUserCommand { UserName = Roles.Employee };
 

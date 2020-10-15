@@ -1,4 +1,5 @@
-﻿using BjBygg.Application.Identity.Commands.InboundEmailPasswordCommands.Create;
+﻿using BjBygg.Application.Common;
+using BjBygg.Application.Identity.Commands.InboundEmailPasswordCommands.Create;
 using BjBygg.Application.Identity.Queries;
 using FluentAssertions;
 using NUnit.Framework;
@@ -15,8 +16,10 @@ namespace Application.IntegrationTests.Identity.Queries
         [Test]
         public async Task ShouldReturnAllInboundEmailPasswords()
         {
-            await SendAsync(new CreateInboundEmailPasswordCommand{ Password = "test1234" });
-            await SendAsync(new CreateInboundEmailPasswordCommand{ Password = "test2454" });
+            await RunAsDefaultUserAsync(Roles.Leader);
+
+            await SendAsync(new CreateInboundEmailPasswordCommand{ Id = "test",  Password = "test1234" });
+            await SendAsync(new CreateInboundEmailPasswordCommand{ Id = "test2", Password = "test2454" });
 
             var result = await SendAsync(new InboundEmailPasswordListQuery());
 

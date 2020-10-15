@@ -17,8 +17,10 @@ namespace Application.IntegrationTests.Identity.Commands.InboundEmailPasswordTes
     public class CreateInboundEmailPasswordTests : IdentityTestBase
     {
         [Test]
-        public void ShouldRequireMinimumFields()
+        public async Task ShouldRequireMinimumFields()
         {
+            var user = await RunAsDefaultUserAsync(Roles.Leader);
+
             var command = new CreateInboundEmailPasswordCommand();
 
             FluentActions.Invoking(() =>

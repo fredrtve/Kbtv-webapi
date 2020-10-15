@@ -17,22 +17,22 @@ namespace Application.IntegrationTests.Application.CommandTests.DocumentTypeTest
         {
             var command = new DeleteRangeDocumentTypeCommand { Ids = new string[] { "notvalid", "notvalid1" } };
         
-
             FluentActions.Invoking(() =>
-                SendAsync(command)).Should().Throw<EntityNotFoundException>();
+                SendAsync(command)).Should().NotThrow();
         }
 
         [Test]
         public async Task ShouldDeleteDocumentTypes()
         {
             var ids = new string[] { "test", "test1" };
+            await AddAsync(new DocumentType() { Id = ids[0], Name = "test1" });
+            await AddAsync(new DocumentType() { Id = ids[1], Name = "test2" });
 
             await SendAsync(new DeleteRangeDocumentTypeCommand { Ids = ids });
 
-            var types = (await GetAllAsync<DocumentType>())
-                .Where(x => ids.Contains(x.Id));
+            var typeCount = (await GetAllAsync<DocumentType>()).Count;
 
-            types.Should().BeEmpty();
+            typeCount.Should().Be(0);
         }
     }
 }

@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 namespace Application.IntegrationTests.Application.CommandTests.MissionTests
 {
     using static AppTesting;
-    //5 x all entities, created 2 yrs apart
+
     public class CreateMissionTests : AppTestBase
     {
         [Test]
@@ -34,12 +34,14 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
         {
             var user = await RunAsDefaultUserAsync(Roles.Leader);
 
+            await AddAsync(new MissionType() { Id = "test", Name = "test" });
+            await AddAsync(new Employer() { Id = "test", Name = "test" });
+
             var command = new CreateMissionCommand() {
                 Id = "test",
                 Address = "Test",
-                MissionType = new MissionTypeDto() { Id = "test" },
-                Employer = new EmployerDto() { Id = "test" },
-                Image = new BasicFileStream(Encoding.UTF8.GetBytes("testimg"), ".img")
+                MissionTypeId = "test",
+                EmployerId = "test"
             };
 
             await SendAsync(command);
@@ -49,9 +51,8 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
             dbEntity.Should().NotBeNull();
             dbEntity.Address.Should().Be(command.Address);
             dbEntity.CreatedBy.Should().Be(user.UserName);
-            dbEntity.MissionTypeId.Should().Be(command.MissionType.Id);
-            dbEntity.FileUri.Should().BeOfType(typeof(Uri));
-            dbEntity.EmployerId.Should().Be(command.Employer.Id);
+            dbEntity.MissionTypeId.Should().Be(command.MissionTypeId);
+            dbEntity.EmployerId.Should().Be(command.EmployerId);
             dbEntity.UpdatedAt.Should().BeCloseTo(DateTimeHelper.Now(), 10000);
         }
 

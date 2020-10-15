@@ -27,7 +27,7 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
         public async Task ShouldCreateMissionNote()
         {
             var user = await RunAsDefaultUserAsync(Roles.Leader);
-
+            await AddAsync(new Mission() { Id = "test", Address = "test" });
             var command = new CreateMissionNoteCommand() 
             { 
                 Id = "test",

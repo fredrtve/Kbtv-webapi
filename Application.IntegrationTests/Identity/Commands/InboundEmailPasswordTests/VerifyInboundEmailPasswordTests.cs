@@ -1,4 +1,5 @@
-﻿using BjBygg.Application.Common.Exceptions;
+﻿using BjBygg.Application.Common;
+using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Identity.Commands.InboundEmailPasswordCommands.Create;
 using BjBygg.Application.Identity.Commands.InboundEmailPasswordCommands.Verify;
 using FluentAssertions;
@@ -25,7 +26,9 @@ namespace Application.IntegrationTests.Identity.Commands.InboundEmailPasswordTes
         [Test]
         public async Task ShouldReturnTrueIfPasswordMatchAnyInboundEmailPassword()
         {
-            var createCommand = new CreateInboundEmailPasswordCommand() { Password = "Test" };
+            await RunAsDefaultUserAsync(Roles.Leader);
+
+            var createCommand = new CreateInboundEmailPasswordCommand() { Id = "test", Password = "Test" };
 
             await SendAsync(createCommand);
 
@@ -38,7 +41,9 @@ namespace Application.IntegrationTests.Identity.Commands.InboundEmailPasswordTes
         [Test]
         public async Task ShouldReturnFalseIfPasswordDoesNotMatchAnyInboundEmailPassword()
         {
-            await SendAsync(new CreateInboundEmailPasswordCommand() { Password = "Test" });
+            await RunAsDefaultUserAsync(Roles.Leader);
+
+            await SendAsync(new CreateInboundEmailPasswordCommand() { Id = "test", Password = "Test" });
 
             var result =
                 await SendAsync(new VerifyInboundEmailPasswordCommand() { Password = "Test2" });

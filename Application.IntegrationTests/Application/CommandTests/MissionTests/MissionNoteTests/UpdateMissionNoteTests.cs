@@ -33,6 +33,9 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
         {
             var user = await RunAsDefaultUserAsync(Roles.Leader);
 
+            await AddAsync(new Mission() { Id = "test", Address = "test" });
+            await AddAsync(new MissionNote() { Id = "test", Content = "test", MissionId = "test" });
+
             var command = new UpdateMissionNoteCommand
             {
                 Id = "test",

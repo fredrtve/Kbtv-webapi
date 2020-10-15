@@ -37,15 +37,18 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
         {
             var user = await RunAsDefaultUserAsync(Roles.Leader);
 
+            await AddAsync(new MissionType() { Id = "test", Name = "test" });
+            await AddAsync(new Employer() { Id = "test", Name = "test" });
+            await AddAsync(new Mission() { Id = "test", Address = "test", EmployerId = "test" });
+
             var command = new UpdateMissionCommand
             {
                 Id = "test",
                 Address = "Updated Address",
                 PhoneNumber = "92278483",
                 Description = "asdasd",
-                MissionType = new MissionTypeDto() { Id = "test" }, //Change type
-                Employer = new EmployerDto() { Id = null }, //Set employer to null
-                //Image = new BasicFileStream(Encoding.UTF8.GetBytes("testimg"), ".img")
+                MissionTypeId = "test", //Change type
+                EmployerId = null, //Set employer to null
             };
 
             await SendAsync(command);
@@ -54,9 +57,8 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
 
             dbMission.Address.Should().Be(command.Address);
             dbMission.PhoneNumber.Should().Be(command.PhoneNumber);
-            dbMission.MissionTypeId.Should().Be(command.MissionType.Id);
+            dbMission.MissionTypeId.Should().Be(command.MissionTypeId);
             dbMission.EmployerId.Should().Be(null);
-            //dbMission.FileUri.Should().BeOfType(typeof(Uri));
             dbMission.UpdatedBy.Should().NotBeNull();
             dbMission.UpdatedBy.Should().Be(user.UserName);
             dbMission.UpdatedAt.Should().BeCloseTo(DateTimeHelper.Now(), 1000);
@@ -65,6 +67,8 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
         [Test]
         public async Task ShouldUpdateMissionWithNewEmployerAndMissionType()
         {
+            await AddAsync(new Mission() { Id = "test", Address = "test" });
+
             var command = new UpdateMissionCommand()
             {
                 Id = "test",

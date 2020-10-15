@@ -32,11 +32,16 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
         {
             var user = await RunAsDefaultUserAsync(Roles.Leader);
 
+            await AddAsync(new Mission() { Id = "test", Address = "test" });
+            await AddAsync(new DocumentType() { Id = "test", Name = "test" });
+
+            var fileName = "test.pdf";
+
             var command = new UploadMissionDocumentCommand{ 
                 Id = "test",
                 MissionId = "test", 
-                DocumentType = new DocumentTypeDto { Id = "test" },
-                File = new BasicFileStream(Encoding.UTF8.GetBytes("testdocument"), "test.pdf")
+                DocumentTypeId = "test",
+                File = new BasicFileStream(Encoding.UTF8.GetBytes("testdocument"), fileName)
             };
 
             await SendAsync(command);
@@ -45,8 +50,8 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
 
             dbEntity.Should().NotBeNull();
             dbEntity.MissionId.Should().Be(command.MissionId);
-            dbEntity.DocumentTypeId.Should().Be(command.DocumentType.Id);
-            dbEntity.FileUri.Should().BeOfType<Uri>();
+            dbEntity.DocumentTypeId.Should().Be(command.DocumentTypeId);
+            dbEntity.FileName.Should().Be(fileName);
             dbEntity.CreatedBy.Should().Be(user.UserName);
             dbEntity.UpdatedAt.Should().BeCloseTo(DateTimeHelper.Now(), 10000);
         }
@@ -55,6 +60,8 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
         public async Task ShouldCreateMissionDocumentWhenFileUploadedWithNewDocumentType()
         {
             var user = await RunAsDefaultUserAsync(Roles.Leader);
+
+            await AddAsync(new Mission() { Id = "test", Address = "test" });
 
             var command = new UploadMissionDocumentCommand
             {

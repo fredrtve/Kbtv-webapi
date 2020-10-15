@@ -34,6 +34,7 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
         public async Task ShouldThrowBadRequestExceptionIfTimesheetStatusNotOpen()
         {
             await RunAsDefaultUserAsync(Roles.Leader);
+            await AddAsync(new Mission() { Id = "test", Address = "test" });
             var command = new CreateTimesheetCommand()
             {
                 Id = "test",
@@ -57,6 +58,7 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
         public async Task ShouldThrowForbiddenExceptionIfTimesheetNotBelongingToUser()
         {
             await RunAsDefaultUserAsync(Roles.Leader);
+            await AddAsync(new Mission() { Id = "test", Address = "test" });
             var command = new CreateTimesheetCommand()
             {
                 Id = "test",
@@ -80,6 +82,15 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
         public async Task ShouldUpdateTimesheet()
         {
             var user = await RunAsDefaultUserAsync(Roles.Leader);
+            await AddAsync(new Mission() { Id = "test", Address = "test" });
+            await SendAsync(new CreateTimesheetCommand()
+            {
+                Id = "test",
+                MissionId = "test",
+                Comment = "test",
+                StartTime = 111,
+                EndTime = 112
+            });
 
             var endDate = DateTimeHelper.Now();
             var totalHours = 4;
@@ -87,9 +98,10 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
             var command = new UpdateTimesheetCommand
             {
                 Id = "test",
-                Comment = "test",
-                StartTime = DateTimeHelper.ConvertDateToEpoch(endDate.AddHours(-totalHours)),
-                EndTime = DateTimeHelper.ConvertDateToEpoch(endDate)
+                Comment = "test2",
+                MissionId = "test",
+                StartTime = DateTimeHelper.ConvertDateToEpoch(endDate.AddHours(-totalHours)) * 1000,
+                EndTime = DateTimeHelper.ConvertDateToEpoch(endDate) * 1000
             };
 
             await SendAsync(command);

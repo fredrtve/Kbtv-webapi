@@ -27,7 +27,7 @@ namespace Application.IntegrationTests.Application.CommandTests.EmployerTests
         {
             var user = await RunAsDefaultUserAsync(Roles.Leader);
 
-            var command = new CreateEmployerCommand() { Name = "Test" };
+            var command = new CreateEmployerCommand() { Id = "test", Name = "Test" };
 
             await SendAsync(command);
 

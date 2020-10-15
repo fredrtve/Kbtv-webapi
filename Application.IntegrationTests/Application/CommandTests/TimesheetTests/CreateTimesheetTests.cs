@@ -30,12 +30,15 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
 
             var endDate = DateTimeHelper.Now();
             var totalHours = 4;
-            
-            var command = new CreateTimesheetCommand() { 
+
+            await AddAsync(new Mission() { Id = "test", Address = "test" });
+
+            var command = new CreateTimesheetCommand() {
+                Id = "test",
                 MissionId = "test", 
                 Comment = "test", 
-                StartTime = DateTimeHelper.ConvertDateToEpoch(endDate.AddHours(-totalHours)),
-                EndTime = DateTimeHelper.ConvertDateToEpoch(endDate)
+                StartTime = DateTimeHelper.ConvertDateToEpoch(endDate.AddHours(-totalHours)) * 1000,
+                EndTime = DateTimeHelper.ConvertDateToEpoch(endDate) * 1000
             };
 
             await SendAsync(command);
@@ -43,6 +46,7 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
             var dbEntity = await FindAsync<Timesheet>("test");
 
             dbEntity.Should().NotBeNull();
+            dbEntity.Id.Should().Be(command.Id);
             dbEntity.Comment.Should().Be(command.Comment);
             dbEntity.StartTime.Should().BeCloseTo(endDate.AddHours(-totalHours), 1000);
             dbEntity.EndTime.Should().BeCloseTo(endDate, 1000);

@@ -15,30 +15,15 @@ namespace Application.IntegrationTests.Identity.Queries
     {
         [Test]
         public async Task ShouldReturnAllUsersWithRole()
-        {
-            var baseUserCommand = new CreateUserCommand()
-            {
-                UserName = "UserName",
-                FirstName = "FirstName",
-                LastName = "LastName",
-                PhoneNumber = "PhoneNumber",
-                Email = "email@test.com",
-                Role = Roles.Employee,
-                Password = "Password",
-            };
-
-            await SendAsync(baseUserCommand);
-
-            baseUserCommand.UserName = "UserName2";
-
-            await SendAsync(baseUserCommand);
+        {      
+            await RunAsDefaultUserAsync(Roles.Employee);
+            await RunAsDefaultUserAsync(Roles.Employee); 
+            await RunAsDefaultUserAsync(Roles.Leader);
 
             var list = await SendAsync(new UserListQuery());
 
             list.Should().NotBeNull();
             list.Should().HaveCount(2);
-            list[0].Role.Should().Be(baseUserCommand.Role);
-            list[1].Role.Should().Be(baseUserCommand.Role);
         }
     }
 }

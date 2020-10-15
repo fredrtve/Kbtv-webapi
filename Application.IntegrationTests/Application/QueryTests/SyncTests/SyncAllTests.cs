@@ -2,6 +2,7 @@
 using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core;
+using CleanArchitecture.Core.Entities;
 using FluentAssertions;
 using NUnit.Framework;
 using System;
@@ -15,19 +16,27 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
     public class SyncAllTests : AppTestBase
     {
         [Test]
+
         public async Task ShouldReturnEntities()
         {
             await RunAsDefaultUserAsync(Roles.Leader);
+
+            var dateBeforeSync = DateTime.Now.AddYears(-4).ToString("yyyy-MM-dd HH:mm:ss");
+            await AddSqlRaw("INSERT INTO Missions (Id, Address, Deleted, CreatedAt, UpdatedAt) " +
+                $"VALUES ('testRaw','TestAddress', 0, '{dateBeforeSync}', '{dateBeforeSync}')");
+
+            await AddSyncEntities();
+
             var result = await SendAsync(new SyncAllQuery() { InitialNumberOfMonths = 36 });
 
-            result.MissionSync.Entities.Should().HaveCount(2); //Min date
-            result.MissionImageSync.Entities.Should().HaveCount(2); //Min date
-            result.MissionNoteSync.Entities.Should().HaveCount(2); //Min date
-            result.MissionDocumentSync.Entities.Should().HaveCount(2); //Min date
-            result.MissionTypeSync.Entities.Should().HaveCount(5);
-            result.EmployerSync.Entities.Should().HaveCount(5);
-            result.DocumentTypeSync.Entities.Should().HaveCount(5);
-            result.UserTimesheetSync.Entities.Should().HaveCount(4); //User spesific & min date
+            result.MissionSync.Entities.Should().HaveCount(1); //Not include raw add
+            result.MissionImageSync.Entities.Should().HaveCount(1); //Min date
+            result.MissionNoteSync.Entities.Should().HaveCount(1); //Min date
+            result.MissionDocumentSync.Entities.Should().HaveCount(1); //Min date
+            result.MissionTypeSync.Entities.Should().HaveCount(1);
+            result.EmployerSync.Entities.Should().HaveCount(1);
+            result.DocumentTypeSync.Entities.Should().HaveCount(1);
+            result.UserTimesheetSync.Entities.Should().HaveCount(1); //User spesific & min date
         }
 
         [Test]
@@ -35,9 +44,11 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
         {
             await RunAsDefaultUserAsync(Roles.Leader);
 
-            var timestamp1 = DateTimeHelper.ConvertDateToEpoch(DateTimeHelper.Now().AddYears(-1).AddMinutes(-1));
+            var timestamp1 = DateTimeHelper.ConvertDateToEpoch(DateTimeHelper.Now().AddMinutes(-10));
 
-            var timestamp2 = DateTimeHelper.ConvertDateToEpoch(DateTimeHelper.Now().AddYears(-2).AddMinutes(-1));
+            var timestamp2 = DateTimeHelper.ConvertDateToEpoch(DateTimeHelper.Now().AddMinutes(10));
+
+            await AddSyncEntities();
 
             var result = await SendAsync(new SyncAllQuery()
             {
@@ -56,10 +67,10 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
             result.MissionImageSync.Entities.Should().HaveCount(1);
             result.MissionNoteSync.Entities.Should().HaveCount(1);
             result.MissionDocumentSync.Entities.Should().HaveCount(1);
-            result.MissionTypeSync.Entities.Should().HaveCount(2);
-            result.EmployerSync.Entities.Should().HaveCount(2);
-            result.DocumentTypeSync.Entities.Should().HaveCount(2);
-            result.UserTimesheetSync.Entities.Should().HaveCount(4);
+            result.MissionTypeSync.Entities.Should().HaveCount(0);
+            result.EmployerSync.Entities.Should().HaveCount(0);
+            result.DocumentTypeSync.Entities.Should().HaveCount(0);
+            result.UserTimesheetSync.Entities.Should().HaveCount(0);
         }
 
         [Test]
@@ -82,7 +93,19 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
         [Test]
         public async Task ShouldReturnEmployerSpesificResourcesIfUserIsEmployer()
         {
-            await RunAsDefaultUserAsync(Roles.Employer);
+            await AddAsync(new Employer() { Id = "test", Name = "test" });
+           
+            await RunAsDefaultUserAsync(Roles.Employer, "test");
+
+            await AddAsync(new Employer() { Id = "test2", Name = "test2" });
+            await AddAsync(new Mission() { Id = "test2", Address = "test", EmployerId = "test2" });
+
+            await AddAsync(new Mission() { Id = "test", Address = "test", EmployerId = "test" });
+            await AddAsync(new MissionImage() { Id = "test", MissionId = "test", FileName = "test.jpg" });
+            await AddAsync(new MissionNote() { Id = "test", MissionId = "test", Content = "test" });
+            await AddAsync(new MissionDocument() { Id = "test", MissionId = "test", FileName = "test.jpg" });
+            await AddAsync(new MissionType() { Id = "test", Name = "test2" });
+           
 
             var result = await SendAsync(new SyncAllQuery() { });
 
@@ -91,6 +114,26 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
             result.MissionNoteSync.Entities.Should().HaveCount(1); 
             result.MissionDocumentSync.Entities.Should().HaveCount(1); 
             result.EmployerSync.Entities.Should().HaveCount(1); //Only current employer should be returned
+        }
+
+        private static async Task AddSyncEntities()
+        {
+            await AddAsync(new Mission() { Id = "test", Address = "test" });
+            await AddAsync(new MissionImage() { Id = "test", MissionId = "test", FileName = "test.jpg" });
+            await AddAsync(new MissionNote() { Id = "test", MissionId = "test", Content = "test" });
+            await AddAsync(new MissionDocument() { Id = "test", MissionId = "test", FileName = "test.jpg" });
+            await AddAsync(new MissionType() { Id = "test", Name = "test2" });
+            await AddAsync(new Employer() { Id = "test", Name = "test2" });
+            await AddAsync(new DocumentType() { Id = "test", Name = "test2" });
+            await AddAsync(new Timesheet()
+            {
+                Id = "test",
+                MissionId = "test",
+                StartTime = DateTime.Now,
+                EndTime = DateTime.Now.AddHours(4),
+                Comment = "asdfd",
+                UserName = Roles.Leader
+            });
         }
     }
 }

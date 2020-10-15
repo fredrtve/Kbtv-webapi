@@ -30,6 +30,8 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
         {
             await RunAsDefaultUserAsync(Roles.Leader);
 
+            await AddAsync(new Mission() { Id = "test", Address = "test" });
+
             var command = new CreateTimesheetCommand()
             {
                 Id = "test",
@@ -54,6 +56,8 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
         public async Task ShouldThrowBadRequestExceptionIfTimesheetStatusNotOpen()
         {
             await RunAsDefaultUserAsync(Roles.Employee);
+
+            await AddAsync(new Mission() { Id = "test", Address = "test" });
 
             var command = new CreateTimesheetCommand()
             {
@@ -82,6 +86,9 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
         public async Task ShouldDeleteTimesheetNotBelongingToUserIfUserIsLeader()
         {
             await RunAsDefaultUserAsync(Roles.Management);
+
+            await AddAsync(new Mission() { Id = "test", Address = "test" });
+
             var command = new CreateTimesheetCommand()
             {
                 Id = "test",
@@ -106,6 +113,9 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
         public async Task ShouldThrowForbiddenExceptionIfTimesheetNotBelongingToUser()
         {
             await RunAsDefaultUserAsync(Roles.Management);
+
+            await AddAsync(new Mission() { Id = "test", Address = "test" });
+
             var command = new CreateTimesheetCommand()
             {
                 Id = "test",
@@ -128,6 +138,9 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
         public async Task ShouldDeleteTimesheet()
         {
             await RunAsDefaultUserAsync(Roles.Employee);
+
+            await AddAsync(new Mission() { Id = "test", Address = "test" });
+
             var command = new CreateTimesheetCommand()
             {
                 Id = "test",

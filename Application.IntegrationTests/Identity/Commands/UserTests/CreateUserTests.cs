@@ -18,8 +18,10 @@ namespace Application.IntegrationTests.Identity.Commands.UserTests
     public class CreateUserTests : IdentityTestBase
     {
         [Test]
-        public void ShouldRequireMinimumFields()
+        public async Task ShouldRequireMinimumFields()
         {
+            await RunAsDefaultUserAsync(Roles.Leader);
+
             var command = new CreateUserCommand();
 
             FluentActions.Invoking(() =>
@@ -27,8 +29,10 @@ namespace Application.IntegrationTests.Identity.Commands.UserTests
         }
 
         [Test]
-        public void ShouldThrowForbiddenExceptionIfCreatingUserWithLeaderRole()
+        public async Task ShouldThrowForbiddenExceptionIfCreatingUserWithLeaderRole()
         {
+            await RunAsDefaultUserAsync(Roles.Leader);
+
             var command = new CreateUserCommand()
             {
                 UserName = "UserName",
@@ -45,8 +49,10 @@ namespace Application.IntegrationTests.Identity.Commands.UserTests
         }
 
         [Test]
-        public void ShouldRequireValidRole()
+        public async Task ShouldRequireValidRole()
         {
+            await RunAsDefaultUserAsync(Roles.Leader);
+
             var command = new CreateUserCommand() 
             {
                 UserName = "UserName",

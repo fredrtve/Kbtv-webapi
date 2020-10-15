@@ -32,6 +32,8 @@ namespace Application.IntegrationTests.Application.CommandTests.DocumentTypeTest
         {
             var user = await RunAsDefaultUserAsync(Roles.Leader);
 
+            await AddAsync(new DocumentType() { Id = "test", Name = "test" });
+
             var command = new UpdateDocumentTypeCommand
             {
                 Id = "test",

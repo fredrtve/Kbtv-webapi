@@ -23,6 +23,8 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
         [Test]
         public async Task ShouldDeleteMission()
         {
+            await AddAsync(new Mission() { Id = "test", Address = "testaddress23" });
+
             await SendAsync(new DeleteMissionCommand { Id = "test" });
 
             var type = await FindAsync<Mission>("test");

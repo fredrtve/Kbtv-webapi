@@ -18,7 +18,7 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
             var command = new ToggleMissionFinishCommand{ Id = "notvalid" };
 
             FluentActions.Invoking(() =>
-                SendAsync(command)).Should().NotThrow();
+                SendAsync(command)).Should().Throw<EntityNotFoundException>();
         }
 
         [Test]
@@ -26,18 +26,20 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
         {
             var user = await RunAsDefaultUserAsync(Roles.Leader);
 
-            var entityBefore = await FindAsync<Mission>("test");
+            var newMission = new Mission() { Id = "test", Address = "test", Finished = false };
+
+            await AddAsync(newMission);
 
             var command = new ToggleMissionFinishCommand{ Id = "test" };
 
             await SendAsync(command);
 
-            var entityAfter = await FindAsync<Mission>("test");
+            var updatedMission = await FindAsync<Mission>("test");
 
-            entityAfter.Finished.Should().Be(!entityBefore.Finished);
-            entityAfter.UpdatedBy.Should().NotBeNull();
-            entityAfter.UpdatedBy.Should().Be(user.UserName);
-            entityAfter.UpdatedAt.Should().BeCloseTo(DateTimeHelper.Now(), 1000);
+            updatedMission.Finished.Should().Be(!newMission.Finished);
+            updatedMission.UpdatedBy.Should().NotBeNull();
+            updatedMission.UpdatedBy.Should().Be(user.UserName);
+            updatedMission.UpdatedAt.Should().BeCloseTo(DateTimeHelper.Now(), 1000);
         }
     }
 }

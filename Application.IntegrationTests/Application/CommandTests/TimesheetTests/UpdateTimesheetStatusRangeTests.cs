@@ -33,6 +33,26 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
         {
             await RunAsDefaultUserAsync(Roles.Leader);
 
+            await AddAsync(new Mission() { Id = "test", Address = "test" });
+
+            await SendAsync(new CreateTimesheetCommand()
+            {
+                Id = "test",
+                MissionId = "test",
+                Comment = "test",
+                StartTime = 111,
+                EndTime = 112
+            });
+
+            await SendAsync(new CreateTimesheetCommand()
+            {
+                Id = "test2",
+                MissionId = "test",
+                Comment = "test",
+                StartTime = 111,
+                EndTime = 112
+            });
+    
             await SendAsync(new UpdateTimesheetStatusRangeCommand
             {
                 Ids = new string[] { "test", "test2" },
