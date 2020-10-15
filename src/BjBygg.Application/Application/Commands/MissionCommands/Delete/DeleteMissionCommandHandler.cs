@@ -21,7 +21,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Delete
         {
             var mission = await _dbContext.Set<Mission>().FindAsync(request.Id);
 
-            if (mission == null) throw new EntityNotFoundException(nameof(Mission), request.Id);
+             if (mission == null) return Unit.Value;
 
             _dbContext.Set<Mission>().Remove(mission);
 

@@ -24,7 +24,7 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Create
         public async Task<Unit> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             //Not allowing new leaders
-            if (request.Role.ToLower() == Roles.Leader) throw new ForbiddenException();
+            if (request.Role == Roles.Leader) throw new ForbiddenException();
 
             if (!Roles.All.Contains(request.Role))
                 throw new EntityNotFoundException(nameof(IdentityRole), request.Role);

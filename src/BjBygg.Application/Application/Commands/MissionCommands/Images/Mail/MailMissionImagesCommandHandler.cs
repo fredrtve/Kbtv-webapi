@@ -21,15 +21,12 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Mail
         private readonly IAppDbContext _dbContext;
         private readonly IMailService _mailService;
         private readonly IFileZipper _fileZipper;
-        private readonly IBlobStorageService _blobStorageService;
 
-        public MailMissionImagesCommandHandler(IAppDbContext dbContext, IMailService mailService, IFileZipper fileZipper, IBlobStorageService blobStorageService)
+        public MailMissionImagesCommandHandler(IAppDbContext dbContext, IMailService mailService, IFileZipper fileZipper)
         {
             _dbContext = dbContext;
             _mailService = mailService;
-
             _fileZipper = fileZipper;
-            _blobStorageService = blobStorageService;
         }
 
         public override async Task<Unit> Handle(MailMissionImagesCommand request, CancellationToken cancellationToken)

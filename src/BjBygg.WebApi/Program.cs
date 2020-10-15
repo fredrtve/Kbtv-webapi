@@ -26,7 +26,7 @@ namespace BjBygg.WebApi
                 //{
                 //    context.Database.EnsureCreated();
                 //    var idGenerator = services.GetService<IIdGenerator>();
-                //    await AppDbContextSeed.SeedAllAsync(context, idGenerator);
+                //    await AppDbContextSeed.SeedAllAsync(context, idGenerator, new SeederCount());
                 //}
 
                 //using (var context = services.GetService<AppIdentityDbContext>())

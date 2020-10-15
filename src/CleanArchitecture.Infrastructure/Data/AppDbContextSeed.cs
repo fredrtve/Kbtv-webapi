@@ -17,10 +17,9 @@ namespace CleanArchitecture.Infrastructure.Data
         private static Dictionary<Type, List<string>> _generatedIds = new Dictionary<Type, List<string>>();
         private static Random rnd = new Random();
 
-        public static async Task SeedAllAsync(IAppDbContext context, IIdGenerator idGenerator)
+        public static async Task SeedAllAsync(IAppDbContext context, IIdGenerator idGenerator, SeederCount seederCount)
         {
             using var ctx = context;
-            var seederCount = new SeederCount();
             await SetEmployersAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(Employer)]);
             await SetMissionTypesAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(MissionType)]);
             await SetDocumentTypesAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(DocumentType)]);
