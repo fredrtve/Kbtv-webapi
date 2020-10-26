@@ -29,6 +29,7 @@
     <PackageReference Update="System.Text.Json" Version="4.7.2" />
     <PackageReference Update="TimeZoneConverter" Version="3.2.0" />
     <PackageReference Update="SixLabors.ImageSharp" Version="1.0.0-beta0007" />
+    <PackageReference Update="SharpZipLib" Version="1.2.0" />
   </ItemGroup>
   
   <ItemGroup Condition="'$(TestProjectMode)' == 'true'">
@@ -53,5 +54,6 @@
     <PackageReference Include="System.Text.Json" Version="4.7.2" />
     <PackageReference Include="TimeZoneConverter" Version="3.2.0" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0007" />
+    <PackageReference Include="SharpZipLib" Version="1.2.0" />
   </ItemGroup>
 </Project>

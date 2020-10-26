@@ -2,8 +2,7 @@
 {
     public enum TimesheetStatus
     {
-        Open,
-        Confirming,
+        Open = 1,
         Confirmed
     }
 }

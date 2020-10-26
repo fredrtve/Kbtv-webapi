@@ -183,7 +183,7 @@ namespace CleanArchitecture.Infrastructure.Data
                 var totalHours = (endDate - startDate).TotalHours;
                 var startDateString = startDate.ToString("yyyy-MM-dd HH:mm:ss");
                 var endDateString = endDate.ToString("yyyy-MM-dd HH:mm:ss");
-                var status = i % 2 == 0 ? 0 : 2;
+                var status = i % 2 == 0 ? 1 : 2;
                 var missionId = GetGeneratedId(typeof(Mission));
                 var userName = users[rnd.Next(0, users.Length)];
                 command = String.Concat(command,
