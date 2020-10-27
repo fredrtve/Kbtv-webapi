@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace BjBygg.Application.Identity.Common.Models
 {
-    public class ApplicationUser : IdentityUser, ITrackable
+    public class ApplicationUser : IdentityUser, ITrackable, IContactable
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

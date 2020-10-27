@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using CleanArchitecture.Core;
+using FluentValidation;
 
 namespace BjBygg.Application.Identity.Commands.UserCommands.NewPassword
 {
@@ -8,7 +9,8 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.NewPassword
         {
             RuleFor(v => v.NewPassword)
                 .NotEmpty()
-                .MinimumLength(7)
+                .MinimumLength(ValidationRules.UserPasswordMinLength)
+                .MaximumLength(ValidationRules.UserPasswordMaxLength)
                 .WithName("Passord");
 
             RuleFor(v => v.UserName)

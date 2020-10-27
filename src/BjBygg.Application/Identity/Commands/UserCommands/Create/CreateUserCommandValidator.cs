@@ -1,4 +1,6 @@
-﻿using FluentValidation;
+﻿using BjBygg.Application.Common.Validation;
+using CleanArchitecture.Core;
+using FluentValidation;
 
 namespace BjBygg.Application.Identity.Commands.UserCommands.Create
 {
@@ -8,27 +10,20 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Create
         {
             RuleFor(v => v.UserName)
                 .NotEmpty()
-                .MaximumLength(45)
+                .MaximumLength(ValidationRules.NameMaxLength)
                 .WithName("Brukernavn");
 
             RuleFor(v => v.FirstName)
                 .NotEmpty()
-                .MaximumLength(45)
+                .MaximumLength(ValidationRules.NameMaxLength)
                 .WithName("Fornavn");
 
             RuleFor(v => v.LastName)
                 .NotEmpty()
-                .MaximumLength(45)
+                .MaximumLength(ValidationRules.NameMaxLength)
                 .WithName("Etternavn");
 
-            RuleFor(v => v.PhoneNumber)
-                .MaximumLength(12)
-                .WithName("Mobilnummer");
-
-            RuleFor(v => v.Email)
-                .EmailAddress()
-                .When(x => !string.IsNullOrEmpty(x.Email))
-                .WithName("Epost");
+            Include(new ContactableValidator());
 
             RuleFor(v => v.Role)
                 .NotEmpty()
@@ -36,7 +31,7 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Create
 
             RuleFor(v => v.Password)
                 .NotEmpty()
-                .MinimumLength(7)
+                .MinimumLength(ValidationRules.UserPasswordMinLength)
                 .WithName("Passord");
         }
     }

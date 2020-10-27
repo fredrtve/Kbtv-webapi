@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using CleanArchitecture.Core;
+using FluentValidation;
 
 namespace BjBygg.Application.Application.Commands.DocumentTypeCommands.Update
 {
@@ -11,7 +12,7 @@ namespace BjBygg.Application.Application.Commands.DocumentTypeCommands.Update
 
             RuleFor(v => v.Name)
                 .NotEmpty()
-                .MaximumLength(45)
+                .MaximumLength(ValidationRules.NameMaxLength)
                 .WithName("Navn");
         }
     }

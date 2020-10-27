@@ -6,13 +6,15 @@ using System.Globalization;
 
 namespace CleanArchitecture.Core.Entities
 {
-    public class Mission : BaseEntity, IFile
+    public class Mission : BaseEntity, IFile, IContactable, IAddress
     {
         public Mission() { }
 
-        public string? Name { get; set; }
         public string? PhoneNumber { get; set; }
+        public string? Email { get; set; }
         public string? Description { get; set; }
+        public string? FileName { get; set; }
+        public bool Finished { get; set; }
         public string Address
         {
             get { return this._address; }
@@ -20,8 +22,7 @@ namespace CleanArchitecture.Core.Entities
         }
 
         private string _address;
-
-        public bool Finished { get; set; }
+      
         public List<MissionImage> MissionImages { get; set; }
         public List<MissionDocument> MissionDocuments { get; set; }
         public List<MissionNote> MissionNotes { get; set; }
@@ -30,6 +31,5 @@ namespace CleanArchitecture.Core.Entities
         public string? MissionTypeId { get; set; }
         public Employer Employer { get; set; }
         public string? EmployerId { get; set; }
-        public string? FileName { get; set; }
     }
 }

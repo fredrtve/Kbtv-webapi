@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using CleanArchitecture.Core;
+using FluentValidation;
 
 namespace BjBygg.Application.Application.Commands.TimesheetCommands.Create
 {
@@ -25,7 +26,7 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Create
 
             RuleFor(v => v.Comment)
                 .NotEmpty()
-                .MaximumLength(400)
+                .MaximumLength(ValidationRules.TimesheetCommentMaxLength)
                 .WithName("Kommentar");
         }
     }

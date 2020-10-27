@@ -1,12 +1,12 @@
 using AutoMapper;
-using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Application.Common.BaseEntityCommands.Create;
 using CleanArchitecture.Core.Entities;
+using CleanArchitecture.SharedKernel;
 
 namespace BjBygg.Application.Application.Commands.EmployerCommands.Create
 {
-    public class CreateEmployerCommand : CreateCommand
+    public class CreateEmployerCommand : CreateCommand, IContactable, IAddress, IName
     {
         public string Name { get; set; }
         public string PhoneNumber { get; set; }

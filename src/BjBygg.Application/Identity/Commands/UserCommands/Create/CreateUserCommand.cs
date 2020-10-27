@@ -1,10 +1,11 @@
 using BjBygg.Application.Common.Interfaces;
 using BjBygg.Application.Identity.Common;
+using CleanArchitecture.SharedKernel;
 using MediatR;
 
 namespace BjBygg.Application.Identity.Commands.UserCommands.Create
 {
-    public class CreateUserCommand : IOptimisticCommand
+    public class CreateUserCommand : IOptimisticCommand, IContactable
     {
         public string UserName { get; set; }
         public string FirstName { get; set; }

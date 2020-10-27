@@ -2,6 +2,7 @@
 using BjBygg.Application.Common.Interfaces;
 using BjBygg.Application.Identity.Common.Interfaces;
 using BjBygg.Application.Identity.Common.Models;
+using CleanArchitecture.Core;
 using CleanArchitecture.Infrastructure.Api.FileStorage;
 using CleanArchitecture.Infrastructure.Api.SendGridMailService;
 using CleanArchitecture.Infrastructure.Auth;
@@ -36,7 +37,7 @@ namespace CleanArchitecture.Infrastructure
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequiredLength = 7;
+                options.Password.RequiredLength = ValidationRules.UserPasswordMinLength;
             })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<AppIdentityDbContext>()

@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using CleanArchitecture.Core;
+using FluentValidation;
 
 namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.UpdatePassword
 {
@@ -8,13 +9,13 @@ namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.UpdatePasswo
         {
             RuleFor(v => v.NewPassword)
                .NotEmpty()
-               .MinimumLength(7)
-               .MaximumLength(100)
+               .MinimumLength(ValidationRules.UserPasswordMinLength)
+               .MaximumLength(ValidationRules.UserPasswordMaxLength)
                .WithName("Nytt Passord");
 
             RuleFor(v => v.OldPassword)
               .NotEmpty()
-              .MaximumLength(100)
+              .MaximumLength(ValidationRules.UserPasswordMaxLength)
               .WithName("Gammelt Passord");
         }
     }

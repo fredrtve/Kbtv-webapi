@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using CleanArchitecture.Core;
+using FluentValidation;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.Notes.Create
 {
@@ -14,12 +15,12 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Notes.Create
                .WithName("Oppdrag");
 
             RuleFor(v => v.Title)
-                .MaximumLength(100)
+                .MaximumLength(ValidationRules.MissionNoteTitleMaxLength)
                 .WithName("Tittel");
 
             RuleFor(v => v.Content)
                 .NotEmpty()
-                .MaximumLength(400)
+                .MaximumLength(ValidationRules.MissionNoteContentMaxLength)
                 .WithName("Innhold");
         }
     }

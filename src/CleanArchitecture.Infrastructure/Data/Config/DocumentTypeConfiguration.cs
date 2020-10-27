@@ -1,3 +1,4 @@
+using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,7 +10,7 @@ namespace CleanArchitecture.Infrastructure.Data.Config
         {
             base.Configure(builder);
 
-            builder.Property(mt => mt.Name).IsRequired().HasMaxLength(45);
+            builder.Property(mt => mt.Name).IsRequired().HasMaxLength(ValidationRules.NameMaxLength);
         }
     }
 }

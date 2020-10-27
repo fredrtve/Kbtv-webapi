@@ -1,4 +1,6 @@
-﻿using FluentValidation;
+﻿using BjBygg.Application.Common.Validation;
+using CleanArchitecture.Core;
+using FluentValidation;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.Update
 {
@@ -11,16 +13,13 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Update
 
             RuleFor(v => v.Address)
                  .NotEmpty()
-                 .MaximumLength(100)
+                 .MaximumLength(ValidationRules.AddressMaxLength)
                  .WithName("Adresse");
 
-            RuleFor(v => v.PhoneNumber)
-                 .MinimumLength(4)
-                 .MaximumLength(12)
-                 .WithName("Mobilnummer");
+            Include(new ContactableValidator());
 
             RuleFor(v => v.Description)
-                 .MaximumLength(400)
+                 .MaximumLength(ValidationRules.MissionDescriptionMaxLength)
                  .WithName("Beskrivelse");
 
             RuleFor(v => v.Employer)

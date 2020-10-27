@@ -1,4 +1,6 @@
-﻿using FluentValidation;
+﻿using BjBygg.Application.Common.Validation;
+using CleanArchitecture.Core;
+using FluentValidation;
 
 namespace BjBygg.Application.Application.Commands.EmployerCommands.Create
 {
@@ -11,21 +13,14 @@ namespace BjBygg.Application.Application.Commands.EmployerCommands.Create
 
             RuleFor(v => v.Name)
                 .NotEmpty()
-                .MaximumLength(45)
+                .MaximumLength(ValidationRules.NameMaxLength)
                 .WithName("Navn");
 
-            RuleFor(v => v.PhoneNumber)
-                .MaximumLength(12)
-                .WithName("Mobilnummer");
+            Include(new ContactableValidator());
 
             RuleFor(v => v.Address)
-                .MaximumLength(100)
+                .MaximumLength(ValidationRules.AddressMaxLength)
                 .WithName("Adresse");
-
-            RuleFor(v => v.Email)
-                .EmailAddress()
-                .When(x => !string.IsNullOrEmpty(x.Email))
-                .WithName("Epost");
         }
     }
 }

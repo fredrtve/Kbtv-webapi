@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CleanArchitecture.Core.Entities
 {
-    public class DocumentType : BaseEntity
+    public class DocumentType : BaseEntity, IName
     {
         public DocumentType() { }
         public string Name { get; set; }

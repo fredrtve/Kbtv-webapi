@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace CleanArchitecture.Core.Entities
 {
-    public class Employer : BaseEntity
+    public class Employer : BaseEntity, IContactable, IAddress, IName
     {
         public Employer() { }
 
