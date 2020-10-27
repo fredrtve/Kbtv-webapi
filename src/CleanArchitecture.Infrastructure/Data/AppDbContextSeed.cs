@@ -147,17 +147,16 @@ namespace CleanArchitecture.Infrastructure.Data
         }
         static async Task SetMissionNotesAsync(IAppDbContext context, IIdGenerator idGenerator, int amount)
         {
-            var command = "INSERT INTO MissionNotes (Id, Content, MissionId, Pinned, Deleted, CreatedAt, UpdatedAt) VALUES ";
+            var command = "INSERT INTO MissionNotes (Id, Content, MissionId, Deleted, CreatedAt, UpdatedAt) VALUES ";
 
             for (var i = 0; i < amount; i++)
             {
                 var id = idGenerator.Generate();
                 AddGeneratedId(id, typeof(MissionNote));
                 var date = DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
-                var pinned = i % 2 == 0 ? 0 : 1;
                 var missionId = GetGeneratedId(typeof(Mission));
                 command = 
-                    String.Concat(command, $"('{id}', 'testnotat', '{missionId}', {pinned}, 0, '{date}', '{date}')");
+                    String.Concat(command, $"('{id}', 'testnotat', '{missionId}', 0, '{date}', '{date}')");
 
                 if (i < (amount - 1)) command = String.Concat(command, ",");
             }

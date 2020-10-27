@@ -10,6 +10,5 @@ namespace CleanArchitecture.Core.Entities
         public string Content { get; set; }
         public Mission Mission { get; set; }
         public string MissionId { get; set; }
-        public bool Pinned { get; set; }
     }
 }

@@ -101,13 +101,12 @@ namespace Application.IntegrationTests
         }
         static async Task SetMissionNotesAsync(IAppDbContext context, int amount)
         {
-            var command = "INSERT INTO MissionNotes (Content, MissionId, Pinned, Deleted, CreatedAt, UpdatedAt) VALUES ";
+            var command = "INSERT INTO MissionNotes (Content, MissionId, Deleted, CreatedAt, UpdatedAt) VALUES ";
             for (var i = 0; i < amount; i++)
             {
                 var date = DateTime.Now.AddYears(-i * 2).ToString("yyyy-MM-dd HH:mm:ss");
-                var pinned = i % 2 == 0 ? 0 : 1;
-                if (i < (amount - 1)) command = String.Concat(command, $"('testnotat', {i + 1}, {pinned}, 0, '{date}', '{date}'),");
-                else command = String.Concat(command, $"('testnotat', {i + 1}, {pinned}, 0, '{date}', '{date}')");
+                if (i < (amount - 1)) command = String.Concat(command, $"('testnotat', {i + 1}, 0, '{date}', '{date}'),");
+                else command = String.Concat(command, $"('testnotat', {i + 1}, 0, '{date}', '{date}')");
             }
 
             await context.Database.ExecuteSqlRawAsync(command);

@@ -10,7 +10,6 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Notes.Update
     {
         public string? Title { get; set; }
         public string Content { get; set; }
-        public bool? Pinned { get; set; }
 
     }
     public class UpdateMissionNoteCommandHandler : UpdateCommandHandler<MissionNote, UpdateMissionNoteCommand>

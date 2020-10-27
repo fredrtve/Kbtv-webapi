@@ -11,7 +11,6 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Notes.Create
         public string MissionId { get; set; }
         public string? Title { get; set; }
         public string Content { get; set; }
-        public bool? Pinned { get; set; }
     }
 
     public class CreateMissionNoteHandler : CreateCommandHandler<MissionNote, CreateMissionNoteCommand>
