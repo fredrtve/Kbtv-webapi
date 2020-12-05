@@ -4,6 +4,7 @@ using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Application.Common.Interfaces;
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
+using CleanArchitecture.Core.Enums;
 using MediatR;
 using System;
 using System.Threading;
@@ -31,6 +32,8 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Create
             timesheet.TotalHours = Math.Round((timesheet.EndTime - timesheet.StartTime).TotalHours, 1);
 
             timesheet.UserName = _currentUserService.UserName;
+
+            timesheet.Status = TimesheetStatus.Open;
 
             _dbContext.Set<Timesheet>().Add(timesheet);
             await _dbContext.SaveChangesAsync();
