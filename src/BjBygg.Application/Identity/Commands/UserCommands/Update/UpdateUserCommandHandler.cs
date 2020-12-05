@@ -3,6 +3,7 @@ using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Identity.Common;
 using BjBygg.Application.Identity.Common.Models;
+using FluentValidation.Results;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -54,7 +55,10 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Update
             var result = await _userManager.UpdateAsync(user);
 
             if (!result.Succeeded)
-                throw new BadRequestException("Something went wrong when trying to update user");
+            {
+                var validationErrors = result.Errors.Select(x => new ValidationFailure(x.Code, x.Description));
+                throw new ValidationException(validationErrors);
+            }
 
             var currentRole = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
 

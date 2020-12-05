@@ -3,8 +3,10 @@ using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Identity.Common;
 using BjBygg.Application.Identity.Common.Models;
+using FluentValidation.Results;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -36,7 +38,10 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Create
             var result = await _userManager.CreateAsync(user, request.Password);
 
             if (!result.Succeeded)
-                throw new BadRequestException("Something went wrong while trying to create user");
+            {
+                var validationErrors = result.Errors.Select(x => new ValidationFailure(x.Code, x.Description));
+                throw new ValidationException(validationErrors);
+            }
 
             await _userManager.AddToRoleAsync(user, request.Role);
 

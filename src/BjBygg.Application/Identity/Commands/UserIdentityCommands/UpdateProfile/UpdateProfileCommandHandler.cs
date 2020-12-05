@@ -6,6 +6,7 @@ using BjBygg.Application.Identity.Common.Models;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -40,7 +41,10 @@ namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.UpdateProfil
             var result = await _userManager.UpdateAsync(user);
 
             if (!result.Succeeded)
-                throw new BadRequestException("Something went wrong when trying to update profile");
+            {
+                var validationErrors = result.Errors.Select(x => new ValidationFailure(x.Code, x.Description));
+                throw new ValidationException(validationErrors);
+            }
 
             return Unit.Value;
         }
