@@ -41,7 +41,8 @@ namespace CleanArchitecture.Infrastructure
             })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders()
+                .AddErrorDescriber<AppIdentityErrorDescriber>();
 
             services.AddTransient<IJwtTokenHandler, JwtTokenHandler>();
             services.AddTransient<ITokenFactory, TokenFactory>();

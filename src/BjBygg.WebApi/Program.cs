@@ -22,12 +22,12 @@ namespace BjBygg.WebApi
             {
                 var services = scope.ServiceProvider;
 
-                using (var context = services.GetService<AppDbContext>())
-                {
-                    context.Database.EnsureCreated();
-                    var idGenerator = services.GetService<IIdGenerator>();
-                    await AppDbContextSeed.SeedAllAsync(context, idGenerator, new SeederCount());
-                }
+                //using (var context = services.GetService<AppDbContext>())
+                //{
+                //    context.Database.EnsureCreated();
+                //    var idGenerator = services.GetService<IIdGenerator>();
+                //    await AppDbContextSeed.SeedAllAsync(context, idGenerator, new SeederCount());
+                //}
 
                 //using (var context = services.GetService<AppIdentityDbContext>())
                 //{
