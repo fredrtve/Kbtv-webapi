@@ -1,8 +1,10 @@
 using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Common.Interfaces;
 using BjBygg.Application.Identity.Common.Models;
+using FluentValidation.Results;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,9 +32,11 @@ namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.UpdatePasswo
 
             var changePasswordResult = await _userManager.ChangePasswordAsync(user, request.OldPassword, request.NewPassword);
 
-            if (!changePasswordResult.Succeeded)
-                throw new BadRequestException("Something went wrong when trying to update password");
 
+            if (!changePasswordResult.Succeeded) {
+                var validationErrors = changePasswordResult.Errors.Select(x => new ValidationFailure(x.Code, x.Description));
+                throw new ValidationException(validationErrors);
+            }
             //await _signInManager.RefreshSignInAsync(user);
 
             return Unit.Value;
