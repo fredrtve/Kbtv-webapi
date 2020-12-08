@@ -75,8 +75,8 @@ namespace BjBygg.WebApi.Controllers
 
         [Authorize(Roles = RolePermissions.MissionImageActions.SendEmail)]
         [HttpPost]
-        [Route("api/[controller]/SendImages")]
-        public async Task<ActionResult> SendImages([FromBody] MailMissionImagesCommand request)
+        [Route("api/[controller]/Mail")]
+        public async Task<ActionResult> Mail([FromBody] MailMissionImagesCommand request)
         {
             await Mediator.Send(request);
             return NoContent();

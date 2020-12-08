@@ -77,8 +77,8 @@ namespace BjBygg.WebApi.Controllers
 
         [Authorize(Roles = RolePermissions.MissionDocumentActions.SendEmail)]
         [HttpPost]
-        [Route("api/[controller]/SendDocuments")]
-        public async Task<ActionResult> SendDocuments([FromBody] MailMissionDocumentsCommand request)
+        [Route("api/[controller]/Mail")]
+        public async Task<ActionResult> Mail([FromBody] MailMissionDocumentsCommand request)
         {
             await Mediator.Send(request);
             return NoContent();
