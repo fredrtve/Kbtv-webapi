@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Application.Queries.DbSyncQueries.Common
 {
-    public abstract class BaseDbSyncHandler<TQuery, TEntity, TDto> : IRequestHandler<TQuery, DbSyncResponse<TDto>>
+    public abstract class BaseDbSyncHandler<TQuery, TEntity, TDto> : IRequestHandler<TQuery, DbSyncArrayResponse<TDto>>
         where TQuery : DbSyncQuery<TDto> where TEntity : BaseEntity where TDto : DbSyncDto
     {
         private readonly IMapper _mapper;
@@ -28,7 +28,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.Common
 
             _dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
-        public async Task<DbSyncResponse<TDto>> Handle(TQuery request, CancellationToken cancellationToken)
+        public async Task<DbSyncArrayResponse<TDto>> Handle(TQuery request, CancellationToken cancellationToken)
         {
             var date = DateTimeHelper.ConvertEpochToDate(request.Timestamp ?? 0);
 
@@ -54,7 +54,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.Common
             return query;
         }
 
-        private DbSyncResponse<TDto> CreateSyncResponse(IEnumerable<TEntity> entities, bool isInitial)
+        private DbSyncArrayResponse<TDto> CreateSyncResponse(IEnumerable<TEntity> entities, bool isInitial)
         {
             List<string> deletedEntities = new List<string>();
 
@@ -64,7 +64,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.Common
                 entities = entities.Where(x => x.Deleted == false).ToList(); //Remove deleted entities
             }
 
-            return new DbSyncResponse<TDto>(_mapper.Map<IEnumerable<TDto>>(entities), deletedEntities);
+            return new DbSyncArrayResponse<TDto>(_mapper.Map<IEnumerable<TDto>>(entities), deletedEntities);
         }
 
         private DateTime CheckMinSyncDate(DateTime date, int maxNumberOfMonths)

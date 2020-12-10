@@ -18,7 +18,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize]
         [HttpGet]
         [Route("api/[controller]/[action]")]
-        public async Task<ActionResult<DbSyncResponse<DocumentTypeDto>>> Sync(DocumentTypeSyncQuery request)
+        public async Task<ActionResult<DbSyncArrayResponse<DocumentTypeDto>>> Sync(DocumentTypeSyncQuery request)
         {
             return await Mediator.Send(request);
         }

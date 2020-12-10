@@ -22,24 +22,24 @@ namespace BjBygg.WebApi
             {
                 var services = scope.ServiceProvider;
 
-                //using (var context = services.GetService<AppDbContext>())
-                //{
-                //    context.Database.EnsureCreated();
-                //    var idGenerator = services.GetService<IIdGenerator>();
-                //    await AppDbContextSeed.SeedAllAsync(context, idGenerator, new SeederCount());
-                //}
+                using (var context = services.GetService<AppDbContext>())
+                {
+                    context.Database.EnsureCreated();
+                    var idGenerator = services.GetService<IIdGenerator>();
+                    await AppDbContextSeed.SeedAllAsync(context, idGenerator, new SeederCount());
+                }
 
-                //using (var context = services.GetService<AppIdentityDbContext>())
-                //{
+                using (var context = services.GetService<AppIdentityDbContext>())
+                {
 
-                //    context.Database.EnsureCreated();
+                    context.Database.EnsureCreated();
 
-                //    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                //    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-                //    var idGenerator = services.GetService<IIdGenerator>();
+                    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                    var idGenerator = services.GetService<IIdGenerator>();
 
-                //    await AppIdentityDbContextSeed.SeedAsync(userManager, roleManager, context, idGenerator);
-                //}
+                    await AppIdentityDbContextSeed.SeedAsync(userManager, roleManager, context, idGenerator);
+                }
             }
 
             host.Run();

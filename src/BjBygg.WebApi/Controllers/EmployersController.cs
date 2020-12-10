@@ -19,7 +19,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize]
         [HttpGet]
         [Route("api/[controller]/[action]")]
-        public async Task<ActionResult<DbSyncResponse<EmployerDto>>> Sync(EmployerSyncQuery request)
+        public async Task<ActionResult<DbSyncArrayResponse<EmployerDto>>> Sync(EmployerSyncQuery request)
         {
             return await Mediator.Send(request);
         }

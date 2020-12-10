@@ -33,7 +33,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = RolePermissions.UserTimesheetActions.Read)]
         [HttpGet]
         [Route("api/[controller]/[action]")]
-        public async Task<ActionResult<DbSyncResponse<TimesheetDto>>> Sync(UserTimesheetSyncQuery request)
+        public async Task<ActionResult<DbSyncArrayResponse<TimesheetDto>>> Sync(UserTimesheetSyncQuery request)
         {
             var user = await _userManager.FindByNameAsync(User.FindFirstValue(ClaimTypes.Name));
             request.User = _mapper.Map<UserDto>(user);

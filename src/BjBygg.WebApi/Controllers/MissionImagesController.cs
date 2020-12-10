@@ -22,7 +22,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize]
         [HttpGet]
         [Route("api/[controller]/[action]")]
-        public async Task<ActionResult<DbSyncResponse<MissionImageDto>>> Sync(MissionImageSyncQuery request)
+        public async Task<ActionResult<DbSyncArrayResponse<MissionImageDto>>> Sync(MissionImageSyncQuery request)
         {
             return await Mediator.Send(request);
         }

@@ -11,6 +11,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries
     public class MissionSyncQuery : UserDbSyncQuery<MissionDto>
     {
     }
+
     public class MissionSyncQueryHandler : BaseDbSyncHandler<MissionSyncQuery, Mission, MissionDto>
     {
         public MissionSyncQueryHandler(IAppDbContext dbContext, IMapper mapper) :
