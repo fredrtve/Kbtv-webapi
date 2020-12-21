@@ -7,7 +7,7 @@ namespace BjBygg.Application.Common.BaseEntityCommands.MailEntitiesCommand
     public abstract class MailEntitiesCommandHandler<TCommand> : IRequestHandler<TCommand>
         where TCommand : MailEntitiesCommand
     {
-        public MailEntitiesCommandHandler(){}
+        public MailEntitiesCommandHandler() { }
 
         public virtual async Task<Unit> Handle(TCommand request, CancellationToken cancellationToken)
         {

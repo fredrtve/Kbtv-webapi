@@ -1,14 +1,10 @@
-using AutoMapper;
-using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Application.Common.Interfaces;
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.SharedKernel;
 using MediatR;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,7 +18,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Upload
         private readonly IImageResizer _imageResizer;
 
         public UploadMissionImageCommandHandler(
-            IAppDbContext dbContext, 
+            IAppDbContext dbContext,
             IBlobStorageService storageService,
             IImageResizer imageResizer)
         {
@@ -36,7 +32,8 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Upload
             await _storageService.UploadFilesAsync(request.Files, ResourceFolderConstants.OriginalImage);
 
             var resized = new DisposableList<BasicFileStream>();
-            request.Files.ForEach(file => {
+            request.Files.ForEach(file =>
+            {
                 file.Stream.Position = 0; //reset position from original upload
                 resized.Add(_imageResizer.ResizeImage(file, 0, 1200));
             });
@@ -49,9 +46,10 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Upload
             List<MissionImage> images = new List<MissionImage>();
 
             images.AddRange(
-                request.Files.Select(file => new MissionImage() { 
-                    Id = file.FileNameNoExtension, 
-                    MissionId = request.MissionId, 
+                request.Files.Select(file => new MissionImage()
+                {
+                    Id = file.FileNameNoExtension,
+                    MissionId = request.MissionId,
                     FileName = file.FileName,
                 })
             );

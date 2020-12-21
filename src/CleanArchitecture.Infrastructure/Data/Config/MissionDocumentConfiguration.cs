@@ -1,7 +1,6 @@
 ﻿using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
 
 namespace CleanArchitecture.Infrastructure.Data.Config
 {

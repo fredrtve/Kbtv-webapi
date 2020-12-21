@@ -1,6 +1,5 @@
 using BjBygg.Application.Common.Interfaces;
 using CleanArchitecture.SharedKernel;
-using MediatR;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Upload
 {

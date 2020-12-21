@@ -34,12 +34,12 @@ namespace CleanArchitecture.Infrastructure.Api.SendGridMailService
             var msg = MailHelper.CreateSingleTemplateEmail(from, to, template.Key, template.Data);
 
             Response response;
-            if(template.Attachment == null )
+            if (template.Attachment == null)
                 response = await client.SendEmailAsync(msg);
             else
-            {          
-               await msg.AddAttachmentAsync(template.Attachment.FileName, template.Attachment.Stream);
-               response = await client.SendEmailAsync(msg);             
+            {
+                await msg.AddAttachmentAsync(template.Attachment.FileName, template.Attachment.Stream);
+                response = await client.SendEmailAsync(msg);
             }
 
             if (response.StatusCode != System.Net.HttpStatusCode.Accepted)

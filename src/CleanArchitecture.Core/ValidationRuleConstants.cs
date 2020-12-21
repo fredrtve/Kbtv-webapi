@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CleanArchitecture.Core
+﻿namespace CleanArchitecture.Core
 {
     public static class ValidationRules
     {

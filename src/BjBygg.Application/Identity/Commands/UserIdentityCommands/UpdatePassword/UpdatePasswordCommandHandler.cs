@@ -33,7 +33,8 @@ namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.UpdatePasswo
             var changePasswordResult = await _userManager.ChangePasswordAsync(user, request.OldPassword, request.NewPassword);
 
 
-            if (!changePasswordResult.Succeeded) {
+            if (!changePasswordResult.Succeeded)
+            {
                 var validationErrors = changePasswordResult.Errors.Select(x => new ValidationFailure(x.Code, x.Description));
                 throw new ValidationException(validationErrors);
             }

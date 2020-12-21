@@ -28,7 +28,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.CreateWithPdf
             IAppDbContext dbContext,
             IMapper mapper,
             IBlobStorageService storageService,
-            IPdfReportMissionExtractor pdfReportMissionExtractor)          
+            IPdfReportMissionExtractor pdfReportMissionExtractor)
         {
             _idGenerator = idGenerator;
             _dbContext = dbContext;
@@ -73,7 +73,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.CreateWithPdf
                 await _storageService.UploadFileAsync(fileStream, ResourceFolderConstants.MissionHeader);
                 dbMission.FileName = fileStream.FileName;
             }
-       
+
 
             var documentType = await _dbContext.Set<DocumentType>().Where(x => x.Name == "Skaderapport").FirstOrDefaultAsync();
 
@@ -86,7 +86,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.CreateWithPdf
 
             var modifiedFile = new BasicFileStream(extractedDocument.Stream, report.FileName);
             await _storageService.UploadFileAsync(modifiedFile, ResourceFolderConstants.Document);
-            
+
             dbMission.MissionDocuments = new List<MissionDocument>();
             dbMission.MissionDocuments.Add(report); //Add input report as document in new mission
 

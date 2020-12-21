@@ -4,7 +4,7 @@ using System;
 
 namespace CleanArchitecture.Core.Entities
 {
-    public class Timesheet : UserEntity 
+    public class Timesheet : UserEntity
     {
         public string MissionId { get; set; }
 

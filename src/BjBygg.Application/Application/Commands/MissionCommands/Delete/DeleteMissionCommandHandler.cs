@@ -1,5 +1,4 @@
 using BjBygg.Application.Application.Common.Interfaces;
-using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core.Entities;
 using MediatR;
 using System.Linq;
@@ -21,7 +20,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Delete
         {
             var mission = await _dbContext.Set<Mission>().FindAsync(request.Id);
 
-             if (mission == null) return Unit.Value;
+            if (mission == null) return Unit.Value;
 
             _dbContext.Set<Mission>().Remove(mission);
 

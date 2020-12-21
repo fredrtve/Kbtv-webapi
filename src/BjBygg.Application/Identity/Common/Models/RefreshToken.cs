@@ -1,10 +1,8 @@
-﻿using CleanArchitecture.Core;
-using CleanArchitecture.SharedKernel;
-using System;
+﻿using System;
 
 namespace BjBygg.Application.Identity.Common.Models
 {
-    public class RefreshToken 
+    public class RefreshToken
     {
         public int Id { get; set; }
         public string Token { get; private set; }

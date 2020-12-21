@@ -4,11 +4,9 @@ using BjBygg.Application.Identity.Commands.UserIdentityCommands.RefreshToken;
 using BjBygg.Application.Identity.Commands.UserIdentityCommands.UpdatePassword;
 using BjBygg.Application.Identity.Commands.UserIdentityCommands.UpdateProfile;
 using BjBygg.Application.Identity.Common;
-using BjBygg.Application.Identity.Common.Models;
 using BjBygg.Application.Identity.Queries.UserQueries.UserByUserName;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -16,7 +14,7 @@ namespace BjBygg.WebApi.Controllers.Identity
 {
     public class AuthController : BaseController
     {
-        public AuthController(){}
+        public AuthController() { }
 
         [HttpPost]
         [Route("api/[controller]/refresh")]

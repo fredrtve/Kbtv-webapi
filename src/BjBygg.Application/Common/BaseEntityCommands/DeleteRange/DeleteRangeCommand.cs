@@ -1,5 +1,4 @@
 using BjBygg.Application.Common.Interfaces;
-using MediatR;
 using System.Collections.Generic;
 
 namespace BjBygg.Application.Common.BaseEntityCommands.DeleteRange

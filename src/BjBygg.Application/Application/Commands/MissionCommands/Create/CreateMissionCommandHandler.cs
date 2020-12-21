@@ -1,10 +1,7 @@
 using AutoMapper;
-using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Application.Common.Interfaces;
-using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,8 +15,8 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Create
         private readonly IImageResizer _imageResizer;
 
         public CreateMissionCommandHandler(
-            IAppDbContext dbContext, 
-            IMapper mapper, 
+            IAppDbContext dbContext,
+            IMapper mapper,
             IBlobStorageService storageService,
             IImageResizer imageResizer)
         {

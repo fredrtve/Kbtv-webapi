@@ -4,12 +4,9 @@ using BjBygg.Application.Application.Commands.MissionCommands.Images.Upload;
 using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Application.Queries.DbSyncQueries;
 using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
-using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.SharedKernel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -49,10 +46,10 @@ namespace BjBygg.WebApi.Controllers
                     .Select(x => new BasicFileStream(x.OpenReadStream(), x.FileName)));
 
                 request.Files = streamList;
-                 
+
                 await Mediator.Send(request);
                 return NoContent();
-            }          
+            }
         }
 
         [Authorize(Roles = RolePermissions.MissionImageActions.Delete)]

@@ -70,7 +70,7 @@ namespace CleanArchitecture.Infrastructure.Data
 
         private void OnBeforeSaving()
         {
-            var now = DateTimeHelper.Now(); 
+            var now = DateTimeHelper.Now();
             var user = _currentUserService.UserName;
 
             foreach (var entry in ChangeTracker.Entries())

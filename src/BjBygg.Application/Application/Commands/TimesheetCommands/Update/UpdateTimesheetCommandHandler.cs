@@ -1,5 +1,4 @@
 using AutoMapper;
-using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Common.Interfaces;
@@ -8,8 +7,6 @@ using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -48,7 +45,7 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Update
 
             dbTimesheet.TotalHours = (dbTimesheet.EndTime - dbTimesheet.StartTime).TotalHours;
 
-            await _dbContext.SaveChangesAsync(); 
+            await _dbContext.SaveChangesAsync();
 
             return Unit.Value;
         }

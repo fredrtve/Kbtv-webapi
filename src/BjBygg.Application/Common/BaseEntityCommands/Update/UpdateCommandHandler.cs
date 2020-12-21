@@ -1,4 +1,3 @@
-using AutoMapper;
 using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Common.Interfaces;
 using CleanArchitecture.SharedKernel;
@@ -13,7 +12,7 @@ namespace BjBygg.Application.Common.BaseEntityCommands.Update
         where TEntity : BaseEntity where TCommand : UpdateCommand
     {
         private readonly IDbContext _dbContext;
-  
+
         public UpdateCommandHandler(IDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -28,7 +27,7 @@ namespace BjBygg.Application.Common.BaseEntityCommands.Update
 
             foreach (var property in request.GetType().GetProperties())
             {
-                if(property.Name == "Id") continue;
+                if (property.Name == "Id") continue;
                 dbEntity.GetType().GetProperty(property.Name).SetValue(dbEntity, property.GetValue(request), null);
             }
 
@@ -37,6 +36,6 @@ namespace BjBygg.Application.Common.BaseEntityCommands.Update
             return Unit.Value;
         }
 
-        
+
     }
 }

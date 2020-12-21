@@ -1,6 +1,5 @@
 ﻿using BjBygg.Application.Common.Validation;
 using FluentValidation;
-using System;
 
 namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.UpdateProfile
 {

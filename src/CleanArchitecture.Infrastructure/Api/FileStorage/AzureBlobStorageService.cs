@@ -81,7 +81,7 @@ namespace CleanArchitecture.Infrastructure.Api.FileStorage
             //blob.Properties.ContentType = GetContentType(stream.FileExtension);
             //blob.Properties.ContentDisposition = "attachment; filename=" + stream.FileName;
             //await blob.SetPropertiesAsync(); //Unneccesary?
-            
+
             return blob.Uri;
         }
 

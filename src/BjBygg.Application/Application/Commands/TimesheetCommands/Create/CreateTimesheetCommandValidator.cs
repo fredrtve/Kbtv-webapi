@@ -17,7 +17,7 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Create
             RuleFor(v => v.StartTime)
                 .NotEmpty()
                 .LessThan(x => x.EndTime)
-                .WithName("Starttidspunkt"); 
+                .WithName("Starttidspunkt");
 
             RuleFor(v => v.EndTime)
                 .NotEmpty()

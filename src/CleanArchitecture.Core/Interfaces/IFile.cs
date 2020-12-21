@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CleanArchitecture.Core.Interfaces
+﻿namespace CleanArchitecture.Core.Interfaces
 {
     public interface IFile
     {

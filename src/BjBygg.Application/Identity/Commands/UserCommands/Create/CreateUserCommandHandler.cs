@@ -1,7 +1,6 @@
 using AutoMapper;
 using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
-using BjBygg.Application.Identity.Common;
 using BjBygg.Application.Identity.Common.Models;
 using FluentValidation.Results;
 using MediatR;

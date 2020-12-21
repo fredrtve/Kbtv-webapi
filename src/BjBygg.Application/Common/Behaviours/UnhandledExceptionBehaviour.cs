@@ -23,10 +23,10 @@ namespace BjBygg.Application.Common.Behaviours
                 return await next();
             }
             catch (Exception ex)
-            {          
+            {
                 var requestName = typeof(TRequest).Name;
 
-                if(!LoggerRequestBlackList.BlackList.Any(x => x.Name == requestName))
+                if (!LoggerRequestBlackList.BlackList.Any(x => x.Name == requestName))
                     _logger.LogError(ex, "BjBygg Request: Unhandled Exception for Request {Name} {@Request}", requestName, request);
 
                 throw;

@@ -29,13 +29,13 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Delete
 
             if (_currentUserService.Role != Roles.Leader) //Allow leader
             {
-                if (_currentUserService.UserName != timesheet.UserName) 
+                if (_currentUserService.UserName != timesheet.UserName)
                     throw new ForbiddenException();
 
-                if (timesheet.Status != TimesheetStatus.Open) 
+                if (timesheet.Status != TimesheetStatus.Open)
                     throw new BadRequestException("Timesheet is closed for manipulation.");
             }
-    
+
             _dbContext.Set<Timesheet>().Remove(timesheet);
             await _dbContext.SaveChangesAsync();
 

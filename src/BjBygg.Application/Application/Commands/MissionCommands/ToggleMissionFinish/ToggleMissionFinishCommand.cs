@@ -1,5 +1,4 @@
 using BjBygg.Application.Common.Interfaces;
-using MediatR;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.ToggleMissionFinish
 {

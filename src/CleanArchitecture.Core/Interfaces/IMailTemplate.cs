@@ -1,7 +1,4 @@
 ﻿using CleanArchitecture.SharedKernel;
-using System;
-using System.Collections.Generic;
-using System.IO;
 
 namespace CleanArchitecture.Core.Interfaces
 {

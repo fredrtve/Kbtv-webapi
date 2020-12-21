@@ -8,7 +8,7 @@ namespace BjBygg.Application.Common
     {
         public long Convert(DateTime source, long destination, ResolutionContext context)
         {
-            return DateTimeHelper.ConvertDateToEpoch(source) * 1000; 
+            return DateTimeHelper.ConvertDateToEpoch(source) * 1000;
         }
     }
 

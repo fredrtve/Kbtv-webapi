@@ -4,12 +4,10 @@ using BjBygg.Application.Application.Commands.MissionCommands.Documents.Upload;
 using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Application.Queries.DbSyncQueries;
 using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
-using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.SharedKernel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -51,7 +49,7 @@ namespace BjBygg.WebApi.Controllers
             using (var stream = file.OpenReadStream())
             {
                 request.File = new BasicFileStream(stream, file.FileName);
-                await Mediator.Send(request);         
+                await Mediator.Send(request);
             }
 
             return NoContent();

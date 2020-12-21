@@ -13,7 +13,7 @@ namespace BjBygg.Application.Application.Commands.DocumentTypeCommands.Create
             RuleFor(v => v.Name)
                 .NotEmpty()
                 .MaximumLength(ValidationRules.NameMaxLength)
-                .WithName("Navn"); 
+                .WithName("Navn");
         }
     }
 }

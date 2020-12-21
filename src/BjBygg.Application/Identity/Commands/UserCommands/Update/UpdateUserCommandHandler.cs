@@ -1,7 +1,6 @@
 using AutoMapper;
 using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
-using BjBygg.Application.Identity.Common;
 using BjBygg.Application.Identity.Common.Models;
 using FluentValidation.Results;
 using MediatR;
@@ -26,7 +25,7 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Update
 
         public async Task<Unit> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            if(!String.IsNullOrEmpty(request.Role))
+            if (!String.IsNullOrEmpty(request.Role))
             {
                 if (request.Role == Roles.Leader) //Not allowing new leaders
                     throw new ForbiddenException();

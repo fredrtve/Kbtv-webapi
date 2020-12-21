@@ -1,13 +1,9 @@
 using AutoMapper;
-using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Application.Common.Interfaces;
-using BjBygg.Application.Common.BaseEntityCommands.Update;
 using BjBygg.Application.Common.Exceptions;
-using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,7 +15,8 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Update
         private readonly IAppDbContext _dbContext;
         private readonly IMapper _mapper;
 
-        public UpdateMissionCommandHandler(IAppDbContext dbContext, IMapper mapper){
+        public UpdateMissionCommandHandler(IAppDbContext dbContext, IMapper mapper)
+        {
             _dbContext = dbContext;
             _mapper = mapper;
         }
@@ -31,14 +28,14 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Update
             if (dbEntity == null)
                 throw new EntityNotFoundException(nameof(Mission), request.Id);
 
-            var ignoredProps = new List<string>(){ "Id", "MissionType", "Employer"};
+            var ignoredProps = new List<string>() { "Id", "MissionType", "Employer" };
             foreach (var property in request.GetType().GetProperties())
             {
                 if (ignoredProps.Contains(property.Name)) continue;
                 dbEntity.GetType().GetProperty(property.Name).SetValue(dbEntity, property.GetValue(request), null);
             }
 
-            dbEntity.Employer = 
+            dbEntity.Employer =
                 request.Employer != null ? _mapper.Map<Employer>(request.Employer) : null;
 
             dbEntity.MissionType =

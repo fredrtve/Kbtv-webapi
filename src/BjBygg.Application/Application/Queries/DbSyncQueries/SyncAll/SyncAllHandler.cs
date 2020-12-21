@@ -1,15 +1,9 @@
 ﻿using AutoMapper;
-using BjBygg.Application.Application.Common.Dto;
-using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
 using BjBygg.Application.Common.Interfaces;
 using BjBygg.Application.Identity.Common;
 using BjBygg.Application.Identity.Common.Models;
-using CleanArchitecture.Core;
-using CleanArchitecture.Core.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -40,11 +34,11 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
             user.Role = _currentUserService.Role;
 
             return new SyncAllResponse()
-            {          
+            {
                 Values = SyncValues(user, request.Timestamp),
                 Arrays = new SyncArraysResponse()
-                    {
-                        Missions = await _mediator.Send(
+                {
+                    Missions = await _mediator.Send(
                         new MissionSyncQuery()
                         {
                             Timestamp = request.Timestamp,
@@ -52,7 +46,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
                             InitialNumberOfMonths = request.InitialNumberOfMonths
                         }
                     ),
-                        MissionImages = await _mediator.Send(
+                    MissionImages = await _mediator.Send(
                         new MissionImageSyncQuery()
                         {
                             Timestamp = request.Timestamp,
@@ -60,7 +54,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
                             InitialNumberOfMonths = request.InitialNumberOfMonths
                         }
                     ),
-                        MissionNotes = await _mediator.Send(
+                    MissionNotes = await _mediator.Send(
                         new MissionNoteSyncQuery()
                         {
                             Timestamp = request.Timestamp,
@@ -68,7 +62,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
                             InitialNumberOfMonths = request.InitialNumberOfMonths
                         }
                     ),
-                        MissionDocuments = await _mediator.Send(
+                    MissionDocuments = await _mediator.Send(
                         new MissionDocumentSyncQuery()
                         {
                             Timestamp = request.Timestamp,
@@ -76,7 +70,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
                             InitialNumberOfMonths = request.InitialNumberOfMonths
                         }
                     ),
-                        UserTimesheets = await _mediator.Send(
+                    UserTimesheets = await _mediator.Send(
                         new UserTimesheetSyncQuery()
                         {
                             Timestamp = request.Timestamp,
@@ -91,7 +85,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
             };
         }
 
-        private SyncValuesResponse SyncValues(UserDto user, long? timestamp)      
+        private SyncValuesResponse SyncValues(UserDto user, long? timestamp)
         {
             var syncResponse = new SyncValuesResponse();
             if (timestamp == null || user.UpdatedAt >= timestamp) syncResponse.CurrentUser = user;

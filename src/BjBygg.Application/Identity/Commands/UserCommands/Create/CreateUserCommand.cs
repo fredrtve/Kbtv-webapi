@@ -1,7 +1,5 @@
 using BjBygg.Application.Common.Interfaces;
-using BjBygg.Application.Identity.Common;
 using CleanArchitecture.SharedKernel;
-using MediatR;
 
 namespace BjBygg.Application.Identity.Commands.UserCommands.Create
 {

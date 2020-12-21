@@ -1,6 +1,5 @@
 using AutoMapper;
 using BjBygg.Application.Common.BaseEntityCommands.Create;
-using BjBygg.Application.Identity.Common;
 using BjBygg.Application.Identity.Common.Interfaces;
 using BjBygg.Application.Identity.Common.Models;
 

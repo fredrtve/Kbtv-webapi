@@ -13,7 +13,7 @@ namespace CleanArchitecture.Core
         public static DateTime ConvertEpochToDate(long epochTime) =>
             epochStart.AddSeconds(epochTime);
 
-        public static long ConvertDateToEpoch(DateTime date) => 
+        public static long ConvertDateToEpoch(DateTime date) =>
             (long)Math.Round((date.ToUniversalTime() -
                 new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
     }

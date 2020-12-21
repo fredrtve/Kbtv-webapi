@@ -3,11 +3,9 @@ using BjBygg.Application.Common;
 using BjBygg.Application.Common.Interfaces;
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
-using CleanArchitecture.Core.Enums;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CleanArchitecture.Infrastructure.Data
@@ -33,7 +31,7 @@ namespace CleanArchitecture.Infrastructure.Data
         static void AddGeneratedId(string id, Type type)
         {
             if (!_generatedIds.ContainsKey(type)) _generatedIds.Add(type, new List<string> { id });
-            else _generatedIds[type].Add(id);       
+            else _generatedIds[type].Add(id);
         }
 
         static string GetGeneratedId(Type type)
@@ -50,7 +48,7 @@ namespace CleanArchitecture.Infrastructure.Data
             {
                 var id = idGenerator.Generate();
                 AddGeneratedId(id, typeof(Employer));
-                var date = DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
+                var date = DateTimeHelper.Now().AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
                 command = String.Concat(command, $"('{id}', 'NSU{i}', 0, '{date}', '{date}')");
                 if (i < (amount - 1)) command = String.Concat(command, ",");
             }
@@ -63,7 +61,7 @@ namespace CleanArchitecture.Infrastructure.Data
             {
                 var id = idGenerator.Generate();
                 AddGeneratedId(id, typeof(MissionType));
-                var date = DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
+                var date = DateTimeHelper.Now().AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
                 command = String.Concat(command, $"('{id}', 'Riving{i}', 0, '{date}', '{date}')");
                 if (i < (amount - 1)) command = String.Concat(command, ",");
             }
@@ -76,7 +74,7 @@ namespace CleanArchitecture.Infrastructure.Data
             {
                 var id = idGenerator.Generate();
                 AddGeneratedId(id, typeof(DocumentType));
-                var date = DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
+                var date = DateTimeHelper.Now().AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
                 command = String.Concat(command, $"('{id}', 'Skaderapport{i}', 0, '{date}', '{date}')");
                 if (i < (amount - 1)) command = String.Concat(command, ",");
             }
@@ -92,7 +90,7 @@ namespace CleanArchitecture.Infrastructure.Data
                 AddGeneratedId(id, typeof(Mission));
                 var employerId = GetGeneratedId(typeof(Employer));
                 var typeId = GetGeneratedId(typeof(MissionType));
-                var date = DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
+                var date = DateTimeHelper.Now().AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
                 command = String.Concat(command, $"('{id}', 'Furuberget {i}, 1940 Bjørkelangen', '{employerId}', '{typeId}', 0, '{date}', '{date}')");
                 if (i < (amount - 1)) command = String.Concat(command, ",");
             }
@@ -101,7 +99,7 @@ namespace CleanArchitecture.Infrastructure.Data
         static async Task SetMissionDocumentsAsync(IAppDbContext context, IIdGenerator idGenerator, int amount)
         {
             var command = "INSERT INTO MissionDocuments (Id, FileName, MissionId, DocumentTypeId, Deleted, CreatedAt, UpdatedAt) VALUES ";
-            string[] documents = { 
+            string[] documents = {
                 "1637271568378142015_fef915f9-5f35-45ea-96ae-898f33d79df2.jpg",
                 "1637125277915871387_33a58ce3-9b65-42c1-99aa-35bbbf200e82.jpg",
                 "1637271568376872507_90030357-a167-426d-8ca2-fd669e17888b.jpg",
@@ -110,11 +108,11 @@ namespace CleanArchitecture.Infrastructure.Data
             {
                 var id = idGenerator.Generate();
                 AddGeneratedId(id, typeof(MissionDocument));
-                var date = DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
+                var date = DateTimeHelper.Now().AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
                 var document = documents[rnd.Next(0, documents.Length)];
                 var typeId = GetGeneratedId(typeof(DocumentType));
                 var missionId = GetGeneratedId(typeof(Mission));
-                command = String.Concat(command, 
+                command = String.Concat(command,
                     $"('{id}', '{document}', '{missionId}', '{typeId}', 0, '{date}', '{date}')");
 
                 if (i < (amount - 1)) command = String.Concat(command, ",");
@@ -134,10 +132,10 @@ namespace CleanArchitecture.Infrastructure.Data
             {
                 var id = idGenerator.Generate();
                 AddGeneratedId(id, typeof(MissionImage));
-                var date = DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
+                var date = DateTimeHelper.Now().AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
                 var image = images[rnd.Next(0, images.Length)];
                 var missionId = GetGeneratedId(typeof(Mission));
-                command = 
+                command =
                     String.Concat(command, $"('{id}', '{image}', '{missionId}', 0, '{date}', '{date}')");
 
                 if (i < (amount - 1)) command = String.Concat(command, ",");
@@ -153,9 +151,9 @@ namespace CleanArchitecture.Infrastructure.Data
             {
                 var id = idGenerator.Generate();
                 AddGeneratedId(id, typeof(MissionNote));
-                var date = DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
+                var date = DateTimeHelper.Now().AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
                 var missionId = GetGeneratedId(typeof(Mission));
-                command = 
+                command =
                     String.Concat(command, $"('{id}', 'testnotat', '{missionId}', 0, '{date}', '{date}')");
 
                 if (i < (amount - 1)) command = String.Concat(command, ",");
@@ -171,7 +169,7 @@ namespace CleanArchitecture.Infrastructure.Data
 
             var today = DateTimeHelper.Now();
 
-            string[] users = {Roles.Leader, Roles.Employee, Roles.Management};
+            string[] users = { Roles.Leader, Roles.Employee, Roles.Management };
 
             for (var i = 0; i < amount; i++)
             {

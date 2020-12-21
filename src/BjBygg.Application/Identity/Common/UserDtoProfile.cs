@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BjBygg.Application.Common;
 using BjBygg.Application.Identity.Common.Models;
 
 namespace BjBygg.Application.Identity.Common

@@ -1,6 +1,5 @@
 using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.SharedKernel;
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 
@@ -22,7 +21,7 @@ namespace CleanArchitecture.Core.Entities
         }
 
         private string _address;
-      
+
         public List<MissionImage> MissionImages { get; set; }
         public List<MissionDocument> MissionDocuments { get; set; }
         public List<MissionNote> MissionNotes { get; set; }

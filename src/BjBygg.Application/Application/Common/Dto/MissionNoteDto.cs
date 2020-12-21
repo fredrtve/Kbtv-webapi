@@ -1,5 +1,4 @@
 ﻿using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
-using System;
 
 namespace BjBygg.Application.Application.Common.Dto
 {

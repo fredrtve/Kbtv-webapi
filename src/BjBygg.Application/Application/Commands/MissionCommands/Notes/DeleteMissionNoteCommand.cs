@@ -4,11 +4,12 @@ using CleanArchitecture.Core.Entities;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.Notes
 {
-    public class DeleteMissionNoteCommand : DeleteCommand {}
-    public class DeleteMissionNoteCommandValidator : DeleteCommandValidator<DeleteMissionNoteCommand> {}
+    public class DeleteMissionNoteCommand : DeleteCommand { }
+    public class DeleteMissionNoteCommandValidator : DeleteCommandValidator<DeleteMissionNoteCommand> { }
     public class DeleteMissionNoteCommandHandler : DeleteCommandHandler<MissionNote, DeleteMissionNoteCommand>
     {
         public DeleteMissionNoteCommandHandler(IAppDbContext dbContext) :
-            base(dbContext) {}
+            base(dbContext)
+        { }
     }
 }

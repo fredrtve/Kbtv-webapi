@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
+using BjBygg.Application.Application;
+using BjBygg.Application.Application.Common.Interfaces;
+using BjBygg.Application.Common.Behaviours;
 using FluentValidation;
 using MediatR;
-using BjBygg.Application.Common.Behaviours;
-using BjBygg.Application.Application.Common.Interfaces;
-using BjBygg.Application.Application;
+using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace BjBygg.Application
 {

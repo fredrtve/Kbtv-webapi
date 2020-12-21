@@ -4,13 +4,14 @@ using CleanArchitecture.Core.Entities;
 
 namespace BjBygg.Application.Application.Commands.DocumentTypeCommands
 {
-    public class DeleteDocumentTypeCommand : DeleteCommand {}
+    public class DeleteDocumentTypeCommand : DeleteCommand { }
 
-    public class DeleteDocumentTypeCommandValidator : DeleteCommandValidator<DeleteDocumentTypeCommand> {}
+    public class DeleteDocumentTypeCommandValidator : DeleteCommandValidator<DeleteDocumentTypeCommand> { }
 
     public class DeleteDocumentTypeCommandHandler : DeleteCommandHandler<DocumentType, DeleteDocumentTypeCommand>
     {
         public DeleteDocumentTypeCommandHandler(IAppDbContext dbContext) :
-            base(dbContext) {}
+            base(dbContext)
+        { }
     }
 }

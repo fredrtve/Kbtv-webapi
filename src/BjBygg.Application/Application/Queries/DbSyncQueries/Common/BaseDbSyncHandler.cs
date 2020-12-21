@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using BjBygg.Application.Application.Common.Interfaces;
-using BjBygg.Application.Common.Interfaces;
 using CleanArchitecture.Core;
 using CleanArchitecture.SharedKernel;
 using MediatR;

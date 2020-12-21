@@ -1,5 +1,4 @@
-﻿using BjBygg.Application.Common.Interfaces;
-using BjBygg.Application.Identity.Common.Interfaces;
+﻿using BjBygg.Application.Identity.Common.Interfaces;
 using BjBygg.Application.Identity.Common.Models;
 using CleanArchitecture.Core;
 using Microsoft.Extensions.Options;

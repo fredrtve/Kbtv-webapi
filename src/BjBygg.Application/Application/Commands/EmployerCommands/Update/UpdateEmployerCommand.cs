@@ -1,5 +1,3 @@
-using AutoMapper;
-using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Application.Common.BaseEntityCommands.Update;
 using CleanArchitecture.Core.Entities;

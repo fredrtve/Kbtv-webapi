@@ -14,7 +14,7 @@ namespace BjBygg.Application.Application.Commands.EmployerCommands.Update
             RuleFor(v => v.Name)
                     .NotEmpty()
                     .MaximumLength(ValidationRules.NameMaxLength)
-                    .WithName("Navn");    
+                    .WithName("Navn");
 
             RuleFor(v => v.Address)
                 .MaximumLength(ValidationRules.AddressMaxLength)

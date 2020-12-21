@@ -1,6 +1,5 @@
 using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.SharedKernel;
-using System;
 
 namespace CleanArchitecture.Core.Entities
 {

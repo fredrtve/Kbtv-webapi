@@ -1,5 +1,4 @@
-﻿using CleanArchitecture.Core;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Threading.Tasks;
 
@@ -41,7 +40,7 @@ namespace CleanArchitecture.Infrastructure.Auth
         /// <summary>
         /// Set the timespan the token will be valid for (default is 15 min)
         /// </summary>
-        public TimeSpan ValidFor { get; set; } = TimeSpan.FromMinutes(15);
+        public TimeSpan ValidFor { get; set; } = TimeSpan.FromSeconds(15);
 
         /// <summary>
         /// "jti" (JWT ID) Claim (default ID is a GUID)

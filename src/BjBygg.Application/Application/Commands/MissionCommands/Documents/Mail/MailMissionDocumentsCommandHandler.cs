@@ -4,7 +4,6 @@ using BjBygg.Application.Common.Interfaces;
 using CleanArchitecture.Core.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Linq;
 using System.Threading;

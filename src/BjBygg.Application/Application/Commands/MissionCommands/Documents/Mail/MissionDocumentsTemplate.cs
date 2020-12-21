@@ -5,7 +5,6 @@ using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.SharedKernel;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -18,10 +17,10 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Mail
         {
             Attachment = attachment;
             Data = new MissionDocumentsTemplateData(documents.Select(x => new MissionDocumentsTemplateDocument()
-               {
-                   Id = x.Id,
-                   DocumentTypeName = x.DocumentType == null ? "Ukategorisert" : x.DocumentType.Name,
-                   Url = new StorageFileUrl(x.FileName, ResourceFolderConstants.Document).FileUrl.ToString()
+            {
+                Id = x.Id,
+                DocumentTypeName = x.DocumentType == null ? "Ukategorisert" : x.DocumentType.Name,
+                Url = new StorageFileUrl(x.FileName, ResourceFolderConstants.Document).FileUrl.ToString()
             }).ToList());
         }
 

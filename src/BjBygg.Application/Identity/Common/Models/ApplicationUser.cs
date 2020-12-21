@@ -1,4 +1,3 @@
-using CleanArchitecture.Core;
 using CleanArchitecture.SharedKernel;
 using Microsoft.AspNetCore.Identity;
 using System;
