@@ -25,15 +25,6 @@ namespace BjBygg.WebApi.Controllers
 
         [Authorize(Roles = RolePermissions.TimesheetActions.Update)]
         [HttpPut]
-        [Route("api/[controller]/{Id}/Status")]
-        public async Task<ActionResult> UpdateStatus([FromBody] UpdateTimesheetStatusCommand request)
-        {
-            await Mediator.Send(request);
-            return NoContent();
-        }
-
-        [Authorize(Roles = RolePermissions.TimesheetActions.Update)]
-        [HttpPut]
         [Route("api/[controller]/Status")]
         public async Task<ActionResult> UpdateStatuses([FromBody] UpdateTimesheetStatusRangeCommand request)
         {
