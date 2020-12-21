@@ -30,7 +30,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.Common
         }
         public async Task<DbSyncArrayResponse<TDto>> Handle(TQuery request, CancellationToken cancellationToken)
         {
-            var date = DateTimeHelper.ConvertEpochToDate(request.Timestamp ?? 0);
+            var date = DateTimeHelper.ConvertEpochToDate((request.Timestamp / 1000) ?? 0);
 
             if (_checkMinDate)
                 date = CheckMinSyncDate(date, request.InitialNumberOfMonths ?? 48);

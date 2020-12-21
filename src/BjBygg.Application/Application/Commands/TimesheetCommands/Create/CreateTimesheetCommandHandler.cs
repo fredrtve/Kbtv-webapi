@@ -32,7 +32,6 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Create
             timesheet.TotalHours = Math.Round((timesheet.EndTime - timesheet.StartTime).TotalHours, 1);
 
             timesheet.UserName = _currentUserService.UserName;
-
             timesheet.Status = TimesheetStatus.Open;
 
             _dbContext.Set<Timesheet>().Add(timesheet);
