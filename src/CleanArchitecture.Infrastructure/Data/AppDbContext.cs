@@ -5,6 +5,7 @@ using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.SharedKernel;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Linq;
 using System.Threading;
@@ -40,6 +41,18 @@ namespace CleanArchitecture.Infrastructure.Data
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+
+            var dateTimeConverter = new ValueConverter<DateTime, DateTime>(
+                v => v, v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
+
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                foreach (var property in entityType.GetProperties())
+                {
+                    if (property.ClrType == typeof(DateTime) || property.ClrType == typeof(DateTime?))
+                        property.SetValueConverter(dateTimeConverter);
+                }
             }
         }
 
