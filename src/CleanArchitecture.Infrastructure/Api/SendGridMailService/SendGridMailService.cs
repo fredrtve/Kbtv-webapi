@@ -29,7 +29,7 @@ namespace CleanArchitecture.Infrastructure.Api.SendGridMailService
         {
             var apiKey = _configuration.GetValue<string>("SendGridApiKey");
             var client = new SendGridClient(apiKey);
-            var from = new EmailAddress("noreply@bjbygg.no", "BjBygg");
+            var from = new EmailAddress("noreply@fredtv.net", "BjBygg");
             var to = new EmailAddress(toEmail);
             var msg = MailHelper.CreateSingleTemplateEmail(from, to, template.Key, template.Data);
 
