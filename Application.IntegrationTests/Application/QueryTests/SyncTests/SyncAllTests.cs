@@ -1,6 +1,5 @@
 ﻿using BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll;
 using BjBygg.Application.Common;
-using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using FluentAssertions;
@@ -29,14 +28,14 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
 
             var result = await SendAsync(new SyncAllQuery() { InitialNumberOfMonths = 36 });
 
-            result.MissionSync.Entities.Should().HaveCount(1); //Not include raw add
-            result.MissionImageSync.Entities.Should().HaveCount(1); //Min date
-            result.MissionNoteSync.Entities.Should().HaveCount(1); //Min date
-            result.MissionDocumentSync.Entities.Should().HaveCount(1); //Min date
-            result.MissionTypeSync.Entities.Should().HaveCount(1);
-            result.EmployerSync.Entities.Should().HaveCount(1);
-            result.DocumentTypeSync.Entities.Should().HaveCount(1);
-            result.UserTimesheetSync.Entities.Should().HaveCount(1); //User spesific & min date
+            result.Arrays.Missions.Entities.Should().HaveCount(1); //Not include raw add
+            result.Arrays.MissionImages.Entities.Should().HaveCount(1); //Min date
+            result.Arrays.MissionNotes.Entities.Should().HaveCount(1); //Min date
+            result.Arrays.MissionDocuments.Entities.Should().HaveCount(1); //Min date
+            result.Arrays.MissionTypes.Entities.Should().HaveCount(1);
+            result.Arrays.Employers.Entities.Should().HaveCount(1);
+            result.Arrays.DocumentTypes.Entities.Should().HaveCount(1);
+            result.Arrays.UserTimesheets.Entities.Should().HaveCount(1); //User spesific & min date
         }
 
         [Test]
@@ -44,57 +43,41 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
         {
             await RunAsDefaultUserAsync(Roles.Leader);
 
-            var timestamp1 = DateTimeHelper.ConvertDateToEpoch(DateTimeHelper.Now().AddMinutes(-10));
-
-            var timestamp2 = DateTimeHelper.ConvertDateToEpoch(DateTimeHelper.Now().AddMinutes(10));
+            var timestamp = DateTimeHelper.ConvertDateToEpoch(DateTimeHelper.Now().AddMinutes(-10));
 
             await AddSyncEntities();
 
             var result = await SendAsync(new SyncAllQuery()
             {
                 InitialNumberOfMonths = 36,
-                MissionTimestamp = timestamp1,
-                MissionImageTimestamp = timestamp1,
-                MissionNoteTimestamp = timestamp1,
-                MissionDocumentTimestamp = timestamp1,
-                MissionTypeTimestamp = timestamp2,
-                EmployerTimestamp = timestamp2,
-                DocumentTypeTimestamp = timestamp2,
-                UserTimesheetTimestamp = timestamp2,
+                Timestamp = timestamp,
             });
 
-            result.MissionSync.Entities.Should().HaveCount(1);
-            result.MissionImageSync.Entities.Should().HaveCount(1);
-            result.MissionNoteSync.Entities.Should().HaveCount(1);
-            result.MissionDocumentSync.Entities.Should().HaveCount(1);
-            result.MissionTypeSync.Entities.Should().HaveCount(0);
-            result.EmployerSync.Entities.Should().HaveCount(0);
-            result.DocumentTypeSync.Entities.Should().HaveCount(0);
-            result.UserTimesheetSync.Entities.Should().HaveCount(0);
+            result.Arrays.Missions.Entities.Should().HaveCount(1);
+            result.Arrays.MissionImages.Entities.Should().HaveCount(1);
+            result.Arrays.MissionNotes.Entities.Should().HaveCount(1);
+            result.Arrays.MissionDocuments.Entities.Should().HaveCount(1);
+            result.Arrays.MissionTypes.Entities.Should().HaveCount(1);
+            result.Arrays.Employers.Entities.Should().HaveCount(1);
+            result.Arrays.DocumentTypes.Entities.Should().HaveCount(1);
+            result.Arrays.UserTimesheets.Entities.Should().HaveCount(1);
         }
 
         [Test]
-        public async Task ShouldReturnTimestampsFromNow()
+        public async Task ShouldReturnTimestampFromNow()
         {
             await RunAsDefaultUserAsync(Roles.Leader);
 
             var result = await SendAsync(new SyncAllQuery() { });
             var timestampFromNow = DateTimeHelper.ConvertDateToEpoch(DateTimeHelper.Now());
-            result.MissionSync.Timestamp.Should().BeApproximately(timestampFromNow, 1000);
-            result.MissionImageSync.Timestamp.Should().BeApproximately(timestampFromNow, 1000);
-            result.MissionNoteSync.Timestamp.Should().BeApproximately(timestampFromNow, 1000);
-            result.MissionDocumentSync.Timestamp.Should().BeApproximately(timestampFromNow, 1000);
-            result.MissionTypeSync.Timestamp.Should().BeApproximately(timestampFromNow, 1000);
-            result.EmployerSync.Timestamp.Should().BeApproximately(timestampFromNow, 1000);
-            result.DocumentTypeSync.Timestamp.Should().BeApproximately(timestampFromNow, 1000);
-            result.UserTimesheetSync.Timestamp.Should().BeApproximately(timestampFromNow, 1000);
+            result.Timestamp.Should().BeApproximately(timestampFromNow, 1000);
         }
 
         [Test]
         public async Task ShouldReturnEmployerSpesificResourcesIfUserIsEmployer()
         {
             await AddAsync(new Employer() { Id = "test", Name = "test" });
-           
+
             await RunAsDefaultUserAsync(Roles.Employer, "test");
 
             await AddAsync(new Employer() { Id = "test2", Name = "test2" });
@@ -105,15 +88,15 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
             await AddAsync(new MissionNote() { Id = "test", MissionId = "test", Content = "test" });
             await AddAsync(new MissionDocument() { Id = "test", MissionId = "test", FileName = "test.jpg" });
             await AddAsync(new MissionType() { Id = "test", Name = "test2" });
-           
+
 
             var result = await SendAsync(new SyncAllQuery() { });
 
-            result.MissionSync.Entities.Should().HaveCount(1); 
-            result.MissionImageSync.Entities.Should().HaveCount(1); 
-            result.MissionNoteSync.Entities.Should().HaveCount(1); 
-            result.MissionDocumentSync.Entities.Should().HaveCount(1); 
-            result.EmployerSync.Entities.Should().HaveCount(1); //Only current employer should be returned
+            result.Arrays.Missions.Entities.Should().HaveCount(1);
+            result.Arrays.MissionImages.Entities.Should().HaveCount(1);
+            result.Arrays.MissionNotes.Entities.Should().HaveCount(1);
+            result.Arrays.MissionDocuments.Entities.Should().HaveCount(1);
+            result.Arrays.Employers.Entities.Should().HaveCount(1); //Only current employer should be returned
         }
 
         private static async Task AddSyncEntities()

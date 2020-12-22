@@ -1,14 +1,10 @@
-﻿using BjBygg.Application.Application.Common.Interfaces;
-using BjBygg.Application.Common;
-using BjBygg.Application.Common.Interfaces;
+﻿using BjBygg.Application.Common.Interfaces;
 using BjBygg.Application.Identity.Common;
 using BjBygg.Application.Identity.Common.Interfaces;
 using BjBygg.Application.Identity.Common.Models;
 using BjBygg.Application.Identity.Queries.UserQueries.UserByUserName;
 using BjBygg.WebApi;
-using CleanArchitecture.Infrastructure.Data;
 using CleanArchitecture.Infrastructure.Identity;
-using CleanArchitecture.SharedKernel;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -18,7 +14,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -67,7 +62,7 @@ namespace Application.IntegrationTests.Identity
 
             services.AddScoped<IAppIdentityDbContext>(provider => provider.GetService<AppIdentityDbContext>());
 
-            MockUserService(services); 
+            MockUserService(services);
 
             _scopeFactory = services.BuildServiceProvider().GetService<IServiceScopeFactory>();
         }
@@ -75,7 +70,7 @@ namespace Application.IntegrationTests.Identity
         {
             using var scope = _scopeFactory.CreateScope();
 
-            var idContext = scope.ServiceProvider.GetService<IAppIdentityDbContext>();         
+            var idContext = scope.ServiceProvider.GetService<IAppIdentityDbContext>();
             idContext.Database.EnsureDeleted();
             idContext.Database.Migrate();
 
@@ -112,7 +107,7 @@ namespace Application.IntegrationTests.Identity
 
             var result = await userManager.CreateAsync(user, password);
 
-            if(role != null)
+            if (role != null)
                 userManager.AddToRoleAsync(user, role).Wait();
 
             _currentUser = new UserDto { UserName = user.UserName, Role = role };
@@ -134,7 +129,7 @@ namespace Application.IntegrationTests.Identity
 
             var userManager = scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
 
-            return await userManager.FindByNameAsync(userName); 
+            return await userManager.FindByNameAsync(userName);
         }
         public static async Task<string> GetUserRole(ApplicationUser user)
         {

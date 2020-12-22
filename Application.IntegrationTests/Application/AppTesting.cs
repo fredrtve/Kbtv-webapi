@@ -1,15 +1,12 @@
 ﻿using BjBygg.Application.Application.Common.Interfaces;
-using BjBygg.Application.Common;
 using BjBygg.Application.Common.Interfaces;
 using BjBygg.Application.Identity.Common;
 using BjBygg.Application.Identity.Common.Interfaces;
 using BjBygg.Application.Identity.Common.Models;
 using BjBygg.Application.Identity.Queries.UserQueries.UserByUserName;
 using BjBygg.WebApi;
-using CleanArchitecture.Infrastructure.Api.FileStorage;
 using CleanArchitecture.Infrastructure.Data;
 using CleanArchitecture.Infrastructure.Identity;
-using CleanArchitecture.Infrastructure.Services;
 using CleanArchitecture.SharedKernel;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
@@ -78,7 +75,7 @@ namespace Application.IntegrationTests.Application
 
             services.AddSingleton<TestSeederCount>();
 
-            MockUserService(services); 
+            MockUserService(services);
 
             MockBlobStorage(services);
 
@@ -94,7 +91,7 @@ namespace Application.IntegrationTests.Application
         {
             using var scope = _scopeFactory.CreateScope();
 
-            var idContext = scope.ServiceProvider.GetService<IAppIdentityDbContext>();         
+            var idContext = scope.ServiceProvider.GetService<IAppIdentityDbContext>();
             idContext.Database.EnsureDeleted();
             idContext.Database.Migrate();
 

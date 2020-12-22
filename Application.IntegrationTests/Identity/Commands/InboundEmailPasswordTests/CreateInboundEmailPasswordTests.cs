@@ -1,13 +1,10 @@
-﻿using BjBygg.Application.Application.Commands.DocumentTypeCommands.Create;
-using BjBygg.Application.Common;
+﻿using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Identity.Commands.InboundEmailPasswordCommands.Create;
 using BjBygg.Application.Identity.Common.Models;
 using CleanArchitecture.Core;
-using CleanArchitecture.Core.Entities;
 using FluentAssertions;
 using NUnit.Framework;
-using System;
 using System.Threading.Tasks;
 
 namespace Application.IntegrationTests.Identity.Commands.InboundEmailPasswordTests
@@ -35,7 +32,7 @@ namespace Application.IntegrationTests.Identity.Commands.InboundEmailPasswordTes
             var command = new CreateInboundEmailPasswordCommand() { Id = "test", Password = "Test" };
 
             await SendAsync(command);
-            
+
             var dbEntity = await FindAsync<InboundEmailPassword>(command.Id);
 
             dbEntity.Should().NotBeNull();

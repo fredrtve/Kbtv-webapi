@@ -1,11 +1,8 @@
-﻿using BjBygg.Application.Application.Commands.MissionCommands.Documents.Mail;
-using BjBygg.Application.Application.Commands.MissionCommands.Images.Mail;
+﻿using BjBygg.Application.Application.Commands.MissionCommands.Images.Mail;
 using BjBygg.Application.Common.Exceptions;
 using FluentAssertions;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Application.IntegrationTests.Application.CommandTests.MissionTests.MissionImageTests
 {
@@ -24,9 +21,10 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
         [Test]
         public void ShouldThrowNoExceptions()
         {
-            var command = new MailMissionImagesCommand() { 
-                ToEmail = "test@gmail.com", 
-                Ids = new string[] { "test" } 
+            var command = new MailMissionImagesCommand()
+            {
+                ToEmail = "test@gmail.com",
+                Ids = new string[] { "test" }
             };
 
             FluentActions.Invoking(() =>

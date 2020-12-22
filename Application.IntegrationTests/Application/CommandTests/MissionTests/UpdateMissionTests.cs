@@ -1,16 +1,11 @@
-﻿using BjBygg.Application.Application.Commands.EmployerCommands.Update;
-using BjBygg.Application.Application.Commands.MissionCommands.Create;
-using BjBygg.Application.Application.Commands.MissionCommands.Update;
+﻿using BjBygg.Application.Application.Commands.MissionCommands.Update;
 using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
-using CleanArchitecture.SharedKernel;
 using FluentAssertions;
 using NUnit.Framework;
-using System;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.IntegrationTests.Application.CommandTests.MissionTests

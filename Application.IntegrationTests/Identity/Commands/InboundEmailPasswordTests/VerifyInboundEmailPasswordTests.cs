@@ -4,9 +4,6 @@ using BjBygg.Application.Identity.Commands.InboundEmailPasswordCommands.Create;
 using BjBygg.Application.Identity.Commands.InboundEmailPasswordCommands.Verify;
 using FluentAssertions;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.IntegrationTests.Identity.Commands.InboundEmailPasswordTests
@@ -32,7 +29,7 @@ namespace Application.IntegrationTests.Identity.Commands.InboundEmailPasswordTes
 
             await SendAsync(createCommand);
 
-            var result = 
+            var result =
                 await SendAsync(new VerifyInboundEmailPasswordCommand() { Password = createCommand.Password });
 
             result.Should().BeTrue();

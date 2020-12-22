@@ -2,14 +2,11 @@
 using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Identity.Commands.UserIdentityCommands.Login;
 using BjBygg.Application.Identity.Common.Models;
-using CleanArchitecture.Core;
 using CleanArchitecture.Infrastructure.Auth;
 using FluentAssertions;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.IntegrationTests.Identity.Commands.UserIdentityTests
@@ -29,9 +26,10 @@ namespace Application.IntegrationTests.Identity.Commands.UserIdentityTests
         [Test]
         public void ShouldThrowUnauthorizedExceptionIfUserNotFound()
         {
-            var command = new LoginCommand() { 
-                UserName = "wrongusername", 
-                Password = "wrongpassword" 
+            var command = new LoginCommand()
+            {
+                UserName = "wrongusername",
+                Password = "wrongpassword"
             };
 
             FluentActions.Invoking(() =>
@@ -92,8 +90,8 @@ namespace Application.IntegrationTests.Identity.Commands.UserIdentityTests
 
             response.Should().NotBeNull();
 
-            response.AccessToken.Should().NotBeNull();        
-            response.AccessToken.ExpiresIn.Should().Be((int) accessTokenValidFor.TotalSeconds);
+            response.AccessToken.Should().NotBeNull();
+            response.AccessToken.ExpiresIn.Should().Be((int)accessTokenValidFor.TotalSeconds);
             principal.Should().NotBeNull();
             principal.Claims.Should().NotBeEmpty();
             principalUser.Should().NotBeNull();

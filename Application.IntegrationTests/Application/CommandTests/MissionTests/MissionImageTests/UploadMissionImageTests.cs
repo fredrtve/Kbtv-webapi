@@ -1,19 +1,7 @@
-﻿using BjBygg.Application.Application.Commands.MissionCommands.Create;
-using BjBygg.Application.Application.Commands.MissionCommands.Documents.Upload;
-using BjBygg.Application.Application.Commands.MissionCommands.Images.Upload;
-using BjBygg.Application.Application.Common.Dto;
-using BjBygg.Application.Common;
+﻿using BjBygg.Application.Application.Commands.MissionCommands.Images.Upload;
 using BjBygg.Application.Common.Exceptions;
-using CleanArchitecture.Core;
-using CleanArchitecture.Core.Entities;
-using CleanArchitecture.SharedKernel;
 using FluentAssertions;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.IntegrationTests.Application.CommandTests.MissionTests.MissionImageTests
 {
@@ -34,7 +22,7 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
         //{
         //    var user = await RunAsDefaultUserAsync(Roles.Leader);
         //    var fileName = "test.jpg";
-   
+
         //    await SendAsync(new UploadMissionImageCommand()
         //    {
         //        MissionId = "test",

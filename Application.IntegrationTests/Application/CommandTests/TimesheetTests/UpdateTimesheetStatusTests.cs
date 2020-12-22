@@ -1,5 +1,5 @@
 ﻿using BjBygg.Application.Application.Commands.TimesheetCommands.Create;
-using BjBygg.Application.Application.Commands.TimesheetCommands.UpdateStatus;
+using BjBygg.Application.Application.Commands.TimesheetCommands.UpdateStatusRange;
 using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core;
@@ -7,9 +7,6 @@ using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Enums;
 using FluentAssertions;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
@@ -20,9 +17,9 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
         [Test]
         public void ShouldRequireValidTimesheetId()
         {
-            var command = new UpdateTimesheetStatusCommand
+            var command = new UpdateTimesheetStatusRangeCommand
             {
-                Id = "notvalid",
+                Ids = new[] { "notvalid" },
                 Status = TimesheetStatus.Confirmed
             };
 
@@ -48,9 +45,9 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
 
             await SendAsync(command);
 
-            await SendAsync(new UpdateTimesheetStatusCommand
+            await SendAsync(new UpdateTimesheetStatusRangeCommand
             {
-                Id = command.Id,
+                Ids = new[] { command.Id },
                 Status = TimesheetStatus.Confirmed
             });
 

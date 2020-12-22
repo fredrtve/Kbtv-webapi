@@ -5,9 +5,6 @@ using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using FluentAssertions;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.IntegrationTests.Application.QueryTests
@@ -28,7 +25,7 @@ namespace Application.IntegrationTests.Application.QueryTests
                 Comment = "test",
                 StartTime = 111,
                 EndTime = 112
-            }); 
+            });
             await SendAsync(new CreateTimesheetCommand()
             {
                 Id = "test2",

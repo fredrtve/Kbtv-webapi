@@ -1,7 +1,6 @@
-﻿using BjBygg.Application.Application.Commands.EmployerCommands.Update;
-using BjBygg.Application.Application.Commands.TimesheetCommands.Create;
+﻿using BjBygg.Application.Application.Commands.TimesheetCommands.Create;
 using BjBygg.Application.Application.Commands.TimesheetCommands.Update;
-using BjBygg.Application.Application.Commands.TimesheetCommands.UpdateStatus;
+using BjBygg.Application.Application.Commands.TimesheetCommands.UpdateStatusRange;
 using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core;
@@ -9,7 +8,6 @@ using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Enums;
 using FluentAssertions;
 using NUnit.Framework;
-using System;
 using System.Threading.Tasks;
 
 namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
@@ -46,7 +44,7 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
 
             await SendAsync(command);
 
-            await SendAsync(new UpdateTimesheetStatusCommand() { Id = command.Id, Status = TimesheetStatus.Confirmed });
+            await SendAsync(new UpdateTimesheetStatusRangeCommand() { Ids = new[] { command.Id }, Status = TimesheetStatus.Confirmed });
 
             var updateCommand = new UpdateTimesheetCommand { Id = command.Id };
 

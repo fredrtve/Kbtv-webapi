@@ -5,9 +5,6 @@ using BjBygg.Application.Identity.Commands.UserIdentityCommands.Logout;
 using BjBygg.Application.Identity.Common.Models;
 using FluentAssertions;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.IntegrationTests.Identity.Commands.UserIdentityTests

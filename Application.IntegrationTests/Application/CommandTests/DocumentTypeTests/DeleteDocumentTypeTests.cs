@@ -1,5 +1,4 @@
 ﻿using BjBygg.Application.Application.Commands.DocumentTypeCommands;
-using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core.Entities;
 using FluentAssertions;
 using NUnit.Framework;
@@ -24,7 +23,7 @@ namespace Application.IntegrationTests.Application.CommandTests.DocumentTypeTest
         {
             await AddAsync(new DocumentType() { Id = "test", Name = "test435" });
 
-            await SendAsync(new DeleteDocumentTypeCommand{Id = "test"});
+            await SendAsync(new DeleteDocumentTypeCommand { Id = "test" });
 
             var type = await FindAsync<DocumentType>("test");
 

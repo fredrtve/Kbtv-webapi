@@ -1,6 +1,4 @@
-﻿using BjBygg.Application.Application.Commands.EmployerCommands;
-using BjBygg.Application.Application.Commands.MissionCommands.Images;
-using BjBygg.Application.Common.Exceptions;
+﻿using BjBygg.Application.Application.Commands.MissionCommands.Images;
 using CleanArchitecture.Core.Entities;
 using FluentAssertions;
 using NUnit.Framework;
@@ -25,7 +23,7 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
         public async Task ShouldDeleteMissionImages()
         {
             await AddAsync(new Mission() { Id = "test", Address = "test435" });
-   
+
             var ids = new string[] { "test", "test2" };
 
             await AddAsync(new MissionImage() { Id = ids[0], MissionId = "test", FileName = "test435" });

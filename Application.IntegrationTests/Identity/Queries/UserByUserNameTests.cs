@@ -3,9 +3,6 @@ using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Identity.Queries.UserQueries.UserByUserName;
 using FluentAssertions;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.IntegrationTests.Identity.Queries

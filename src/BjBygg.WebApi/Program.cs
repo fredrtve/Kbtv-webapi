@@ -1,5 +1,10 @@
+using BjBygg.Application.Common.Interfaces;
+using BjBygg.Application.Identity.Common.Models;
+using CleanArchitecture.Infrastructure.Data;
+using CleanArchitecture.Infrastructure.Identity;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

@@ -1,13 +1,9 @@
 ﻿using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Identity.Commands.UserCommands.NewPassword;
-using BjBygg.Application.Identity.Commands.UserIdentityCommands.Login;
 using BjBygg.Application.Identity.Common.Models;
 using FluentAssertions;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.IntegrationTests.Identity.Commands.UserTests

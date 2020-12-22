@@ -7,9 +7,6 @@ using CleanArchitecture.Core.Entities;
 using CleanArchitecture.SharedKernel;
 using FluentAssertions;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -37,9 +34,10 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
 
             var fileName = "test.pdf";
 
-            var command = new UploadMissionDocumentCommand{ 
+            var command = new UploadMissionDocumentCommand
+            {
                 Id = "test",
-                MissionId = "test", 
+                MissionId = "test",
                 DocumentTypeId = "test",
                 File = new BasicFileStream(Encoding.UTF8.GetBytes("testdocument"), fileName)
             };
@@ -74,7 +72,7 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
             await SendAsync(command);
 
             var dbEntity = await FindAsync<MissionDocument>(command.Id);
-            var dbDocumentType = await FindAsync<DocumentType>(command.DocumentType.Id); 
+            var dbDocumentType = await FindAsync<DocumentType>(command.DocumentType.Id);
 
             dbDocumentType.Should().NotBeNull();
             dbEntity.Should().NotBeNull();

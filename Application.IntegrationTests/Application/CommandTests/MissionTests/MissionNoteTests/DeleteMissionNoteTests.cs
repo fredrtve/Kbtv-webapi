@@ -1,6 +1,4 @@
-﻿using BjBygg.Application.Application.Commands.EmployerCommands;
-using BjBygg.Application.Application.Commands.MissionCommands.Notes;
-using BjBygg.Application.Common.Exceptions;
+﻿using BjBygg.Application.Application.Commands.MissionCommands.Notes;
 using CleanArchitecture.Core.Entities;
 using FluentAssertions;
 using NUnit.Framework;

@@ -1,5 +1,4 @@
-﻿using BjBygg.Application.Application.Commands.EmployerCommands.Create;
-using BjBygg.Application.Application.Commands.MissionTypeCommands.Create;
+﻿using BjBygg.Application.Application.Commands.MissionTypeCommands.Create;
 using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core;

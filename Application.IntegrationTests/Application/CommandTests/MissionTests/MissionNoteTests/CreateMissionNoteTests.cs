@@ -1,5 +1,4 @@
-﻿using BjBygg.Application.Application.Commands.EmployerCommands.Create;
-using BjBygg.Application.Application.Commands.MissionCommands.Notes.Create;
+﻿using BjBygg.Application.Application.Commands.MissionCommands.Notes.Create;
 using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core;
@@ -28,8 +27,8 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
         {
             var user = await RunAsDefaultUserAsync(Roles.Leader);
             await AddAsync(new Mission() { Id = "test", Address = "test" });
-            var command = new CreateMissionNoteCommand() 
-            { 
+            var command = new CreateMissionNoteCommand()
+            {
                 Id = "test",
                 MissionId = "test",
                 Content = "New content",

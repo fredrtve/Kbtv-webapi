@@ -33,10 +33,11 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
 
             await AddAsync(new Mission() { Id = "test", Address = "test" });
 
-            var command = new CreateTimesheetCommand() {
+            var command = new CreateTimesheetCommand()
+            {
                 Id = "test",
-                MissionId = "test", 
-                Comment = "test", 
+                MissionId = "test",
+                Comment = "test",
                 StartTime = DateTimeHelper.ConvertDateToEpoch(endDate.AddHours(-totalHours)) * 1000,
                 EndTime = DateTimeHelper.ConvertDateToEpoch(endDate) * 1000
             };

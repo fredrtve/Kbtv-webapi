@@ -1,15 +1,12 @@
 ﻿using BjBygg.Application.Application.Commands.MissionCommands.CreateWithPdf;
 using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
-using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.SharedKernel;
 using FluentAssertions;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.IntegrationTests.Application.CommandTests.MissionTests
@@ -32,13 +29,13 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
             var user = await RunAsDefaultUserAsync(Roles.Leader);
 
             var projectDir = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
- 
+
             var bytes = await File.ReadAllBytesAsync(projectDir + "\\data\\files\\pdf_report_test.pdf");
             var preCreationMissions = await GetAllAsync<Mission>();
             var command = new CreateMissionWithPdfCommand()
             {
-                Files = new DisposableList<BasicFileStream>{ 
-                    { new BasicFileStream(new MemoryStream(bytes), "test.pdf") } 
+                Files = new DisposableList<BasicFileStream>{
+                    { new BasicFileStream(new MemoryStream(bytes), "test.pdf") }
                 }
             };
 

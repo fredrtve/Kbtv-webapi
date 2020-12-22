@@ -1,10 +1,7 @@
 ﻿using BjBygg.Application.Application.Commands.DocumentTypeCommands;
-using BjBygg.Application.Common;
-using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core.Entities;
 using FluentAssertions;
 using NUnit.Framework;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Application.IntegrationTests.Application.CommandTests.DocumentTypeTests
@@ -16,7 +13,7 @@ namespace Application.IntegrationTests.Application.CommandTests.DocumentTypeTest
         public void ShouldNotRequireValidDocumentTypeId()
         {
             var command = new DeleteRangeDocumentTypeCommand { Ids = new string[] { "notvalid", "notvalid1" } };
-        
+
             FluentActions.Invoking(() =>
                 SendAsync(command)).Should().NotThrow();
         }

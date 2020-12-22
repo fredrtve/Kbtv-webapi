@@ -3,8 +3,6 @@ using BjBygg.Application.Common.Exceptions;
 using FluentAssertions;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Application.IntegrationTests.Application.CommandTests.MissionTests.MissionDocumentTests
 {
@@ -23,9 +21,10 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
         [Test]
         public void ShouldThrowNoExceptions()
         {
-            var command = new MailMissionDocumentsCommand() { 
-                ToEmail = "test@gmail.com", 
-                Ids = new string[] { "test", "test2" } 
+            var command = new MailMissionDocumentsCommand()
+            {
+                ToEmail = "test@gmail.com",
+                Ids = new string[] { "test", "test2" }
             };
 
             FluentActions.Invoking(() =>

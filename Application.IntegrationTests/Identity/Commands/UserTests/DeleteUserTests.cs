@@ -1,11 +1,8 @@
-﻿using BjBygg.Application.Application.Commands.DocumentTypeCommands;
-using BjBygg.Application.Common;
+﻿using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Identity.Commands.UserCommands.Delete;
-using CleanArchitecture.Core.Entities;
 using FluentAssertions;
 using NUnit.Framework;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Application.IntegrationTests.Identity.Commands.UserTests

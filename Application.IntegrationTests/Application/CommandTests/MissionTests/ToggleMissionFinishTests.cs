@@ -15,7 +15,7 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
         [Test]
         public void ShouldNotRequireValidMissionId()
         {
-            var command = new ToggleMissionFinishCommand{ Id = "notvalid" };
+            var command = new ToggleMissionFinishCommand { Id = "notvalid" };
 
             FluentActions.Invoking(() =>
                 SendAsync(command)).Should().Throw<EntityNotFoundException>();
@@ -30,7 +30,7 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
 
             await AddAsync(newMission);
 
-            var command = new ToggleMissionFinishCommand{ Id = "test" };
+            var command = new ToggleMissionFinishCommand { Id = "test" };
 
             await SendAsync(command);
 

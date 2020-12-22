@@ -1,10 +1,6 @@
-﻿using BjBygg.Application.Application.Commands.DocumentTypeCommands;
-using BjBygg.Application.Common;
-using BjBygg.Application.Common.Exceptions;
-using BjBygg.Application.Identity.Commands.InboundEmailPasswordCommands.Create;
+﻿using BjBygg.Application.Common;
 using BjBygg.Application.Identity.Commands.InboundEmailPasswordCommands.DeleteRange;
 using BjBygg.Application.Identity.Common.Models;
-using CleanArchitecture.Core.Entities;
 using FluentAssertions;
 using NUnit.Framework;
 using System.Linq;
@@ -33,7 +29,7 @@ namespace Application.IntegrationTests.Identity.Commands.InboundEmailPasswordTes
 
             await AddAsync(new InboundEmailPassword() { Id = ids[0], Password = "test435" });
             await AddAsync(new InboundEmailPassword() { Id = ids[1], Password = "test22435" });
-   
+
             await SendAsync(new DeleteRangeInboundEmailPasswordCommand { Ids = ids });
 
             var types = (await GetAllAsync<InboundEmailPassword>())

@@ -1,5 +1,4 @@
 ﻿using BjBygg.Application.Application.Commands.TimesheetCommands.Create;
-using BjBygg.Application.Application.Commands.TimesheetCommands.UpdateStatus;
 using BjBygg.Application.Application.Commands.TimesheetCommands.UpdateStatusRange;
 using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
@@ -8,10 +7,6 @@ using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Enums;
 using FluentAssertions;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
@@ -22,7 +17,7 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
         [Test]
         public void ShouldRequireMinimumFields()
         {
-            var command = new UpdateTimesheetStatusRangeCommand{};
+            var command = new UpdateTimesheetStatusRangeCommand { };
 
             FluentActions.Invoking(() =>
                 SendAsync(command)).Should().Throw<ValidationException>();
@@ -52,7 +47,7 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
                 StartTime = 111,
                 EndTime = 112
             });
-    
+
             await SendAsync(new UpdateTimesheetStatusRangeCommand
             {
                 Ids = new string[] { "test", "test2" },

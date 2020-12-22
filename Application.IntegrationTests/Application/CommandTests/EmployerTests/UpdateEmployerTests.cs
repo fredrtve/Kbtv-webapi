@@ -5,7 +5,6 @@ using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using FluentAssertions;
 using NUnit.Framework;
-using System;
 using System.Threading.Tasks;
 
 namespace Application.IntegrationTests.Application.CommandTests.EmployerTests

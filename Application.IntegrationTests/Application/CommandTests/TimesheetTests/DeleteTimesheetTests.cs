@@ -1,7 +1,6 @@
-﻿using BjBygg.Application.Application.Commands.EmployerCommands;
-using BjBygg.Application.Application.Commands.TimesheetCommands.Create;
+﻿using BjBygg.Application.Application.Commands.TimesheetCommands.Create;
 using BjBygg.Application.Application.Commands.TimesheetCommands.Delete;
-using BjBygg.Application.Application.Commands.TimesheetCommands.UpdateStatus;
+using BjBygg.Application.Application.Commands.TimesheetCommands.UpdateStatusRange;
 using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core.Entities;
@@ -43,7 +42,7 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
 
             await SendAsync(command);
 
-            await SendAsync(new UpdateTimesheetStatusCommand() { Id = command.Id, Status = TimesheetStatus.Confirmed });
+            await SendAsync(new UpdateTimesheetStatusRangeCommand() { Ids = new[] { command.Id }, Status = TimesheetStatus.Confirmed });
 
             await SendAsync(new DeleteTimesheetCommand { Id = command.Id });
 
@@ -72,7 +71,7 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
 
             await RunAsDefaultUserAsync(Roles.Leader);
 
-            await SendAsync(new UpdateTimesheetStatusCommand() { Id = command.Id, Status = TimesheetStatus.Confirmed });
+            await SendAsync(new UpdateTimesheetStatusRangeCommand() { Ids = new[] { command.Id }, Status = TimesheetStatus.Confirmed });
 
             await RunAsDefaultUserAsync(Roles.Employee);
 
@@ -124,7 +123,7 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
                 StartTime = 111,
                 EndTime = 112
             };
-            await SendAsync(command); 
+            await SendAsync(command);
 
             await RunAsDefaultUserAsync(Roles.Employee);
 

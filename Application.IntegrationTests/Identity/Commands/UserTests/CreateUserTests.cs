@@ -1,14 +1,9 @@
-﻿using BjBygg.Application.Application.Commands.DocumentTypeCommands.Create;
-using BjBygg.Application.Common;
+﻿using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Identity.Commands.UserCommands.Create;
-using BjBygg.Application.Identity.Common.Models;
-using BjBygg.Application.Identity.Queries.UserQueries.UserByUserName;
 using CleanArchitecture.Core;
-using CleanArchitecture.Core.Entities;
 using FluentAssertions;
 using NUnit.Framework;
-using System;
 using System.Threading.Tasks;
 
 namespace Application.IntegrationTests.Identity.Commands.UserTests
@@ -53,7 +48,7 @@ namespace Application.IntegrationTests.Identity.Commands.UserTests
         {
             await RunAsDefaultUserAsync(Roles.Leader);
 
-            var command = new CreateUserCommand() 
+            var command = new CreateUserCommand()
             {
                 UserName = "UserName",
                 FirstName = "FirstName",

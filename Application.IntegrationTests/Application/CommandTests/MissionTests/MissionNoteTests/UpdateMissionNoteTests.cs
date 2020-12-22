@@ -1,12 +1,10 @@
-﻿using BjBygg.Application.Application.Commands.EmployerCommands.Update;
-using BjBygg.Application.Application.Commands.MissionCommands.Notes.Update;
+﻿using BjBygg.Application.Application.Commands.MissionCommands.Notes.Update;
 using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using FluentAssertions;
 using NUnit.Framework;
-using System;
 using System.Threading.Tasks;
 
 namespace Application.IntegrationTests.Application.CommandTests.MissionTests.MissionNoteTests
@@ -40,7 +38,7 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
             {
                 Id = "test",
                 Content = "New content",
-                Title =  "New title"
+                Title = "New title"
             };
 
             await SendAsync(command);

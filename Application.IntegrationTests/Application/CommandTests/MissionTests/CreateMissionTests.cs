@@ -5,13 +5,8 @@ using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
-using CleanArchitecture.SharedKernel;
 using FluentAssertions;
 using NUnit.Framework;
-using System;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.IntegrationTests.Application.CommandTests.MissionTests
@@ -37,7 +32,8 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
             await AddAsync(new MissionType() { Id = "test", Name = "test" });
             await AddAsync(new Employer() { Id = "test", Name = "test" });
 
-            var command = new CreateMissionCommand() {
+            var command = new CreateMissionCommand()
+            {
                 Id = "test",
                 Address = "Test",
                 MissionTypeId = "test",
@@ -69,9 +65,9 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
 
             await SendAsync(command);
 
-            var missionType = await FindAsync<MissionType>(command.MissionType.Id); 
+            var missionType = await FindAsync<MissionType>(command.MissionType.Id);
 
-            var employer = await FindAsync<Employer>(command.Employer.Id); 
+            var employer = await FindAsync<Employer>(command.Employer.Id);
 
             var mission = await FindAsync<Mission>(command.Id);
 

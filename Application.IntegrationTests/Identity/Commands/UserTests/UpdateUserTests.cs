@@ -1,12 +1,9 @@
-﻿using BjBygg.Application.Application.Commands.DocumentTypeCommands.Update;
-using BjBygg.Application.Common;
+﻿using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Identity.Commands.UserCommands.Update;
 using CleanArchitecture.Core;
-using CleanArchitecture.Core.Entities;
 using FluentAssertions;
 using NUnit.Framework;
-using System;
 using System.Threading.Tasks;
 
 namespace Application.IntegrationTests.Identity.Commands.UserTests
@@ -20,7 +17,7 @@ namespace Application.IntegrationTests.Identity.Commands.UserTests
         {
             await RunAsDefaultUserAsync(Roles.Leader);
 
-            var command = new UpdateUserCommand{ UserName = "asdasd" };
+            var command = new UpdateUserCommand { UserName = "asdasd" };
 
             FluentActions.Invoking(() =>
                 SendAsync(command)).Should().Throw<EntityNotFoundException>();
@@ -103,6 +100,6 @@ namespace Application.IntegrationTests.Identity.Commands.UserTests
             user.UpdatedBy.Should().Be(currentUser.UserName);
             user.UpdatedAt.Should().BeCloseTo(DateTimeHelper.Now(), 10000);
         }
-   
+
     }
 }
