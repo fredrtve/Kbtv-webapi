@@ -49,10 +49,7 @@ namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.RefreshToken
 
             var roles = await _userManager.GetRolesAsync(user);
 
-            if (roles == null || roles.Count == 0)
-                throw new UnauthorizedException("User has no roles");
-
-            if (!user.HasValidRefreshToken(command.RefreshToken))
+            if (!user.HasValidRefreshToken(command.RefreshToken) || roles == null || roles.Count == 0)
                 throw new BadRequestException("invalid_grant");
 
             var jwtToken = await _jwtFactory.GenerateEncodedToken(user.Id, user.UserName, roles.First());
