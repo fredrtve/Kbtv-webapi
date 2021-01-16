@@ -20,8 +20,10 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries
 
         protected override IQueryable<MissionNote> AppendQuery(IQueryable<MissionNote> query, MissionNoteSyncQuery request)
         {
+            query = query.Include(x => x.Mission).Where(x => !x.Mission.Deleted);
+
             if (request.User.Role == Roles.Employer) //Only allow employers missions if role is employer
-                query = query.Include(x => x.Mission).Where(x => (x.Mission.EmployerId == request.User.EmployerId) && !x.Mission.Deleted);
+                query = query.Where(x => (x.Mission.EmployerId == request.User.EmployerId));
 
             return query;
         }
