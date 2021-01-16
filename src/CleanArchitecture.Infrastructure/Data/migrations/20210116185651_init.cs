@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CleanArchitecture.Infrastructure.data.migrations
+namespace CleanArchitecture.Infrastructure.Data.Migrations
 {
     public partial class init : Migration
     {
@@ -34,7 +34,7 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     CreatedBy = table.Column<string>(nullable: true),
                     UpdatedAt = table.Column<DateTime>(nullable: false),
                     UpdatedBy = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(maxLength: 50, nullable: false),
+                    Name = table.Column<string>(maxLength: 45, nullable: false),
                     PhoneNumber = table.Column<string>(maxLength: 12, nullable: true),
                     Email = table.Column<string>(nullable: true),
                     Address = table.Column<string>(maxLength: 100, nullable: true)
@@ -71,14 +71,14 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     CreatedBy = table.Column<string>(nullable: true),
                     UpdatedAt = table.Column<DateTime>(nullable: false),
                     UpdatedBy = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(maxLength: 50, nullable: true),
                     PhoneNumber = table.Column<string>(maxLength: 12, nullable: true),
+                    Email = table.Column<string>(nullable: true),
                     Description = table.Column<string>(maxLength: 400, nullable: true),
-                    Address = table.Column<string>(maxLength: 100, nullable: false),
+                    FileName = table.Column<string>(maxLength: 40, nullable: true),
                     Finished = table.Column<bool>(nullable: false, defaultValue: false),
+                    Address = table.Column<string>(maxLength: 100, nullable: false),
                     MissionTypeId = table.Column<string>(nullable: true),
-                    EmployerId = table.Column<string>(nullable: true),
-                    FileName = table.Column<string>(maxLength: 40, nullable: true)
+                    EmployerId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -164,8 +164,7 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     UpdatedBy = table.Column<string>(nullable: true),
                     Title = table.Column<string>(maxLength: 75, nullable: true),
                     Content = table.Column<string>(maxLength: 400, nullable: false),
-                    MissionId = table.Column<string>(nullable: false),
-                    Pinned = table.Column<bool>(nullable: false)
+                    MissionId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {

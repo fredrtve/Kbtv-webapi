@@ -21,7 +21,7 @@ namespace Application.IntegrationTests.Identity.Commands.UserIdentityTests
         }
 
         [Test]
-        public async Task ShouldThrowBadRequestExceptionIfOldPasswordIsInvalid()
+        public async Task ShouldThrowValidationExceptionIfOldPasswordIsInvalid()
         {
             var userPassword = "password12";
             var user = await RunAsUserAsync("testUser", userPassword, Roles.Leader);
@@ -33,7 +33,7 @@ namespace Application.IntegrationTests.Identity.Commands.UserIdentityTests
             };
 
             FluentActions.Invoking(() =>
-                SendAsync(command)).Should().Throw<BadRequestException>();
+                SendAsync(command)).Should().Throw<ValidationException>();
         }
 
         [Test]

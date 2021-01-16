@@ -70,7 +70,7 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
 
             var result = await SendAsync(new SyncAllQuery() { });
             var timestampFromNow = DateTimeHelper.ConvertDateToEpoch(DateTimeHelper.Now());
-            result.Timestamp.Should().BeApproximately(timestampFromNow, 1000);
+            result.Timestamp.Should().BeApproximately(timestampFromNow * 1000, 1000);
         }
 
         [Test]

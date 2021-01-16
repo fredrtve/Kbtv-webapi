@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CleanArchitecture.Infrastructure.identity.migrations
+namespace CleanArchitecture.Infrastructure.Identity.Migrations
 {
     public partial class init : Migration
     {

@@ -37,7 +37,7 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
                 Id = "test",
                 Address = "Test",
                 MissionTypeId = "test",
-                EmployerId = "test"
+                EmployerId = "test",
             };
 
             await SendAsync(command);

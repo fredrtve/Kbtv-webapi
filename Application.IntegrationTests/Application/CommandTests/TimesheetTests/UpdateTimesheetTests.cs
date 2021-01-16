@@ -21,7 +21,7 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
         {
             var command = new UpdateTimesheetCommand
             {
-                Id = "notvalid"
+                Id = "notvalid", MissionId = "test", StartTime = 1231131, EndTime = 2342342
             };
 
             FluentActions.Invoking(() =>
@@ -46,7 +46,7 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
 
             await SendAsync(new UpdateTimesheetStatusRangeCommand() { Ids = new[] { command.Id }, Status = TimesheetStatus.Confirmed });
 
-            var updateCommand = new UpdateTimesheetCommand { Id = command.Id };
+            var updateCommand = new UpdateTimesheetCommand { Id = command.Id, MissionId = "test", StartTime = 1231131, EndTime = 2342342 };
 
             FluentActions.Invoking(() =>
               SendAsync(updateCommand)).Should().Throw<BadRequestException>();
@@ -70,7 +70,7 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
 
             await RunAsDefaultUserAsync(Roles.Employee);
 
-            var updateCommand = new UpdateTimesheetCommand { Id = command.Id };
+            var updateCommand = new UpdateTimesheetCommand { Id = command.Id, MissionId = "test", StartTime = 1231131, EndTime = 2342342 };
 
             FluentActions.Invoking(() =>
               SendAsync(updateCommand)).Should().Throw<ForbiddenException>();

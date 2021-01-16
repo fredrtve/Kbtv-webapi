@@ -6,10 +6,10 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CleanArchitecture.Infrastructure.data.migrations
+namespace CleanArchitecture.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200918122015_init")]
+    [Migration("20210116185651_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -72,7 +72,7 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT")
-                        .HasMaxLength(50);
+                        .HasMaxLength(45);
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("TEXT")
@@ -112,6 +112,9 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(400);
 
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("EmployerId")
                         .HasColumnType("TEXT");
 
@@ -126,10 +129,6 @@ namespace CleanArchitecture.Infrastructure.data.migrations
 
                     b.Property<string>("MissionTypeId")
                         .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(50);
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("TEXT")
@@ -249,9 +248,6 @@ namespace CleanArchitecture.Infrastructure.data.migrations
                     b.Property<string>("MissionId")
                         .IsRequired()
                         .HasColumnType("TEXT");
-
-                    b.Property<bool>("Pinned")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
                         .HasColumnType("TEXT")

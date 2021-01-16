@@ -6,10 +6,10 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CleanArchitecture.Infrastructure.identity.migrations
+namespace CleanArchitecture.Infrastructure.Identity.Migrations
 {
     [DbContext(typeof(AppIdentityDbContext))]
-    [Migration("20200918122040_init")]
+    [Migration("20210116185608_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
