@@ -10,7 +10,7 @@ namespace CleanArchitecture.Infrastructure.Services
 
         public string Generate()
         {
-            const string chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+            const string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, 7)
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
