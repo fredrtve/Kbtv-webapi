@@ -47,7 +47,7 @@ namespace BjBygg.WebApi.Filters
             var details = new ProblemDetails
             {
                 Status = StatusCodes.Status500InternalServerError,
-                Title = "An error occurred while processing your request.",
+                Title = "Det oppsto en feil under behandlingen av forespørselen din.",
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1"
             };
 
@@ -79,7 +79,7 @@ namespace BjBygg.WebApi.Filters
             var details = new ProblemDetails()
             {
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                Title = "Bad request.",
+                Title = "Ugyldig forespørsel.",
                 Detail = exception.Message
             };
 
@@ -94,7 +94,7 @@ namespace BjBygg.WebApi.Filters
             var details = new ProblemDetails()
             {
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-                Title = "The specified resource was not found.",
+                Title = "Den angitte ressursen ble ikke funnet.",
                 Detail = exception.Message
             };
 
@@ -114,7 +114,7 @@ namespace BjBygg.WebApi.Filters
             var details = new ProblemDetails()
             {
                 Type = "https://tools.ietf.org/html/rfc7231#section-3.1",
-                Title = "Missing authorization.",
+                Title = "Mangler autorisasjon.",
                 Detail = exception.Message
             };
 
