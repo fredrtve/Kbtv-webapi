@@ -56,8 +56,7 @@ namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.RefreshToken
 
             //await _userManager.UpdateAsync(user);
 
-            return new RefreshTokenResponse(jwtToken, command.RefreshToken);
+            return new RefreshTokenResponse(jwtToken);
         }
-
     }
 }

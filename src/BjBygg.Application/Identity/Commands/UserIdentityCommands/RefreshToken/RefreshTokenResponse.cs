@@ -5,12 +5,10 @@ namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.RefreshToken
     public class RefreshTokenResponse
     {
         public AccessToken AccessToken { get; }
-        public string RefreshToken { get; }
 
-        public RefreshTokenResponse(AccessToken accessToken, string refreshToken)
+        public RefreshTokenResponse(AccessToken accessToken)
         {
             AccessToken = accessToken;
-            RefreshToken = refreshToken;
         }
     }
 }
