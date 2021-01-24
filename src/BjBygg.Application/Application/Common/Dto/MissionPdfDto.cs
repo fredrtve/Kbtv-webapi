@@ -9,5 +9,7 @@ namespace BjBygg.Application.Application.Common.Dto
         public string PhoneNumber { get; set; }
 
         public Stream Image { get; set; }
+
+        public string DocumentName { get; set; }
     }
 }

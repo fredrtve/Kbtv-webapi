@@ -16,36 +16,6 @@ namespace CleanArchitecture.Infrastructure.Data.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.0.1");
 
-            modelBuilder.Entity("CleanArchitecture.Core.Entities.DocumentType", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(45);
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DocumentTypes");
-                });
-
             modelBuilder.Entity("CleanArchitecture.Core.Entities.Employer", b =>
                 {
                     b.Property<string>("Id")
@@ -161,9 +131,6 @@ namespace CleanArchitecture.Infrastructure.Data.Migrations
                     b.Property<bool>("Deleted")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("DocumentTypeId")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("FileName")
                         .IsRequired()
                         .HasColumnType("TEXT")
@@ -173,6 +140,11 @@ namespace CleanArchitecture.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(45);
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
 
@@ -180,8 +152,6 @@ namespace CleanArchitecture.Infrastructure.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DocumentTypeId");
 
                     b.HasIndex("MissionId");
 
@@ -362,11 +332,6 @@ namespace CleanArchitecture.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("CleanArchitecture.Core.Entities.MissionDocument", b =>
                 {
-                    b.HasOne("CleanArchitecture.Core.Entities.DocumentType", "DocumentType")
-                        .WithMany("MissionDocuments")
-                        .HasForeignKey("DocumentTypeId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("CleanArchitecture.Core.Entities.Mission", "Mission")
                         .WithMany("MissionDocuments")
                         .HasForeignKey("MissionId")

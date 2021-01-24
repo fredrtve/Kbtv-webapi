@@ -7,6 +7,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Application.IntegrationTests.Application.CommandTests.MissionTests
@@ -26,12 +27,10 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
         [Test]
         public async Task ShouldCreateMissionFromPdf()
         {
-            var user = await RunAsDefaultUserAsync(Roles.Leader);
-
             var projectDir = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
 
             var bytes = await File.ReadAllBytesAsync(projectDir + "\\data\\files\\pdf_report_test.pdf");
-            var preCreationMissions = await GetAllAsync<Mission>();
+
             var command = new CreateMissionWithPdfCommand()
             {
                 Files = new DisposableList<BasicFileStream>{
@@ -41,11 +40,17 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
 
             await SendAsync(command);
 
-            var pastCreationMissions = await GetAllAsync<Mission>();
-            var newMissionsCount = pastCreationMissions.Count - preCreationMissions.Count;
-            //(await GetAllAsync<MissionDocument>()).Find(x => x.MissionId == response.Mission.Id);
+            var mission = (await GetAllAsync<Mission>()).FirstOrDefault();
+  
+            var document = (await GetAllAsync<MissionDocument>()).FirstOrDefault();
 
-            newMissionsCount.Should().Be(1);
+            mission.Should().NotBeNull();
+            document.Should().NotBeNull();
+            mission.Address.Should().Be("Bekkasinveien 59, 2008 FJERDINGBY");
+            mission.PhoneNumber.Should().Be("99522324");
+            document.Name.Should().Be("Skaderapport");
+            document.FileName.Should().NotBeNullOrEmpty();
+            document.MissionId.Should().Be(mission.Id);
         }
 
         [Test]

@@ -101,9 +101,6 @@ namespace Application.IntegrationTests.Identity.Commands.UserIdentityTests
             principalUser.Should().NotBeNull();
             principalUser.UserName.Should().Be(user.UserName);
 
-            refreshResponse.RefreshToken.Should().NotBeNull();
-            refreshResponse.RefreshToken.Should().Be(loginResponse.RefreshToken);
-
         }
     }
 }

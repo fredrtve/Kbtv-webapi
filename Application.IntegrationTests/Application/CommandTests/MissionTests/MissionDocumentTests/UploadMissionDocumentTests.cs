@@ -30,7 +30,6 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
             var user = await RunAsDefaultUserAsync(Roles.Leader);
 
             await AddAsync(new Mission() { Id = "test", Address = "test" });
-            await AddAsync(new DocumentType() { Id = "test", Name = "test" });
 
             var fileName = "test.pdf";
 
@@ -38,7 +37,6 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
             {
                 Id = "test",
                 MissionId = "test",
-                DocumentTypeId = "test",
                 File = new BasicFileStream(Encoding.UTF8.GetBytes("testdocument"), fileName)
             };
 
@@ -48,35 +46,10 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
 
             dbEntity.Should().NotBeNull();
             dbEntity.MissionId.Should().Be(command.MissionId);
-            dbEntity.DocumentTypeId.Should().Be(command.DocumentTypeId);
             dbEntity.FileName.Should().Be(fileName);
             dbEntity.CreatedBy.Should().Be(user.UserName);
             dbEntity.UpdatedAt.Should().BeCloseTo(DateTimeHelper.Now(), 10000);
         }
 
-        [Test]
-        public async Task ShouldCreateMissionDocumentWhenFileUploadedWithNewDocumentType()
-        {
-            var user = await RunAsDefaultUserAsync(Roles.Leader);
-
-            await AddAsync(new Mission() { Id = "test", Address = "test" });
-
-            var command = new UploadMissionDocumentCommand
-            {
-                Id = "test",
-                MissionId = "test",
-                DocumentType = new DocumentTypeDto { Id = "test", Name = "new type" },
-                File = new BasicFileStream(Encoding.UTF8.GetBytes("testdocument"), ".pdf")
-            };
-
-            await SendAsync(command);
-
-            var dbEntity = await FindAsync<MissionDocument>(command.Id);
-            var dbDocumentType = await FindAsync<DocumentType>(command.DocumentType.Id);
-
-            dbDocumentType.Should().NotBeNull();
-            dbEntity.Should().NotBeNull();
-            dbEntity.DocumentTypeId.Should().Be(dbDocumentType.Id);
-        }
     }
 }

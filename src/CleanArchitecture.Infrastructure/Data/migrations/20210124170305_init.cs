@@ -8,23 +8,6 @@ namespace CleanArchitecture.Infrastructure.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "DocumentTypes",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    Deleted = table.Column<bool>(nullable: false),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    CreatedBy = table.Column<string>(nullable: true),
-                    UpdatedAt = table.Column<DateTime>(nullable: false),
-                    UpdatedBy = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(maxLength: 45, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DocumentTypes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Employers",
                 columns: table => new
                 {
@@ -107,19 +90,13 @@ namespace CleanArchitecture.Infrastructure.Data.Migrations
                     CreatedBy = table.Column<string>(nullable: true),
                     UpdatedAt = table.Column<DateTime>(nullable: false),
                     UpdatedBy = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(maxLength: 45, nullable: false),
                     MissionId = table.Column<string>(nullable: false),
-                    FileName = table.Column<string>(maxLength: 40, nullable: false),
-                    DocumentTypeId = table.Column<string>(nullable: true)
+                    FileName = table.Column<string>(maxLength: 40, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MissionDocuments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_MissionDocuments_DocumentTypes_DocumentTypeId",
-                        column: x => x.DocumentTypeId,
-                        principalTable: "DocumentTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_MissionDocuments_Missions_MissionId",
                         column: x => x.MissionId,
@@ -207,11 +184,6 @@ namespace CleanArchitecture.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_MissionDocuments_DocumentTypeId",
-                table: "MissionDocuments",
-                column: "DocumentTypeId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_MissionDocuments_MissionId",
                 table: "MissionDocuments",
                 column: "MissionId");
@@ -255,9 +227,6 @@ namespace CleanArchitecture.Infrastructure.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Timesheets");
-
-            migrationBuilder.DropTable(
-                name: "DocumentTypes");
 
             migrationBuilder.DropTable(
                 name: "Missions");

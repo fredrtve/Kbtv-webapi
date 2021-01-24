@@ -25,7 +25,6 @@ namespace CleanArchitecture.Infrastructure.Data
                 [typeof(MissionImage)] = missionImages,
                 [typeof(Employer)] = employers,
                 [typeof(Timesheet)] = timesheets,
-                [typeof(DocumentType)] = documentTypes,
             };
         }
 

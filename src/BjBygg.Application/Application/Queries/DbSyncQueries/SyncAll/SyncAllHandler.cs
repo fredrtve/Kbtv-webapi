@@ -80,7 +80,6 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
                     ),
                     Employers = await _mediator.Send(new EmployerSyncQuery() { Timestamp = request.Timestamp, User = user }),
                     MissionTypes = await _mediator.Send(new MissionTypeSyncQuery() { Timestamp = request.Timestamp }),
-                    DocumentTypes = await _mediator.Send(new DocumentTypeSyncQuery() { Timestamp = request.Timestamp }),
                 }
             };
         }

@@ -15,7 +15,7 @@ namespace CleanArchitecture.Infrastructure.Services
     {
         public MissionPdfDto TryExtract(Stream pdf)
         {
-            MissionPdfDto mission;
+            MissionPdfDto missionPdf;
             try
             {
                 var pdfReader = new PdfReader(pdf);
@@ -25,18 +25,18 @@ namespace CleanArchitecture.Infrastructure.Services
                 var strategy = new SimpleTextExtractionStrategy();
                 var rawString = PdfTextExtractor.GetTextFromPage(page, strategy);
 
-                mission = GetMissionFromRawString(rawString);
-                mission.Image = GetImageStreamFromFirstPage(page);
+                missionPdf = GetMissionPdfFromRawString(rawString);
+                missionPdf.Image = GetImageStreamFromFirstPage(page);
 
                 pdfDocument.Close();
                 pdfReader.Close();
             }
             catch
             {
-                mission = null;
+                missionPdf = null;
             }
 
-            return mission;
+            return missionPdf;
         }
 
         private Stream GetImageStreamFromFirstPage(PdfPage page)
@@ -68,12 +68,13 @@ namespace CleanArchitecture.Infrastructure.Services
         }
 
 
-        private MissionPdfDto GetMissionFromRawString(string rawString)
+        private MissionPdfDto GetMissionPdfFromRawString(string rawString)
         {
-            var mission = new MissionPdfDto();
-            mission.Address = GetAddressFromRawString(rawString);
-            mission.PhoneNumber = GetPhoneNumberFromRawString(rawString);
-            return mission;
+            var missionPdf = new MissionPdfDto();
+            missionPdf.Address = GetAddressFromRawString(rawString);
+            missionPdf.PhoneNumber = GetPhoneNumberFromRawString(rawString);
+            missionPdf.DocumentName = GetDocumentNameFromRawString(rawString);
+            return missionPdf;
         }
 
         private string GetAddressFromRawString(string rawString)
@@ -106,13 +107,20 @@ namespace CleanArchitecture.Infrastructure.Services
 
             return Regex.Match(contactInfoString, @"\b\d{8,10}\b").Groups[0].Value;
         }
-
-        private Image ScaleImage(Image image, int newWidth)
+        private string GetDocumentNameFromRawString(string rawString)
         {
-            var width = image.GetImageWidth();
-            var height = image.GetImageHeight();
-            var scale = width / newWidth;
-            return image.ScaleAbsolute(width, height * scale);
+            var endKeyword = "\nInformasjon om skaden";
+
+            var endStringPosition = rawString.IndexOf(endKeyword);
+
+            var startStringPosition = rawString.Substring(0, endStringPosition).LastIndexOf("\n") + 2;
+
+            var name = rawString.Substring(startStringPosition,
+                endStringPosition - startStringPosition);
+
+            return Regex.Replace(name, @"\s+", ""); //Remove whitespaces
         }
+
+
     }
 }

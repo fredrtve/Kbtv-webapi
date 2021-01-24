@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using CleanArchitecture.Core;
+using FluentValidation;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Upload
 {
@@ -9,13 +10,9 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Uplo
             RuleFor(v => v.Id)
                 .NotEmpty();
 
-            RuleFor(v => v.DocumentType)
-               .Must(v => (v == null) || !(string.IsNullOrWhiteSpace(v.Id) || string.IsNullOrWhiteSpace(v.Name)))
-               .WithName("Dokumenttype");
-
-            RuleFor(v => v.DocumentTypeId)
-               .NotEmpty().When(v => v.DocumentType == null || string.IsNullOrEmpty(v.DocumentType.Id))
-               .WithName("Dokumenttype");
+            RuleFor(v => v.Name)
+                 .MaximumLength(ValidationRules.NameMaxLength)
+                 .WithName("Navn");
 
             RuleFor(v => v.File)
                 .NotEmpty()

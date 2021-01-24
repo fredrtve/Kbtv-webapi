@@ -19,7 +19,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Mail
             Data = new MissionDocumentsTemplateData(documents.Select(x => new MissionDocumentsTemplateDocument()
             {
                 Id = x.Id,
-                DocumentTypeName = x.DocumentType == null ? "Ukategorisert" : x.DocumentType.Name,
+                Name = x.Name,
                 Url = new StorageFileUrl(x.FileName, ResourceFolderConstants.Document).FileUrl.ToString()
             }).ToList());
         }
@@ -48,8 +48,8 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Mail
         [JsonProperty("id")]
         public string Id { get; set; }
 
-        [JsonProperty("documentTypeName")]
-        public string DocumentTypeName { get; set; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
 
         [JsonProperty("url")]
         public string Url { get; set; }

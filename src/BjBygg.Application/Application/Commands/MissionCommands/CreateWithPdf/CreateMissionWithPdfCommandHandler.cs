@@ -74,14 +74,12 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.CreateWithPdf
                 dbMission.FileName = fileStream.FileName;
             }
 
-
-            var documentType = await _dbContext.Set<DocumentType>().Where(x => x.Name == "Skaderapport").FirstOrDefaultAsync();
-
             var report = new MissionDocument
             {
                 Id = _idGenerator.Generate(),
-                DocumentType = documentType
+                Name = missionPdfDto.DocumentName
             };
+
             report.FileName = $"{report.Id}.{extractedDocument.FileExtension}";
 
             var modifiedFile = new BasicFileStream(extractedDocument.Stream, report.FileName);

@@ -17,7 +17,6 @@ namespace Application.IntegrationTests
             {
                 await SetEmployersAsync(ctx, seederCount.SeedCounts[typeof(Employer)]);
                 await SetMissionTypesAsync(ctx, seederCount.SeedCounts[typeof(MissionType)]);
-                await SetDocumentTypesAsync(ctx, seederCount.SeedCounts[typeof(DocumentType)]);
                 await SetMissionsAsync(ctx, seederCount.SeedCounts[typeof(Mission)]);
                 await SetMissionDocumentsAsync(ctx, seederCount.SeedCounts[typeof(MissionDocument)]);
                 await SetMissionImagesAsync(ctx, seederCount.SeedCounts[typeof(MissionImage)]);

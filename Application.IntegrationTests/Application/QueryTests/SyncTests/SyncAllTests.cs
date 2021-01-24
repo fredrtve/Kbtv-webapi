@@ -34,7 +34,6 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
             result.Arrays.MissionDocuments.Entities.Should().HaveCount(1); //Min date
             result.Arrays.MissionTypes.Entities.Should().HaveCount(1);
             result.Arrays.Employers.Entities.Should().HaveCount(1);
-            result.Arrays.DocumentTypes.Entities.Should().HaveCount(1);
             result.Arrays.UserTimesheets.Entities.Should().HaveCount(1); //User spesific & min date
         }
 
@@ -59,7 +58,6 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
             result.Arrays.MissionDocuments.Entities.Should().HaveCount(1);
             result.Arrays.MissionTypes.Entities.Should().HaveCount(1);
             result.Arrays.Employers.Entities.Should().HaveCount(1);
-            result.Arrays.DocumentTypes.Entities.Should().HaveCount(1);
             result.Arrays.UserTimesheets.Entities.Should().HaveCount(1);
         }
 
@@ -107,7 +105,6 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
             await AddAsync(new MissionDocument() { Id = "test", MissionId = "test", FileName = "test.jpg" });
             await AddAsync(new MissionType() { Id = "test", Name = "test2" });
             await AddAsync(new Employer() { Id = "test", Name = "test2" });
-            await AddAsync(new DocumentType() { Id = "test", Name = "test2" });
             await AddAsync(new Timesheet()
             {
                 Id = "test",

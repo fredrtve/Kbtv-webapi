@@ -10,6 +10,7 @@ namespace CleanArchitecture.Infrastructure.Data.Config
         {
             base.Configure(builder);
 
+            builder.Property(mi => mi.Name).IsRequired().HasMaxLength(ValidationRules.NameMaxLength);
             builder.Property(mi => mi.FileName).IsRequired().HasMaxLength(ValidationRules.FileNameMaxLength);
             builder.Property(mi => mi.MissionId).IsRequired();
         }

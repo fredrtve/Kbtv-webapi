@@ -20,7 +20,6 @@ namespace CleanArchitecture.Infrastructure.Data
             using var ctx = context;
             await SetEmployersAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(Employer)]);
             await SetMissionTypesAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(MissionType)]);
-            await SetDocumentTypesAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(DocumentType)]);
             await SetMissionsAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(Mission)]);
             await SetMissionDocumentsAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(MissionDocument)]);
             await SetMissionImagesAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(MissionImage)]);
@@ -67,19 +66,7 @@ namespace CleanArchitecture.Infrastructure.Data
             }
             await context.Database.ExecuteSqlRawAsync(command);
         }
-        static async Task SetDocumentTypesAsync(IAppDbContext context, IIdGenerator idGenerator, int amount)
-        {
-            var command = "INSERT INTO DocumentTypes (Id, Name, Deleted, CreatedAt, UpdatedAt) VALUES ";
-            for (int i = 0; i < amount; i++)
-            {
-                var id = idGenerator.Generate();
-                AddGeneratedId(id, typeof(DocumentType));
-                var date = DateTimeHelper.Now().AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
-                command = String.Concat(command, $"('{id}', 'Skaderapport{i}', 0, '{date}', '{date}')");
-                if (i < (amount - 1)) command = String.Concat(command, ",");
-            }
-            await context.Database.ExecuteSqlRawAsync(command);
-        }
+
         static async Task SetMissionsAsync(IAppDbContext context, IIdGenerator idGenerator, int amount)
         {
             var command = "INSERT INTO Missions (Id, Address, EmployerId, MissionTypeId, Deleted, CreatedAt, UpdatedAt) VALUES ";
@@ -98,7 +85,7 @@ namespace CleanArchitecture.Infrastructure.Data
         }
         static async Task SetMissionDocumentsAsync(IAppDbContext context, IIdGenerator idGenerator, int amount)
         {
-            var command = "INSERT INTO MissionDocuments (Id, FileName, MissionId, DocumentTypeId, Deleted, CreatedAt, UpdatedAt) VALUES ";
+            var command = "INSERT INTO MissionDocuments (Id, FileName, MissionId, Name, Deleted, CreatedAt, UpdatedAt) VALUES ";
             string[] documents = {
                 "1637271568378142015_fef915f9-5f35-45ea-96ae-898f33d79df2.jpg",
                 "1637125277915871387_33a58ce3-9b65-42c1-99aa-35bbbf200e82.jpg",
@@ -110,10 +97,9 @@ namespace CleanArchitecture.Infrastructure.Data
                 AddGeneratedId(id, typeof(MissionDocument));
                 var date = DateTimeHelper.Now().AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
                 var document = documents[rnd.Next(0, documents.Length)];
-                var typeId = GetGeneratedId(typeof(DocumentType));
                 var missionId = GetGeneratedId(typeof(Mission));
                 command = String.Concat(command,
-                    $"('{id}', '{document}', '{missionId}', '{typeId}', 0, '{date}', '{date}')");
+                    $"('{id}', '{document}', '{missionId}', 'Skaderapport{i}', 0, '{date}', '{date}')");
 
                 if (i < (amount - 1)) command = String.Concat(command, ",");
             }

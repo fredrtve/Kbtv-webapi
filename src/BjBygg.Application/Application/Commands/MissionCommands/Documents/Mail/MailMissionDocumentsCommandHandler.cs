@@ -25,7 +25,6 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Mail
         public override async Task<Unit> Handle(MailMissionDocumentsCommand request, CancellationToken cancellationToken)
         {
             var documents = await _dbContext.Set<MissionDocument>()
-                .Include(x => x.DocumentType)
                 .Where(x => request.Ids.Contains(x.Id)).ToListAsync();
 
             var template = new MissionDocumentsTemplate(documents);

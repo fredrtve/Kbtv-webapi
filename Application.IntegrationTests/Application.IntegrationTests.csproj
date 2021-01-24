@@ -22,8 +22,4 @@
     <ProjectReference Include="..\src\BjBygg.WebApi\BjBygg.WebApi.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="Application\CommandTests\ExportJsonToCsvTests.cs" />
-  </ItemGroup>
-
 </Project>

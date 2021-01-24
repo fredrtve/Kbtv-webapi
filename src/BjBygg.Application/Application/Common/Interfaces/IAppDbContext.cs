@@ -9,7 +9,6 @@ namespace BjBygg.Application.Application.Common.Interfaces
         DbSet<Employer> Employers { get; set; }
         DbSet<Mission> Missions { get; set; }
         DbSet<MissionType> MissionTypes { get; set; }
-        DbSet<DocumentType> DocumentTypes { get; set; }
         DbSet<MissionImage> MissionImages { get; set; }
         DbSet<MissionDocument> MissionDocuments { get; set; }
         DbSet<MissionNote> MissionNotes { get; set; }

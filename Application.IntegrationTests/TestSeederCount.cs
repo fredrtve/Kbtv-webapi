@@ -25,7 +25,6 @@ namespace Application.IntegrationTests
                 [typeof(MissionImage)] = missionImages,
                 [typeof(Employer)] = employers,
                 [typeof(Timesheet)] = timesheets,
-                [typeof(DocumentType)] = documentTypes,
             };
         }
         public Dictionary<Type, int> SeedCounts { get; private set; }

@@ -4,12 +4,6 @@ namespace BjBygg.WebApi
 {
     public static class RolePermissions
     {
-        public static class DocumentTypeActions
-        {
-            public const string Create = Roles.Leader;
-            public const string Delete = Roles.Leader;
-            public const string Update = Roles.Leader;
-        }
         public static class EmployerActions
         {
             public const string Create = Roles.Leader + "," + Roles.Management;

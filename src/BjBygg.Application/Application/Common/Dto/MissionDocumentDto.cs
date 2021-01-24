@@ -11,9 +11,7 @@ namespace BjBygg.Application.Application.Common.Dto
 
         public Uri FileName { get; set; }
 
-        public string DocumentTypeId { get; set; }
-
-        public DocumentTypeDto DocumentType { get; set; }
+        public string Name { get; set; }
 
     }
 }

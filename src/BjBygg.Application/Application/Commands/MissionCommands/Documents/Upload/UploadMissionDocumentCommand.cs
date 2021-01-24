@@ -8,7 +8,6 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Uplo
     {
         public BasicFileStream File { get; set; }
         public string MissionId { get; set; }
-        public string DocumentTypeId { get; set; }
-        public DocumentTypeDto DocumentType { get; set; }
+        public string Name { get; set; }
     }
 }

@@ -15,8 +15,6 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
 
         public DbSyncArrayResponse<MissionDocumentDto> MissionDocuments { get; set; }
 
-        public DbSyncArrayResponse<DocumentTypeDto> DocumentTypes { get; set; }
-
         public DbSyncArrayResponse<MissionTypeDto> MissionTypes { get; set; }
 
         public DbSyncArrayResponse<TimesheetDto> UserTimesheets { get; set; }
