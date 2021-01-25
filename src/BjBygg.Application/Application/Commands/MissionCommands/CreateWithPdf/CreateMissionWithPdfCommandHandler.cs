@@ -9,6 +9,7 @@ using CleanArchitecture.SharedKernel;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -52,6 +53,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.CreateWithPdf
                 missionPdfDto = _pdfReportMissionExtractor.TryExtract(file.Stream);
                 if (missionPdfDto != null)
                 {
+                    file.Stream.Position = 0;
                     extractedDocument = file; //Save extracted file to add to mission later
                     break;
                 };
@@ -80,7 +82,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.CreateWithPdf
                 Name = missionPdfDto.DocumentName
             };
 
-            report.FileName = $"{report.Id}.{extractedDocument.FileExtension}";
+            report.FileName = $"{report.Id}{extractedDocument.FileExtension}";
 
             var modifiedFile = new BasicFileStream(extractedDocument.Stream, report.FileName);
             await _storageService.UploadFileAsync(modifiedFile, ResourceFolderConstants.Document);
