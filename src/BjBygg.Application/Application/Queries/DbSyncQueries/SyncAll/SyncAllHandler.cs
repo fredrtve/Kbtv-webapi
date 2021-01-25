@@ -43,7 +43,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
                         {
                             Timestamp = request.Timestamp,
                             User = user,
-                            InitialNumberOfMonths = request.InitialNumberOfMonths
+                            InitialTimestamp = request.InitialTimestamp
                         }
                     ),
                     MissionImages = await _mediator.Send(
@@ -51,7 +51,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
                         {
                             Timestamp = request.Timestamp,
                             User = user,
-                            InitialNumberOfMonths = request.InitialNumberOfMonths
+                            InitialTimestamp = request.InitialTimestamp
                         }
                     ),
                     MissionNotes = await _mediator.Send(
@@ -59,7 +59,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
                         {
                             Timestamp = request.Timestamp,
                             User = user,
-                            InitialNumberOfMonths = request.InitialNumberOfMonths
+                            InitialTimestamp = request.InitialTimestamp
                         }
                     ),
                     MissionDocuments = await _mediator.Send(
@@ -67,7 +67,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
                         {
                             Timestamp = request.Timestamp,
                             User = user,
-                            InitialNumberOfMonths = request.InitialNumberOfMonths
+                            InitialTimestamp = request.InitialTimestamp
                         }
                     ),
                     UserTimesheets = await _mediator.Send(
@@ -75,7 +75,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
                         {
                             Timestamp = request.Timestamp,
                             User = user,
-                            InitialNumberOfMonths = request.InitialNumberOfMonths
+                            InitialTimestamp = request.InitialTimestamp
                         }
                     ),
                     Employers = await _mediator.Send(new EmployerSyncQuery() { Timestamp = request.Timestamp, User = user }),

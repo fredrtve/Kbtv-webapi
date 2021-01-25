@@ -32,7 +32,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.Common
             var date = DateTimeHelper.ConvertEpochToDate((request.Timestamp / 1000) ?? 0);
 
             if (_checkMinDate)
-                date = CheckMinSyncDate(date, request.InitialNumberOfMonths ?? 48);
+                date = CheckMinSyncDate(date, request.InitialTimestamp);
 
             var isInitial = request.Timestamp == null ? true : false;
 
@@ -66,9 +66,15 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.Common
             return new DbSyncArrayResponse<TDto>(_mapper.Map<IEnumerable<TDto>>(entities), deletedEntities);
         }
 
-        private DateTime CheckMinSyncDate(DateTime date, int maxNumberOfMonths)
+        private DateTime CheckMinSyncDate(DateTime date, long? InitialTimestamp)
         {
-            var minDate = DateTimeHelper.Now().AddMonths(-maxNumberOfMonths);
+            DateTime minDate;
+
+            if (InitialTimestamp != null)
+                minDate = DateTimeHelper.ConvertEpochToDate((long)InitialTimestamp / 1000);
+            else
+                minDate = DateTimeHelper.Now().AddMonths(48);
+
             //If date is older than min date, return min date. 
             if (DateTime.Compare(date, minDate) < 0) return minDate;
             else return date;

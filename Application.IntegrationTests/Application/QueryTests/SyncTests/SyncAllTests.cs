@@ -11,7 +11,6 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
 {
     using static AppTesting;
 
-    //5 x all entities, created 2 yrs apart
     public class SyncAllTests : AppTestBase
     {
         [Test]
@@ -25,8 +24,8 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
                 $"VALUES ('testRaw','TestAddress', 0, '{dateBeforeSync}', '{dateBeforeSync}')");
 
             await AddSyncEntities();
-
-            var result = await SendAsync(new SyncAllQuery() { InitialNumberOfMonths = 36 });
+            var initialTimestamp = DateTimeHelper.ConvertDateToEpoch(new DateTime().AddYears(-3)) * 1000;
+            var result = await SendAsync(new SyncAllQuery() { InitialTimestamp = initialTimestamp });
 
             result.Arrays.Missions.Entities.Should().HaveCount(1); //Not include raw add
             result.Arrays.MissionImages.Entities.Should().HaveCount(1); //Min date
@@ -48,7 +47,7 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
 
             var result = await SendAsync(new SyncAllQuery()
             {
-                InitialNumberOfMonths = 36,
+                InitialTimestamp = 2132132131,
                 Timestamp = timestamp,
             });
 
