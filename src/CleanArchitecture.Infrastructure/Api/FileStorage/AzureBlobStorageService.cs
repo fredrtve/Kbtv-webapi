@@ -78,7 +78,7 @@ namespace CleanArchitecture.Infrastructure.Api.FileStorage
             await blob.UploadFromStreamAsync(stream.Stream);
 
             //Content disposition not working? Wont download file for client
-            //blob.Properties.ContentType = GetContentType(stream.FileExtension);
+            blob.Properties.ContentType = GetContentType(stream.FileExtension);
             //blob.Properties.ContentDisposition = "attachment; filename=" + stream.FileName;
             //await blob.SetPropertiesAsync(); //Unneccesary?
 
