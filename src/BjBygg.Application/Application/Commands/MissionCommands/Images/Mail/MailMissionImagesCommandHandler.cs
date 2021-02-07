@@ -38,7 +38,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Mail
 
             using var zipStream = new MemoryStream();
 
-            await _fileZipper.ZipAsync(zipStream, fileNames, ResourceFolderConstants.Image);
+            await _fileZipper.ZipAsync(zipStream, fileNames, ResourceFolderConstants.OriginalMissionImage);
 
             var template = new MissionImagesTemplate(images, new BasicFileStream(zipStream, "bilder_fra_oppdrag.zip"));
 
