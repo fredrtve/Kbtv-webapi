@@ -20,7 +20,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Mail
                 Id = x.Key.Id,
                 Address = x.Key.Address,
                 Images = x.Select(x =>
-                    new StorageFileUrl(x.FileName, ResourceFolderConstants.Image).FileUrl.ToString()
+                    new StorageFileUrl(x.FileName, ResourceFolderConstants.MissionImage).FileUrl.ToString()
                 ).ToList(),
             }).ToList());
         }
