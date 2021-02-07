@@ -29,16 +29,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Upload
 
         public async Task<Unit> Handle(UploadMissionImageCommand request, CancellationToken cancellationToken)
         {
-            await _storageService.UploadFilesAsync(request.Files, ResourceFolderConstants.OriginalImage);
-
-            var resized = new DisposableList<BasicFileStream>();
-            request.Files.ForEach(file =>
-            {
-                file.Stream.Position = 0; //reset position from original upload
-                resized.Add(_imageResizer.ResizeImage(file, 0, 1200));
-            });
-
-            var imageUrls = await _storageService.UploadFilesAsync(resized, ResourceFolderConstants.Image);
+            var imageUrls = await _storageService.UploadFilesAsync(request.Files, ResourceFolderConstants.OriginalMissionImage);
 
             if (imageUrls == null || imageUrls.Count() != request.Files.Count())
                 throw new Exception("Something went wrong trying to upload images");
