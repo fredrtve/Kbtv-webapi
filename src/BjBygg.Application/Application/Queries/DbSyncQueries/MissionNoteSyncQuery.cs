@@ -4,28 +4,31 @@ using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
 using BjBygg.Application.Common;
 using CleanArchitecture.Core.Entities;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace BjBygg.Application.Application.Queries.DbSyncQueries
 {
-    public class MissionNoteSyncQuery : UserDbSyncQuery<MissionNoteDto>
+    public class MissionNoteSyncQuery : UserDbSyncQuery<MissionNoteDto>{}
+    public class MissionNoteSyncQueryHandler : IRequestHandler<MissionNoteSyncQuery, DbSyncArrayResponse<MissionNoteDto>>
     {
-    }
-    public class MissionNoteSyncQueryHandler : BaseDbSyncHandler<MissionNoteSyncQuery, MissionNote, MissionNoteDto>
-    {
-        public MissionNoteSyncQueryHandler(IAppDbContext dbContext, IMapper mapper) :
-            base(dbContext, mapper, true)
-        { }
+        private readonly IAppDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        protected override IQueryable<MissionNote> AppendQuery(IQueryable<MissionNote> query, MissionNoteSyncQuery request)
+        public MissionNoteSyncQueryHandler(IAppDbContext dbContext, IMapper mapper)
         {
-            query = query.Include(x => x.Mission).Where(x => !x.Mission.Deleted);
-
-            if (request.User.Role == Roles.Employer) //Only allow employers missions if role is employer
-                query = query.Where(x => (x.Mission.EmployerId == request.User.EmployerId));
-
-            return query;
+            _dbContext = dbContext;
+            _mapper = mapper;
+            _dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+        }
+        public async Task<DbSyncArrayResponse<MissionNoteDto>> Handle(MissionNoteSyncQuery request, CancellationToken cancellationToken)
+        {
+            return await _dbContext.Set<MissionNote>().AsQueryable()
+                .GetMissionChildSyncItems(request)
+                .ToSyncArrayResponseAsync<MissionNote, MissionNoteDto>(request.Timestamp == null, _mapper);
         }
     }
 }

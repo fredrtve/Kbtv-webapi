@@ -4,29 +4,33 @@ using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
 using BjBygg.Application.Common;
 using CleanArchitecture.Core.Entities;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace BjBygg.Application.Application.Queries.DbSyncQueries
 {
-    public class MissionDocumentSyncQuery : UserDbSyncQuery<MissionDocumentDto>
-    {
-    }
+    public class MissionDocumentSyncQuery : UserDbSyncQuery<MissionDocumentDto> {}
 
-    public class MissionDocumentSyncQueryHandler : BaseDbSyncHandler<MissionDocumentSyncQuery, MissionDocument, MissionDocumentDto>
+    public class MissionDocumentSyncQueryHandler : IRequestHandler<MissionDocumentSyncQuery, DbSyncArrayResponse<MissionDocumentDto>>
     {
-        public MissionDocumentSyncQueryHandler(IAppDbContext dbContext, IMapper mapper) :
-            base(dbContext, mapper, true)
-        { }
+        private readonly IAppDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        protected override IQueryable<MissionDocument> AppendQuery(IQueryable<MissionDocument> query, MissionDocumentSyncQuery request)
+        public MissionDocumentSyncQueryHandler(IAppDbContext dbContext, IMapper mapper)
         {
-            query = query.Include(x => x.Mission).Where(x => !x.Mission.Deleted);
-
-            if (request.User.Role == Roles.Employer) //Only allow employers missions if role is employer
-                query = query.Where(x => (x.Mission.EmployerId == request.User.EmployerId));
-
-            return query;
+            _dbContext = dbContext;
+            _mapper = mapper;
+            _dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
+        public async Task<DbSyncArrayResponse<MissionDocumentDto>> Handle(MissionDocumentSyncQuery request, CancellationToken cancellationToken)
+        {
+            return await _dbContext.Set<MissionDocument>().AsQueryable()
+                .GetMissionChildSyncItems(request)
+                .ToSyncArrayResponseAsync<MissionDocument, MissionDocumentDto>(request.Timestamp == null, _mapper);
+        }
+
     }
 }

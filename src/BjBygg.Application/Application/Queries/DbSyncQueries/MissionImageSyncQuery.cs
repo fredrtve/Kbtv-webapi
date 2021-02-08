@@ -4,28 +4,31 @@ using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
 using BjBygg.Application.Common;
 using CleanArchitecture.Core.Entities;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace BjBygg.Application.Application.Queries.DbSyncQueries
 {
-    public class MissionImageSyncQuery : UserDbSyncQuery<MissionImageDto>
+    public class MissionImageSyncQuery : UserDbSyncQuery<MissionImageDto>{}
+    public class MissionImageSyncQueryHandler : IRequestHandler<MissionImageSyncQuery, DbSyncArrayResponse<MissionImageDto>>
     {
-    }
-    public class MissionImageSyncQueryHandler : BaseDbSyncHandler<MissionImageSyncQuery, MissionImage, MissionImageDto>
-    {
-        public MissionImageSyncQueryHandler(IAppDbContext dbContext, IMapper mapper) :
-            base(dbContext, mapper, true)
-        { }
+        private readonly IAppDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        protected override IQueryable<MissionImage> AppendQuery(IQueryable<MissionImage> query, MissionImageSyncQuery request)
+        public MissionImageSyncQueryHandler(IAppDbContext dbContext, IMapper mapper)
         {
-            query = query.Include(x => x.Mission).Where(x => !x.Mission.Deleted);
-
-            if (request.User.Role == Roles.Employer) //Only allow employers missions if role is employer
-                query = query.Where(x => (x.Mission.EmployerId == request.User.EmployerId));
-
-            return query;
+            _dbContext = dbContext;
+            _mapper = mapper;
+            _dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+        }
+        public async Task<DbSyncArrayResponse<MissionImageDto>> Handle(MissionImageSyncQuery request, CancellationToken cancellationToken)
+        {
+            return await _dbContext.Set<MissionImage>().AsQueryable()
+                .GetMissionChildSyncItems(request)
+                .ToSyncArrayResponseAsync<MissionImage, MissionImageDto>(request.Timestamp == null, _mapper);
         }
     }
 }
