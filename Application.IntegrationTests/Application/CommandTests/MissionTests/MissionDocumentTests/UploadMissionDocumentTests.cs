@@ -37,6 +37,7 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
             {
                 Id = "test",
                 MissionId = "test",
+                Name = "test",
                 File = new BasicFileStream(Encoding.UTF8.GetBytes("testdocument"), fileName)
             };
 

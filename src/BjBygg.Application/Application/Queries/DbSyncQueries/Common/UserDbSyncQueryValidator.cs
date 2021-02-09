@@ -2,7 +2,7 @@
 
 namespace BjBygg.Application.Application.Queries.DbSyncQueries.Common
 {
-    public class UserDbSyncQueryValidator : AbstractValidator<UserDbSyncQuery<DbSyncDto>>
+    public class UserDbSyncQueryValidator : AbstractValidator<UserDbSyncQuery>
     {
         public UserDbSyncQueryValidator()
         {

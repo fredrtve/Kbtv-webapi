@@ -30,17 +30,6 @@ namespace BjBygg.WebApi.Controllers
             _userManager = userManager;
         }
 
-        [Authorize(Roles = RolePermissions.UserTimesheetActions.Read)]
-        [HttpGet]
-        [Route("api/[controller]/[action]")]
-        public async Task<ActionResult<DbSyncArrayResponse<TimesheetDto>>> Sync(UserTimesheetSyncQuery request)
-        {
-            var user = await _userManager.FindByNameAsync(User.FindFirstValue(ClaimTypes.Name));
-            request.User = _mapper.Map<UserDto>(user);
-            request.User.Role = User.FindFirstValue(ClaimTypes.Role);
-            return await Mediator.Send(request);
-        }
-
         [Authorize(Roles = RolePermissions.UserTimesheetActions.Create)]
         [HttpPost]
         [Route("api/[controller]")]

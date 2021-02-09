@@ -16,14 +16,6 @@ namespace BjBygg.WebApi.Controllers
     {
         public MissionTypesController() { }
 
-        [Authorize]
-        [HttpGet]
-        [Route("api/[controller]/[action]")]
-        public async Task<ActionResult<DbSyncArrayResponse<MissionTypeDto>>> Sync(MissionTypeSyncQuery request)
-        {
-            return await Mediator.Send(request);
-        }
-
         [Authorize(Roles = RolePermissions.MissionTypeActions.Create)]
         [HttpPost]
         [Route("api/[controller]")]

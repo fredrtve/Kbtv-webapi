@@ -12,9 +12,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Application.Queries.DbSyncQueries
 {
-    public class UserTimesheetSyncQuery : UserDbSyncQuery<TimesheetDto>
-    {
-    }
+    public class UserTimesheetSyncQuery : UserDbSyncQuery, IRequest<DbSyncArrayResponse<TimesheetDto>>{}
     public class UserTimesheetSyncQueryHandler : IRequestHandler<UserTimesheetSyncQuery, DbSyncArrayResponse<TimesheetDto>>
     {
         private readonly IAppDbContext _dbContext;
@@ -32,7 +30,8 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries
 
             query = query.Where(x => x.UserName == request.User.UserName); //Only users entities
 
-            return await query.ToSyncArrayResponseAsync<Timesheet, TimesheetDto>(request.Timestamp == null, _mapper);
+            return (await query.ToListAsync())
+                .ToSyncArrayResponse<Timesheet, TimesheetDto>(request.Timestamp == null, _mapper);
         }
     }
 }

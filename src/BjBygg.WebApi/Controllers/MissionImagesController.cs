@@ -16,14 +16,6 @@ namespace BjBygg.WebApi.Controllers
     {
         public MissionImagesController() { }
 
-        [Authorize]
-        [HttpGet]
-        [Route("api/[controller]/[action]")]
-        public async Task<ActionResult<DbSyncArrayResponse<MissionImageDto>>> Sync(MissionImageSyncQuery request)
-        {
-            return await Mediator.Send(request);
-        }
-
         [Authorize(Roles = RolePermissions.MissionImageActions.Create)]
         [HttpPost]
         [Route("api/[controller]")]

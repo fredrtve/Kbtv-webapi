@@ -31,14 +31,6 @@ namespace BjBygg.WebApi.Controllers
             _logger = logger;
         }
 
-        [Authorize]
-        [HttpGet]
-        [Route("api/[controller]/[action]")]
-        public async Task<ActionResult<DbSyncArrayResponse<MissionDto>>> Sync(MissionSyncQuery request)
-        {
-            return await Mediator.Send(request);
-        }
-
         [Authorize(Roles = RolePermissions.MissionActions.Create)]
         [HttpPost]
         [Route("api/[controller]")]

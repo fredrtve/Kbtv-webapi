@@ -24,7 +24,7 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
                 $"VALUES ('testRaw','TestAddress', 0, '{dateBeforeSync}', '{dateBeforeSync}')");
 
             await AddSyncEntities();
-            var initialTimestamp = DateTimeHelper.ConvertDateToEpoch(new DateTime().AddYears(-3)) * 1000;
+            var initialTimestamp = DateTimeHelper.ConvertDateToEpoch(DateTime.Now.AddYears(-3)) * 1000;
             var result = await SendAsync(new SyncAllQuery() { InitialTimestamp = initialTimestamp });
 
             result.Arrays.Missions.Entities.Should().HaveCount(1); //Not include raw add
@@ -41,9 +41,15 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
         {
             await RunAsDefaultUserAsync(Roles.Leader);
 
-            var timestamp = DateTimeHelper.ConvertDateToEpoch(DateTimeHelper.Now().AddMinutes(-10));
+            var timestamp = DateTimeHelper.ConvertDateToEpoch(DateTimeHelper.Now().AddMinutes(-10)) * 1000;
+
+            var dateBeforeSync = DateTime.Now.AddYears(-4).ToString("yyyy-MM-dd HH:mm:ss");
+            await AddSqlRaw("INSERT INTO Missions (Id, Address, Deleted, CreatedAt, UpdatedAt) " +
+                $"VALUES ('test2','TestAddress', 0, '{dateBeforeSync}', '{dateBeforeSync}')");
 
             await AddSyncEntities();
+
+            await AddAsync(new MissionDocument() { Id = "test2", MissionId = "test2", Name = "test", FileName = "test.jpg" });
 
             var result = await SendAsync(new SyncAllQuery()
             {
@@ -83,7 +89,7 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
             await AddAsync(new Mission() { Id = "test", Address = "test", EmployerId = "test" });
             await AddAsync(new MissionImage() { Id = "test", MissionId = "test", FileName = "test.jpg" });
             await AddAsync(new MissionNote() { Id = "test", MissionId = "test", Content = "test" });
-            await AddAsync(new MissionDocument() { Id = "test", MissionId = "test", FileName = "test.jpg" });
+            await AddAsync(new MissionDocument() { Id = "test", MissionId = "test2", Name = "test", FileName = "test.jpg" });
             await AddAsync(new MissionType() { Id = "test", Name = "test2" });
 
 
@@ -92,7 +98,7 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
             result.Arrays.Missions.Entities.Should().HaveCount(1);
             result.Arrays.MissionImages.Entities.Should().HaveCount(1);
             result.Arrays.MissionNotes.Entities.Should().HaveCount(1);
-            result.Arrays.MissionDocuments.Entities.Should().HaveCount(1);
+            result.Arrays.MissionDocuments.Entities.Should().HaveCount(0);
             result.Arrays.Employers.Entities.Should().HaveCount(1); //Only current employer should be returned
         }
 
@@ -101,7 +107,7 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
             await AddAsync(new Mission() { Id = "test", Address = "test" });
             await AddAsync(new MissionImage() { Id = "test", MissionId = "test", FileName = "test.jpg" });
             await AddAsync(new MissionNote() { Id = "test", MissionId = "test", Content = "test" });
-            await AddAsync(new MissionDocument() { Id = "test", MissionId = "test", FileName = "test.jpg" });
+            await AddAsync(new MissionDocument() { Id = "test", MissionId = "test", Name = "test", FileName = "test.jpg" });
             await AddAsync(new MissionType() { Id = "test", Name = "test2" });
             await AddAsync(new Employer() { Id = "test", Name = "test2" });
             await AddAsync(new Timesheet()

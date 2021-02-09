@@ -22,7 +22,7 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
         public async Task ShouldDeleteMissionDocument()
         {
             await AddAsync(new Mission() { Id = "test", Address = "test435" });
-            await AddAsync(new MissionDocument() { Id = "test", MissionId = "test", FileName = "test435" });
+            await AddAsync(new MissionDocument() { Id = "test", MissionId = "test", Name = "test", FileName = "test435" });
 
             await SendAsync(new DeleteMissionDocumentCommand { Id = "test" });
 

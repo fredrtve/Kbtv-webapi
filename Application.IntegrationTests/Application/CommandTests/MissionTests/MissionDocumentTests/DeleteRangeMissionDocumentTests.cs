@@ -26,8 +26,8 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests.Mis
 
             var ids = new string[] { "test", "test2" };
 
-            await AddAsync(new MissionDocument() { Id = ids[0], MissionId = "test", FileName = "test435" });
-            await AddAsync(new MissionDocument() { Id = ids[1], MissionId = "test", FileName = "test435" });
+            await AddAsync(new MissionDocument() { Id = ids[0], MissionId = "test", Name = "test", FileName = "test435" });
+            await AddAsync(new MissionDocument() { Id = ids[1], MissionId = "test", Name = "test", FileName = "test435" });
 
             await SendAsync(new DeleteRangeMissionDocumentCommand { Ids = ids });
 

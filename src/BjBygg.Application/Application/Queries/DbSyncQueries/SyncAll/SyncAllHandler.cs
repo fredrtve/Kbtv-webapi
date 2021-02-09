@@ -33,53 +33,30 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
             var user = _mapper.Map<UserDto>(await _userManager.FindByNameAsync(_currentUserService.UserName));
             user.Role = _currentUserService.Role;
 
+            var missionSyncResponse = await _mediator.Send(new MissionSyncQuery()
+            {
+                Timestamp = request.Timestamp,
+                User = user,
+                InitialTimestamp = request.InitialTimestamp
+            });
+
             return new SyncAllResponse()
             {
                 Values = SyncValues(user, request.Timestamp),
                 Arrays = new SyncArraysResponse()
                 {
-                    Missions = await _mediator.Send(
-                        new MissionSyncQuery()
-                        {
+                    UserTimesheets = await _mediator.Send(new UserTimesheetSyncQuery()
+                    {
                             Timestamp = request.Timestamp,
                             User = user,
                             InitialTimestamp = request.InitialTimestamp
-                        }
-                    ),
-                    MissionImages = await _mediator.Send(
-                        new MissionImageSyncQuery()
-                        {
-                            Timestamp = request.Timestamp,
-                            User = user,
-                            InitialTimestamp = request.InitialTimestamp
-                        }
-                    ),
-                    MissionNotes = await _mediator.Send(
-                        new MissionNoteSyncQuery()
-                        {
-                            Timestamp = request.Timestamp,
-                            User = user,
-                            InitialTimestamp = request.InitialTimestamp
-                        }
-                    ),
-                    MissionDocuments = await _mediator.Send(
-                        new MissionDocumentSyncQuery()
-                        {
-                            Timestamp = request.Timestamp,
-                            User = user,
-                            InitialTimestamp = request.InitialTimestamp
-                        }
-                    ),
-                    UserTimesheets = await _mediator.Send(
-                        new UserTimesheetSyncQuery()
-                        {
-                            Timestamp = request.Timestamp,
-                            User = user,
-                            InitialTimestamp = request.InitialTimestamp
-                        }
-                    ),
+                    }),
                     Employers = await _mediator.Send(new EmployerSyncQuery() { Timestamp = request.Timestamp, User = user }),
                     MissionTypes = await _mediator.Send(new MissionTypeSyncQuery() { Timestamp = request.Timestamp }),
+                    Missions = missionSyncResponse.Missions,
+                    MissionNotes = missionSyncResponse.MissionNotes,
+                    MissionDocuments = missionSyncResponse.MissionDocuments,
+                    MissionImages = missionSyncResponse.MissionImages
                 }
             };
         }

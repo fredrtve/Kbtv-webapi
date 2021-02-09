@@ -12,9 +12,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Application.Queries.DbSyncQueries
 {
-    public class MissionTypeSyncQuery : DbSyncQuery<MissionTypeDto>
-    {
-    }
+    public class MissionTypeSyncQuery : DbSyncQuery, IRequest<DbSyncArrayResponse<MissionTypeDto>>{}
     public class MissionTypeSyncQueryHandler : IRequestHandler<MissionTypeSyncQuery, DbSyncArrayResponse<MissionTypeDto>>
     {
         private readonly IAppDbContext _dbContext;
@@ -28,9 +26,9 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries
         }
         public async Task<DbSyncArrayResponse<MissionTypeDto>> Handle(MissionTypeSyncQuery request, CancellationToken cancellationToken)
         {
-            return await _dbContext.Set<MissionType>().AsQueryable()
-                .GetSyncItems(request, false)
-                .ToSyncArrayResponseAsync<MissionType, MissionTypeDto>(request.Timestamp == null, _mapper); 
+            return (await _dbContext.Set<MissionType>().AsQueryable()
+                .GetSyncItems(request, false).ToListAsync())
+                .ToSyncArrayResponse<MissionType, MissionTypeDto>(request.Timestamp == null, _mapper); 
         }
     }
 }

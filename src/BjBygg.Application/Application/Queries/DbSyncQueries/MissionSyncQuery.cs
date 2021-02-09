@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Application.Queries.DbSyncQueries
 {
-    public class MissionSyncQuery : UserDbSyncQuery<MissionDto>{}
+    public class MissionSyncQuery : UserDbSyncQuery, IRequest<MissionSyncArraysResponse> {}
 
-    public class MissionSyncQueryHandler : IRequestHandler<MissionSyncQuery, DbSyncArrayResponse<MissionDto>>
+    public class MissionSyncQueryHandler : IRequestHandler<MissionSyncQuery, MissionSyncArraysResponse>
     {
         private readonly IAppDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -26,16 +26,32 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries
             _dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
-        public async Task<DbSyncArrayResponse<MissionDto>> Handle(MissionSyncQuery request, CancellationToken cancellationToken)
+        public async Task<MissionSyncArraysResponse> Handle(MissionSyncQuery request, CancellationToken cancellationToken)
         {
-            var query = _dbContext.Set<Mission>().AsQueryable().GetSyncItems(request);
+            var query = _dbContext.Set<Mission>().AsQueryable();
 
             if (request.User.Role == Roles.Employer) //Only allow employers missions if role is employer
-            {
                 query = query.Where(x => x.EmployerId == request.User.EmployerId); 
-            }
 
-            return await query.ToSyncArrayResponseAsync<Mission, MissionDto>(request.Timestamp == null, _mapper);
+            var missions = await query
+                .GetSyncItems(request)
+                .Include(x => x.MissionDocuments)
+                .Include(x => x.MissionNotes)
+                .Include(x => x.MissionImages)
+                .ToListAsync();
+
+            var isInitial = request.Timestamp == null;
+
+            return new MissionSyncArraysResponse()
+            {
+                MissionDocuments = missions.SelectMany(x => x.MissionDocuments)
+                    .ToSyncArrayResponse<MissionDocument, MissionDocumentDto>(isInitial, _mapper),
+                MissionImages = missions.SelectMany(x => x.MissionImages)
+                    .ToSyncArrayResponse<MissionImage, MissionImageDto>(isInitial, _mapper),
+                MissionNotes = missions.SelectMany(x => x.MissionNotes)
+                    .ToSyncArrayResponse<MissionNote, MissionNoteDto>(isInitial, _mapper),
+                Missions = missions.ToSyncArrayResponse<Mission, MissionDto>(isInitial, _mapper)
+            };
         }
 
     }

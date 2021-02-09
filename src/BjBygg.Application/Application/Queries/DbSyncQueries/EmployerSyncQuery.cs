@@ -12,9 +12,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Application.Queries.DbSyncQueries
 {
-    public class EmployerSyncQuery : UserDbSyncQuery<EmployerDto>
-    {
-    }
+    public class EmployerSyncQuery : UserDbSyncQuery, IRequest<DbSyncArrayResponse<EmployerDto>>{}
     public class EmployerSyncQueryHandler : IRequestHandler<EmployerSyncQuery, DbSyncArrayResponse<EmployerDto>>
     {
         private readonly IAppDbContext _dbContext;
@@ -36,7 +34,8 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries
                 query = query.Where(x => x.Id == request.User.EmployerId);
             }
 
-            return await query.ToSyncArrayResponseAsync<Employer, EmployerDto>(request.Timestamp == null, _mapper);
+            return (await query.ToListAsync())
+                .ToSyncArrayResponse<Employer, EmployerDto>(request.Timestamp == null, _mapper);
         }
 
     }

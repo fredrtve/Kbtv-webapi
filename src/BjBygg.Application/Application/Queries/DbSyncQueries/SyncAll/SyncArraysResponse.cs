@@ -3,17 +3,9 @@ using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
 
 namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
 {
-    public class SyncArraysResponse
+    public class SyncArraysResponse : MissionSyncArraysResponse
     {
-        public DbSyncArrayResponse<MissionDto> Missions { get; set; }
-
         public DbSyncArrayResponse<EmployerDto> Employers { get; set; }
-
-        public DbSyncArrayResponse<MissionImageDto> MissionImages { get; set; }
-
-        public DbSyncArrayResponse<MissionNoteDto> MissionNotes { get; set; }
-
-        public DbSyncArrayResponse<MissionDocumentDto> MissionDocuments { get; set; }
 
         public DbSyncArrayResponse<MissionTypeDto> MissionTypes { get; set; }
 
