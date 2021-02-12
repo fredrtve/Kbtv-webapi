@@ -18,6 +18,7 @@ namespace BjBygg.Application.Application.Commands.EmployerCommands.Update
 
             RuleFor(v => v.Address)
                 .MaximumLength(ValidationRules.AddressMaxLength)
+                .When(x => !string.IsNullOrWhiteSpace(x.Address))
                 .WithName("Adresse");
 
             Include(new ContactableValidator());

@@ -20,6 +20,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Create
 
             RuleFor(v => v.Description)
                  .MaximumLength(ValidationRules.MissionDescriptionMaxLength)
+                 .When(x => !string.IsNullOrWhiteSpace(x.Description))
                  .WithName("Beskrivelse");
 
             RuleFor(v => v.Employer)

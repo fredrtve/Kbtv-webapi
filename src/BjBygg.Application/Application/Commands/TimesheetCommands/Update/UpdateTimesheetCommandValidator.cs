@@ -25,6 +25,7 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Update
                 .WithName("Sluttidspunkt");
 
             RuleFor(v => v.Comment)
+                .NotEmpty()
                 .MaximumLength(ValidationRules.TimesheetCommentMaxLength)
                 .WithName("Kommentar");
         }

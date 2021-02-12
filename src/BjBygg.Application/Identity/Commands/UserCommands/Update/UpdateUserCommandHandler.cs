@@ -39,10 +39,10 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Update
             if (user == null)
                 throw new EntityNotFoundException(nameof(ApplicationUser), request.UserName);
 
-            if (!String.IsNullOrEmpty(request.FirstName))
+            if (!String.IsNullOrWhiteSpace(request.FirstName))
                 user.FirstName = request.FirstName;
 
-            if (!String.IsNullOrEmpty(request.LastName))
+            if (!String.IsNullOrWhiteSpace(request.LastName))
                 user.LastName = request.LastName;
 
             user.PhoneNumber = request.PhoneNumber;

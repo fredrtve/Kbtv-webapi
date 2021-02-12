@@ -11,6 +11,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Uplo
                 .NotEmpty();
 
             RuleFor(v => v.Name)
+                 .NotEmpty()
                  .MaximumLength(ValidationRules.NameMaxLength)
                  .WithName("Navn");
 

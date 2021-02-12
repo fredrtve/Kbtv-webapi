@@ -15,10 +15,12 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Update
 
             RuleFor(v => v.FirstName)
                 .MaximumLength(ValidationRules.NameMaxLength)
+                .When(x => !string.IsNullOrWhiteSpace(x.FirstName))
                 .WithName("Fornavn");
 
             RuleFor(v => v.LastName)
                 .MaximumLength(ValidationRules.NameMaxLength)
+                .When(x => !string.IsNullOrWhiteSpace(x.LastName))
                 .WithName("Etternavn");
 
             Include(new ContactableValidator());

@@ -1,6 +1,7 @@
 ﻿using CleanArchitecture.Core;
 using CleanArchitecture.SharedKernel;
 using FluentValidation;
+using System;
 
 namespace BjBygg.Application.Common.Validation
 {
@@ -8,14 +9,16 @@ namespace BjBygg.Application.Common.Validation
     {
         public ContactableValidator()
         {
-            RuleFor(x => x.PhoneNumber)
+     
+           RuleFor(x => x.PhoneNumber)
                 .MinimumLength(ValidationRules.PhoneNumberMinLength)
                 .MaximumLength(ValidationRules.PhoneNumberMaxLength)
+                .When(x => !string.IsNullOrWhiteSpace(x.PhoneNumber))
                 .WithName("Mobilnummer");
-
+        
             RuleFor(x => x.Email)
                 .EmailAddress()
-                .When(x => !string.IsNullOrEmpty(x.Email))
+                .When(x => !string.IsNullOrWhiteSpace(x.Email))
                 .WithName("Epost");
         }
     }

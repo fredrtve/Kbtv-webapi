@@ -12,6 +12,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Notes.Update
 
             RuleFor(v => v.Title)
                 .MaximumLength(ValidationRules.MissionNoteTitleMaxLength)
+                .When(x => !string.IsNullOrWhiteSpace(x.Title))
                 .WithName("Tittel");
 
             RuleFor(v => v.Content)
