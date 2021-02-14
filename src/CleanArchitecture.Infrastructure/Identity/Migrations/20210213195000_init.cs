@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CleanArchitecture.Infrastructure.Identity.Migrations
+namespace CleanArchitecture.Infrastructure.identity.migrations
 {
     public partial class init : Migration
     {
@@ -44,6 +44,7 @@ namespace CleanArchitecture.Infrastructure.Identity.Migrations
                     LastName = table.Column<string>(nullable: true),
                     EmployerId = table.Column<string>(nullable: true),
                     LastCommandStatus = table.Column<bool>(nullable: true),
+                    LastCommandId = table.Column<string>(nullable: true),
                     Deleted = table.Column<bool>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     CreatedBy = table.Column<string>(nullable: true),

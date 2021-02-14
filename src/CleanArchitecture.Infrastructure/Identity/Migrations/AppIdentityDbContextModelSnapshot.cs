@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CleanArchitecture.Infrastructure.Identity.Migrations
+namespace CleanArchitecture.Infrastructure.identity.migrations
 {
     [DbContext(typeof(AppIdentityDbContext))]
     partial class AppIdentityDbContextModelSnapshot : ModelSnapshot
@@ -48,6 +48,9 @@ namespace CleanArchitecture.Infrastructure.Identity.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("FirstName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastCommandId")
                         .HasColumnType("TEXT");
 
                     b.Property<bool?>("LastCommandStatus")

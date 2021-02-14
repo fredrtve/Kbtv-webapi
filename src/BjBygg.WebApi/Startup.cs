@@ -1,5 +1,6 @@
 using BjBygg.Application;
 using BjBygg.Application.Common.Interfaces;
+using BjBygg.WebApi.Middleware;
 using BjBygg.WebApi.Services;
 using CleanArchitecture.Infrastructure;
 using Microsoft.AspNetCore.Builder;
@@ -89,6 +90,8 @@ namespace BjBygg.WebApi
             //app.UseIdentityServer();
 
             app.UseAuthorization();
+
+            app.UseOptimisticCommandMiddleware();
 
             CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("nb-NO");
 

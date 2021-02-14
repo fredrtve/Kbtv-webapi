@@ -5,6 +5,8 @@ using CleanArchitecture.Core;
 using CleanArchitecture.SharedKernel;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,6 +31,18 @@ namespace CleanArchitecture.Infrastructure.Identity
             builder.Entity<ApplicationUser>().HasMany(p => p.Roles).WithOne().HasForeignKey(p => p.UserId).IsRequired();
             builder.Entity<ApplicationUser>().Ignore(p => p.Role).HasQueryFilter(m => m.Deleted == false);
             builder.Entity<InboundEmailPassword>().HasQueryFilter(m => m.Deleted == false);
+
+            var dateTimeConverter = new ValueConverter<DateTime, DateTime>(
+                v => v, v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
+
+            foreach (var entityType in builder.Model.GetEntityTypes())
+            {
+                foreach (var property in entityType.GetProperties())
+                {
+                    if (property.ClrType == typeof(DateTime) || property.ClrType == typeof(DateTime?))
+                        property.SetValueConverter(dateTimeConverter);
+                }
+            }
         }
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
