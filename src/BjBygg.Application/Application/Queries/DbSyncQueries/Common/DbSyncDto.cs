@@ -2,6 +2,6 @@
 {
     public abstract class DbSyncDto
     {
-        public long UpdatedAt { get; set; }
+        public long CreatedAt { get; set; }
     }
 }

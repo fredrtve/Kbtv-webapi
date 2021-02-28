@@ -48,8 +48,10 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.Common
             if (!isInitial)
             {
                 deletedEntities = entities.Where(x => x.Deleted == true).Select(x => x.Id).ToList(); //Add ids from deleted entities
-                entities = entities.Where(x => x.Deleted == false).ToList(); //Remove deleted entities
+                entities = entities.Where(x => x.Deleted == false); //Remove deleted entities
             }
+
+            entities = entities.OrderByDescending(x => x.CreatedAt);
 
             return new DbSyncArrayResponse<TDto>(mapper.Map<IEnumerable<TDto>>(entities), deletedEntities);
         }

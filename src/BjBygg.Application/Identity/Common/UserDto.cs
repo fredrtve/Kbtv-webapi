@@ -2,7 +2,7 @@
 
 namespace BjBygg.Application.Identity.Common
 {
-    public class UserDto : DbSyncDto
+    public class UserDto 
     {
         public string UserName { get; set; }
         public string FirstName { get; set; }
@@ -13,5 +13,6 @@ namespace BjBygg.Application.Identity.Common
         public bool LastCommandStatus { get; set; }
         public string LastCommandId { get; set; }
         public string? EmployerId { get; set; }
+        public long UpdatedAt { get; set; }
     }
 }
