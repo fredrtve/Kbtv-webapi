@@ -1,4 +1,5 @@
 using BjBygg.Application.Application.Common.Interfaces;
+using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.SharedKernel;
@@ -32,7 +33,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Upload
             var imageUrls = await _storageService.UploadFilesAsync(request.Files, ResourceFolderConstants.OriginalMissionImage);
 
             if (imageUrls == null || imageUrls.Count() != request.Files.Count())
-                throw new Exception("Something went wrong trying to upload images");
+                throw new BadRequestException("Opplasting av bilder mislyktes.");
 
             List<MissionImage> images = new List<MissionImage>();
 

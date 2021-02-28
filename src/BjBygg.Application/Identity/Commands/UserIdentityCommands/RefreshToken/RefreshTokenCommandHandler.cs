@@ -47,6 +47,8 @@ namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.RefreshToken
                 .Include(x => x.RefreshTokens)
                 .FirstOrDefaultAsync(x => x.Id == id.Value);
 
+            if (user == null) throw new BadRequestException("invalid_grant");
+
             var roles = await _userManager.GetRolesAsync(user);
 
             if (!user.HasValidRefreshToken(command.RefreshToken) || roles == null || roles.Count == 0)

@@ -1,5 +1,6 @@
 using AutoMapper;
 using BjBygg.Application.Application.Common.Interfaces;
+using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
 using MediatR;
@@ -28,7 +29,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Uplo
 
             var fileURL = await _storageService.UploadFileAsync(request.File, ResourceFolderConstants.Document);
 
-            if (fileURL == null) throw Exception("Failed to upload file");
+            if (fileURL == null) throw new Exception("Opplasting av fil mislyktes");
 
             document.FileName = request.File.FileName;
 
@@ -37,11 +38,6 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Uplo
             await _dbContext.SaveChangesAsync();
 
             return Unit.Value;
-        }
-
-        private Exception Exception(string v)
-        {
-            throw new NotImplementedException();
         }
     }
 }
