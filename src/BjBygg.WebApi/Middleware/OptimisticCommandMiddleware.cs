@@ -25,19 +25,19 @@ namespace BjBygg.WebApi.Middleware
             StringValues commandQuery;
             httpContext.Request.Headers.TryGetValue("command-id", out commandQuery);
             string commandId = commandQuery.FirstOrDefault();
-            try
-            {
-                await _next.Invoke(httpContext);
-                if (commandId != null)
-                    await updateUserCommandStatusAsync(commandId, true, userManager, currentUserService);
-            }
-            catch (Exception ex)
-            {
-                if (commandId != null)
-                    await updateUserCommandStatusAsync(commandId, false, userManager, currentUserService);
-                throw ex;
-            }
+
+            await _next.Invoke(httpContext);
+
+            if (commandId == null) return;
+
+            var statusCode = httpContext.Response.StatusCode;
+
+            if (statusCode >= 200 && statusCode <= 299)
+                await updateUserCommandStatusAsync(commandId, true, userManager, currentUserService);
+            else
+                await updateUserCommandStatusAsync(commandId, false, userManager, currentUserService);
         }
+
         private async Task updateUserCommandStatusAsync(string commandId, bool status, UserManager<ApplicationUser> userManager, ICurrentUserService currentUserSerice)
         {
             if (currentUserSerice.UserName == null) return;
