@@ -1,11 +1,12 @@
+using BjBygg.Application.Common.BaseEntityCommands.Create;
 using BjBygg.Application.Common.Interfaces;
 using CleanArchitecture.SharedKernel;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Upload
 {
-    public class UploadMissionImageCommand : IOptimisticCommand
+    public class UploadMissionImageCommand : CreateCommand
     {
-        public DisposableList<BasicFileStream> Files { get; set; }
+        public BasicFileStream File { get; set; }
         public string MissionId { get; set; }
 
     }

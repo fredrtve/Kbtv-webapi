@@ -1,12 +1,9 @@
+using AutoMapper;
 using BjBygg.Application.Application.Common.Interfaces;
-using BjBygg.Application.Common.Exceptions;
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
-using CleanArchitecture.SharedKernel;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,37 +13,29 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Upload
     {
         private readonly IAppDbContext _dbContext;
         private readonly IBlobStorageService _storageService;
-        private readonly IImageResizer _imageResizer;
+        private readonly IMapper _mapper;
 
         public UploadMissionImageCommandHandler(
             IAppDbContext dbContext,
             IBlobStorageService storageService,
-            IImageResizer imageResizer)
+            IMapper mapper)
         {
             _dbContext = dbContext;
             _storageService = storageService;
-            _imageResizer = imageResizer;
+            _mapper = mapper;
         }
 
         public async Task<Unit> Handle(UploadMissionImageCommand request, CancellationToken cancellationToken)
         {
-            var imageUrls = await _storageService.UploadFilesAsync(request.Files, ResourceFolderConstants.OriginalMissionImage);
+            var image = _mapper.Map<MissionImage>(request);
 
-            if (imageUrls == null || imageUrls.Count() != request.Files.Count())
-                throw new BadRequestException("Opplasting av bilder mislyktes.");
+            var fileURL = await _storageService.UploadFileAsync(request.File, ResourceFolderConstants.OriginalMissionImage);
 
-            List<MissionImage> images = new List<MissionImage>();
+            if (fileURL == null) throw new Exception("Opplasting av bilde mislyktes");
 
-            images.AddRange(
-                request.Files.Select(file => new MissionImage()
-                {
-                    Id = file.FileNameNoExtension,
-                    MissionId = request.MissionId,
-                    FileName = file.FileName,
-                })
-            );
+            image.FileName = request.File.FileName;
 
-            _dbContext.Set<MissionImage>().AddRange(images);
+            await _dbContext.Set<MissionImage>().AddAsync(image);
 
             await _dbContext.SaveChangesAsync();
 

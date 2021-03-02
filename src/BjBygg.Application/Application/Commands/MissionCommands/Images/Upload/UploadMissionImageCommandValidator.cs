@@ -6,13 +6,16 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Upload
     {
         public UploadMissionImageCommandValidator()
         {
-            RuleFor(v => v.Files)
-               .NotEmpty()
-               .WithName("Filer");
+            RuleFor(v => v.Id)
+                .NotEmpty();
+
+            RuleFor(v => v.File)
+                .NotEmpty()
+                .WithName("Filer");
 
             RuleFor(v => v.MissionId)
-               .NotEmpty()
-               .WithName("Oppdrag");
+                .NotEmpty()
+                .WithName("Oppdrag");
         }
     }
 }

@@ -7,6 +7,7 @@ using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
 using CleanArchitecture.SharedKernel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,12 +20,15 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = RolePermissions.MissionImageActions.Create)]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<ActionResult> Upload(string missionId)
+        public async Task<ActionResult> Upload()
         {
-            var request = new UploadMissionImageCommand()
+            var settings = new JsonSerializerSettings
             {
-                MissionId = missionId
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
             };
+
+            var request = JsonConvert.DeserializeObject<UploadMissionImageCommand>(Request.Form["Command"], settings);
 
             if (Request.Form.Files.Count() == 0)
             {
@@ -32,16 +36,15 @@ namespace BjBygg.WebApi.Controllers
                 return NoContent();
             }
 
-            using (var streamList = new DisposableList<BasicFileStream>())
+            var file = Request.Form.Files[0];
+
+            using (var stream = file.OpenReadStream())
             {
-                streamList.AddRange(Request.Form.Files.ToList()
-                    .Select(x => new BasicFileStream(x.OpenReadStream(), x.FileName)));
-
-                request.Files = streamList;
-
+                request.File = new BasicFileStream(stream, file.FileName);
                 await Mediator.Send(request);
-                return NoContent();
             }
+
+            return NoContent();
         }
 
         [Authorize(Roles = RolePermissions.MissionImageActions.Delete)]
