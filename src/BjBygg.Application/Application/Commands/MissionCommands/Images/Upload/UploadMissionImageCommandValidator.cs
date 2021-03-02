@@ -1,4 +1,6 @@
-﻿using FluentValidation;
+﻿using BjBygg.Application.Application.Common;
+using CleanArchitecture.Core;
+using FluentValidation;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Upload
 {
@@ -11,6 +13,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Upload
 
             RuleFor(v => v.File)
                 .NotEmpty()
+                .SetValidator(new BasicFileStreamValidator(ValidationRules.ImageFileExtensions))
                 .WithName("Filer");
 
             RuleFor(v => v.MissionId)

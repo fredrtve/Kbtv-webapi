@@ -1,4 +1,6 @@
-﻿namespace CleanArchitecture.Core
+﻿using System.Collections.Generic;
+
+namespace CleanArchitecture.Core
 {
     public static class ValidationRules
     {
@@ -21,5 +23,17 @@
 
         public const int UserPasswordMinLength = 7;
         public const int UserPasswordMaxLength = 100;
+
+        public static readonly HashSet<string> ImageFileExtensions = new HashSet<string> {
+            "jpg", "jpeg", "png"
+        };
+
+        public static readonly HashSet<string> DocumentFileExtensions = new HashSet<string> {
+            "doc","docm", "docx", "txt",
+            "pdf", "dot", "csv", "dotm",
+            "dotx", "xla", "odt", "xlam",
+            "xls", "xlsb", "xlsm", "xlsx",
+            "xlt", "xlw"
+        };
     }
 }
