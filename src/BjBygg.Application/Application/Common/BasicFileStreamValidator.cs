@@ -11,7 +11,7 @@ namespace BjBygg.Application.Application.Common
         public BasicFileStreamValidator(HashSet<string> allowedExtensions)
         {
             RuleFor(x => x.FileExtension)
-                .Must(x => allowedExtensions.Contains(x))
+                .Must(x => allowedExtensions.Contains(x.ToLower()))
                 .WithName("Filtype");
         }
     }
