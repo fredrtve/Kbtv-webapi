@@ -26,27 +26,17 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.Common
 
             return query.GetEntitiesLaterThan(date);
         }
-        public static IEnumerable<TEntity> GetSyncItems<TEntity>(this IEnumerable<TEntity> query, DbSyncQuery request, bool checkMinDate = true)
-          where TEntity : BaseEntity
-        {
-            var date = DateTimeHelper.ConvertEpochToDate((request.Timestamp / 1000) ?? 0);
 
-            if (checkMinDate)
-                date = CheckMinSyncDate(date, request.InitialTimestamp);
-
-            return query.GetEntitiesLaterThan(date);
-        }
-
-        public static IQueryable<TEntity> GetMissionChildSyncItems<TEntity>(this IQueryable<TEntity> query, UserDbSyncQuery request)
+        public static IEnumerable<TEntity> GetMissionChildSyncItems<TEntity>(this IEnumerable<TEntity> query, UserDbSyncQuery request)
             where TEntity : BaseEntity, IMissionChildEntity
         {
-            query = query.AsQueryable().GetSyncItems(request)
-                .Include(x => x.Mission).Where(x => !x.Mission.Deleted);
+            if (request.Timestamp == null) return query;
 
-            if (request.User.Role == Roles.Employer) //Only allow employers missions if role is employer
-                query = query.Where(x => (x.Mission.EmployerId == request.User.EmployerId));
+            var date = DateTimeHelper.ConvertEpochToDate((request.Timestamp / 1000) ?? 0);
 
-            return query;
+            date = CheckMinSyncDate(date, request.InitialTimestamp);
+
+            return query.GetEntitiesLaterThan(date);
         }
 
         public static DbSyncArrayResponse<TDto> ToSyncArrayResponse<TEntity, TDto>(
