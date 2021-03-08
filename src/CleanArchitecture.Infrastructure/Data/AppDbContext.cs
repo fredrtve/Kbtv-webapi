@@ -3,6 +3,7 @@ using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Application.Common.Interfaces;
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.Entities;
+using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.SharedKernel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -96,6 +97,11 @@ namespace CleanArchitecture.Infrastructure.Data
                             trackable.UpdatedAt = now;
                             break;
                     }
+                }
+                if(entry.Entity is IMissionChildEntity missionChild)
+                {
+                    var mission = Missions.Find(missionChild.MissionId);
+                    mission.UpdatedAt = now;
                 }
             }
         }

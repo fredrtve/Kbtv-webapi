@@ -44,11 +44,11 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries
 
             return new MissionSyncArraysResponse()
             {
-                MissionDocuments = missions.SelectMany(x => x.MissionDocuments)
+                MissionDocuments = missions.SelectMany(x => x.MissionDocuments).GetSyncItems(request)
                     .ToSyncArrayResponse<MissionDocument, MissionDocumentDto>(isInitial, _mapper),
-                MissionImages = missions.SelectMany(x => x.MissionImages)
+                MissionImages = missions.SelectMany(x => x.MissionImages).GetSyncItems(request)
                     .ToSyncArrayResponse<MissionImage, MissionImageDto>(isInitial, _mapper),
-                MissionNotes = missions.SelectMany(x => x.MissionNotes)
+                MissionNotes = missions.SelectMany(x => x.MissionNotes).GetSyncItems(request)
                     .ToSyncArrayResponse<MissionNote, MissionNoteDto>(isInitial, _mapper),
                 Missions = missions.ToSyncArrayResponse<Mission, MissionDto>(isInitial, _mapper)
             };

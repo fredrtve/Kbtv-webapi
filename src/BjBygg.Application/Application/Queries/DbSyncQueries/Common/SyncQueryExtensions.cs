@@ -24,7 +24,17 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.Common
             if (request.Timestamp != null)
                 query = query.IgnoreQueryFilters(); //Include deleted property to check for deleted entities
 
-            return GetEntitiesLaterThan(date, query);
+            return query.GetEntitiesLaterThan(date);
+        }
+        public static IEnumerable<TEntity> GetSyncItems<TEntity>(this IEnumerable<TEntity> query, DbSyncQuery request, bool checkMinDate = true)
+          where TEntity : BaseEntity
+        {
+            var date = DateTimeHelper.ConvertEpochToDate((request.Timestamp / 1000) ?? 0);
+
+            if (checkMinDate)
+                date = CheckMinSyncDate(date, request.InitialTimestamp);
+
+            return query.GetEntitiesLaterThan(date);
         }
 
         public static IQueryable<TEntity> GetMissionChildSyncItems<TEntity>(this IQueryable<TEntity> query, UserDbSyncQuery request)
@@ -70,7 +80,11 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.Common
             else return date;
         }
 
-        private static IQueryable<T> GetEntitiesLaterThan<T>(DateTime date, IQueryable<T> query) where T : BaseEntity
+        private static IQueryable<T> GetEntitiesLaterThan<T>(this IQueryable<T> query, DateTime date) where T : BaseEntity
+        {
+            return query.Where(x => DateTime.Compare(x.UpdatedAt, date) >= 0);
+        }
+        private static IEnumerable<T> GetEntitiesLaterThan<T>(this IEnumerable<T> query, DateTime date) where T : BaseEntity
         {
             return query.Where(x => DateTime.Compare(x.UpdatedAt, date) >= 0);
         }
