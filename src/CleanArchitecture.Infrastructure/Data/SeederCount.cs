@@ -13,8 +13,7 @@ namespace CleanArchitecture.Infrastructure.Data
             int missionDocuments = 3000,
             int missionImages = 3500,
             int employers = 30,
-            int timesheets = 7000,
-            int documentTypes = 30)
+            int timesheets = 7000)
         {
             SeedCounts = new Dictionary<Type, int>()
             {
