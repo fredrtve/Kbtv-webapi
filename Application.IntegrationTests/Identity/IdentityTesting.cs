@@ -4,7 +4,7 @@ using BjBygg.Application.Identity.Common.Interfaces;
 using BjBygg.Application.Identity.Common.Models;
 using BjBygg.Application.Identity.Queries.UserQueries.UserByUserName;
 using BjBygg.WebApi;
-using CleanArchitecture.Infrastructure.Identity;
+using BjBygg.Infrastructure.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;

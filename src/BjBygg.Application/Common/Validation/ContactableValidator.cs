@@ -1,5 +1,5 @@
-﻿using CleanArchitecture.Core;
-using CleanArchitecture.SharedKernel;
+﻿using BjBygg.Core;
+using BjBygg.SharedKernel;
 using FluentValidation;
 using System;
 

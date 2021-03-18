@@ -1,5 +1,5 @@
 ﻿using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
-using CleanArchitecture.Core.Enums;
+using BjBygg.Core.Enums;
 
 namespace BjBygg.Application.Application.Common.Dto
 {

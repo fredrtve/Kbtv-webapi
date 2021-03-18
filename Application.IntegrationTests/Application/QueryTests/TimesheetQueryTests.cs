@@ -1,8 +1,8 @@
 ﻿using BjBygg.Application.Application.Commands.TimesheetCommands.Create;
 using BjBygg.Application.Application.Queries.TimesheetQueries;
 using BjBygg.Application.Common;
-using CleanArchitecture.Core;
-using CleanArchitecture.Core.Entities;
+using BjBygg.Core;
+using BjBygg.Core.Entities;
 using FluentAssertions;
 using NUnit.Framework;
 using System.Threading.Tasks;

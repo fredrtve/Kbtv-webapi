@@ -1,5 +1,6 @@
 ﻿using BjBygg.Application.Application.Common;
-using CleanArchitecture.Core;
+using BjBygg.Application.Commands.MissionCommands.UpdateHeaderImage;
+using BjBygg.Core;
 using FluentValidation;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.UpdateHeaderImage

@@ -3,9 +3,9 @@ using BjBygg.Application.Application.Commands.TimesheetCommands.Update;
 using BjBygg.Application.Application.Commands.TimesheetCommands.UpdateStatusRange;
 using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
-using CleanArchitecture.Core;
-using CleanArchitecture.Core.Entities;
-using CleanArchitecture.Core.Enums;
+using BjBygg.Core;
+using BjBygg.Core.Entities;
+using BjBygg.Core.Enums;
 using FluentAssertions;
 using NUnit.Framework;
 using System.Threading.Tasks;
@@ -21,7 +21,7 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
         {
             var command = new UpdateTimesheetCommand
             {
-                Id = "notvalid", MissionId = "test", StartTime = 1231131, EndTime = 2342342
+                Id = "notvalid", MissionId = "test", StartTime = 1231131, EndTime = 2342342, Comment = "asddsada"
             };
 
             FluentActions.Invoking(() =>
@@ -46,7 +46,7 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
 
             await SendAsync(new UpdateTimesheetStatusRangeCommand() { Ids = new[] { command.Id }, Status = TimesheetStatus.Confirmed });
 
-            var updateCommand = new UpdateTimesheetCommand { Id = command.Id, MissionId = "test", StartTime = 1231131, EndTime = 2342342 };
+            var updateCommand = new UpdateTimesheetCommand { Id = command.Id, MissionId = "test", StartTime = 1231131, EndTime = 2342342, Comment = "asddsada" };
 
             FluentActions.Invoking(() =>
               SendAsync(updateCommand)).Should().Throw<BadRequestException>();
@@ -70,7 +70,7 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
 
             await RunAsDefaultUserAsync(Roles.Employee);
 
-            var updateCommand = new UpdateTimesheetCommand { Id = command.Id, MissionId = "test", StartTime = 1231131, EndTime = 2342342 };
+            var updateCommand = new UpdateTimesheetCommand { Id = command.Id, MissionId = "test", StartTime = 1231131, EndTime = 2342342, Comment = "asddsada" };
 
             FluentActions.Invoking(() =>
               SendAsync(updateCommand)).Should().Throw<ForbiddenException>();

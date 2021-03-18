@@ -1,7 +1,7 @@
 ﻿using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Identity.Commands.UserCommands.Create;
-using CleanArchitecture.Core;
+using BjBygg.Core;
 using FluentAssertions;
 using NUnit.Framework;
 using System.Threading.Tasks;

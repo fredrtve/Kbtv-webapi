@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Core.Entities;
+﻿using BjBygg.Core.Entities;
 using System;
 using System.Collections.Generic;
 

@@ -1,7 +1,7 @@
 using AutoMapper;
 using BjBygg.Application.Application.Common.Interfaces;
-using CleanArchitecture.Core;
-using CleanArchitecture.Core.Entities;
+using BjBygg.Core;
+using BjBygg.Core.Entities;
 using MediatR;
 using System;
 using System.Threading;

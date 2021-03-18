@@ -1,7 +1,7 @@
 ﻿using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Application.Common;
-using CleanArchitecture.Core;
-using CleanArchitecture.Core.Entities;
+using BjBygg.Core;
+using BjBygg.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;

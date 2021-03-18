@@ -1,5 +1,5 @@
 using AutoMapper;
-using CleanArchitecture.Core.Entities;
+using BjBygg.Core.Entities;
 
 namespace BjBygg.Application.Application.Commands.EmployerCommands.Create
 {

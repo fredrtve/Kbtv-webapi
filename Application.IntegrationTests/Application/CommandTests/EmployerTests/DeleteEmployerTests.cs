@@ -1,5 +1,5 @@
 ﻿using BjBygg.Application.Application.Commands.EmployerCommands;
-using CleanArchitecture.Core.Entities;
+using BjBygg.Core.Entities;
 using FluentAssertions;
 using NUnit.Framework;
 using System.Threading.Tasks;

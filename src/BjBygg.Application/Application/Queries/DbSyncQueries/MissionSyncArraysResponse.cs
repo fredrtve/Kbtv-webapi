@@ -1,9 +1,7 @@
 ﻿using BjBygg.Application.Application.Common.Dto;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
 
-namespace BjBygg.Application.Application.Queries.DbSyncQueries.Common
+namespace BjBygg.Application.Application.Queries.DbSyncQueries
 {
     public class MissionSyncArraysResponse
     {

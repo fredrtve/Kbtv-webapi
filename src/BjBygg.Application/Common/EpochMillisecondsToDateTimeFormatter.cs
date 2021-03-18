@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CleanArchitecture.Core;
+using BjBygg.Core;
 using System;
 
 namespace BjBygg.Application.Common

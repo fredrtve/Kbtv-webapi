@@ -2,9 +2,9 @@
 using BjBygg.Application.Application.Commands.TimesheetCommands.UpdateStatusRange;
 using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
-using CleanArchitecture.Core;
-using CleanArchitecture.Core.Entities;
-using CleanArchitecture.Core.Enums;
+using BjBygg.Core;
+using BjBygg.Core.Entities;
+using BjBygg.Core.Enums;
 using FluentAssertions;
 using NUnit.Framework;
 using System.Threading.Tasks;

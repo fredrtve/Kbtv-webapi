@@ -1,8 +1,8 @@
 using AutoMapper;
 using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Application.Common.BaseEntityCommands.Create;
-using CleanArchitecture.Core.Entities;
-using CleanArchitecture.SharedKernel;
+using BjBygg.Core.Entities;
+using BjBygg.SharedKernel;
 
 namespace BjBygg.Application.Application.Commands.EmployerCommands.Create
 {

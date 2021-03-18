@@ -1,8 +1,8 @@
 using BjBygg.Application.Common.Interfaces;
-using CleanArchitecture.SharedKernel;
+using BjBygg.SharedKernel;
 using System.Text.Json.Serialization;
 
-namespace BjBygg.Application.Application.Commands.MissionCommands.UpdateHeaderImage
+namespace BjBygg.Application.Commands.MissionCommands.UpdateHeaderImage
 {
     public class UpdateMissionHeaderImageCommand : IOptimisticCommand
     {

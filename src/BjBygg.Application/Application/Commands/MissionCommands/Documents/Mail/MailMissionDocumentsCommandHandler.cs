@@ -1,7 +1,7 @@
 using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Application.Common.BaseEntityCommands.MailEntitiesCommand;
 using BjBygg.Application.Common.Interfaces;
-using CleanArchitecture.Core.Entities;
+using BjBygg.Core.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;

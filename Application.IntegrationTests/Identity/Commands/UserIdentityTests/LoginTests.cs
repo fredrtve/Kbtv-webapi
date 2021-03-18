@@ -2,7 +2,7 @@
 using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Identity.Commands.UserIdentityCommands.Login;
 using BjBygg.Application.Identity.Common.Models;
-using CleanArchitecture.Infrastructure.Auth;
+using BjBygg.Infrastructure.Auth;
 using FluentAssertions;
 using NUnit.Framework;
 using System;

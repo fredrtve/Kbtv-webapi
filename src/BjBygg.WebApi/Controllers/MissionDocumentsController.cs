@@ -4,7 +4,7 @@ using BjBygg.Application.Application.Commands.MissionCommands.Documents.Upload;
 using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Application.Queries.DbSyncQueries;
 using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
-using CleanArchitecture.SharedKernel;
+using BjBygg.SharedKernel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using System;
 
-namespace BjBygg.Application.Common
+namespace BjBygg.Application.Common.Validation
 {
     public class DateTimeProfile : Profile
     {

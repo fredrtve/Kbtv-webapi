@@ -2,7 +2,7 @@ using BjBygg.Application;
 using BjBygg.Application.Common.Interfaces;
 using BjBygg.WebApi.Middleware;
 using BjBygg.WebApi.Services;
-using CleanArchitecture.Infrastructure;
+using BjBygg.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;

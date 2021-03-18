@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Core.Interfaces;
+﻿using BjBygg.Core.Interfaces;
 using System.Threading.Tasks;
 
 namespace BjBygg.Application.Common.Interfaces

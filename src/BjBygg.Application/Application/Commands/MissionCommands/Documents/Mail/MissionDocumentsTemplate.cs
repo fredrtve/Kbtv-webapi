@@ -1,9 +1,9 @@
 ﻿
 using BjBygg.Application.Application.Common;
-using CleanArchitecture.Core;
-using CleanArchitecture.Core.Entities;
-using CleanArchitecture.Core.Interfaces;
-using CleanArchitecture.SharedKernel;
+using BjBygg.Core;
+using BjBygg.Core.Entities;
+using BjBygg.Core.Interfaces;
+using BjBygg.SharedKernel;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;

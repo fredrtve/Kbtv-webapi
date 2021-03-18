@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using BjBygg.Application.Common;
-using CleanArchitecture.Core;
-using CleanArchitecture.Core.Interfaces;
-using CleanArchitecture.SharedKernel;
+using BjBygg.Core;
+using BjBygg.Core.Interfaces;
+using BjBygg.SharedKernel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

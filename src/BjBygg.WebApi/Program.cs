@@ -1,7 +1,7 @@
 using BjBygg.Application.Common.Interfaces;
 using BjBygg.Application.Identity.Common.Models;
-using CleanArchitecture.Infrastructure.Data;
-using CleanArchitecture.Infrastructure.Identity;
+using BjBygg.Infrastructure.Data;
+using BjBygg.Infrastructure.Identity;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;

@@ -1,5 +1,5 @@
 ﻿using BjBygg.Application.Application.Common;
-using CleanArchitecture.Core;
+using BjBygg.Core;
 using FluentValidation;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Upload

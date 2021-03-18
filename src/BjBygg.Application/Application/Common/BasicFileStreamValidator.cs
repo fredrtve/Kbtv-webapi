@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.SharedKernel;
+﻿using BjBygg.SharedKernel;
 using FluentValidation;
 using System;
 using System.Collections.Generic;

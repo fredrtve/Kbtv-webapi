@@ -2,8 +2,8 @@
 using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
-using CleanArchitecture.Core;
-using CleanArchitecture.Core.Entities;
+using BjBygg.Core;
+using BjBygg.Core.Entities;
 using FluentAssertions;
 using NUnit.Framework;
 using System.Threading.Tasks;

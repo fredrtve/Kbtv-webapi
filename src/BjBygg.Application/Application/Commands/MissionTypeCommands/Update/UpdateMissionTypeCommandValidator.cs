@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Core;
+﻿using BjBygg.Core;
 using FluentValidation;
 
 namespace BjBygg.Application.Application.Commands.MissionTypeCommands.Update

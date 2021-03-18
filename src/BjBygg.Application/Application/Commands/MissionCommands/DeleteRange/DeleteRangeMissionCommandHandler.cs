@@ -1,5 +1,5 @@
 using BjBygg.Application.Application.Common.Interfaces;
-using CleanArchitecture.Core.Entities;
+using BjBygg.Core.Entities;
 using MediatR;
 using System;
 using System.Linq;

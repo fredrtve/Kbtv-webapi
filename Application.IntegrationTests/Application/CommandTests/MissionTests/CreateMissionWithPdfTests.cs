@@ -1,8 +1,8 @@
 ﻿using BjBygg.Application.Application.Commands.MissionCommands.CreateWithPdf;
 using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
-using CleanArchitecture.Core.Entities;
-using CleanArchitecture.SharedKernel;
+using BjBygg.Core.Entities;
+using BjBygg.SharedKernel;
 using FluentAssertions;
 using NUnit.Framework;
 using System;

@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.SharedKernel;
+﻿using BjBygg.SharedKernel;
 
 namespace BjBygg.Application.Identity.Common.Models
 {

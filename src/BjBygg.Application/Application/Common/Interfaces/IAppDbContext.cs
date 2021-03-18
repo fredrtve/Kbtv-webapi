@@ -1,5 +1,5 @@
 ﻿using BjBygg.Application.Common.Interfaces;
-using CleanArchitecture.Core.Entities;
+using BjBygg.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BjBygg.Application.Application.Common.Interfaces

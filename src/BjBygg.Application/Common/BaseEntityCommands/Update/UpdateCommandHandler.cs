@@ -1,6 +1,6 @@
 using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Common.Interfaces;
-using CleanArchitecture.SharedKernel;
+using BjBygg.SharedKernel;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;

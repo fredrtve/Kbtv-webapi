@@ -2,8 +2,7 @@
 using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
-using BjBygg.Application.Common;
-using CleanArchitecture.Core.Entities;
+using BjBygg.Core.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;

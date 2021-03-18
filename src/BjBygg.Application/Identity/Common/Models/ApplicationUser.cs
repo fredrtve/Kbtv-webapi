@@ -1,4 +1,4 @@
-using CleanArchitecture.SharedKernel;
+using BjBygg.SharedKernel;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;

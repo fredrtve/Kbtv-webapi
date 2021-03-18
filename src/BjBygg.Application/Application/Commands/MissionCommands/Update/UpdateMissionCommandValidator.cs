@@ -1,5 +1,5 @@
 ﻿using BjBygg.Application.Common.Validation;
-using CleanArchitecture.Core;
+using BjBygg.Core;
 using FluentValidation;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.Update

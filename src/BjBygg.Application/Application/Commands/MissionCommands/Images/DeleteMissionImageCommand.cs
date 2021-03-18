@@ -1,6 +1,6 @@
 using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Application.Common.BaseEntityCommands.Delete;
-using CleanArchitecture.Core.Entities;
+using BjBygg.Core.Entities;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.Images
 {

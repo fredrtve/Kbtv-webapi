@@ -1,5 +1,5 @@
 using BjBygg.Application.Common.Interfaces;
-using CleanArchitecture.SharedKernel;
+using BjBygg.SharedKernel;
 using MediatR;
 using System;
 using System.Linq;

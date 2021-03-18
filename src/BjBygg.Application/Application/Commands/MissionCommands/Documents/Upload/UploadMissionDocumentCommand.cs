@@ -1,5 +1,5 @@
 using BjBygg.Application.Common.BaseEntityCommands.Create;
-using CleanArchitecture.SharedKernel;
+using BjBygg.SharedKernel;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Upload
 {

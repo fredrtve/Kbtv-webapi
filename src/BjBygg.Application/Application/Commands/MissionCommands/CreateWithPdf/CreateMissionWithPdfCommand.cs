@@ -1,5 +1,5 @@
 
-using CleanArchitecture.SharedKernel;
+using BjBygg.SharedKernel;
 using MediatR;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.CreateWithPdf

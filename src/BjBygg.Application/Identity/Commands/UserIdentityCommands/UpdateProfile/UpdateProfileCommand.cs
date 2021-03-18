@@ -1,5 +1,5 @@
 using BjBygg.Application.Common.Interfaces;
-using CleanArchitecture.SharedKernel;
+using BjBygg.SharedKernel;
 
 namespace BjBygg.Application.Identity.Commands.UserIdentityCommands.UpdateProfile
 {

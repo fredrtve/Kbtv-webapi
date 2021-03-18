@@ -1,5 +1,5 @@
 using BjBygg.Application.Common.Interfaces;
-using CleanArchitecture.Core.Enums;
+using BjBygg.Core.Enums;
 using System.Collections.Generic;
 
 namespace BjBygg.Application.Application.Commands.TimesheetCommands.UpdateStatusRange

@@ -1,7 +1,7 @@
 ﻿using BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll;
 using BjBygg.Application.Common;
-using CleanArchitecture.Core;
-using CleanArchitecture.Core.Entities;
+using BjBygg.Core;
+using BjBygg.Core.Entities;
 using FluentAssertions;
 using NUnit.Framework;
 using System;
@@ -49,7 +49,14 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
 
             await AddSyncEntities();
 
-            await AddAsync(new MissionDocument() { Id = "test2", MissionId = "test2", Name = "test", FileName = "test.jpg" });
+            ///** Test that children of mission in sync range is included despite itself not being in range **/
+            //await AddSqlRaw("INSERT INTO MissionImages (Id, MissionId, FileName, Deleted, CreatedAt, UpdatedAt) " +
+            //    $"VALUES ('test2','test', 'asdaa', 0, '{dateBeforeSync}', '{dateBeforeSync}')");
+
+            /** Test that children of mission out of sync range is not included despite itself being in range **/
+            await AddAsync(new MissionDocument() { Id = "test3", MissionId = "test2", Name = "test", FileName = "test.jpg" });
+            await AddAsync(new MissionImage() { Id = "test3", MissionId = "test2", FileName = "test.jpg" });
+            await AddAsync(new MissionNote() { Id = "test3", MissionId = "test2", Content = "test.jdsadapg" });
 
             var result = await SendAsync(new SyncAllQuery()
             {
@@ -58,7 +65,7 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
             });
 
             result.Arrays.Missions.Entities.Should().HaveCount(1);
-            result.Arrays.MissionImages.Entities.Should().HaveCount(1);
+            result.Arrays.MissionImages.Entities.Should().HaveCount(2);
             result.Arrays.MissionNotes.Entities.Should().HaveCount(1);
             result.Arrays.MissionDocuments.Entities.Should().HaveCount(1);
             result.Arrays.MissionTypes.Entities.Should().HaveCount(1);
