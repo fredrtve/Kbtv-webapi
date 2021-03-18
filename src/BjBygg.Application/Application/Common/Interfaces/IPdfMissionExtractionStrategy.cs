@@ -3,7 +3,7 @@ using System.IO;
 
 namespace BjBygg.Application.Application.Common.Interfaces
 {
-    public interface IPdfReportMissionExtractor
+    public interface IPdfMissionExtractionStrategy
     {
         MissionPdfDto TryExtract(Stream pdf);
     }

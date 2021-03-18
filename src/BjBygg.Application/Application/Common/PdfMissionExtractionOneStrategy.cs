@@ -4,14 +4,13 @@ using iText.Kernel.Pdf;
 using iText.Kernel.Pdf.Canvas.Parser;
 using iText.Kernel.Pdf.Canvas.Parser.Listener;
 using iText.Kernel.Pdf.Xobject;
-using iText.Layout.Element;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace BjBygg.Infrastructure.Services
 {
-    public class PdfReportMissionExtractor : IPdfReportMissionExtractor
+    public class PdfMissionExtractionOneStrategy : IPdfMissionExtractionStrategy
     {
         public MissionPdfDto TryExtract(Stream pdf)
         {

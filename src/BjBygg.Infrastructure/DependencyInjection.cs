@@ -1,4 +1,5 @@
-﻿using BjBygg.Application.Application.Common.Interfaces;
+﻿using BjBygg.Application.Application.Common;
+using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Application.Common.Interfaces;
 using BjBygg.Application.Identity.Common.Interfaces;
 using BjBygg.Application.Identity.Common.Models;
@@ -123,7 +124,7 @@ namespace BjBygg.Infrastructure
 
             services.AddTransient<IBlobStorageService, AzureBlobStorageService>();
             services.AddTransient<IMailService, SendGridMailService>();
-            services.AddTransient<IPdfReportMissionExtractor, PdfReportMissionExtractor>();
+            services.AddTransient<PdfMissionExtractor>();
             services.AddTransient<IImageResizer, ImageResizer>();
 
             return services;

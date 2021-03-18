@@ -1,16 +1,14 @@
-using AutoMapper;
+using BjBygg.Application.Application.Common;
 using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Common.Interfaces;
 using BjBygg.Core;
 using BjBygg.Core.Entities;
+using BjBygg.Infrastructure.Services;
 using BjBygg.SharedKernel;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,22 +18,19 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.CreateWithPdf
     {
         private readonly IIdGenerator _idGenerator;
         private readonly IAppDbContext _dbContext;
-        private readonly IMapper _mapper;
         private readonly IBlobStorageService _storageService;
-        private readonly IPdfReportMissionExtractor _pdfReportMissionExtractor;
+        private readonly PdfMissionExtractor _pdfMissionExtractor;
 
         public CreateMissionWithPdfCommandHandler(
             IIdGenerator idGenerator,
             IAppDbContext dbContext,
-            IMapper mapper,
             IBlobStorageService storageService,
-            IPdfReportMissionExtractor pdfReportMissionExtractor)
+            PdfMissionExtractor pdfMissionExtractor)
         {
             _idGenerator = idGenerator;
             _dbContext = dbContext;
-            _mapper = mapper;
             _storageService = storageService;
-            _pdfReportMissionExtractor = pdfReportMissionExtractor;
+            _pdfMissionExtractor = pdfMissionExtractor;
         }
 
         public async Task<Unit> Handle(CreateMissionWithPdfCommand request, CancellationToken cancellationToken)
@@ -43,54 +38,20 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.CreateWithPdf
             if (request.Files == null || request.Files.Count == 0)
                 throw new BadRequestException("No file found.");
 
-            MissionPdfDto missionPdfDto = null;
-            BasicFileStream extractedDocument = null;
+            Mission extractedMission = null;
 
             //Loop over files and break if one fits extraction scheme
             //Helps when email clients append additional files that get extracted instead.
             foreach (var file in request.Files)
             {
-                missionPdfDto = _pdfReportMissionExtractor.TryExtract(file.Stream);
-                if (missionPdfDto != null)
-                {
-                    file.Stream.Position = 0;
-                    extractedDocument = file; //Save extracted file to add to mission later
-                    break;
-                };
+                extractedMission = await _pdfMissionExtractor.TryExtractAsync(file, new PdfMissionExtractionOneStrategy());
+                if (extractedMission != null) break;
             }
 
-            if (missionPdfDto == null)
+            if (extractedMission == null)
                 throw new BadRequestException("Mission could not be extracted from file.");
 
-            var dbMission = new Mission
-            {
-                Id = _idGenerator.Generate(),
-                Address = missionPdfDto.Address,
-                PhoneNumber = missionPdfDto.PhoneNumber
-            };
-
-            if (missionPdfDto.Image != null)
-            {
-                var fileStream = new BasicFileStream(missionPdfDto.Image, $"{dbMission.Id}.jpg");
-                await _storageService.UploadFileAsync(fileStream, ResourceFolderConstants.MissionHeader);
-                dbMission.FileName = fileStream.FileName;
-            }
-
-            var report = new MissionDocument
-            {
-                Id = _idGenerator.Generate(),
-                Name = missionPdfDto.DocumentName
-            };
-
-            report.FileName = $"{report.Id}{extractedDocument.FileExtension}";
-
-            var modifiedFile = new BasicFileStream(extractedDocument.Stream, report.FileName);
-            await _storageService.UploadFileAsync(modifiedFile, ResourceFolderConstants.Document);
-
-            dbMission.MissionDocuments = new List<MissionDocument>();
-            dbMission.MissionDocuments.Add(report); //Add input report as document in new mission
-
-            await _dbContext.Set<Mission>().AddAsync(dbMission);
+            await _dbContext.Set<Mission>().AddAsync(extractedMission);
 
             await _dbContext.SaveChangesAsync();
 
