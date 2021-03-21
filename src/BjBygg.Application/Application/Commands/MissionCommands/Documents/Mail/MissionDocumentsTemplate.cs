@@ -16,11 +16,16 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Mail
         public MissionDocumentsTemplate(IEnumerable<MissionDocument> documents, BasicFileStream attachment = null)
         {
             Attachment = attachment;
-            Data = new MissionDocumentsTemplateData(documents.Select(x => new MissionDocumentsTemplateDocument()
+            Data = new MissionDocumentsTemplateData(documents.GroupBy(x => x.Mission).Select(x => new MissionDocumentsTemplateMission
             {
-                Id = x.Id,
-                Name = x.Name,
-                Url = new StorageFileUrl(x.FileName, ResourceFolderConstants.Document).FileUrl.ToString()
+                Id = x.Key.Id,
+                Address = x.Key.Address,
+                Documents = x.Key.MissionDocuments.Select(x => new MissionDocumentsTemplateDocument()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Url = new StorageFileUrl(x.FileName, ResourceFolderConstants.Document).FileUrl.ToString()
+                }).ToList(),
             }).ToList());
         }
 
@@ -31,13 +36,24 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Mail
 
         public BasicFileStream Attachment { get; set; }
     }
-
     public class MissionDocumentsTemplateData
     {
-        public MissionDocumentsTemplateData(IEnumerable<MissionDocumentsTemplateDocument> documents)
+        public MissionDocumentsTemplateData(IEnumerable<MissionDocumentsTemplateMission> missions)
         {
-            Documents = documents;
+            Missions = missions;
         }
+
+        [JsonProperty("missions")]
+        public IEnumerable<MissionDocumentsTemplateMission> Missions { get; set; }
+    }
+
+    public class MissionDocumentsTemplateMission
+    {
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
+        [JsonProperty("address")]
+        public string Address { get; set; }
 
         [JsonProperty("documents")]
         public IEnumerable<MissionDocumentsTemplateDocument> Documents { get; set; }
