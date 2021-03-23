@@ -6,6 +6,7 @@ using BjBygg.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BjBygg.Infrastructure.Data
@@ -22,13 +23,27 @@ namespace BjBygg.Infrastructure.Data
         public static async Task SeedAllAsync(IAppDbContext context, IIdGenerator idGenerator, SeederCount seederCount)
         {
             using var ctx = context;
-            await SetEmployersAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(Employer)]);
-            await SetMissionTypesAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(MissionType)]);
-            await SetMissionsAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(Mission)]);
-            await SetMissionDocumentsAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(MissionDocument)]);
-            await SetMissionImagesAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(MissionImage)]);
-            await SetMissionNotesAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(MissionNote)]);
-            await SetTimesheetsAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(Timesheet)]);
+
+            if(!context.Employers.Any())
+                await SetEmployersAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(Employer)]);
+            if (!context.EmployerUsers.Any())
+               context.EmployerUsers.Add(
+                    new EmployerUser() { Id = "dasdsad", EmployerId = GetGeneratedId(typeof(Employer)), UserName = "Oppdragsgiver" }
+                );
+            if (!context.MissionTypes.Any())
+                await SetMissionTypesAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(MissionType)]);
+            if (!context.Missions.Any())
+                await SetMissionsAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(Mission)]);
+            if (!context.MissionDocuments.Any())
+                await SetMissionDocumentsAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(MissionDocument)]);
+            if (!context.MissionImages.Any())
+                await SetMissionImagesAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(MissionImage)]);
+            if (!context.MissionNotes.Any())
+                await SetMissionNotesAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(MissionNote)]);
+            if (!context.Timesheets.Any())
+                await SetTimesheetsAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(Timesheet)]);
+
+            context.SaveChanges();
         }
 
         static void AddGeneratedId(string id, Type type)

@@ -5,6 +5,7 @@ using BjBygg.Application.Identity.Common.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BjBygg.Infrastructure.Identity
@@ -92,11 +93,10 @@ namespace BjBygg.Infrastructure.Identity
                     userManager.AddToRoleAsync(user, Roles.Employee).Wait();
             }
 
-            context.Database.OpenConnection();
-            context.InboundEmailPasswords.Add(new InboundEmailPassword() { Id = idGenerator.Generate(), Password = "passord1" });
-            context.SaveChanges();
-            context.Database.CloseConnection();
+            if(!context.InboundEmailPasswords.Any())
+                context.InboundEmailPasswords.Add(new InboundEmailPassword() { Id = idGenerator.Generate(), Password = "passord1" });
 
+            context.SaveChanges();
         }
     }
 }
