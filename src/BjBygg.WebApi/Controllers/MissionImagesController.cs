@@ -5,6 +5,7 @@ using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Application.Queries.DbSyncQueries;
 using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
 using BjBygg.SharedKernel;
+using BjBygg.WebApi.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -20,27 +21,12 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = RolePermissions.MissionImageActions.Create)]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<ActionResult> Upload()
+        public async Task<ActionResult> Upload(UploadMissionImageFormDto form)
         {
-            var settings = new JsonSerializerSettings
+            var request = new UploadMissionImageCommand() { Id = form.Id, MissionId = form.MissionId };
+            using (var stream = form.File.OpenReadStream())
             {
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            };
-
-            var request = JsonConvert.DeserializeObject<UploadMissionImageCommand>(Request.Form["Command"], settings);
-
-            if (Request.Form.Files.Count() == 0)
-            {
-                await Mediator.Send(request);//Let validator throw exception
-                return NoContent();
-            }
-
-            var file = Request.Form.Files[0];
-
-            using (var stream = file.OpenReadStream())
-            {
-                request.File = new BasicFileStream(stream, file.FileName);
+                request.File = new BasicFileStream(stream, form.File.FileName);
                 await Mediator.Send(request);
             }
 

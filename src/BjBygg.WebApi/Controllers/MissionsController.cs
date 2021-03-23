@@ -10,6 +10,7 @@ using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Identity.Commands.InboundEmailPasswordCommands.Verify;
 using BjBygg.SharedKernel;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
@@ -108,23 +109,9 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = RolePermissions.MissionActions.UpdateHeaderImage)]
         [HttpPut]
         [Route("api/[controller]/{Id}/[action]")]
-        public async Task<ActionResult> UpdateHeaderImage(string id)
+        public async Task<ActionResult> UpdateHeaderImage(string id, [FromForm] IFormFile file)
         {
-            //var settings = new JsonSerializerSettings
-            //{
-            //    NullValueHandling = NullValueHandling.Ignore,
-            //    MissingMemberHandling = MissingMemberHandling.Ignore
-            //};
-
-            //var request = JsonConvert.DeserializeObject<UpdateMissionHeaderImageCommand>(Request.Form["command"], settings);
             var request = new UpdateMissionHeaderImageCommand() { Id = id };
-            if (Request.Form.Files.Count() == 0)
-            {
-                await Mediator.Send(request);
-                return NoContent();
-            }//Let validator throw exception
-
-            var file = Request.Form.Files[0];
 
             using (var stream = file.OpenReadStream())
             {
@@ -133,7 +120,6 @@ namespace BjBygg.WebApi.Controllers
                 await Mediator.Send(request);
                 return NoContent();
             }
-
         }
 
         [Authorize(Roles = RolePermissions.MissionActions.Update)]
