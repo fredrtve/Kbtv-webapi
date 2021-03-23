@@ -209,7 +209,7 @@ namespace BjBygg.Infrastructure.Data
             {
                 var id = idGenerator.Generate();
                 AddGeneratedId(id, typeof(Timesheet));
-                var startDate = today + new TimeSpan(7, 0, 0);
+                var startDate = today.AddDays(-i) + new TimeSpan(7, 0, 0);
                 var endDate = startDate.AddHours(rnd.Next(4, 10));
                 var totalHours = (endDate - startDate).TotalHours;
                 var startDateString = startDate.ToString("yyyy-MM-dd HH:mm:ss");
