@@ -29,28 +29,30 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries
         public async Task<MissionSyncArraysResponse> Handle(MissionSyncQuery request, CancellationToken cancellationToken)
         {
             var query = _dbContext.Set<Mission>().AsQueryable();
+            var isEmployer = request.User.Role == Roles.Employer;
 
-            if (request.User.Role == Roles.Employer) //Only allow employers missions if role is employer
+            if (isEmployer) //Only allow employers missions if role is employer
                 query = query.Where(x => x.EmployerId == request.User.EmployerId); 
 
-            var missions = await query
-                .GetSyncItems(request)
-                .Include(x => x.MissionDocuments)
-                .Include(x => x.MissionNotes)
-                .Include(x => x.MissionImages)
-                .ToListAsync();
+            query = query.GetSyncItems(request).Include(x => x.MissionImages);
 
+            if (!isEmployer)
+                query = query.Include(x => x.MissionDocuments).Include(x => x.MissionNotes);
+
+            var missions = await query.ToListAsync();
             var isInitial = request.Timestamp == null;
 
             return new MissionSyncArraysResponse()
             {
-                MissionDocuments = missions.SelectMany(x => x.MissionDocuments).GetMissionChildSyncItems(request)
-                    .ToSyncArrayResponse<MissionDocument, MissionDocumentDto>(isInitial, _mapper),
                 MissionImages = missions.SelectMany(x => x.MissionImages).GetMissionChildSyncItems(request)
                     .ToSyncArrayResponse<MissionImage, MissionImageDto>(isInitial, _mapper),
-                MissionNotes = missions.SelectMany(x => x.MissionNotes).GetMissionChildSyncItems(request)
-                    .ToSyncArrayResponse<MissionNote, MissionNoteDto>(isInitial, _mapper),
-                Missions = missions.ToSyncArrayResponse<Mission, MissionDto>(isInitial, _mapper)
+                Missions = missions.ToSyncArrayResponse<Mission, MissionDto>(isInitial, _mapper),
+                MissionNotes = isEmployer ? null : 
+                    missions.SelectMany(x => x.MissionNotes).GetMissionChildSyncItems(request)
+                        .ToSyncArrayResponse<MissionNote, MissionNoteDto>(isInitial, _mapper),
+                MissionDocuments = isEmployer ? null :
+                    missions.SelectMany(x => x.MissionDocuments).GetMissionChildSyncItems(request)
+                        .ToSyncArrayResponse<MissionDocument, MissionDocumentDto>(isInitial, _mapper),
             };
         }
 
