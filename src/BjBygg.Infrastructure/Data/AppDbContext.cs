@@ -17,14 +17,17 @@ namespace BjBygg.Infrastructure.Data
     public class AppDbContext : DbContext, IAppDbContext
     {
         private readonly ICurrentUserService _currentUserService;
+        private readonly IIdGenerator _idGenerator;
 
-        public AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUserService currentUserService)
+        public AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUserService currentUserService, IIdGenerator idGenerator)
             : base(options)
         {
             _currentUserService = currentUserService;
+            _idGenerator = idGenerator;
         }
 
         public DbSet<Employer> Employers { get; set; }
+        public DbSet<EmployerUser> EmployerUsers { get; set; }
         public DbSet<Mission> Missions { get; set; }
         public DbSet<MissionType> MissionTypes { get; set; }
         public DbSet<MissionImage> MissionImages { get; set; }
@@ -74,7 +77,7 @@ namespace BjBygg.Infrastructure.Data
             var user = _currentUserService.UserName;
 
             foreach (var entry in ChangeTracker.Entries())
-            {
+            {           
                 if (entry.Entity is ITrackable trackable)
                 {
                     switch (entry.State)

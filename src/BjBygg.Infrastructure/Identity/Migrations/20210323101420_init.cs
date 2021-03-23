@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace BjBygg.Infrastructure.Identity.Migrations
+namespace BjBygg.Infrastructure.identity.migrations
 {
     public partial class init : Migration
     {
@@ -42,7 +42,6 @@ namespace BjBygg.Infrastructure.Identity.Migrations
                     AccessFailedCount = table.Column<int>(nullable: false),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
-                    EmployerId = table.Column<string>(nullable: true),
                     LastCommandStatus = table.Column<bool>(nullable: true),
                     LastCommandId = table.Column<string>(nullable: true),
                     Deleted = table.Column<bool>(nullable: false),

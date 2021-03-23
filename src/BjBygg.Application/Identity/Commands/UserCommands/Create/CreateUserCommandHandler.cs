@@ -32,8 +32,6 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Create
 
             var user = _mapper.Map<ApplicationUser>(request);
 
-            if (request.Role != Roles.Employer) user.EmployerId = null;
-
             var result = await _userManager.CreateAsync(user, request.Password);
 
             if (!result.Succeeded)

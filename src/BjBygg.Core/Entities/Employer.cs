@@ -26,7 +26,7 @@ namespace BjBygg.Core.Entities
         }
 
         private string? _address;
-
         public List<Mission> Missions { get; set; }
+        public List<EmployerUser> EmployerUsers { get; set; }
     }
 }

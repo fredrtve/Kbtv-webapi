@@ -4,7 +4,7 @@ using BjBygg.Core.Entities;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.Update
 {
-    class UpdateMissionCommandProfile : Profile
+    public class UpdateMissionCommandProfile : Profile
     {
         public UpdateMissionCommandProfile()
         {

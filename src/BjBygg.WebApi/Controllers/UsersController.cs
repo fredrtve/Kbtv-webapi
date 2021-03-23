@@ -1,3 +1,7 @@
+using BjBygg.Application.Application.Commands.ApplicationUserCommands.Update;
+using BjBygg.Application.Application.Commands.UserCommands.Create;
+using BjBygg.Application.Application.Common.Dto;
+using BjBygg.Application.Application.Queries;
 using BjBygg.Application.Identity.Commands.UserCommands.Create;
 using BjBygg.Application.Identity.Commands.UserCommands.Delete;
 using BjBygg.Application.Identity.Commands.UserCommands.NewPassword;
@@ -21,32 +25,32 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = RolePermissions.UserActions.Read)]
         [HttpGet]
         [Route("api/[controller]")]
-        public async Task<ActionResult<IEnumerable<UserDto>>> Index()
+        public async Task<ActionResult<IEnumerable<ApplicationUserDto>>> Index()
         {
-            return await Mediator.Send(new UserListQuery());
+            return await Mediator.Send(new ApplicationUserListQuery());
         }
 
         [Authorize(Roles = RolePermissions.UserActions.Create)]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<ActionResult> Create([FromBody] CreateUserCommand request)
+        public async Task<ActionResult> Create([FromBody] CreateApplicationUserCommand request)
         {
             await Mediator.Send(request);
             return NoContent();
         }
 
-        [Authorize(Roles = RolePermissions.UserActions.Read)]
-        [HttpGet]
-        [Route("api/[controller]/{UserName}")]
-        public async Task<ActionResult<UserDto>> GetUser(UserByUserNameQuery request)
-        {
-            return await Mediator.Send(request);
-        }
+        //[Authorize(Roles = RolePermissions.UserActions.Read)]
+        //[HttpGet]
+        //[Route("api/[controller]/{UserName}")]
+        //public async Task<ActionResult<UserDto>> GetUser(UserByUserNameQuery request)
+        //{
+        //    return await Mediator.Send(request);
+        //}
 
         [Authorize(Roles = RolePermissions.UserActions.Update)]
         [HttpPut]
         [Route("api/[controller]/{UserName}")]
-        public async Task<ActionResult> Update([FromBody] UpdateUserCommand request)
+        public async Task<ActionResult> Update([FromBody] UpdateApplicationUserCommand request)
         {
             await Mediator.Send(request);
             return NoContent();

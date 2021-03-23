@@ -7,6 +7,7 @@ namespace BjBygg.Application.Application.Common.Interfaces
     public interface IAppDbContext : IDbContext
     {
         DbSet<Employer> Employers { get; set; }
+        DbSet<EmployerUser> EmployerUsers { get; set; }
         DbSet<Mission> Missions { get; set; }
         DbSet<MissionType> MissionTypes { get; set; }
         DbSet<MissionImage> MissionImages { get; set; }

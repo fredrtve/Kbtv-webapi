@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace BjBygg.Infrastructure.Data.migrations
+namespace BjBygg.Infrastructure.data.migrations
 {
     public partial class init : Migration
     {
@@ -42,6 +42,30 @@ namespace BjBygg.Infrastructure.Data.migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MissionTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EmployerUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Deleted = table.Column<bool>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: true),
+                    UpdatedAt = table.Column<DateTime>(nullable: false),
+                    UpdatedBy = table.Column<string>(nullable: true),
+                    UserName = table.Column<string>(nullable: false),
+                    EmployerId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployerUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EmployerUsers_Employers_EmployerId",
+                        column: x => x.EmployerId,
+                        principalTable: "Employers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -184,6 +208,11 @@ namespace BjBygg.Infrastructure.Data.migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_EmployerUsers_EmployerId",
+                table: "EmployerUsers",
+                column: "EmployerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MissionDocuments_MissionId",
                 table: "MissionDocuments",
                 column: "MissionId");
@@ -216,6 +245,9 @@ namespace BjBygg.Infrastructure.Data.migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "EmployerUsers");
+
             migrationBuilder.DropTable(
                 name: "MissionDocuments");
 

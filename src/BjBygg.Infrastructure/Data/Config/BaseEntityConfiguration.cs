@@ -9,6 +9,7 @@ namespace BjBygg.Infrastructure.Data.Config
         public virtual void Configure(EntityTypeBuilder<TEntity> builder)
         {
             builder.HasQueryFilter(m => m.Deleted == false);
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
         }
     }
 }

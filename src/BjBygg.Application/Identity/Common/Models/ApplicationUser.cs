@@ -10,14 +10,9 @@ namespace BjBygg.Application.Identity.Common.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-
         public List<IdentityUserRole<string>> Roles { get; set; }
-
         public IdentityRole Role { get; set; }
-
         public List<RefreshToken> RefreshTokens { get; set; }
-
-        public string? EmployerId { get; set; }
         public bool? LastCommandStatus { get; set; }
         public string? LastCommandId { get; set; }
         public bool Deleted { get; set; }

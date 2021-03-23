@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace BjBygg.Infrastructure.Data.migrations
+namespace BjBygg.Infrastructure.data.migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
@@ -19,6 +19,7 @@ namespace BjBygg.Infrastructure.Data.migrations
             modelBuilder.Entity("BjBygg.Core.Entities.Employer", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Address")
@@ -57,9 +58,46 @@ namespace BjBygg.Infrastructure.Data.migrations
                     b.ToTable("Employers");
                 });
 
+            modelBuilder.Entity("BjBygg.Core.Entities.EmployerUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("EmployerId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployerId");
+
+                    b.ToTable("EmployerUsers");
+                });
+
             modelBuilder.Entity("BjBygg.Core.Entities.Mission", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Address")
@@ -120,6 +158,7 @@ namespace BjBygg.Infrastructure.Data.migrations
             modelBuilder.Entity("BjBygg.Core.Entities.MissionDocument", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
@@ -161,6 +200,7 @@ namespace BjBygg.Infrastructure.Data.migrations
             modelBuilder.Entity("BjBygg.Core.Entities.MissionImage", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
@@ -197,6 +237,7 @@ namespace BjBygg.Infrastructure.Data.migrations
             modelBuilder.Entity("BjBygg.Core.Entities.MissionNote", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Content")
@@ -237,6 +278,7 @@ namespace BjBygg.Infrastructure.Data.migrations
             modelBuilder.Entity("BjBygg.Core.Entities.MissionType", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
@@ -267,6 +309,7 @@ namespace BjBygg.Infrastructure.Data.migrations
             modelBuilder.Entity("BjBygg.Core.Entities.Timesheet", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Comment")
@@ -315,6 +358,15 @@ namespace BjBygg.Infrastructure.Data.migrations
                     b.HasIndex("MissionId");
 
                     b.ToTable("Timesheets");
+                });
+
+            modelBuilder.Entity("BjBygg.Core.Entities.EmployerUser", b =>
+                {
+                    b.HasOne("BjBygg.Core.Entities.Employer", "Employer")
+                        .WithMany("EmployerUsers")
+                        .HasForeignKey("EmployerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BjBygg.Core.Entities.Mission", b =>

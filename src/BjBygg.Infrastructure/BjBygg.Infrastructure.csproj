@@ -8,8 +8,16 @@
   <ItemGroup>
     <Compile Remove="Data\migrations\20210212181750_init.cs" />
     <Compile Remove="Data\migrations\20210212181750_init.Designer.cs" />
+    <Compile Remove="Data\migrations\20210213194935_init.cs" />
+    <Compile Remove="Data\migrations\20210213194935_init.Designer.cs" />
+    <Compile Remove="Data\migrations\20210323101356_init.cs" />
+    <Compile Remove="Data\migrations\20210323101356_init.Designer.cs" />
+    <Compile Remove="Data\migrations\20210323103506_init.cs" />
+    <Compile Remove="Data\migrations\20210323103506_init.Designer.cs" />
     <Compile Remove="Identity\Migrations\20210212181807_init.cs" />
     <Compile Remove="Identity\Migrations\20210212181807_init.Designer.cs" />
+    <Compile Remove="Identity\Migrations\20210213195000_init.cs" />
+    <Compile Remove="Identity\Migrations\20210213195000_init.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,6 +33,7 @@
     <PackageReference Include="SendGrid" />
     <PackageReference Include="SharpZipLib" />
     <PackageReference Include="SQLite" />
+    
     <PackageReference Include="SixLabors.ImageSharp" />
     <PackageReference Include="NETStandard.Library" />
     <PackageReference Include="WindowsAzure.Storage" />

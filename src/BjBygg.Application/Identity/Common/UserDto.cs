@@ -12,7 +12,6 @@ namespace BjBygg.Application.Identity.Common
         public string Role { get; set; }
         public bool LastCommandStatus { get; set; }
         public string LastCommandId { get; set; }
-        public string? EmployerId { get; set; }
         public long UpdatedAt { get; set; }
     }
 }

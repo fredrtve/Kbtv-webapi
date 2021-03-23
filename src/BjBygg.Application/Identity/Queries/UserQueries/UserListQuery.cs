@@ -32,7 +32,6 @@ namespace BjBygg.Application.Identity.Queries.UserQueries
                                       user.LastName,
                                       user.PhoneNumber,
                                       user.Email,
-                                      user.EmployerId,
                                       Role = (from userRole in user.Roles
                                               join role in _dbContext.Roles on userRole.RoleId
                                               equals role.Id
@@ -45,7 +44,6 @@ namespace BjBygg.Application.Identity.Queries.UserQueries
                                       LastName = p.LastName,
                                       PhoneNumber = p.PhoneNumber,
                                       Email = p.Email,
-                                      EmployerId = p.EmployerId,
                                       Role = p.Role.FirstOrDefault()
                                   }).ToList();
 

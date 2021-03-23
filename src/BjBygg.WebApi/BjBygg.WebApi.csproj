@@ -31,7 +31,6 @@
 
   <ItemGroup>
     <Folder Include="data\db\identity\" />
-    <Folder Include="data\db\main\" />
   </ItemGroup>
 
 </Project>
