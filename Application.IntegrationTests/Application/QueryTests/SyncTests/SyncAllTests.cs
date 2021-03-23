@@ -41,22 +41,22 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
         {
             await RunAsDefaultUserAsync(Roles.Leader);
 
-            var timestamp = DateTimeHelper.ConvertDateToEpoch(DateTimeHelper.Now().AddMinutes(-10)) * 1000;
-
-            var dateBeforeSync = DateTime.Now.AddYears(-4).ToString("yyyy-MM-dd HH:mm:ss");
-            await AddSqlRaw("INSERT INTO Missions (Id, Address, Deleted, CreatedAt, UpdatedAt) " +
-                $"VALUES ('test2','TestAddress', 0, '{dateBeforeSync}', '{dateBeforeSync}')");
-
             await AddSyncEntities();
 
-            ///** Test that children of mission in sync range is included despite itself not being in range **/
+            /////** Test that children of mission in sync range is included despite itself not being in range **/
             //await AddSqlRaw("INSERT INTO MissionImages (Id, MissionId, FileName, Deleted, CreatedAt, UpdatedAt) " +
             //    $"VALUES ('test2','test', 'asdaa', 0, '{dateBeforeSync}', '{dateBeforeSync}')");
-
+            await AddAsync(new Mission() { Id = "test2", Address = "test" });
             /** Test that children of mission out of sync range is not included despite itself being in range **/
             await AddAsync(new MissionDocument() { Id = "test3", MissionId = "test2", Name = "test", FileName = "test.jpg" });
             await AddAsync(new MissionImage() { Id = "test3", MissionId = "test2", FileName = "test.jpg" });
             await AddAsync(new MissionNote() { Id = "test3", MissionId = "test2", Content = "test.jdsadapg" });
+
+            var timestamp = DateTimeHelper.ConvertDateToEpoch(DateTimeHelper.Now().AddMinutes(-10)) * 1000;
+
+            var dateBeforeSync = DateTime.Now.AddYears(-4).ToString("yyyy-MM-dd HH:mm:ss");
+
+            await AddSqlRaw($"UPDATE Missions SET UpdatedAt = '{dateBeforeSync}' WHERE id='test2'");
 
             var result = await SendAsync(new SyncAllQuery()
             {

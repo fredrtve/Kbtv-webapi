@@ -103,7 +103,7 @@ namespace Application.IntegrationTests.Identity
 
             var userManager = scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
 
-            var user = new ApplicationUser { UserName = userName, Email = userName, EmployerId = "test" };
+            var user = new ApplicationUser { UserName = userName, Email = userName };
 
             var result = await userManager.CreateAsync(user, password);
 

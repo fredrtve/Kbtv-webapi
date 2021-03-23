@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using BjBygg.Core.Entities;
 
 namespace Application.IntegrationTests.Application
 {
@@ -140,13 +141,20 @@ namespace Application.IntegrationTests.Application
 
             var userManager = scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
 
-            var user = new ApplicationUser { UserName = userName, Email = userName, EmployerId = employerId };
+            var user = new ApplicationUser { UserName = userName, Email = userName };
 
             var result = await userManager.CreateAsync(user, password);
 
             userManager.AddToRoleAsync(user, role).Wait();
-
+     
             _currentUser = new UserDto { UserName = user.UserName, Role = role };
+
+            if(employerId != null)
+            {
+                var dbContext = scope.ServiceProvider.GetService<IAppDbContext>();
+                dbContext.EmployerUsers.Add(new EmployerUser() { UserName = user.UserName, EmployerId = employerId });
+                dbContext.SaveChanges();
+            }
 
             return _currentUser;
         }
