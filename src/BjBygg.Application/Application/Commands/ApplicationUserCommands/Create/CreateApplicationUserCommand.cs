@@ -20,15 +20,18 @@ namespace BjBygg.Application.Application.Commands.UserCommands.Create
     public class CreateApplicationUserCommandHandler : IRequestHandler<CreateApplicationUserCommand>
     {
         private readonly IMediator _mediator;
+        private readonly IIdGenerator _idGenerator;
         private readonly IMapper _mapper;
         private readonly IAppDbContext _dbContext;
 
         public CreateApplicationUserCommandHandler(
             IMediator mediator, 
+            IIdGenerator idGenerator,
             IMapper mapper, 
             IAppDbContext dbContext)
         {
             _mediator = mediator;
+            _idGenerator = idGenerator;
             _mapper = mapper;
             _dbContext = dbContext;
         }
@@ -42,7 +45,9 @@ namespace BjBygg.Application.Application.Commands.UserCommands.Create
                 if (employer == null)
                             throw new EntityNotFoundException(nameof(Employer), request.EmployerId);
 
-                _dbContext.EmployerUsers.Add(_mapper.Map<EmployerUser>(request));
+                var employerUser = _mapper.Map<EmployerUser>(request);
+                employerUser.Id = _idGenerator.Generate();
+                _dbContext.EmployerUsers.Add(employerUser);
             }
 
             await _mediator.Send(_mapper.Map<CreateUserCommand>(request));
