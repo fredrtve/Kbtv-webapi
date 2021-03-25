@@ -47,6 +47,12 @@ namespace BjBygg.Infrastructure.Api.FileStorage
             } while (blobContinuationToken != null);
             return allBlobs;
         }
+        public async Task GetAsync(string fileName, string folder, Stream target)
+        {
+            var blobContainer = await _azureBlobConnectionFactory.GetBlobContainer(folder);
+            var blob = blobContainer.GetBlockBlobReference(fileName);
+            await blob.DownloadToStreamAsync(target);
+        }
 
         public async Task<IEnumerable<Uri>> UploadFilesAsync(DisposableList<BasicFileStream> streams, string folder)
         {
@@ -74,7 +80,7 @@ namespace BjBygg.Infrastructure.Api.FileStorage
             var blobContainer = await _azureBlobConnectionFactory.GetBlobContainer(folder);
 
             var blob = blobContainer.GetBlockBlobReference(stream.FileName);
-
+      
             await blob.UploadFromStreamAsync(stream.Stream);
 
             //Content disposition not working? Wont download file for client
