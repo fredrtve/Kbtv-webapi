@@ -1,5 +1,6 @@
 using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Application.Common.BaseEntityCommands.MailEntitiesCommand;
+using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Common.Interfaces;
 using BjBygg.Core;
 using BjBygg.Core.Entities;
@@ -38,8 +39,15 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Mail
 
             using var zipStream = new MemoryStream();
 
-            await _fileZipper.ZipAsync(zipStream, fileNames, ResourceFolderConstants.OriginalMissionImage);
-
+            try
+            {
+                await _fileZipper.ZipAsync(zipStream, fileNames, ResourceFolderConstants.OriginalMissionImage);
+            }
+            catch (Exception ex)
+            {
+                throw new BadRequestException("Noe er feil med en av bildene");
+            }
+           
             var template = new MissionImagesTemplate(images, new BasicFileStream(zipStream, "bilder_fra_oppdrag.zip"));
 
             await _mailService.SendTemplateEmailAsync(request.ToEmail, template);
