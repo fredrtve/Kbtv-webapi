@@ -40,18 +40,18 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries
                 query = query.Include(x => x.MissionDocuments).Include(x => x.MissionNotes);
 
             var missions = await query.ToListAsync();
-            var isInitial = request.Timestamp == null;
+            var isInitial = request.InitialSync;
 
             return new MissionSyncArraysResponse()
             {
-                MissionImages = missions.SelectMany(x => x.MissionImages).GetMissionChildSyncItems(request)
+                MissionImages = missions.SelectMany(x => x.MissionImages).GetChildSyncItems(request)
                     .ToSyncArrayResponse<MissionImage, MissionImageDto>(isInitial, _mapper),
                 Missions = missions.ToSyncArrayResponse<Mission, MissionDto>(isInitial, _mapper),
                 MissionNotes = isEmployer ? null :
-                    missions.SelectMany(x => x.MissionNotes).GetMissionChildSyncItems(request)
+                    missions.SelectMany(x => x.MissionNotes).GetChildSyncItems(request)
                         .ToSyncArrayResponse<MissionNote, MissionNoteDto>(isInitial, _mapper),
                 MissionDocuments = isEmployer ? null :
-                    missions.SelectMany(x => x.MissionDocuments).GetMissionChildSyncItems(request)
+                    missions.SelectMany(x => x.MissionDocuments).GetChildSyncItems(request)
                         .ToSyncArrayResponse<MissionDocument, MissionDocumentDto>(isInitial, _mapper),
             };
         }

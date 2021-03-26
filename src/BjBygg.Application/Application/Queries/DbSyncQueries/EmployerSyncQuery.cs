@@ -27,7 +27,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries
 
         public async Task<DbSyncArrayResponse<EmployerDto>> Handle(EmployerSyncQuery request, CancellationToken cancellationToken)
         {
-            var query = _dbContext.Set<Employer>().AsQueryable().GetSyncItems(request, false);
+            var query = _dbContext.Set<Employer>().AsQueryable().GetSyncItems(request, true);
 
             if (request.User.Role == Roles.Employer)
             {
@@ -35,7 +35,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries
             }
 
             return (await query.ToListAsync())
-                .ToSyncArrayResponse<Employer, EmployerDto>(request.Timestamp == null, _mapper);
+                .ToSyncArrayResponse<Employer, EmployerDto>(request.InitialSync, _mapper);
         }
 
     }

@@ -44,7 +44,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
             {
                 Timestamp = request.Timestamp,
                 User = user,
-                InitialTimestamp = request.InitialTimestamp
+                InitialSync = request.InitialSync
             });
 
             return new SyncAllResponse()
@@ -56,10 +56,10 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
                     {
                         Timestamp = request.Timestamp,
                         User = user,
-                        InitialTimestamp = request.InitialTimestamp
+                        InitialSync = request.InitialSync
                     }),
-                    Employers = await _mediator.Send(new EmployerSyncQuery() { Timestamp = request.Timestamp, User = user }),
-                    MissionTypes = await _mediator.Send(new MissionTypeSyncQuery() { Timestamp = request.Timestamp }),
+                    Employers = await _mediator.Send(new EmployerSyncQuery() { Timestamp = request.Timestamp, User = user, InitialSync = request.InitialSync }),
+                    MissionTypes = await _mediator.Send(new MissionTypeSyncQuery() { Timestamp = request.Timestamp, InitialSync = request.InitialSync }),
                     Missions = missionSyncResponse.Missions,
                     MissionNotes = missionSyncResponse.MissionNotes,
                     MissionDocuments = missionSyncResponse.MissionDocuments,

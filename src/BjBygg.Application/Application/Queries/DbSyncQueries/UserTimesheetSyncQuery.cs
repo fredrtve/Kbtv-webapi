@@ -30,7 +30,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries
             query = query.Where(x => x.UserName == request.User.UserName); //Only users entities
 
             return (await query.ToListAsync())
-                .ToSyncArrayResponse<Timesheet, TimesheetDto>(request.Timestamp == null, _mapper);
+                .ToSyncArrayResponse<Timesheet, TimesheetDto>(request.InitialSync, _mapper);
         }
     }
 }

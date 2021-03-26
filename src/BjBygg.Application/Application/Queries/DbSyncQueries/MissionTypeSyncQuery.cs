@@ -26,8 +26,8 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries
         public async Task<DbSyncArrayResponse<MissionTypeDto>> Handle(MissionTypeSyncQuery request, CancellationToken cancellationToken)
         {
             return (await _dbContext.Set<MissionType>().AsQueryable()
-                .GetSyncItems(request, false).ToListAsync())
-                .ToSyncArrayResponse<MissionType, MissionTypeDto>(request.Timestamp == null, _mapper);
+                .GetSyncItems(request, true).ToListAsync())
+                .ToSyncArrayResponse<MissionType, MissionTypeDto>(request.InitialSync, _mapper);
         }
     }
 }
