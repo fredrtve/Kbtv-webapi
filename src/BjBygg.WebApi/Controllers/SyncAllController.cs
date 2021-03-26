@@ -10,13 +10,21 @@ namespace BjBygg.WebApi.Controllers
     {
         public SyncAllController() { }
 
-        [ResponseCompression]
         [Authorize]
         [HttpGet]
         [Route("api/[controller]")]
-        public async Task<ActionResult<SyncAllResponse>> Get(SyncAllQuery request)
+        public async Task<ActionResult<SyncAllResponse>> Get(long? Timestamp)
         {
-            return await Mediator.Send(request);
+            return await Mediator.Send(new SyncAllQuery() { Timestamp = Timestamp, InitialSync = false });
+        }
+
+        [ResponseCompression]
+        [Authorize]
+        [HttpGet]
+        [Route("api/[controller]/[action]")]
+        public async Task<ActionResult<SyncAllResponse>> GetInitial(long? Timestamp)
+        {
+            return await Mediator.Send(new SyncAllQuery() { Timestamp = Timestamp, InitialSync = true });
         }
     }
 }
