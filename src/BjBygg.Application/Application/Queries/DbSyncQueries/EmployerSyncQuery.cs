@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Application.Queries.DbSyncQueries
 {
-    public class EmployerSyncQuery : UserDbSyncQuery, IRequest<DbSyncArrayResponse<EmployerDto>>{}
+    public class EmployerSyncQuery : UserDbSyncQuery, IRequest<DbSyncArrayResponse<EmployerDto>> { }
     public class EmployerSyncQueryHandler : IRequestHandler<EmployerSyncQuery, DbSyncArrayResponse<EmployerDto>>
     {
         private readonly IAppDbContext _dbContext;
@@ -28,7 +28,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries
         public async Task<DbSyncArrayResponse<EmployerDto>> Handle(EmployerSyncQuery request, CancellationToken cancellationToken)
         {
             var query = _dbContext.Set<Employer>().AsQueryable().GetSyncItems(request, false);
-   
+
             if (request.User.Role == Roles.Employer)
             {
                 query = query.Where(x => x.Id == request.User.EmployerId);

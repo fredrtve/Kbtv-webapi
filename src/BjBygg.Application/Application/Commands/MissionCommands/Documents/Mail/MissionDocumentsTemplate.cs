@@ -38,13 +38,13 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Mail
     }
     public class MissionDocumentsTemplateData
     {
-        public MissionDocumentsTemplateData(IEnumerable<MissionDocumentsTemplateMission> missions)
+        public MissionDocumentsTemplateData(List<MissionDocumentsTemplateMission> missions)
         {
             Missions = missions;
         }
 
         [JsonProperty("missions")]
-        public IEnumerable<MissionDocumentsTemplateMission> Missions { get; set; }
+        public List<MissionDocumentsTemplateMission> Missions { get; set; }
     }
 
     public class MissionDocumentsTemplateMission
@@ -56,7 +56,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Mail
         public string Address { get; set; }
 
         [JsonProperty("documents")]
-        public IEnumerable<MissionDocumentsTemplateDocument> Documents { get; set; }
+        public List<MissionDocumentsTemplateDocument> Documents { get; set; }
     }
 
     public class MissionDocumentsTemplateDocument

@@ -80,7 +80,7 @@ namespace BjBygg.Infrastructure.Api.FileStorage
             var blobContainer = await _azureBlobConnectionFactory.GetBlobContainer(folder);
 
             var blob = blobContainer.GetBlockBlobReference(stream.FileName);
-      
+
             await blob.UploadFromStreamAsync(stream.Stream);
 
             //Content disposition not working? Wont download file for client

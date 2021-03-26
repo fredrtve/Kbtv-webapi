@@ -77,7 +77,7 @@ namespace BjBygg.Infrastructure.Data
             var user = _currentUserService.UserName;
 
             foreach (var entry in ChangeTracker.Entries())
-            {           
+            {
                 if (entry.Entity is ITrackable trackable)
                 {
                     switch (entry.State)
@@ -101,7 +101,7 @@ namespace BjBygg.Infrastructure.Data
                             break;
                     }
                 }
-                if(entry.Entity is IMissionChildEntity missionChild)
+                if (entry.Entity is IMissionChildEntity missionChild)
                 {
                     var mission = Missions.Find(missionChild.MissionId);
                     mission.UpdatedAt = now;

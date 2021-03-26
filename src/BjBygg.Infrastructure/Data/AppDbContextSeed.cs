@@ -16,7 +16,7 @@ namespace BjBygg.Infrastructure.Data
         private static Dictionary<Type, List<string>> _generatedIds = new Dictionary<Type, List<string>>();
         private static Random rnd = new Random();
 
-        private static string[] postals = { "1940 Bjørkelangen", "3187 Horten", "Oslo",  "Sarpsborg", "0619 Ålesund",  "6214 Norddal" };
+        private static string[] postals = { "1940 Bjørkelangen", "3187 Horten", "Oslo", "Sarpsborg", "0619 Ålesund", "6214 Norddal" };
         private static string[] areas = { "Furuberget", "Redaktør Thommessens gate", "Fernanda Nissens Gate", "Karl Johans gate", "Reddal",
                 "Moa", "Spjelkavik", "Tjøme", };
 
@@ -24,12 +24,12 @@ namespace BjBygg.Infrastructure.Data
         {
             using var ctx = context;
 
-            if(!context.Employers.Any())
+            if (!context.Employers.Any())
                 await SetEmployersAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(Employer)]);
             if (!context.EmployerUsers.Any())
-               context.EmployerUsers.Add(
-                    new EmployerUser() { Id = "dasdsad", EmployerId = GetGeneratedId(typeof(Employer)), UserName = "Oppdragsgiver" }
-                );
+                context.EmployerUsers.Add(
+                     new EmployerUser() { Id = "dasdsad", EmployerId = GetGeneratedId(typeof(Employer)), UserName = "Oppdragsgiver" }
+                 );
             if (!context.MissionTypes.Any())
                 await SetMissionTypesAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(MissionType)]);
             if (!context.Missions.Any())

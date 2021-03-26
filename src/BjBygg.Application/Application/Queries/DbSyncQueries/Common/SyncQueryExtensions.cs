@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BjBygg.Application.Common;
 using BjBygg.Core;
 using BjBygg.Core.Interfaces;
 using BjBygg.SharedKernel;
@@ -13,7 +12,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.Common
     public static class SyncQueryExtensions
     {
         public static IQueryable<TEntity> GetSyncItems<TEntity>(this IQueryable<TEntity> query, DbSyncQuery request, bool checkMinDate = true)
-           where TEntity : BaseEntity 
+           where TEntity : BaseEntity
         {
             var date = DateTimeHelper.ConvertEpochToDate((request.Timestamp / 1000) ?? 0);
 

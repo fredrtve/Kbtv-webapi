@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Application.Queries.DbSyncQueries
 {
-    public class MissionSyncQuery : UserDbSyncQuery, IRequest<MissionSyncArraysResponse> {}
+    public class MissionSyncQuery : UserDbSyncQuery, IRequest<MissionSyncArraysResponse> { }
 
     public class MissionSyncQueryHandler : IRequestHandler<MissionSyncQuery, MissionSyncArraysResponse>
     {
@@ -32,7 +32,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries
             var isEmployer = request.User.Role == Roles.Employer;
 
             if (isEmployer) //Only allow employers missions if role is employer
-                query = query.Where(x => x.EmployerId == request.User.EmployerId); 
+                query = query.Where(x => x.EmployerId == request.User.EmployerId);
 
             query = query.GetSyncItems(request).Include(x => x.MissionImages);
 
@@ -47,7 +47,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries
                 MissionImages = missions.SelectMany(x => x.MissionImages).GetMissionChildSyncItems(request)
                     .ToSyncArrayResponse<MissionImage, MissionImageDto>(isInitial, _mapper),
                 Missions = missions.ToSyncArrayResponse<Mission, MissionDto>(isInitial, _mapper),
-                MissionNotes = isEmployer ? null : 
+                MissionNotes = isEmployer ? null :
                     missions.SelectMany(x => x.MissionNotes).GetMissionChildSyncItems(request)
                         .ToSyncArrayResponse<MissionNote, MissionNoteDto>(isInitial, _mapper),
                 MissionDocuments = isEmployer ? null :

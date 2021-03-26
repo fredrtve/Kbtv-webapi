@@ -1,8 +1,6 @@
 ﻿using BjBygg.SharedKernel;
 using FluentValidation;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace BjBygg.Application.Application.Common
 {

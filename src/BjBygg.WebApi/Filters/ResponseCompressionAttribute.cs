@@ -1,6 +1,6 @@
-﻿using System;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System;
 using System.IO;
 using System.IO.Compression;
 
@@ -11,7 +11,7 @@ namespace BjBygg.WebApi.Filters
         private Stream _originStream = null;
         private MemoryStream _ms = null;
         private CompressionLevel _level;
-        public ResponseCompressionAttribute(CompressionLevel level = CompressionLevel.Fastest) { _level = level;  }
+        public ResponseCompressionAttribute(CompressionLevel level = CompressionLevel.Fastest) { _level = level; }
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {

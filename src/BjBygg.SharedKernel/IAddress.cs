@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BjBygg.SharedKernel
+﻿namespace BjBygg.SharedKernel
 {
     public interface IAddress
     {

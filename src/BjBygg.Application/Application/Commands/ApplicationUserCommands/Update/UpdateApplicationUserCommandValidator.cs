@@ -1,6 +1,4 @@
 ﻿using BjBygg.Application.Common;
-using BjBygg.Application.Common.Validation;
-using BjBygg.Core;
 using FluentValidation;
 
 namespace BjBygg.Application.Application.Commands.ApplicationUserCommands.Update

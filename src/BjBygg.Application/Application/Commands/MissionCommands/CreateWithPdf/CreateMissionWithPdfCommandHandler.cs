@@ -1,14 +1,10 @@
 using BjBygg.Application.Application.Common;
-using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Common.Interfaces;
-using BjBygg.Core;
 using BjBygg.Core.Entities;
 using BjBygg.Infrastructure.Services;
-using BjBygg.SharedKernel;
 using MediatR;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 

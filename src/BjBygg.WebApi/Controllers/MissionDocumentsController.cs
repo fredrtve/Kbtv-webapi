@@ -1,16 +1,10 @@
 using BjBygg.Application.Application.Commands.MissionCommands.Documents;
 using BjBygg.Application.Application.Commands.MissionCommands.Documents.Mail;
 using BjBygg.Application.Application.Commands.MissionCommands.Documents.Upload;
-using BjBygg.Application.Application.Common.Dto;
-using BjBygg.Application.Application.Queries.DbSyncQueries;
-using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
 using BjBygg.SharedKernel;
 using BjBygg.WebApi.Dto;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BjBygg.WebApi.Controllers

@@ -4,10 +4,11 @@ using BjBygg.Application.Identity.Common;
 using BjBygg.Application.Identity.Common.Interfaces;
 using BjBygg.Application.Identity.Common.Models;
 using BjBygg.Application.Identity.Queries.UserQueries.UserByUserName;
-using BjBygg.WebApi;
+using BjBygg.Core.Entities;
 using BjBygg.Infrastructure.Data;
 using BjBygg.Infrastructure.Identity;
 using BjBygg.SharedKernel;
+using BjBygg.WebApi;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -21,7 +22,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using BjBygg.Core.Entities;
 
 namespace Application.IntegrationTests.Application
 {
@@ -146,10 +146,10 @@ namespace Application.IntegrationTests.Application
             var result = await userManager.CreateAsync(user, password);
 
             userManager.AddToRoleAsync(user, role).Wait();
-     
+
             _currentUser = new UserDto { UserName = user.UserName, Role = role };
 
-            if(employerId != null)
+            if (employerId != null)
             {
                 var dbContext = scope.ServiceProvider.GetService<IAppDbContext>();
                 dbContext.EmployerUsers.Add(new EmployerUser() { UserName = user.UserName, EmployerId = employerId });

@@ -2,15 +2,10 @@ using AutoMapper;
 using BjBygg.Application.Application.Commands.TimesheetCommands.Create;
 using BjBygg.Application.Application.Commands.TimesheetCommands.Delete;
 using BjBygg.Application.Application.Commands.TimesheetCommands.Update;
-using BjBygg.Application.Application.Common.Dto;
-using BjBygg.Application.Application.Queries.DbSyncQueries;
-using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
-using BjBygg.Application.Identity.Common;
 using BjBygg.Application.Identity.Common.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860

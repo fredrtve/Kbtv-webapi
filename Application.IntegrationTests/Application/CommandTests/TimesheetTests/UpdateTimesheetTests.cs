@@ -21,7 +21,11 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
         {
             var command = new UpdateTimesheetCommand
             {
-                Id = "notvalid", MissionId = "test", StartTime = 1231131, EndTime = 2342342, Comment = "asddsada"
+                Id = "notvalid",
+                MissionId = "test",
+                StartTime = 1231131,
+                EndTime = 2342342,
+                Comment = "asddsada"
             };
 
             FluentActions.Invoking(() =>

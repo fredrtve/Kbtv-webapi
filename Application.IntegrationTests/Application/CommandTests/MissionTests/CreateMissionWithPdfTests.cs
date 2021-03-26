@@ -41,7 +41,7 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
             await SendAsync(command);
 
             var mission = (await GetAllAsync<Mission>()).FirstOrDefault();
-  
+
             var document = (await GetAllAsync<MissionDocument>()).FirstOrDefault();
 
             mission.Should().NotBeNull();

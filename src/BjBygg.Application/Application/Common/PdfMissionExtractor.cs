@@ -24,7 +24,7 @@ namespace BjBygg.Application.Application.Common
 
         public async Task<Mission> TryExtractAsync(BasicFileStream pdf, IPdfMissionExtractionStrategy strategy)
         {
-            
+
             MissionPdfDto missionPdfDto = strategy.TryExtract(pdf.Stream);
             BasicFileStream extractedDocument = pdf;
 

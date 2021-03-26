@@ -1,8 +1,6 @@
-﻿using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
-
-namespace BjBygg.Application.Identity.Common
+﻿namespace BjBygg.Application.Identity.Common
 {
-    public class UserDto 
+    public class UserDto
     {
         public string UserName { get; set; }
         public string FirstName { get; set; }

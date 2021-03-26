@@ -20,10 +20,10 @@ namespace BjBygg.Application.Application.Commands.ApplicationUserCommands.Update
     {
         private readonly IMapper _mapper;
         private readonly IAppDbContext _dbContext;
-        private readonly IMediator _mediator; 
+        private readonly IMediator _mediator;
         private readonly IIdGenerator _idGenerator;
         public UpdateApplicationUserCommandHandler(
-            IMapper mapper, 
+            IMapper mapper,
             IAppDbContext dbContext,
             IMediator mediator,
             IIdGenerator idGenerator)

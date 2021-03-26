@@ -1,9 +1,6 @@
 using BjBygg.Application.Application.Commands.MissionTypeCommands;
 using BjBygg.Application.Application.Commands.MissionTypeCommands.Create;
 using BjBygg.Application.Application.Commands.MissionTypeCommands.Update;
-using BjBygg.Application.Application.Common.Dto;
-using BjBygg.Application.Application.Queries.DbSyncQueries;
-using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;

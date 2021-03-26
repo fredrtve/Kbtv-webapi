@@ -1,9 +1,6 @@
 using BjBygg.Application.Application.Commands.EmployerCommands;
 using BjBygg.Application.Application.Commands.EmployerCommands.Create;
 using BjBygg.Application.Application.Commands.EmployerCommands.Update;
-using BjBygg.Application.Application.Common.Dto;
-using BjBygg.Application.Application.Queries.DbSyncQueries;
-using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;

@@ -2,7 +2,6 @@
 using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
-using BjBygg.Application.Common;
 using BjBygg.Core.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Application.Queries.DbSyncQueries
 {
-    public class UserTimesheetSyncQuery : UserDbSyncQuery, IRequest<DbSyncArrayResponse<TimesheetDto>>{}
+    public class UserTimesheetSyncQuery : UserDbSyncQuery, IRequest<DbSyncArrayResponse<TimesheetDto>> { }
     public class UserTimesheetSyncQueryHandler : IRequestHandler<UserTimesheetSyncQuery, DbSyncArrayResponse<TimesheetDto>>
     {
         private readonly IAppDbContext _dbContext;

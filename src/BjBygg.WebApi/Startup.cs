@@ -1,8 +1,8 @@
 using BjBygg.Application;
 using BjBygg.Application.Common.Interfaces;
+using BjBygg.Infrastructure;
 using BjBygg.WebApi.Middleware;
 using BjBygg.WebApi.Services;
-using BjBygg.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
@@ -34,6 +34,19 @@ namespace BjBygg.WebApi
             services.AddIdentityInfrastructure(Configuration);
 
             services.AddHttpContextAccessor();
+
+            //services.AddResponseCompression(options =>
+            //{
+            //    options.Providers.Add<BrotliCompressionProvider>();
+            //    options.EnableForHttps = true;
+            //    options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+            //        new[] { "application/json" }); 
+            //});
+
+            //services.Configure<BrotliCompressionProviderOptions>(options =>
+            //{
+            //    options.Level = CompressionLevel.Fastest;
+            //});
 
             services.AddScoped<ICurrentUserService, CurrentUserService>();
 
@@ -68,11 +81,7 @@ namespace BjBygg.WebApi
                 app.UseDatabaseErrorPage();
             }
 
-            app.UseCors(options => options.WithOrigins(Configuration.GetValue<string>("CorsOrigin"))
-                                            .AllowAnyHeader()
-                                            .AllowAnyMethod()
-                                            .AllowCredentials()
-            );
+            //app.UseResponseCompression();
 
             app.UseHttpsRedirection();
 
@@ -85,6 +94,12 @@ namespace BjBygg.WebApi
 
             app.UseRouting();
 
+            app.UseCors(options => options.WithOrigins(Configuration.GetValue<string>("CorsOrigin"))
+                                            .AllowAnyHeader()
+                                            .AllowAnyMethod()
+                                            .AllowCredentials()
+            );
+
             app.UseAuthentication();
 
             //app.UseIdentityServer();
@@ -94,6 +109,7 @@ namespace BjBygg.WebApi
             app.UseOptimisticCommandMiddleware();
 
             CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("nb-NO");
+
 
             app.UseEndpoints(endpoints =>
             {

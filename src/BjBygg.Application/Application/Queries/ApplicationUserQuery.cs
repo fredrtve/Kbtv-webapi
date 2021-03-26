@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Application.Common.Interfaces;
-using BjBygg.Application.Identity.Common.Interfaces;
 using BjBygg.Application.Identity.Queries.UserQueries;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -35,7 +34,8 @@ namespace BjBygg.Application.Application.Queries
             var employerUserDict = (await _dbContext.EmployerUsers.ToListAsync())
                 .ToDictionary(x => x.UserName, x => x.EmployerId);
 
-            users.ForEach(x => {
+            users.ForEach(x =>
+            {
                 string employerId;
                 employerUserDict.TryGetValue(x.UserName, out employerId);
                 if (employerId != null) x.EmployerId = employerId;

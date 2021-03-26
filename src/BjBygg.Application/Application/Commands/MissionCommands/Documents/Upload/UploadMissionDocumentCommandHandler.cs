@@ -1,6 +1,5 @@
 using AutoMapper;
 using BjBygg.Application.Application.Common.Interfaces;
-using BjBygg.Application.Common.Exceptions;
 using BjBygg.Core;
 using BjBygg.Core.Entities;
 using MediatR;

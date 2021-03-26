@@ -46,7 +46,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
                 User = user,
                 InitialTimestamp = request.InitialTimestamp
             });
-            
+
             return new SyncAllResponse()
             {
                 Values = SyncValues(user, request.Timestamp),
@@ -54,9 +54,9 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
                 {
                     UserTimesheets = await _mediator.Send(new UserTimesheetSyncQuery()
                     {
-                            Timestamp = request.Timestamp,
-                            User = user,
-                            InitialTimestamp = request.InitialTimestamp
+                        Timestamp = request.Timestamp,
+                        User = user,
+                        InitialTimestamp = request.InitialTimestamp
                     }),
                     Employers = await _mediator.Send(new EmployerSyncQuery() { Timestamp = request.Timestamp, User = user }),
                     MissionTypes = await _mediator.Send(new MissionTypeSyncQuery() { Timestamp = request.Timestamp }),

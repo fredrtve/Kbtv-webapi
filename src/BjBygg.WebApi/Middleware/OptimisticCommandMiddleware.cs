@@ -1,12 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using BjBygg.Application.Common.Interfaces;
+﻿using BjBygg.Application.Common.Interfaces;
 using BjBygg.Application.Identity.Common.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Primitives;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BjBygg.WebApi.Middleware
 {
