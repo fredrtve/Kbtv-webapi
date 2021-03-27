@@ -16,15 +16,20 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries
     {
         private readonly IAppDbContext _dbContext;
         private readonly IMapper _mapper;
+        private readonly ISyncTimestamps _syncTimestamps;
 
-        public UserTimesheetSyncQueryHandler(IAppDbContext dbContext, IMapper mapper)
+        public UserTimesheetSyncQueryHandler(IAppDbContext dbContext, IMapper mapper, ISyncTimestamps syncTimestamps)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+           _syncTimestamps = syncTimestamps;
             _dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
         public async Task<DbSyncArrayResponse<TimesheetDto>> Handle(UserTimesheetSyncQuery request, CancellationToken cancellationToken)
         {
+            var latestUpdate = _syncTimestamps.Timestamps[typeof(Timesheet)];
+            if (!request.InitialSync && latestUpdate != null && latestUpdate <= request.Timestamp) return null;
+
             var query = _dbContext.Set<Timesheet>().AsQueryable().GetSyncItems(request);
 
             query = query.Where(x => x.UserName == request.User.UserName); //Only users entities

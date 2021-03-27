@@ -115,12 +115,13 @@ namespace BjBygg.Infrastructure
         public static IServiceCollection AddApplicationInfrastructure(this IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlite("Data Source=data/db/main/maindb.sqlite")); // will be created in web project root
+                options.UseSqlite("Data Source=data/db/main/maindb.sqlite").EnableSensitiveDataLogging()); // will be created in web project root
 
             services.AddScoped<IAppDbContext>(provider => provider.GetService<AppDbContext>());
 
             services.AddSingleton<IIdGenerator, IdGenerator>();
             services.AddSingleton<IFileZipper, AzureBlobStorageZipper>();
+            services.AddSingleton<ISyncTimestamps, SyncTimestamps>();
 
             services.AddTransient<IBlobStorageService, AzureBlobStorageService>();
             services.AddTransient<IMailService, SendGridMailService>();

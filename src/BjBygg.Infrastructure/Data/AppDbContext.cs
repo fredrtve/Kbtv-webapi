@@ -17,13 +17,13 @@ namespace BjBygg.Infrastructure.Data
     public class AppDbContext : DbContext, IAppDbContext
     {
         private readonly ICurrentUserService _currentUserService;
-        private readonly IIdGenerator _idGenerator;
+        private readonly ISyncTimestamps _syncTimestamps;
 
-        public AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUserService currentUserService, IIdGenerator idGenerator)
+        public AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUserService currentUserService, ISyncTimestamps syncTimestamps)
             : base(options)
         {
             _currentUserService = currentUserService;
-            _idGenerator = idGenerator;
+            _syncTimestamps = syncTimestamps;
         }
 
         public DbSet<Employer> Employers { get; set; }
@@ -101,11 +101,17 @@ namespace BjBygg.Infrastructure.Data
                             break;
                     }
                 }
+
                 if (entry.Entity is IMissionChildEntity missionChild)
                 {
                     var mission = Missions.Find(missionChild.MissionId);
                     mission.UpdatedAt = now;
+                    _syncTimestamps.Timestamps[typeof(Mission)] = DateTimeHelper.ConvertDateToEpoch(now) * 1000;
                 }
+
+                var type = entry.Entity.GetType();
+                if (_syncTimestamps.Timestamps.ContainsKey(type))
+                    _syncTimestamps.Timestamps[type] = DateTimeHelper.ConvertDateToEpoch(now) * 1000;
             }
         }
     }

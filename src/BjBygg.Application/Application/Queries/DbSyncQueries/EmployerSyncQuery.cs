@@ -17,16 +17,21 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries
     {
         private readonly IAppDbContext _dbContext;
         private readonly IMapper _mapper;
+        private readonly ISyncTimestamps _syncTimestamps;
 
-        public EmployerSyncQueryHandler(IAppDbContext dbContext, IMapper mapper)
+        public EmployerSyncQueryHandler(IAppDbContext dbContext, IMapper mapper, ISyncTimestamps syncTimestamps)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            _syncTimestamps = syncTimestamps;
             _dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public async Task<DbSyncArrayResponse<EmployerDto>> Handle(EmployerSyncQuery request, CancellationToken cancellationToken)
         {
+            var latestUpdate = _syncTimestamps.Timestamps[typeof(Employer)];
+            if (!request.InitialSync && latestUpdate != null && latestUpdate <= request.Timestamp) return null;
+
             var query = _dbContext.Set<Employer>().AsQueryable().GetSyncItems(request, true);
 
             if (request.User.Role == Roles.Employer)

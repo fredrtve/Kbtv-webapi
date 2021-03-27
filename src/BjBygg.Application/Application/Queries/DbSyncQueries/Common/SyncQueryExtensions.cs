@@ -37,6 +37,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.Common
             this IEnumerable<TEntity> entities, bool isInitial, IMapper mapper
         ) where TEntity : BaseEntity where TDto : DbSyncDto
         {
+            if (!entities.Any()) return null;
             List<string> deletedEntities = new List<string>();
 
             if (!isInitial)

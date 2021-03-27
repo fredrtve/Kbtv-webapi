@@ -60,10 +60,10 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
                     }),
                     Employers = await _mediator.Send(new EmployerSyncQuery() { Timestamp = request.Timestamp, User = user, InitialSync = request.InitialSync }),
                     MissionTypes = await _mediator.Send(new MissionTypeSyncQuery() { Timestamp = request.Timestamp, InitialSync = request.InitialSync }),
-                    Missions = missionSyncResponse.Missions,
-                    MissionNotes = missionSyncResponse.MissionNotes,
-                    MissionDocuments = missionSyncResponse.MissionDocuments,
-                    MissionImages = missionSyncResponse.MissionImages
+                    Missions = missionSyncResponse?.Missions,
+                    MissionNotes = missionSyncResponse?.MissionNotes,
+                    MissionDocuments = missionSyncResponse?.MissionDocuments,
+                    MissionImages = missionSyncResponse?.MissionImages
                 }
             };
         }

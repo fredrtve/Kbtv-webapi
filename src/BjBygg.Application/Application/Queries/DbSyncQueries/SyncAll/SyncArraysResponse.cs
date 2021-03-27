@@ -5,11 +5,11 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
 {
     public class SyncArraysResponse : MissionSyncArraysResponse
     {
-        public DbSyncArrayResponse<EmployerDto> Employers { get; set; }
+        public DbSyncArrayResponse<EmployerDto>? Employers { get; set; }
 
-        public DbSyncArrayResponse<MissionTypeDto> MissionTypes { get; set; }
+        public DbSyncArrayResponse<MissionTypeDto>? MissionTypes { get; set; }
 
-        public DbSyncArrayResponse<TimesheetDto> UserTimesheets { get; set; }
+        public DbSyncArrayResponse<TimesheetDto>? UserTimesheets { get; set; }
 
     }
 }
