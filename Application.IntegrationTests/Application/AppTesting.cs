@@ -167,6 +167,18 @@ namespace Application.IntegrationTests.Application
 
             return await context.Set<TEntity>().FindAsync(id);
         }
+        public static async Task RemoveAsync<TEntity>(TEntity entity)
+             where TEntity : class
+        {
+            using var scope = _scopeFactory.CreateScope();
+
+            var context = scope.ServiceProvider.GetService<IAppDbContext>();
+
+            context.Set<TEntity>().Remove(entity);
+
+            await context.SaveChangesAsync();
+        }
+
         public static async Task AddAsync<TEntity>(TEntity entity)
             where TEntity : class
         {

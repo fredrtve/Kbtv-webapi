@@ -25,7 +25,7 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
 
             await AddSyncEntities();
             var initialTimestamp = DateTimeHelper.ConvertDateToEpoch(DateTime.Now.AddYears(-3)) * 1000;
-            var result = await SendAsync(new SyncAllQuery() { InitialTimestamp = initialTimestamp });
+            var result = await SendAsync(new SyncAllQuery() { Timestamp = initialTimestamp, InitialSync = true });
 
             result.Arrays.Missions.Entities.Should().HaveCount(1); //Not include raw add
             result.Arrays.MissionImages.Entities.Should().HaveCount(1); //Min date
@@ -60,7 +60,6 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
 
             var result = await SendAsync(new SyncAllQuery()
             {
-                InitialTimestamp = 2132132131,
                 Timestamp = timestamp,
             });
 
