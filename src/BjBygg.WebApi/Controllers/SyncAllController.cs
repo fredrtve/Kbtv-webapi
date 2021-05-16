@@ -2,6 +2,7 @@
 using BjBygg.WebApi.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.IO.Compression;
 using System.Threading.Tasks;
 
 namespace BjBygg.WebApi.Controllers
@@ -18,7 +19,7 @@ namespace BjBygg.WebApi.Controllers
             return await Mediator.Send(new SyncAllQuery() { Timestamp = Timestamp, InitialSync = false });
         }
 
-        [ResponseCompression]
+        [ResponseCompression(CompressionLevel.Fastest)]
         [Authorize]
         [HttpGet]
         [Route("api/[controller]/[action]")]
