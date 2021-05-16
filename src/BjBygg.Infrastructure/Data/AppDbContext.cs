@@ -78,6 +78,8 @@ namespace BjBygg.Infrastructure.Data
 
             foreach (var entry in ChangeTracker.Entries())
             {
+                if (entry.State == EntityState.Unchanged) continue;
+
                 if (entry.Entity is ITrackable trackable)
                 {
                     switch (entry.State)
