@@ -1,6 +1,6 @@
 using BjBygg.Application.Common.BaseEntityCommands.Update;
 
-namespace BjBygg.Application.Application.Commands.TimesheetCommands.Update
+namespace BjBygg.Application.Application.Commands.TimesheetCommands.UpdateTimesheet
 {
     public class UpdateTimesheetCommand : UpdateCommand
     {

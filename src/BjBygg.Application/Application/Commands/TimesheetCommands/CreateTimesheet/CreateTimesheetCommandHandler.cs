@@ -1,5 +1,7 @@
 using AutoMapper;
 using BjBygg.Application.Application.Common.Interfaces;
+using BjBygg.Application.Common;
+using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Common.Interfaces;
 using BjBygg.Core.Entities;
 using BjBygg.Core.Enums;
@@ -8,7 +10,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BjBygg.Application.Application.Commands.TimesheetCommands.Create
+namespace BjBygg.Application.Application.Commands.TimesheetCommands.CreateTimesheet
 {
     public class CreateTimesheetCommandHandler : IRequestHandler<CreateTimesheetCommand>
     {
@@ -29,7 +31,9 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Create
 
             timesheet.TotalHours = Math.Round((timesheet.EndTime - timesheet.StartTime).TotalHours, 1);
 
-            timesheet.UserName = _currentUserService.UserName;
+            if(_currentUserService.Role != Roles.Leader || request.UserName == null)          
+                timesheet.UserName = _currentUserService.UserName;
+            
             timesheet.Status = TimesheetStatus.Open;
 
             _dbContext.Set<Timesheet>().Add(timesheet);

@@ -10,6 +10,7 @@ namespace BjBygg.Application.Application.Commands.MissionTypeCommands.Create
     {
         public string Name { get; set; }
     }
+
     public class CreateMissionTypeCommandHandler : CreateCommandHandler<MissionType, CreateMissionTypeCommand>
     {
         public CreateMissionTypeCommandHandler(IAppDbContext dbContext, IMapper mapper) :

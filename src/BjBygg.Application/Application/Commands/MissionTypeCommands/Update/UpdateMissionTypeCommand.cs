@@ -9,6 +9,7 @@ namespace BjBygg.Application.Application.Commands.MissionTypeCommands.Update
     {
         public string Name { get; set; }
     }
+
     public class UpdateMissionTypeCommandHandler : UpdateCommandHandler<MissionType, UpdateMissionTypeCommand>
     {
         public UpdateMissionTypeCommandHandler(IAppDbContext dbContext) :

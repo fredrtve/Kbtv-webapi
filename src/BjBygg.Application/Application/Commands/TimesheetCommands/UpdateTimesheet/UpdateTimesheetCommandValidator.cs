@@ -1,14 +1,14 @@
 ﻿using BjBygg.Core;
 using FluentValidation;
 
-namespace BjBygg.Application.Application.Commands.TimesheetCommands.Create
+namespace BjBygg.Application.Application.Commands.TimesheetCommands.UpdateTimesheet
 {
-    public class CreateTimesheetCommandValidator : AbstractValidator<CreateTimesheetCommand>
+    public class UpdateTimesheetCommandValidator : AbstractValidator<UpdateTimesheetCommand>
     {
-        public CreateTimesheetCommandValidator()
+        public UpdateTimesheetCommandValidator()
         {
             RuleFor(v => v.Id)
-                 .NotEmpty();
+                .NotEmpty();
 
             RuleFor(v => v.MissionId)
                 .NotEmpty()

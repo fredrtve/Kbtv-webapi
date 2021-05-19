@@ -8,7 +8,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BjBygg.Application.Application.Commands.TimesheetCommands.Delete
+namespace BjBygg.Application.Application.Commands.TimesheetCommands.DeleteTimesheet
 {
     public class DeleteTimesheetHandler : IRequestHandler<DeleteTimesheetCommand>
     {

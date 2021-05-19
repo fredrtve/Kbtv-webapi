@@ -54,8 +54,12 @@ namespace BjBygg.WebApi
         }
         public static class TimesheetActions
         {
-            public const string Read = Roles.Leader;
-            public const string Update = Roles.Leader;
+            public const string ReadTimesheets = Roles.Leader;
+            public const string ReadUserTimesheets = Roles.Leader + "," + Roles.Management + "," + Roles.Employee;
+            public const string UpdateStatus = Roles.Leader;
+            public const string Create = Roles.Leader + "," + Roles.Management + "," + Roles.Employee;
+            public const string Delete = Roles.Leader + "," + Roles.Management + "," + Roles.Employee;
+            public const string Update = Roles.Leader + "," + Roles.Management + "," + Roles.Employee;
         }
         public static class UserActions
         {
@@ -63,13 +67,6 @@ namespace BjBygg.WebApi
             public const string Delete = Roles.Leader;
             public const string Update = Roles.Leader;
             public const string Read = Roles.Leader;
-        }
-        public static class UserTimesheetActions
-        {
-            public const string Create = Roles.Leader + "," + Roles.Management + "," + Roles.Employee;
-            public const string Delete = Roles.Leader + "," + Roles.Management + "," + Roles.Employee;
-            public const string Update = Roles.Leader + "," + Roles.Management + "," + Roles.Employee;
-            public const string Read = Roles.Leader + "," + Roles.Management + "," + Roles.Employee;
         }
     }
 }

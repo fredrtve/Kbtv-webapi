@@ -74,8 +74,7 @@ namespace BjBygg.Infrastructure.Services
         private string GetAddressFromRawString(string rawString)
         {
             var match = Regex.Match(rawString, PdfMissionExtractionTwoStrategy.AddressPattern, RegexOptions.ECMAScript);
-            var address = match.Groups.Values.FirstOrDefault();
-            return address?.Value;
+            return match.Groups.Values.FirstOrDefault()?.Value;
         }
 
         private string GetPhoneNumberFromRawString(string rawString)

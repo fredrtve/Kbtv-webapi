@@ -1,5 +1,6 @@
 using AutoMapper;
 using BjBygg.Application.Application.Common.Interfaces;
+using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Common.Interfaces;
 using BjBygg.Core;
@@ -10,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BjBygg.Application.Application.Commands.TimesheetCommands.Update
+namespace BjBygg.Application.Application.Commands.TimesheetCommands.UpdateTimesheet
 {
     public class UpdateTimesheetCommandHandler : IRequestHandler<UpdateTimesheetCommand>
     {
@@ -32,7 +33,7 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.Update
             if (dbTimesheet == null)
                 throw new EntityNotFoundException(nameof(Timesheet), request.Id);
 
-            if (dbTimesheet.UserName != _currentUserService.UserName) //Can only update self
+            if (_currentUserService.Role != Roles.Leader && dbTimesheet.UserName != _currentUserService.UserName)
                 throw new ForbiddenException();
 
             if (dbTimesheet.Status != TimesheetStatus.Open)

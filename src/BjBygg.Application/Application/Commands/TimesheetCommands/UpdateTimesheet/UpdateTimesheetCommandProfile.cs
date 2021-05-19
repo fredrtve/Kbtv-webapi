@@ -1,7 +1,7 @@
 using AutoMapper;
 using BjBygg.Core.Entities;
 
-namespace BjBygg.Application.Application.Commands.TimesheetCommands.Update
+namespace BjBygg.Application.Application.Commands.TimesheetCommands.UpdateTimesheet
 {
     class UpdateTimesheetCommandProfile : Profile
     {

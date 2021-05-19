@@ -3,7 +3,7 @@ using BjBygg.Core.Entities;
 
 namespace BjBygg.Application.Application.Commands.MissionTypeCommands.Update
 {
-    class UpdateMissionTypeCommandProfile : Profile
+    internal class UpdateMissionTypeCommandProfile : Profile
     {
         public UpdateMissionTypeCommandProfile()
         {
