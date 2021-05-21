@@ -1,4 +1,5 @@
 ﻿using BjBygg.Application.Application.Common.Dto;
+using BjBygg.Core.Entities;
 
 namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
 {
@@ -6,5 +7,6 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
     {
         public ApplicationUserDto? CurrentUser { get; set; }
 
+        public LeaderSettingsDto? LeaderSettings { get; set; }
     }
 }

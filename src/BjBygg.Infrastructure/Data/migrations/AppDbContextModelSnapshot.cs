@@ -19,7 +19,6 @@ namespace BjBygg.Infrastructure.data.migrations
             modelBuilder.Entity("BjBygg.Core.Entities.Employer", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Address")
@@ -61,7 +60,6 @@ namespace BjBygg.Infrastructure.data.migrations
             modelBuilder.Entity("BjBygg.Core.Entities.EmployerUser", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
@@ -94,10 +92,37 @@ namespace BjBygg.Infrastructure.data.migrations
                     b.ToTable("EmployerUsers");
                 });
 
+            modelBuilder.Entity("BjBygg.Core.Entities.LeaderSettings", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("ConfirmTimesheetsMonthly")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LeaderSettings");
+                });
+
             modelBuilder.Entity("BjBygg.Core.Entities.Mission", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Address")
@@ -158,7 +183,6 @@ namespace BjBygg.Infrastructure.data.migrations
             modelBuilder.Entity("BjBygg.Core.Entities.MissionDocument", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
@@ -200,7 +224,6 @@ namespace BjBygg.Infrastructure.data.migrations
             modelBuilder.Entity("BjBygg.Core.Entities.MissionImage", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
@@ -237,7 +260,6 @@ namespace BjBygg.Infrastructure.data.migrations
             modelBuilder.Entity("BjBygg.Core.Entities.MissionNote", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Content")
@@ -278,7 +300,6 @@ namespace BjBygg.Infrastructure.data.migrations
             modelBuilder.Entity("BjBygg.Core.Entities.MissionType", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
@@ -309,7 +330,6 @@ namespace BjBygg.Infrastructure.data.migrations
             modelBuilder.Entity("BjBygg.Core.Entities.Timesheet", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Comment")

@@ -123,6 +123,14 @@ namespace Application.IntegrationTests.Application
 
             return await mediator.Send(request);
         }
+        public static async Task SaveChangesAsync()
+        {
+            using var scope = _scopeFactory.CreateScope();
+
+            var context = scope.ServiceProvider.GetService<IAppDbContext>();
+
+            await context.SaveChangesAsync();
+        }
         public static async Task<UserDto> GetUser(string userName)
         {
             using var scope = _scopeFactory.CreateScope();
@@ -190,6 +198,8 @@ namespace Application.IntegrationTests.Application
 
             await context.SaveChangesAsync();
         }
+
+
         public static async Task<List<TEntity>> GetAllAsync<TEntity>()
             where TEntity : class
         {
@@ -198,6 +208,14 @@ namespace Application.IntegrationTests.Application
             var context = scope.ServiceProvider.GetService<IAppDbContext>();
 
             return await context.Set<TEntity>().ToListAsync();
+        }
+        public static async Task<LeaderSettings> GetLeaderSettingsAsync()
+        {
+            using var scope = _scopeFactory.CreateScope();
+
+            var context = scope.ServiceProvider.GetService<IAppDbContext>();
+
+            return await context.GetLeaderSettingsAsync();
         }
 
         public static async Task AddSqlRaw(string rawSql)

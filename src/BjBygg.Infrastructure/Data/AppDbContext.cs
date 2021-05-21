@@ -34,6 +34,11 @@ namespace BjBygg.Infrastructure.Data
         public DbSet<MissionDocument> MissionDocuments { get; set; }
         public DbSet<MissionNote> MissionNotes { get; set; }
         public DbSet<Timesheet> Timesheets { get; set; }
+        private DbSet<LeaderSettings> LeaderSettings { get; set; }
+        public async Task<LeaderSettings> GetLeaderSettingsAsync()
+        {
+           return await LeaderSettings.FirstOrDefaultAsync();    
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

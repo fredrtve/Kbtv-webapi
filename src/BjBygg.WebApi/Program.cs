@@ -1,5 +1,6 @@
 using BjBygg.Application.Common.Interfaces;
 using BjBygg.Application.Identity.Common.Models;
+using BjBygg.Core.Entities;
 using BjBygg.Infrastructure.Data;
 using BjBygg.Infrastructure.Identity;
 using Microsoft.AspNetCore;
@@ -26,7 +27,12 @@ namespace BjBygg.WebApi
                 {
                     context.Database.EnsureCreated();
                     var idGenerator = services.GetService<IIdGenerator>();
-                    await AppDbContextSeed.SeedAllAsync(context, idGenerator, new SeederCount());
+                    //await AppDbContextSeed.SeedAllAsync(context, idGenerator, new SeederCount());
+                    if (await context.GetLeaderSettingsAsync() == null)
+                    {
+                        context.Add(new LeaderSettings() { Id = "settings", ConfirmTimesheetsMonthly = false });
+                        await context.SaveChangesAsync();
+                    }
                 }
 
                 using (var context = services.GetService<AppIdentityDbContext>())

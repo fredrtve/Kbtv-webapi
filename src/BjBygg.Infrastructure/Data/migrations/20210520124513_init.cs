@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BjBygg.Infrastructure.data.migrations
 {
@@ -25,6 +25,23 @@ namespace BjBygg.Infrastructure.data.migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Employers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LeaderSettings",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Deleted = table.Column<bool>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: true),
+                    UpdatedAt = table.Column<DateTime>(nullable: false),
+                    UpdatedBy = table.Column<string>(nullable: true),
+                    ConfirmTimesheetsMonthly = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LeaderSettings", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -247,6 +264,9 @@ namespace BjBygg.Infrastructure.data.migrations
         {
             migrationBuilder.DropTable(
                 name: "EmployerUsers");
+
+            migrationBuilder.DropTable(
+                name: "LeaderSettings");
 
             migrationBuilder.DropTable(
                 name: "MissionDocuments");

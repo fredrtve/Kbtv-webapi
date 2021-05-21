@@ -1,6 +1,7 @@
 ﻿using BjBygg.Application.Common.Interfaces;
 using BjBygg.Core.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace BjBygg.Application.Application.Common.Interfaces
 {
@@ -14,5 +15,7 @@ namespace BjBygg.Application.Application.Common.Interfaces
         DbSet<MissionDocument> MissionDocuments { get; set; }
         DbSet<MissionNote> MissionNotes { get; set; }
         DbSet<Timesheet> Timesheets { get; set; }
+        Task<LeaderSettings> GetLeaderSettingsAsync();
+
     }
 }

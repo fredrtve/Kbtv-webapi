@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BjBygg.Application.Application;
+using BjBygg.Application.Application.Common;
 using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Application.Common.Behaviours;
 using FluentValidation;
@@ -21,6 +22,8 @@ namespace BjBygg.Application
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
 
             services.AddTransient<ICsvConverter, CsvConverter>();
+
+            services.AddHostedService<TimesheetStatusUpdater>();
 
             return services;
         }

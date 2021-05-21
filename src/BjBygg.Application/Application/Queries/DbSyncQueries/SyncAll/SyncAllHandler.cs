@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Application.Common.Interfaces;
+using BjBygg.Application.Common;
 using BjBygg.Application.Common.Interfaces;
 using BjBygg.Application.Identity.Common.Models;
+using BjBygg.Core;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -49,7 +51,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
 
             return new SyncAllResponse()
             {
-                Values = SyncValues(user, request.Timestamp),
+                Values = await SyncValuesAsync(user, request.Timestamp),
                 Arrays = new SyncArraysResponse()
                 {
                     UserTimesheets = await _mediator.Send(new UserTimesheetSyncQuery()
@@ -68,10 +70,17 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
             };
         }
 
-        private SyncValuesResponse SyncValues(ApplicationUserDto user, long? timestamp)
+        private async  Task<SyncValuesResponse> SyncValuesAsync(ApplicationUserDto user, long? timestamp)
         {
             var syncResponse = new SyncValuesResponse();
             if (timestamp == null || user.UpdatedAt >= timestamp) syncResponse.CurrentUser = user;
+            if(user.Role == Roles.Leader)
+            {
+                var dbSettings = await _dbContext.GetLeaderSettingsAsync();
+                var dbTimestamp = DateTimeHelper.ConvertDateToEpoch(dbSettings.UpdatedAt) * 1000;
+                if (timestamp == null || dbTimestamp >= timestamp)
+                    syncResponse.LeaderSettings = _mapper.Map<LeaderSettingsDto>(dbSettings);
+            }
             return syncResponse;
         }
     }

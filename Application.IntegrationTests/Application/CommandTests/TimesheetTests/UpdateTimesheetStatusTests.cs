@@ -1,4 +1,4 @@
-﻿using BjBygg.Application.Application.Commands.TimesheetCommands.Create;
+﻿using BjBygg.Application.Application.Commands.TimesheetCommands.CreateTimesheet;
 using BjBygg.Application.Application.Commands.TimesheetCommands.UpdateStatusRange;
 using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;

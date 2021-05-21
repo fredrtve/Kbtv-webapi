@@ -1,5 +1,5 @@
 ﻿using BjBygg.Application.Application.Commands.EmployerCommands.Create;
-using BjBygg.Application.Application.Commands.TimesheetCommands.Create;
+using BjBygg.Application.Application.Commands.TimesheetCommands.CreateTimesheet;
 using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
 using BjBygg.Core;

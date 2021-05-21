@@ -14,12 +14,10 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.UpdateStatus
     public class UpdateTimesheetStatusRangeCommandHandler : IRequestHandler<UpdateTimesheetStatusRangeCommand>
     {
         private readonly IAppDbContext _dbContext;
-        private readonly IMapper _mapper;
 
-        public UpdateTimesheetStatusRangeCommandHandler(IAppDbContext dbContext, IMapper mapper)
+        public UpdateTimesheetStatusRangeCommandHandler(IAppDbContext dbContext)
         {
             _dbContext = dbContext;
-            _mapper = mapper;
         }
 
         public async Task<Unit> Handle(UpdateTimesheetStatusRangeCommand request, CancellationToken cancellationToken)
