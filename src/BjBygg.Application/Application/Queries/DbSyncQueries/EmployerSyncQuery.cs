@@ -6,6 +6,7 @@ using BjBygg.Application.Common;
 using BjBygg.Core.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,7 +34,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries
             if (!request.InitialSync && latestUpdate != null && latestUpdate <= request.Timestamp) return null;
 
             var query = _dbContext.Set<Employer>().AsQueryable().GetSyncItems(request, true);
-
+           
             if (request.User.Role == Roles.Employer)
             {
                 query = query.Where(x => x.Id == request.User.EmployerId);

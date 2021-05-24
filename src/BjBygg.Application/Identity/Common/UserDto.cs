@@ -8,8 +8,6 @@
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public string Role { get; set; }
-        public bool LastCommandStatus { get; set; }
-        public string LastCommandId { get; set; }
         public long UpdatedAt { get; set; }
     }
 }

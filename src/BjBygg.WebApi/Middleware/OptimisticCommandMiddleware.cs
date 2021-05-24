@@ -1,5 +1,7 @@
-﻿using BjBygg.Application.Common.Interfaces;
+﻿using BjBygg.Application.Application.Common.Interfaces;
+using BjBygg.Application.Common.Interfaces;
 using BjBygg.Application.Identity.Common.Models;
+using BjBygg.Core.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -22,7 +24,7 @@ namespace BjBygg.WebApi.Middleware
             _next = next;
         }
 
-        public async Task Invoke(HttpContext httpContext, UserManager<ApplicationUser> userManager, ICurrentUserService currentUserService)
+        public async Task Invoke(HttpContext httpContext, IAppDbContext dbContext, ICurrentUserService currentUserService)
         {
             StringValues commandQuery;
             httpContext.Request.Headers.TryGetValue("command-id", out commandQuery);
@@ -34,9 +36,15 @@ namespace BjBygg.WebApi.Middleware
                 return;
             }
 
-            var user = await userManager.FindByNameAsync(currentUserService.UserName);
+            var userCommandStatus = await dbContext.UserCommandStatuses.FindAsync(currentUserService.UserName);
 
-            if(user.LastCommandId == commandId && user.LastCommandStatus == true) //If duplicate successful request
+            if(userCommandStatus == null)
+            {
+                userCommandStatus = new UserCommandStatus { UserName = currentUserService.UserName };
+                dbContext.UserCommandStatuses.Add(userCommandStatus);
+            }
+
+            if(userCommandStatus.CommandId == commandId && userCommandStatus.HasSucceeded) //If duplicate successful request
             {      
                 httpContext.Response.StatusCode = StatusCodes.Status200OK;
                 var response = JsonSerializer.Serialize(new { isDuplicate = true });
@@ -48,10 +56,10 @@ namespace BjBygg.WebApi.Middleware
 
             var statusCode = httpContext.Response.StatusCode;
 
-            user.LastCommandStatus = statusCode >= 200 && statusCode <= 299;
-            user.LastCommandId = commandId;
+            userCommandStatus.HasSucceeded = statusCode >= 200 && statusCode <= 299;
+            userCommandStatus.CommandId = commandId;
 
-            await userManager.UpdateAsync(user);
+            await dbContext.SaveChangesAsync();
         }
 
     }

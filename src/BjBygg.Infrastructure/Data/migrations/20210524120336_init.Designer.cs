@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BjBygg.Infrastructure.data.migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210520124513_init")]
+    [Migration("20210524120336_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -380,6 +380,22 @@ namespace BjBygg.Infrastructure.data.migrations
                     b.HasIndex("MissionId");
 
                     b.ToTable("Timesheets");
+                });
+
+            modelBuilder.Entity("BjBygg.Core.Entities.UserCommandStatus", b =>
+                {
+                    b.Property<string>("UserName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CommandId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("HasSucceeded")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("UserName");
+
+                    b.ToTable("UserCommandStatuses");
                 });
 
             modelBuilder.Entity("BjBygg.Core.Entities.EmployerUser", b =>

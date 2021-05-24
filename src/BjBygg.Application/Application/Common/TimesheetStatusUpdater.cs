@@ -27,7 +27,7 @@ namespace BjBygg.Application.Application.Common
                 o => UpdateMonthlyStatuses(),
                 null,
                 TimeSpan.Zero,
-                TimeSpan.FromSeconds(12)
+                TimeSpan.FromHours(12)
             ); 
             return Task.CompletedTask;
         }
@@ -42,7 +42,7 @@ namespace BjBygg.Application.Application.Common
         {
             var now = DateTimeHelper.NowLocalTime();
 
-            //if (now.Day != 1) return;
+            if (now.Day != 1) return;
 
             using (var scope = _scopeFactory.CreateScope())
             {

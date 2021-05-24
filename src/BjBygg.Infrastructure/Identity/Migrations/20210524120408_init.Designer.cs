@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BjBygg.Infrastructure.identity.migrations
 {
     [DbContext(typeof(AppIdentityDbContext))]
-    [Migration("20210323101420_init")]
+    [Migration("20210524120408_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,12 +48,6 @@ namespace BjBygg.Infrastructure.identity.migrations
 
                     b.Property<string>("FirstName")
                         .HasColumnType("TEXT");
-
-                    b.Property<string>("LastCommandId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool?>("LastCommandStatus")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("LastName")
                         .HasColumnType("TEXT");

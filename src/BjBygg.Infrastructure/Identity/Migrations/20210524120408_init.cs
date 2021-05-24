@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BjBygg.Infrastructure.identity.migrations
 {
@@ -42,8 +42,6 @@ namespace BjBygg.Infrastructure.identity.migrations
                     AccessFailedCount = table.Column<int>(nullable: false),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
-                    LastCommandStatus = table.Column<bool>(nullable: true),
-                    LastCommandId = table.Column<string>(nullable: true),
                     Deleted = table.Column<bool>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     CreatedBy = table.Column<string>(nullable: true),

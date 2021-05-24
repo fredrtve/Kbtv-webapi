@@ -15,6 +15,7 @@ namespace BjBygg.Application.Application.Common.Interfaces
         DbSet<MissionDocument> MissionDocuments { get; set; }
         DbSet<MissionNote> MissionNotes { get; set; }
         DbSet<Timesheet> Timesheets { get; set; }
+        DbSet<UserCommandStatus> UserCommandStatuses { get; set; }
         Task<LeaderSettings> GetLeaderSettingsAsync();
 
     }

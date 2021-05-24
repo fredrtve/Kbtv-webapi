@@ -380,6 +380,22 @@ namespace BjBygg.Infrastructure.data.migrations
                     b.ToTable("Timesheets");
                 });
 
+            modelBuilder.Entity("BjBygg.Core.Entities.UserCommandStatus", b =>
+                {
+                    b.Property<string>("UserName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CommandId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("HasSucceeded")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("UserName");
+
+                    b.ToTable("UserCommandStatuses");
+                });
+
             modelBuilder.Entity("BjBygg.Core.Entities.EmployerUser", b =>
                 {
                     b.HasOne("BjBygg.Core.Entities.Employer", "Employer")

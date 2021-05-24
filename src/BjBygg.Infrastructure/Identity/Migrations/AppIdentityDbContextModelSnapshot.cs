@@ -47,12 +47,6 @@ namespace BjBygg.Infrastructure.identity.migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("LastCommandId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool?>("LastCommandStatus")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("LastName")
                         .HasColumnType("TEXT");
 

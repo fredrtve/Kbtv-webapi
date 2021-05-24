@@ -62,6 +62,19 @@ namespace BjBygg.Infrastructure.data.migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserCommandStatuses",
+                columns: table => new
+                {
+                    UserName = table.Column<string>(nullable: false),
+                    CommandId = table.Column<string>(nullable: true),
+                    HasSucceeded = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserCommandStatuses", x => x.UserName);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "EmployerUsers",
                 columns: table => new
                 {
@@ -279,6 +292,9 @@ namespace BjBygg.Infrastructure.data.migrations
 
             migrationBuilder.DropTable(
                 name: "Timesheets");
+
+            migrationBuilder.DropTable(
+                name: "UserCommandStatuses");
 
             migrationBuilder.DropTable(
                 name: "Missions");
