@@ -4,7 +4,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Primitives;
+using System.IO;
 using System.Linq;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace BjBygg.WebApi.Middleware
@@ -25,26 +28,32 @@ namespace BjBygg.WebApi.Middleware
             httpContext.Request.Headers.TryGetValue("command-id", out commandQuery);
             string commandId = commandQuery.FirstOrDefault();
 
-            await _next.Invoke(httpContext);
+            if( commandId == null || currentUserService.UserName == null )
+            {
+                await _next.Invoke(httpContext);
+                return;
+            }
 
-            if (commandId == null) return;
+            var user = await userManager.FindByNameAsync(currentUserService.UserName);
+
+            if(user.LastCommandId == commandId && user.LastCommandStatus == true) //If duplicate successful request
+            {      
+                httpContext.Response.StatusCode = StatusCodes.Status200OK;
+                var response = JsonSerializer.Serialize(new { isDuplicate = true });
+                await httpContext.Response.Body.WriteAsync(Encoding.ASCII.GetBytes(response));
+                return;
+            }
+
+            await _next.Invoke(httpContext);
 
             var statusCode = httpContext.Response.StatusCode;
 
-            if (statusCode >= 200 && statusCode <= 299)
-                await updateUserCommandStatusAsync(commandId, true, userManager, currentUserService);
-            else
-                await updateUserCommandStatusAsync(commandId, false, userManager, currentUserService);
-        }
-
-        private async Task updateUserCommandStatusAsync(string commandId, bool status, UserManager<ApplicationUser> userManager, ICurrentUserService currentUserSerice)
-        {
-            if (currentUserSerice.UserName == null) return;
-            var user = await userManager.FindByNameAsync(currentUserSerice.UserName);
-            user.LastCommandStatus = status;
+            user.LastCommandStatus = statusCode >= 200 && statusCode <= 299;
             user.LastCommandId = commandId;
+
             await userManager.UpdateAsync(user);
         }
+
     }
 
     // Extension method used to add the middleware to the HTTP request pipeline.
