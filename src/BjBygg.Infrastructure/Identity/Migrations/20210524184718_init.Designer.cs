@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BjBygg.Infrastructure.identity.migrations
 {
     [DbContext(typeof(AppIdentityDbContext))]
-    [Migration("20210524120408_init")]
+    [Migration("20210524184718_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -140,6 +140,12 @@ namespace BjBygg.Infrastructure.identity.migrations
                     b.Property<DateTime>("Expires")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("Revoked")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("RootTokenId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Token")
                         .HasColumnType("TEXT");
 
@@ -147,6 +153,8 @@ namespace BjBygg.Infrastructure.identity.migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RootTokenId");
 
                     b.HasIndex("UserId");
 
@@ -287,6 +295,12 @@ namespace BjBygg.Infrastructure.identity.migrations
 
             modelBuilder.Entity("BjBygg.Application.Identity.Common.Models.RefreshToken", b =>
                 {
+                    b.HasOne("BjBygg.Application.Identity.Common.Models.RefreshToken", "RootToken")
+                        .WithMany("ChildTokens")
+                        .HasForeignKey("RootTokenId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("BjBygg.Application.Identity.Common.Models.ApplicationUser", "User")
                         .WithMany("RefreshTokens")
                         .HasForeignKey("UserId");

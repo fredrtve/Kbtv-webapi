@@ -6,7 +6,7 @@ using System.Text;
 
 namespace BjBygg.Infrastructure.Auth
 {
-    public class JwtTokenValidator : IJwtTokenValidator
+    public class JwtTokenValidator
     {
         private readonly IJwtTokenHandler _jwtTokenHandler;
 

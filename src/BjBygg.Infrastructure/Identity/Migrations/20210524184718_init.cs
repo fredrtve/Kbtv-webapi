@@ -184,11 +184,19 @@ namespace BjBygg.Infrastructure.identity.migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Token = table.Column<string>(nullable: true),
                     Expires = table.Column<DateTime>(nullable: false),
-                    UserId = table.Column<string>(nullable: true)
+                    UserId = table.Column<string>(nullable: true),
+                    Revoked = table.Column<bool>(nullable: false),
+                    RootTokenId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RefreshTokens", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RefreshTokens_RefreshTokens_RootTokenId",
+                        column: x => x.RootTokenId,
+                        principalTable: "RefreshTokens",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_RefreshTokens_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -233,6 +241,11 @@ namespace BjBygg.Infrastructure.identity.migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RefreshTokens_RootTokenId",
+                table: "RefreshTokens",
+                column: "RootTokenId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokens_UserId",

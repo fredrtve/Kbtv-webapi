@@ -45,9 +45,11 @@ namespace BjBygg.Infrastructure
                 .AddErrorDescriber<AppIdentityErrorDescriber>();
 
             services.AddTransient<IJwtTokenHandler, JwtTokenHandler>();
-            services.AddTransient<ITokenFactory, TokenFactory>();
-            services.AddTransient<IJwtFactory, JwtFactory>();
-            services.AddTransient<IJwtTokenValidator, JwtTokenValidator>();
+            services.AddTransient<TokenFactory>();
+            services.AddTransient<JwtFactory>();
+            services.AddTransient<JwtTokenValidator>(); 
+
+            services.AddTransient<ITokenManager, TokenManager>();
 
             var authSettings = configuration.GetSection(nameof(AuthSettings));
 

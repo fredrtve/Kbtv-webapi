@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Infrastructure.Auth
 {
-    public class JwtFactory : IJwtFactory
+    public class JwtFactory
     {
         private readonly IJwtTokenHandler _jwtTokenHandler;
         private readonly JwtIssuerOptions _jwtOptions;

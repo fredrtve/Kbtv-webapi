@@ -18,24 +18,5 @@ namespace BjBygg.Application.Identity.Common.Models
         public string CreatedBy { get; set; }
         public DateTime UpdatedAt { get; set; }
         public string UpdatedBy { get; set; }
-
-        public bool HasValidRefreshToken(string refreshToken)
-        {
-            return RefreshTokens.Any(rt =>
-                rt.Token == refreshToken &&
-                rt.Active &&
-                DateTime.Compare(rt.Expires, DateTime.UtcNow) >= 0
-            );
-        }
-
-        public void AddRefreshToken(string token, string userId, double daysToExpire = 180)
-        {
-            RefreshTokens.Add(new RefreshToken(token, DateTime.UtcNow.AddDays(daysToExpire), userId));
-        }
-
-        public void RemoveRefreshToken(string refreshToken)
-        {
-            RefreshTokens.Remove(RefreshTokens.First(t => t.Token == refreshToken));
-        }
     }
 }

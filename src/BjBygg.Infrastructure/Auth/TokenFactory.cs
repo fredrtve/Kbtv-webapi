@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 
 namespace BjBygg.Infrastructure.Auth
 {
-    public class TokenFactory : ITokenFactory
+    public class TokenFactory
     {
         public string GenerateToken(int size = 32)
         {
