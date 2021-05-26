@@ -234,11 +234,8 @@ namespace Application.IntegrationTests.Application
 
             Mock<IBlobStorageService> mockClient = new Mock<IBlobStorageService>();
 
-            mockClient.Setup(x => x.UploadFileAsync(It.IsAny<BasicFileStream>(), It.IsAny<string>()))
+            mockClient.Setup(x => x.UploadFileAsync(It.IsAny<Stream>(), It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(new Uri("https://test.no"));
-
-            mockClient.Setup(x => x.UploadFilesAsync(It.IsAny<DisposableList<BasicFileStream>>(), It.IsAny<string>()))
-                .ReturnsAsync((DisposableList<BasicFileStream> x, string y) => GenerateUriArray(x.Count));
 
             services.AddTransient(provider => mockClient.Object);
 

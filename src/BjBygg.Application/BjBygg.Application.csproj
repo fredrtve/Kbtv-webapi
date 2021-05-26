@@ -19,6 +19,7 @@
       <PackageReference Include="Microsoft.Extensions.Identity.Stores" />
       <PackageReference Include="Newtonsoft.Json" />
       <PackageReference Include="System.Data.SqlClient" />
+      <PackageReference Include="System.Drawing.Common" />
       <PackageReference Include="System.Text.Json" />
   </ItemGroup>
 

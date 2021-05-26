@@ -4,6 +4,7 @@ using BjBygg.Core;
 using BjBygg.Core.Entities;
 using MediatR;
 using System;
+using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -26,11 +27,13 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Uplo
         {
             var document = _mapper.Map<MissionDocument>(request);
 
-            var fileURL = await _storageService.UploadFileAsync(request.File, ResourceFolderConstants.Document);
+            var fileName = Guid.NewGuid() + request.FileExtension;
+
+            var fileURL = await _storageService.UploadFileAsync(request.File, fileName, ResourceFolderConstants.Document);
 
             if (fileURL == null) throw new Exception("Opplasting av fil mislyktes");
 
-            document.FileName = request.File.FileName;
+            document.FileName = fileName;
 
             await _dbContext.Set<MissionDocument>().AddAsync(document);
 

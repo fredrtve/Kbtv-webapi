@@ -42,7 +42,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.CreateWithPdf
             {
                 extractedMission = await _pdfMissionExtractor.TryExtractAsync(file, new PdfMissionExtractionOneStrategy());
                 if (extractedMission != null) break;
-                file.Stream.Position = 0;
+                file.Position = 0;
                 extractedMission = await _pdfMissionExtractor.TryExtractAsync(file, new PdfMissionExtractionTwoStrategy());
                 if (extractedMission != null) break;
             }

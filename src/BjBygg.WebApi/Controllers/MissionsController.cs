@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using System;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -70,10 +71,10 @@ namespace BjBygg.WebApi.Controllers
             if (Request.Form.Files.Count() == 0)
                 throw new BadRequestException("No files received");
 
-            using (var streamList = new DisposableList<BasicFileStream>())
+            using (var streamList = new DisposableList<Stream>())
             {
                 streamList.AddRange(Request.Form.Files.ToList()
-                    .Select(x => new BasicFileStream(x.OpenReadStream(), x.FileName)));
+                    .Select(x => x.OpenReadStream()));
                 await Mediator.Send(new CreateMissionWithPdfCommand(streamList));
                 return NoContent();
             }
@@ -87,10 +88,10 @@ namespace BjBygg.WebApi.Controllers
             if (Request.Form.Files.Count() == 0)
                 throw new BadRequestException("No files received");
 
-            using (var streamList = new DisposableList<BasicFileStream>())
+            using (var streamList = new DisposableList<Stream>())
             {
                 streamList.AddRange(Request.Form.Files.ToList()
-                    .Select(x => new BasicFileStream(x.OpenReadStream(), x.FileName)));
+                    .Select(x => x.OpenReadStream()));
 
                 await Mediator.Send(new CreateMissionWithPdfCommand(streamList));
                 return NoContent();
@@ -111,15 +112,13 @@ namespace BjBygg.WebApi.Controllers
         [Route("api/[controller]/{Id}/[action]")]
         public async Task<ActionResult> UpdateHeaderImage(string id, [FromForm] IFormFile file)
         {
-            var request = new UpdateMissionHeaderImageCommand() { Id = id };
-
-            using (var stream = file.OpenReadStream())
-            {
-                request.Image = new BasicFileStream(stream, file.FileName);
-
-                await Mediator.Send(request);
-                return NoContent();
-            }
+            using var stream = file.OpenReadStream();
+            await Mediator.Send(new UpdateMissionHeaderImageCommand() { 
+                Id = id, 
+                Image = stream,
+                FileExtension = Path.GetExtension(file.FileName)
+            });
+            return NoContent();
         }
 
         [Authorize(Roles = RolePermissions.MissionActions.Update)]

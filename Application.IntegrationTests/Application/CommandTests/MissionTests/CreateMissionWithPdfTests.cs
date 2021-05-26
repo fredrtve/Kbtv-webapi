@@ -49,9 +49,7 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
 
             var command = new CreateMissionWithPdfCommand()
             {
-                Files = new DisposableList<BasicFileStream>{
-                    { new BasicFileStream(new MemoryStream(bytes), ".pdf") }
-                }
+                Files = new DisposableList<Stream>{ new MemoryStream(bytes) }
             };
 
             FluentActions.Invoking(() =>
@@ -69,9 +67,7 @@ namespace Application.IntegrationTests.Application.CommandTests.MissionTests
 
                 var command = new CreateMissionWithPdfCommand()
                 {
-                    Files = new DisposableList<BasicFileStream>{
-                    { new BasicFileStream(new MemoryStream(bytes), keyValuePair.Key) }
-                }
+                    Files = new DisposableList<Stream> { new MemoryStream(bytes) }
                 };
 
                 await SendAsync(command);

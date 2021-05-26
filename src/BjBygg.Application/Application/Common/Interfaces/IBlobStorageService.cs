@@ -10,8 +10,7 @@ namespace BjBygg.Application.Application.Common.Interfaces
     {
         Task<IEnumerable<Uri>> ListAsync(string folder);
         Task GetAsync(string fileName, string folder, Stream target);
-        Task<IEnumerable<Uri>> UploadFilesAsync(DisposableList<BasicFileStream> streams, string folder);
-        Task<Uri> UploadFileAsync(BasicFileStream stream, string folder);
+        Task<Uri> UploadFileAsync(Stream stream, string fileName, string folder);
         Task DeleteAsync(string fileUri, string folder);
     }
 }

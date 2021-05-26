@@ -46,7 +46,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Mail
                 throw new BadRequestException("Noe er feil med en av dokumentene");
             }
 
-            var template = new MissionDocumentsTemplate(documents, new BasicFileStream(zipStream, "dokumenter_fra_oppdrag.zip"));
+            var template = new MissionDocumentsTemplate(documents, zipStream, "dokumenter_fra_oppdrag.zip");
 
             await _mailService.SendTemplateEmailAsync(request.ToEmail, template);
 

@@ -1,4 +1,5 @@
 using AutoMapper;
+using BjBygg.Application.Application.Common;
 using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Application.Commands.MissionCommands.UpdateHeaderImage;
 using BjBygg.Application.Common.Exceptions;
@@ -6,6 +7,8 @@ using BjBygg.Core;
 using BjBygg.Core.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -33,18 +36,14 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.UpdateHeaderIm
             if (dbMission == null)
                 throw new EntityNotFoundException(nameof(Mission), request.Id);
 
-            var resized = _imageResizer.ResizeImage(request.Image, 700);
+            var resized = _imageResizer.ResizeImage(request.Image, request.FileExtension, 700);
 
-            var fileUrl = await _storageService.UploadFileAsync(resized, ResourceFolderConstants.MissionHeader);
+            var fileName = new AppImageFileName(resized, request.FileExtension).ToString();
 
-            dbMission.FileName = resized.FileName;
-            //if (request.Image != null)
-            //{
-            //    var resized = _imageResizer.ResizeImage(request.Image, 700);
-            //    resized.FileName = $"{mission.Id}.{resized.FileExtension}";
-            //    var res = await _storageService.UploadFileAsync(resized, ResourceFolderConstants.MissionHeader);
-            //    if (res != null) mission.FileName = new Uri(resized.FileName);
-            //}
+            var fileURL = await _storageService.UploadFileAsync(resized, fileName, ResourceFolderConstants.MissionHeader);
+
+            dbMission.FileName = fileName;
+
             await _dbContext.SaveChangesAsync();
 
             return Unit.Value;

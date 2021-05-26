@@ -16,10 +16,13 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Uplo
                  .MaximumLength(ValidationRules.NameMaxLength)
                  .WithName("Navn");
 
+            RuleFor(x => x.FileExtension)
+                         .Must(x => ValidationRules.DocumentFileExtensions.Contains(x?.ToLower()))
+                         .WithName("Filtype");
+
             RuleFor(v => v.File)
                 .NotEmpty()
-                .SetValidator(new BasicFileStreamValidator(ValidationRules.DocumentFileExtensions))
-                .WithName("Filer");
+                .WithName("File");
 
             RuleFor(v => v.MissionId)
                 .NotEmpty()

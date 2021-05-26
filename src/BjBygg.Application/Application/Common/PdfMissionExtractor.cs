@@ -4,7 +4,9 @@ using BjBygg.Application.Common.Interfaces;
 using BjBygg.Core;
 using BjBygg.Core.Entities;
 using BjBygg.SharedKernel;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace BjBygg.Application.Application.Common
@@ -22,11 +24,10 @@ namespace BjBygg.Application.Application.Common
             _storageService = storageService;
         }
 
-        public async Task<Mission> TryExtractAsync(BasicFileStream pdf, IPdfMissionExtractionStrategy strategy)
+        public async Task<Mission> TryExtractAsync(Stream pdfStream, IPdfMissionExtractionStrategy strategy)
         {
 
-            MissionPdfDto missionPdfDto = strategy.TryExtract(pdf.Stream);
-            BasicFileStream extractedDocument = pdf;
+            MissionPdfDto missionPdfDto = strategy.TryExtract(pdfStream);
 
             if (missionPdfDto == null) return null;
 
@@ -39,9 +40,8 @@ namespace BjBygg.Application.Application.Common
 
             if (missionPdfDto.Image != null)
             {
-                var fileStream = new BasicFileStream(missionPdfDto.Image, $"{dbMission.Id}.jpg");
-                await _storageService.UploadFileAsync(fileStream, ResourceFolderConstants.MissionHeader);
-                dbMission.FileName = fileStream.FileName;
+                dbMission.FileName = new AppImageFileName(missionPdfDto.Image, ".jpg").ToString();
+                await _storageService.UploadFileAsync(missionPdfDto.Image, dbMission.FileName, ResourceFolderConstants.MissionHeader);
             }
 
             var report = new MissionDocument
@@ -50,10 +50,9 @@ namespace BjBygg.Application.Application.Common
                 Name = missionPdfDto.DocumentName
             };
 
-            report.FileName = $"{report.Id}{extractedDocument.FileExtension}";
+            report.FileName = Guid.NewGuid() + ".pdf"; 
 
-            var modifiedFile = new BasicFileStream(extractedDocument.Stream, report.FileName);
-            await _storageService.UploadFileAsync(modifiedFile, ResourceFolderConstants.Document);
+            await _storageService.UploadFileAsync(pdfStream, report.FileName, ResourceFolderConstants.Document);
 
             dbMission.MissionDocuments = new List<MissionDocument>();
             dbMission.MissionDocuments.Add(report); //Add input report as document in new mission

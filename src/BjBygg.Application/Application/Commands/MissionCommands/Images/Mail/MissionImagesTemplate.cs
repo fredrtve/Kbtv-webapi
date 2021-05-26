@@ -5,6 +5,7 @@ using BjBygg.Core.Interfaces;
 using BjBygg.SharedKernel;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Mail
@@ -12,9 +13,10 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Mail
 
     public class MissionImagesTemplate : IMailTemplate<MissionImagesTemplateData>
     {
-        public MissionImagesTemplate(IEnumerable<MissionImage> images, BasicFileStream attachment)
+        public MissionImagesTemplate(IEnumerable<MissionImage> images, Stream attachment, string attachmentName)
         {
             Attachment = attachment;
+            AttachmentName = attachmentName;
             Data = new MissionImagesTemplateData(images.GroupBy(x => x.Mission).Select(x => new MissionImagesTemplateMission
             {
                 Id = x.Key.Id,
@@ -30,7 +32,9 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Mail
         [JsonProperty("data")]
         public MissionImagesTemplateData Data { get; set; }
 
-        public BasicFileStream Attachment { get; set; }
+        public Stream Attachment { get; set; }
+
+        public string AttachmentName { get; set; }
     }
 
     public class MissionImagesTemplateData

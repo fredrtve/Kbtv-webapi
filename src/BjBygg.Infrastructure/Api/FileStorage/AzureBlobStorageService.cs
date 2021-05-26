@@ -54,39 +54,18 @@ namespace BjBygg.Infrastructure.Api.FileStorage
             await blob.DownloadToStreamAsync(target);
         }
 
-        public async Task<IEnumerable<Uri>> UploadFilesAsync(DisposableList<BasicFileStream> streams, string folder)
-        {
-            var blobContainer = await _azureBlobConnectionFactory.GetBlobContainer(folder);
-            var blobs = new List<Uri>();
-            for (int i = 0; i < streams.Count; i++)
-            {
-                var fileStream = streams[i];
-                var blob = blobContainer.GetBlockBlobReference(fileStream.FileName);
-
-                await blob.UploadFromStreamAsync(fileStream.Stream);
-
-                //Content disposition not working? Wont download file for client
-                //blob.Properties.ContentType = GetContentType(fileStream.FileExtension);
-                //blob.Properties.ContentDisposition = "attachment; filename=" + fileStream.FileName;              
-                //await blob.SetPropertiesAsync(); //Unneccesary?
-
-                blobs.Add(blob.Uri);
-            }
-            return blobs;
-        }
-
-        public async Task<Uri> UploadFileAsync(BasicFileStream stream, string folder)
+        public async Task<Uri> UploadFileAsync(Stream stream, string fileName, string folder)
         {
             var blobContainer = await _azureBlobConnectionFactory.GetBlobContainer(folder);
 
-            var blob = blobContainer.GetBlockBlobReference(stream.FileName);
+            var blob = blobContainer.GetBlockBlobReference(fileName);
 
-            await blob.UploadFromStreamAsync(stream.Stream);
+            await blob.UploadFromStreamAsync(stream);
 
             //Content disposition not working? Wont download file for client
-            blob.Properties.ContentType = GetContentType(stream.FileExtension);
+            blob.Properties.ContentType = GetContentType(Path.GetExtension(fileName));
             //blob.Properties.ContentDisposition = "attachment; filename=" + stream.FileName;
-            //await blob.SetPropertiesAsync(); //Unneccesary?
+            await blob.SetPropertiesAsync(); 
 
             return blob.Uri;
         }

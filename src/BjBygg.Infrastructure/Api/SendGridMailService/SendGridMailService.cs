@@ -38,7 +38,7 @@ namespace BjBygg.Infrastructure.Api.SendGridMailService
                 response = await client.SendEmailAsync(msg);
             else
             {
-                await msg.AddAttachmentAsync(template.Attachment.FileName, template.Attachment.Stream);
+                await msg.AddAttachmentAsync(template.AttachmentName, template.Attachment);
                 response = await client.SendEmailAsync(msg);
             }
 

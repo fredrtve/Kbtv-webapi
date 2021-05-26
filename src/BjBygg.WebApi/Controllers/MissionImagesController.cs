@@ -5,6 +5,8 @@ using BjBygg.SharedKernel;
 using BjBygg.WebApi.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace BjBygg.WebApi.Controllers
@@ -18,13 +20,13 @@ namespace BjBygg.WebApi.Controllers
         [Route("api/[controller]")]
         public async Task<ActionResult> Upload(UploadMissionImageFormDto form)
         {
-            var request = new UploadMissionImageCommand() { Id = form.Id, MissionId = form.MissionId };
-            using (var stream = form.File.OpenReadStream())
-            {
-                request.File = new BasicFileStream(stream, form.File.FileName);
-                await Mediator.Send(request);
-            }
-
+            using var stream = form.File.OpenReadStream();           
+            await Mediator.Send(new UploadMissionImageCommand() { 
+                Id = form.Id, 
+                MissionId = form.MissionId, 
+                File = stream,
+                FileExtension = Path.GetExtension(form.File.FileName)
+            });         
             return NoContent();
         }
 

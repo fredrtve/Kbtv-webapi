@@ -1,5 +1,4 @@
-﻿using BjBygg.Application.Application.Common;
-using BjBygg.Application.Commands.MissionCommands.UpdateHeaderImage;
+﻿using BjBygg.Application.Commands.MissionCommands.UpdateHeaderImage;
 using BjBygg.Core;
 using FluentValidation;
 
@@ -12,10 +11,13 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.UpdateHeaderIm
             RuleFor(v => v.Id)
                  .NotEmpty();
 
+            RuleFor(x => x.FileExtension)
+                         .Must(x => ValidationRules.ImageFileExtensions.Contains(x?.ToLower()))
+                         .WithName("Filtype");
+
             RuleFor(v => v.Image)
-                 .NotEmpty()
-                 .SetValidator(new BasicFileStreamValidator(ValidationRules.ImageFileExtensions))
-                 .WithName("Bilde");
+                .NotEmpty()
+                .WithName("Bilde");
         }
     }
 }

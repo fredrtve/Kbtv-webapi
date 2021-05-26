@@ -51,16 +51,14 @@ namespace BjBygg.Infrastructure.Services
             return encoder;
         }
 
-        public BasicFileStream ResizeImage(BasicFileStream input, int width = 0, int maxWidth = 0)
+        public Stream ResizeImage(Stream stream, string extension, int width = 0, int maxWidth = 0)
         {
-            if (input == null) throw new ArgumentNullException();
-
-            var encoder = GetEncoder(input.FileExtension);
+            var encoder = GetEncoder(extension);
 
             if (encoder == null) throw new InvalidDataException();
 
             using var output = new MemoryStream();
-            using Image<Rgba32> image = Image.Load<Rgba32>(input.Stream);
+            using Image<Rgba32> image = Image.Load<Rgba32>(stream);
 
             if (width == 0) width = image.Width;
 
@@ -73,7 +71,8 @@ namespace BjBygg.Infrastructure.Services
             image.Mutate(x => x.Resize(width, imageHeight));
             image.Save(output, encoder);
             output.Position = 0;
-            return new BasicFileStream(output.ToArray(), input.FileName);
+
+            return output;
         }
 
     }

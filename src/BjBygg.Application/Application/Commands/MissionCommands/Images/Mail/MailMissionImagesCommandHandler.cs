@@ -48,7 +48,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Mail
                 throw new BadRequestException("Noe er feil med en av bildene");
             }
 
-            var template = new MissionImagesTemplate(images, new BasicFileStream(zipStream, "bilder_fra_oppdrag.zip"));
+            var template = new MissionImagesTemplate(images, zipStream, "bilder_fra_oppdrag.zip");
 
             await _mailService.SendTemplateEmailAsync(request.ToEmail, template);
 

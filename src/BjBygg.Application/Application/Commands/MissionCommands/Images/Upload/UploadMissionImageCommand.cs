@@ -1,11 +1,12 @@
 using BjBygg.Application.Common.BaseEntityCommands.Create;
-using BjBygg.SharedKernel;
+using System.IO;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Upload
 {
     public class UploadMissionImageCommand : CreateCommand
     {
-        public BasicFileStream File { get; set; }
+        public Stream File { get; set; }
+        public string FileExtension { get; set; }
         public string MissionId { get; set; }
 
     }

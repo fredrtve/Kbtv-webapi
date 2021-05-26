@@ -11,10 +11,13 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Upload
             RuleFor(v => v.Id)
                 .NotEmpty();
 
+            RuleFor(x => x.FileExtension)
+                .Must(x => ValidationRules.ImageFileExtensions.Contains(x?.ToLower()))
+                .WithName("Filtype");
+
             RuleFor(v => v.File)
                 .NotEmpty()
-                .SetValidator(new BasicFileStreamValidator(ValidationRules.ImageFileExtensions))
-                .WithName("Filer");
+                .WithName("File");
 
             RuleFor(v => v.MissionId)
                 .NotEmpty()

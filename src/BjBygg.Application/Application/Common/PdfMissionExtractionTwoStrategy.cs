@@ -19,12 +19,15 @@ namespace BjBygg.Infrastructure.Services
         public MissionPdfDto TryExtract(Stream pdf)
         {
             MissionPdfDto missionPdf;
+            PdfReader pdfReader = null;
+            PdfDocument pdfDocument = null;
 
-            var pdfReader = new PdfReader(pdf);
-            var pdfDocument = new PdfDocument(pdfReader);
-            string rawString;
             try
-            {            
+            {
+                pdfReader = new PdfReader(pdf);
+                pdfDocument = new PdfDocument(pdfReader);
+                string rawString;
+
                 var page = pdfDocument.GetFirstPage();
 
                 var strategy = new SimpleTextExtractionStrategy();
@@ -36,9 +39,11 @@ namespace BjBygg.Infrastructure.Services
             {
                 missionPdf = null;
             }
-
-            pdfDocument.Close();
-            pdfReader.Close();
+            finally
+            {
+                if(pdfDocument != null) pdfDocument.Close();
+                if(pdfReader != null) pdfReader.Close();
+            }
 
             return missionPdf;
         }

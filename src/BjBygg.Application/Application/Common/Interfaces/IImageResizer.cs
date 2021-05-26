@@ -1,9 +1,10 @@
 ﻿using BjBygg.SharedKernel;
+using System.IO;
 
 namespace BjBygg.Application.Application.Common.Interfaces
 {
     public interface IImageResizer
     {
-        BasicFileStream ResizeImage(BasicFileStream stream, int width = 0, int maxWidth = 0);
+        Stream ResizeImage(Stream stream, string extension, int width = 0, int maxWidth = 0);
     }
 }
