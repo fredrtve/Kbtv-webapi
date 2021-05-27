@@ -23,6 +23,7 @@ namespace BjBygg.WebApi.Controllers
             await Mediator.Send(new UploadMissionDocumentCommand() { 
                 Id = form.Id,
                 MissionId = form.MissionId, 
+                Name = form.Name,
                 File = stream,
                 FileExtension = Path.GetExtension(form.File.FileName)
             });
