@@ -51,7 +51,7 @@ namespace BjBygg.Infrastructure.Services
             return encoder;
         }
 
-        public Stream ResizeImage(Stream stream, string extension, int width = 0, int maxWidth = 0)
+        public void ResizeImage(Stream stream, Stream outputStream, string extension, int width = 0, int maxWidth = 0)
         {
             var encoder = GetEncoder(extension);
 
@@ -69,10 +69,8 @@ namespace BjBygg.Infrastructure.Services
             var imageHeight = Convert.ToInt32(Math.Round((decimal)(image.Height / divisor)));
 
             image.Mutate(x => x.Resize(width, imageHeight));
-            image.Save(output, encoder);
-            output.Position = 0;
-
-            return output;
+            image.Save(outputStream, encoder);
+            outputStream.Position = 0;
         }
 
     }

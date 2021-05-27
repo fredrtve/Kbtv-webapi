@@ -64,7 +64,7 @@ namespace BjBygg.Infrastructure.Api.FileStorage
 
             //Content disposition not working? Wont download file for client
             blob.Properties.ContentType = GetContentType(Path.GetExtension(fileName));
-            //blob.Properties.ContentDisposition = "attachment; filename=" + stream.FileName;
+            blob.Properties.ContentDisposition = "attachment";
             await blob.SetPropertiesAsync(); 
 
             return blob.Uri;

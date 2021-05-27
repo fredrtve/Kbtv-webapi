@@ -9,6 +9,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Drawing;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -36,13 +37,14 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.UpdateHeaderIm
             if (dbMission == null)
                 throw new EntityNotFoundException(nameof(Mission), request.Id);
 
-            var resized = _imageResizer.ResizeImage(request.Image, request.FileExtension, 700);
+            using (var resized = new MemoryStream())
+            {
+                _imageResizer.ResizeImage(request.Image, resized, request.FileExtension, 700);
+                var fileName = new AppImageFileName(resized, request.FileExtension).ToString();
+                dbMission.FileName = fileName;
+                var fileURL = await _storageService.UploadFileAsync(resized, fileName, ResourceFolderConstants.MissionHeader);
 
-            var fileName = new AppImageFileName(resized, request.FileExtension).ToString();
-
-            var fileURL = await _storageService.UploadFileAsync(resized, fileName, ResourceFolderConstants.MissionHeader);
-
-            dbMission.FileName = fileName;
+            }
 
             await _dbContext.SaveChangesAsync();
 
