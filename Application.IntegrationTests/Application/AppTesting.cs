@@ -160,7 +160,7 @@ namespace Application.IntegrationTests.Application
             if (employerId != null)
             {
                 var dbContext = scope.ServiceProvider.GetService<IAppDbContext>();
-                dbContext.EmployerUsers.Add(new EmployerUser() { UserName = user.UserName, EmployerId = employerId });
+                dbContext.EmployerUsers.Add(new EmployerUser() { Id = "test", UserName = user.UserName, EmployerId = employerId });
                 dbContext.SaveChanges();
             }
 

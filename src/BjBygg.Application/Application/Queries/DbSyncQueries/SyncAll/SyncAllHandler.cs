@@ -77,9 +77,12 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
             if(user.Role == Roles.Leader)
             {
                 var dbSettings = await _dbContext.GetLeaderSettingsAsync();
-                var dbTimestamp = DateTimeHelper.ConvertDateToEpoch(dbSettings.UpdatedAt) * 1000;
-                if (timestamp == null || dbTimestamp >= timestamp)
-                    syncResponse.LeaderSettings = _mapper.Map<LeaderSettingsDto>(dbSettings);
+                if(dbSettings != null)
+                {
+                    var dbTimestamp = DateTimeHelper.ConvertDateToEpoch(dbSettings.UpdatedAt) * 1000;
+                    if (timestamp == null || dbTimestamp >= timestamp)
+                        syncResponse.LeaderSettings = _mapper.Map<LeaderSettingsDto>(dbSettings);
+                }
             }
             return syncResponse;
         }

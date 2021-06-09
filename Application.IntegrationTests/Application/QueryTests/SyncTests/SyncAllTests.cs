@@ -103,8 +103,8 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
 
             result.Arrays.Missions.Entities.Should().HaveCount(1);
             result.Arrays.MissionImages.Entities.Should().HaveCount(1);
-            result.Arrays.MissionNotes.Entities.Should().HaveCount(1);
-            result.Arrays.MissionDocuments.Entities.Should().HaveCount(0);
+            result.Arrays.MissionNotes.Should().BeNull(); //Shouldnt include mission notes for employer
+            result.Arrays.MissionDocuments.Should().BeNull();
             result.Arrays.Employers.Entities.Should().HaveCount(1); //Only current employer should be returned
         }
 
