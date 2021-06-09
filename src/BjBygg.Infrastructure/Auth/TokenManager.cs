@@ -92,8 +92,9 @@ namespace BjBygg.Infrastructure.Auth
             var newAccessToken = await _jwtFactory.GenerateEncodedToken(userId, userName, role);
 
             var newRefreshToken = _tokenFactory.GenerateToken();
+            var daysToExpire = _authSettings.RefreshTokenLifeTimeInDays;
 
-            _dbContext.RefreshTokens.Add(new RefreshToken(newRefreshToken, dbToken.Expires, userId, dbToken.RootTokenId ?? dbToken.Id));
+            _dbContext.RefreshTokens.Add(new RefreshToken(newRefreshToken, DateTime.UtcNow.AddDays(daysToExpire), userId, dbToken.RootTokenId ?? dbToken.Id));
 
             await _dbContext.SaveChangesAsync();
 
