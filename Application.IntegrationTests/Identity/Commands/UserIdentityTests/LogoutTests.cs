@@ -22,7 +22,7 @@ namespace Application.IntegrationTests.Identity.Commands.UserIdentityTests
         }
 
         [Test]
-        public async Task ShouldRemoveUserFromRefreshTokenOnLogout()
+        public async Task ShouldRevokeRefreshTokenOnLogout()
         {
             var userPassword = "password12";
             var user = await RunAsUserAsync("testUser", userPassword, Roles.Leader);
@@ -38,7 +38,7 @@ namespace Application.IntegrationTests.Identity.Commands.UserIdentityTests
             var dbRefreshTokenAfterLogout =
                (await GetAllAsync<RefreshToken>()).Find(x => x.Token == response.RefreshToken);
 
-            dbRefreshTokenAfterLogout.UserId.Should().BeNull();
+            dbRefreshTokenAfterLogout.Revoked.Should().BeTrue();
         }
     }
 }

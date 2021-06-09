@@ -3,6 +3,7 @@ using BjBygg.Application.Identity.Common;
 using BjBygg.Application.Identity.Common.Interfaces;
 using BjBygg.Application.Identity.Common.Models;
 using BjBygg.Application.Identity.Queries.UserQueries.UserByUserName;
+using BjBygg.Infrastructure.Auth;
 using BjBygg.Infrastructure.Identity;
 using BjBygg.WebApi;
 using MediatR;
@@ -143,7 +144,7 @@ namespace Application.IntegrationTests.Identity
         {
             using var scope = _scopeFactory.CreateScope();
 
-            var jwtTokenValidator = scope.ServiceProvider.GetService<IJwtTokenValidator>();
+            var jwtTokenValidator = scope.ServiceProvider.GetService<JwtTokenValidator>();
             var authOptions = scope.ServiceProvider.GetService<IOptions<AuthSettings>>().Value;
 
             var principal = jwtTokenValidator.GetPrincipalFromToken(accessToken, authOptions.SecretKey);
@@ -154,7 +155,7 @@ namespace Application.IntegrationTests.Identity
         {
             using var scope = _scopeFactory.CreateScope();
 
-            var jwtTokenValidator = scope.ServiceProvider.GetService<IJwtTokenValidator>();
+            var jwtTokenValidator = scope.ServiceProvider.GetService<JwtTokenValidator>();
 
             return scope.ServiceProvider.GetService<IOptions<AuthSettings>>().Value;
         }
