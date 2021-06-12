@@ -51,17 +51,6 @@ namespace BjBygg.Infrastructure.Services
             var stream = pageXObjects.GetAsStream(imgName);
             stream.SetCompressionLevel(CompressionConstants.BEST_COMPRESSION);
             var imgObject = new PdfImageXObject(stream);
-            var ext = imgObject.IdentifyImageFileExtension();
-
-            //var image = new Image(imgObject);
-            //image = ScaleImage(image, 400);
-            //image.SetBackgroundColor(Color.WHITE);
-
-            //var xo = image.GetXObject();
-            //xo.SetModified();
-            //var img = new PdfStream(image.GetXObject().GetPdfObject().GetBytes());
-
-            //var strem = xo.GetPdfObject().GetBytes();
 
             return new MemoryStream(imgObject.GetImageBytes());
         }

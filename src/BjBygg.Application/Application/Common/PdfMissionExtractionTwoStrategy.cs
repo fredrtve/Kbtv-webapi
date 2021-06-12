@@ -56,12 +56,11 @@ namespace BjBygg.Infrastructure.Services
             var pageXObjects = pageResources.GetAsDictionary(PdfName.XObject);
 
             var keys = pageXObjects.KeySet().ToArray();
-            PdfName imgName = keys.Last(); //Assume image is last on page 
-
+            PdfName imgName = keys[2]; //Assume image is third on page 
             var stream = pageXObjects.GetAsStream(imgName);
+  
             stream.SetCompressionLevel(CompressionConstants.BEST_COMPRESSION);
             var imgObject = new PdfImageXObject(stream);
-            var ext = imgObject.IdentifyImageFileExtension();
 
             return new MemoryStream(imgObject.GetImageBytes());
         }
