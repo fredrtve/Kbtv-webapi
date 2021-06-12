@@ -35,19 +35,6 @@ namespace BjBygg.WebApi
 
             services.AddHttpContextAccessor();
 
-            //services.AddResponseCompression(options =>
-            //{
-            //    options.Providers.Add<BrotliCompressionProvider>();
-            //    options.EnableForHttps = true;
-            //    options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
-            //        new[] { "application/json" }); 
-            //});
-
-            //services.Configure<BrotliCompressionProviderOptions>(options =>
-            //{
-            //    options.Level = CompressionLevel.Fastest;
-            //});
-
             services.AddScoped<ICurrentUserService, CurrentUserService>();
 
             services.AddApplication();
@@ -81,8 +68,6 @@ namespace BjBygg.WebApi
                 app.UseDatabaseErrorPage();
             }
 
-            //app.UseResponseCompression();
-
             app.UseHttpsRedirection();
 
             app.UseSwagger();
@@ -101,8 +86,6 @@ namespace BjBygg.WebApi
             );
 
             app.UseAuthentication();
-
-            //app.UseIdentityServer();
 
             app.UseAuthorization();
 

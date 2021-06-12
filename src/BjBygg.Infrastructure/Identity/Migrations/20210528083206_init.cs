@@ -186,7 +186,7 @@ namespace BjBygg.Infrastructure.identity.migrations
                     Expires = table.Column<DateTime>(nullable: false),
                     UserId = table.Column<string>(nullable: true),
                     Revoked = table.Column<bool>(nullable: false),
-                    RootTokenId = table.Column<int>(nullable: false)
+                    RootTokenId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -196,7 +196,7 @@ namespace BjBygg.Infrastructure.identity.migrations
                         column: x => x.RootTokenId,
                         principalTable: "RefreshTokens",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_RefreshTokens_AspNetUsers_UserId",
                         column: x => x.UserId,

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BjBygg.Infrastructure.identity.migrations
 {
     [DbContext(typeof(AppIdentityDbContext))]
-    [Migration("20210524184718_init")]
+    [Migration("20210528083206_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -143,7 +143,7 @@ namespace BjBygg.Infrastructure.identity.migrations
                     b.Property<bool>("Revoked")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("RootTokenId")
+                    b.Property<int?>("RootTokenId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Token")
@@ -297,9 +297,7 @@ namespace BjBygg.Infrastructure.identity.migrations
                 {
                     b.HasOne("BjBygg.Application.Identity.Common.Models.RefreshToken", "RootToken")
                         .WithMany("ChildTokens")
-                        .HasForeignKey("RootTokenId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RootTokenId");
 
                     b.HasOne("BjBygg.Application.Identity.Common.Models.ApplicationUser", "User")
                         .WithMany("RefreshTokens")

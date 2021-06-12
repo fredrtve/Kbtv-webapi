@@ -141,7 +141,7 @@ namespace BjBygg.Infrastructure.identity.migrations
                     b.Property<bool>("Revoked")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("RootTokenId")
+                    b.Property<int?>("RootTokenId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Token")
@@ -295,9 +295,7 @@ namespace BjBygg.Infrastructure.identity.migrations
                 {
                     b.HasOne("BjBygg.Application.Identity.Common.Models.RefreshToken", "RootToken")
                         .WithMany("ChildTokens")
-                        .HasForeignKey("RootTokenId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RootTokenId");
 
                     b.HasOne("BjBygg.Application.Identity.Common.Models.ApplicationUser", "User")
                         .WithMany("RefreshTokens")
