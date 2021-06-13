@@ -1,4 +1,5 @@
 using BjBygg.Application.Common.Exceptions;
+using BjBygg.Application.Identity.Commands.UserCommands.Create;
 using BjBygg.Application.Identity.Common.Models;
 using FluentValidation.Results;
 using MediatR;
@@ -23,6 +24,11 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.NewPassword
             var user = await _userManager.FindByNameAsync(request.UserName);
 
             if (user == null) throw new EntityNotFoundException(nameof(ApplicationUser), request.UserName);
+
+            var currentRole = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+
+            if (ForbiddenRoles.Value.Contains(currentRole))
+                throw new ForbiddenException();
 
             var passwordValidator = new PasswordValidator<ApplicationUser>();
             var validationResult = await passwordValidator.ValidateAsync(_userManager, user, request.NewPassword);

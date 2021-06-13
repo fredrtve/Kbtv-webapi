@@ -1,6 +1,7 @@
 using AutoMapper;
 using BjBygg.Application.Common;
 using BjBygg.Application.Common.Exceptions;
+using BjBygg.Application.Identity.Commands.UserCommands.Create;
 using BjBygg.Application.Identity.Common.Models;
 using FluentValidation.Results;
 using MediatR;
@@ -27,7 +28,7 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Update
         {
             if (!String.IsNullOrEmpty(request.Role))
             {
-                if (request.Role == Roles.Leader) //Not allowing new leaders
+                if (ForbiddenRoles.Value.Contains(request.Role))
                     throw new ForbiddenException();
 
                 if (!Roles.All.Contains(request.Role))
@@ -38,6 +39,11 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Update
 
             if (user == null)
                 throw new EntityNotFoundException(nameof(ApplicationUser), request.UserName);
+
+            var currentRole = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+
+            if (ForbiddenRoles.Value.Contains(currentRole))
+                throw new ForbiddenException();
 
             if (!String.IsNullOrWhiteSpace(request.FirstName))
                 user.FirstName = request.FirstName;
@@ -56,19 +62,10 @@ namespace BjBygg.Application.Identity.Commands.UserCommands.Update
                 throw new ValidationException(validationErrors);
             }
 
-            var currentRole = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
-
-            if (!String.IsNullOrEmpty(request.Role))
+            if (!String.IsNullOrEmpty(request.Role) && currentRole != request.Role)
             {
-                //Not allowed to degrade role of leaders
-                if (request.Role != Roles.Leader && currentRole == Roles.Leader)
-                    throw new ForbiddenException();
-
-                if (currentRole != request.Role && currentRole != Roles.Leader)
-                {
-                    await _userManager.RemoveFromRoleAsync(user, currentRole);
-                    await _userManager.AddToRoleAsync(user, request.Role);
-                }
+                await _userManager.RemoveFromRoleAsync(user, currentRole);
+                await _userManager.AddToRoleAsync(user, request.Role);
             }
 
             return Unit.Value;

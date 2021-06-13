@@ -1,3 +1,4 @@
+using BjBygg.Application.Common;
 using BjBygg.Application.Identity.Common;
 using BjBygg.Application.Identity.Common.Interfaces;
 using MediatR;
@@ -24,7 +25,7 @@ namespace BjBygg.Application.Identity.Queries.UserQueries
 
         public Task<List<UserDto>> Handle(UserListQuery request, CancellationToken cancellationToken)
         {
-            var usersWithRoles = (from user in _dbContext.Users
+            var usersWithRoles = (from user in _dbContext.Users 
                                   select new
                                   {
                                       user.UserName,
@@ -37,7 +38,6 @@ namespace BjBygg.Application.Identity.Queries.UserQueries
                                               equals role.Id
                                               select role.Name).ToList()
                                   }).ToList().Select(p => new UserDto()
-
                                   {
                                       UserName = p.UserName,
                                       FirstName = p.FirstName,
@@ -45,7 +45,8 @@ namespace BjBygg.Application.Identity.Queries.UserQueries
                                       PhoneNumber = p.PhoneNumber,
                                       Email = p.Email,
                                       Role = p.Role.FirstOrDefault()
-                                  }).ToList();
+                                  })
+                                  .Where(x => x.Role != Roles.Admin).ToList();
 
             return Task.FromResult(usersWithRoles);
         }
