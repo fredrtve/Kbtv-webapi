@@ -34,14 +34,16 @@ namespace BjBygg.Application.Application.Queries.TimesheetQueries
             if (request.UserName != null)
                 query = query.Where(x => x.UserName == request.UserName);
 
-            var startDate = DateTimeHelper.ConvertEpochToDate((request.StartDate / 1000) ?? 0);
-
-            if (request.EndDate == null)
+            if (request.StartDate != null)
+            {
+                var startDate = DateTimeHelper.ConvertEpochToDate((request.StartDate / 1000) ?? 0);
                 query = query.Where(x => x.StartTime.Date >= startDate.Date);
-            else
+            }
+
+            if (request.EndDate != null)
             {
                 var endDate = DateTimeHelper.ConvertEpochToDate((request.EndDate / 1000) ?? 0);
-                query = query.Where(x => x.StartTime.Date >= startDate.Date && x.StartTime.Date <= endDate.Date);
+                query = query.Where(x => x.StartTime.Date <= endDate.Date);
             }
 
             return _mapper.Map<List<TimesheetDto>>(await query.ToListAsync());
