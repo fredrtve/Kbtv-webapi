@@ -22,6 +22,8 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Delete
 
             if (mission == null) return Unit.Value;
 
+            mission.Position = null;
+
             _dbContext.Set<Mission>().Remove(mission);
 
             _dbContext.Set<MissionImage>()
