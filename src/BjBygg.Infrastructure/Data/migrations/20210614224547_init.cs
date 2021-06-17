@@ -115,7 +115,10 @@ namespace BjBygg.Infrastructure.data.migrations
                     Finished = table.Column<bool>(nullable: false, defaultValue: false),
                     Address = table.Column<string>(maxLength: 100, nullable: false),
                     MissionTypeId = table.Column<string>(nullable: true),
-                    EmployerId = table.Column<string>(nullable: true)
+                    EmployerId = table.Column<string>(nullable: true),
+                    Position_Latitude = table.Column<double>(nullable: true),
+                    Position_Longitude = table.Column<double>(nullable: true),
+                    Position_IsExact = table.Column<bool>(nullable: true)
                 },
                 constraints: table =>
                 {

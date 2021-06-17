@@ -9,14 +9,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BjBygg.Infrastructure.data.migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210524120336_init")]
+    [Migration("20210614224547_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.0.1");
+                .HasAnnotation("ProductVersion", "3.1.1");
 
             modelBuilder.Entity("BjBygg.Core.Entities.Employer", b =>
                 {
@@ -418,6 +418,28 @@ namespace BjBygg.Infrastructure.data.migrations
                         .WithMany("Missions")
                         .HasForeignKey("MissionTypeId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.OwnsOne("BjBygg.Core.Entities.Position", "Position", b1 =>
+                        {
+                            b1.Property<string>("MissionId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<bool>("IsExact")
+                                .HasColumnType("INTEGER");
+
+                            b1.Property<double>("Latitude")
+                                .HasColumnType("REAL");
+
+                            b1.Property<double>("Longitude")
+                                .HasColumnType("REAL");
+
+                            b1.HasKey("MissionId");
+
+                            b1.ToTable("Missions");
+
+                            b1.WithOwner()
+                                .HasForeignKey("MissionId");
+                        });
                 });
 
             modelBuilder.Entity("BjBygg.Core.Entities.MissionDocument", b =>

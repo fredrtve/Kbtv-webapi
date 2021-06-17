@@ -30,5 +30,7 @@ namespace BjBygg.Core.Entities
         public string? MissionTypeId { get; set; }
         public Employer Employer { get; set; }
         public string? EmployerId { get; set; }
+
+        public Position Position { get; set; }
     }
 }

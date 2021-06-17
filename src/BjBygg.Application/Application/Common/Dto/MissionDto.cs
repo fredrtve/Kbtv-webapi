@@ -1,4 +1,5 @@
 ﻿using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
+using BjBygg.Core.Entities;
 using System;
 
 namespace BjBygg.Application.Application.Common.Dto
@@ -24,5 +25,7 @@ namespace BjBygg.Application.Application.Common.Dto
         public EmployerDto Employer { get; set; }
 
         public Uri? FileName { get; set; }
+
+        public Position Position { get; set; }
     }
 }

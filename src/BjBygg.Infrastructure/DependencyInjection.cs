@@ -4,6 +4,7 @@ using BjBygg.Application.Common.Interfaces;
 using BjBygg.Application.Identity.Common.Interfaces;
 using BjBygg.Application.Identity.Common.Models;
 using BjBygg.Core;
+using BjBygg.Infrastructure.Api;
 using BjBygg.Infrastructure.Api.FileStorage;
 using BjBygg.Infrastructure.Api.SendGridMailService;
 using BjBygg.Infrastructure.Auth;
@@ -16,6 +17,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,6 +27,7 @@ namespace BjBygg.Infrastructure
     {
         public static IServiceCollection AddIdentityInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
+
             services.AddDbContext<AppIdentityDbContext>(options =>
                 options.UseSqlite("Data Source=data/db/identity/identitydb.sqlite")); // will be created in web project root
 
@@ -116,6 +119,8 @@ namespace BjBygg.Infrastructure
         }
         public static IServiceCollection AddApplicationInfrastructure(this IServiceCollection services)
         {
+            services.AddHttpClient();
+
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlite("Data Source=data/db/main/maindb.sqlite")); // will be created in web project root
 
@@ -126,7 +131,8 @@ namespace BjBygg.Infrastructure
             services.AddSingleton<ISyncTimestamps, SyncTimestamps>();
 
             services.AddTransient<IBlobStorageService, AzureBlobStorageService>();
-            services.AddTransient<IMailService, SendGridMailService>();
+            services.AddTransient<IMailService, SendGridMailService>(); 
+            services.AddTransient<IGeocodeService, GoogleGeocodeService>();
             services.AddTransient<PdfMissionExtractor>();
             services.AddTransient<IImageResizer, ImageResizer>();
 

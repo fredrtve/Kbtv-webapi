@@ -15,6 +15,7 @@ namespace BjBygg.Infrastructure.Data.Config
             builder.Property(e => e.PhoneNumber).HasMaxLength(ValidationRules.PhoneNumberMaxLength);
             builder.Property(e => e.Description).HasMaxLength(ValidationRules.MissionDescriptionMaxLength);
             builder.Property(e => e.Finished).HasDefaultValue(false);
+            builder.OwnsOne(e => e.Position);
         }
     }
 }

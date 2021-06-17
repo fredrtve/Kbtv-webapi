@@ -12,7 +12,6 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Update
                  .NotEmpty();
 
             RuleFor(v => v.Address)
-                 .NotEmpty()
                  .MaximumLength(ValidationRules.AddressMaxLength)
                  .WithName("Adresse");
 

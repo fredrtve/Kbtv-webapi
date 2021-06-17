@@ -25,9 +25,13 @@ namespace BjBygg.Application.Common.BaseEntityCommands.Create
 
             _dbContext.Set<TEntity>().Add(entity);
 
+            await OnBeforeSavingAsync(request, entity);
+
             await _dbContext.SaveChangesAsync();
 
             return Unit.Value;
         }
+
+        protected virtual async Task OnBeforeSavingAsync(TCommand request, TEntity entity) { }
     }
 }

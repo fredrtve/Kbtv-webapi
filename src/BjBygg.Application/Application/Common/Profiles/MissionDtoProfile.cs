@@ -15,6 +15,7 @@ namespace BjBygg.Application.Application.Common.Profiles
             CreateMap<MissionDto, Mission>()
                 .ForMember(dest => dest.MissionType, opt => opt.MapFrom(src => src.MissionType))
                 .ForMember(dest => dest.Employer, opt => opt.MapFrom(src => src.Employer));
+
         }
     }
 }
