@@ -9,7 +9,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
 
         public DbSyncArrayResponse<MissionTypeDto>? MissionTypes { get; set; }
 
-        public DbSyncArrayResponse<TimesheetDto>? UserTimesheets { get; set; }
+        public DbSyncArrayResponse<UserTimesheetDto>? UserTimesheets { get; set; }
 
     }
 }

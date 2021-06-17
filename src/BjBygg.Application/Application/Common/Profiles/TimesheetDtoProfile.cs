@@ -10,7 +10,11 @@ namespace BjBygg.Application.Application.Common.Profiles
         {
             CreateMap<Timesheet, TimesheetDto>();
 
-            CreateMap<TimesheetDto, Timesheet>();
+            CreateMap<TimesheetDto, Timesheet>(); 
+            
+            CreateMap<Timesheet, UserTimesheetDto>();
+
+            CreateMap<UserTimesheetDto, Timesheet>();
         }
     }
 }

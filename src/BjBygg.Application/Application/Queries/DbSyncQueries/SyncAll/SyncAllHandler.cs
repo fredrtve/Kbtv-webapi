@@ -57,7 +57,6 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
                     UserTimesheets = await _mediator.Send(new UserTimesheetSyncQuery()
                     {
                         Timestamp = request.Timestamp,
-                        User = user,
                         InitialSync = request.InitialSync
                     }),
                     Employers = await _mediator.Send(new EmployerSyncQuery() { Timestamp = request.Timestamp, User = user, InitialSync = request.InitialSync }),
