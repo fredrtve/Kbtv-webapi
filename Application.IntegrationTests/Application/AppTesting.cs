@@ -84,6 +84,8 @@ namespace Application.IntegrationTests.Application
 
             MockFileZipper(services);
 
+            MockGeocodeService(services);
+
             _scopeFactory = services.BuildServiceProvider().GetService<IServiceScopeFactory>();
 
             await EnsureAppIdentityDb();
@@ -241,24 +243,13 @@ namespace Application.IntegrationTests.Application
 
             return services;
         }
-        private static IEnumerable<Uri> GenerateUriArray(int count)
-        {
-            var uriArray = new Uri[count];
-
-            for (var x = 0; x < count; x++)
-            {
-                uriArray[x] = new Uri("https://testuri.net");
-            }
-
-            return uriArray;
-        }
 
         private static ServiceCollection MockMailService(ServiceCollection services)
         {
-            var mailServiceDescriptor = services.FirstOrDefault(d =>
+            var serviceDescriptor = services.FirstOrDefault(d =>
                 d.ServiceType == typeof(IMailService));
 
-            services.Remove(mailServiceDescriptor);
+            services.Remove(serviceDescriptor);
 
             services.AddTransient(provider => Mock.Of<IMailService>());
 
@@ -267,10 +258,10 @@ namespace Application.IntegrationTests.Application
 
         private static ServiceCollection MockUserService(ServiceCollection services)
         {
-            var currentUserServiceDescriptor = services.FirstOrDefault(d =>
+            var serviceDescriptor = services.FirstOrDefault(d =>
                 d.ServiceType == typeof(ICurrentUserService));
 
-            services.Remove(currentUserServiceDescriptor);
+            services.Remove(serviceDescriptor);
 
             services.AddTransient(provider =>
                 Mock.Of<ICurrentUserService>(s => s.Role == _currentUser.Role && s.UserName == _currentUser.UserName));
@@ -279,10 +270,10 @@ namespace Application.IntegrationTests.Application
         }
         private static ServiceCollection MockFileZipper(ServiceCollection services)
         {
-            var currentUserServiceDescriptor = services.FirstOrDefault(d =>
+            var serviceDescriptor = services.FirstOrDefault(d =>
                 d.ServiceType == typeof(IFileZipper));
 
-            services.Remove(currentUserServiceDescriptor);
+            services.Remove(serviceDescriptor);
 
             services.AddTransient(provider =>
                 Mock.Of<IFileZipper>());
@@ -290,6 +281,19 @@ namespace Application.IntegrationTests.Application
             return services;
         }
 
+        private static ServiceCollection MockGeocodeService(ServiceCollection services)
+        {
+            var serviceDescriptor = services.FirstOrDefault(d =>
+                d.ServiceType == typeof(IGeocodeService));
+
+            services.Remove(serviceDescriptor);
+
+            services.AddTransient(provider =>
+                Mock.Of<IGeocodeService>());
+
+            return services;
+        }
+        
         [OneTimeTearDown]
         public void RunAfterAnyTests()
         {

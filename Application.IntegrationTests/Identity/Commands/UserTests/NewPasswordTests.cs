@@ -34,6 +34,27 @@ namespace Application.IntegrationTests.Identity.Commands.UserTests
         [Test]
         public async Task ShouldUpdatePassword()
         {
+            var employee = await RunAsDefaultUserAsync(Roles.Employee);
+            await RunAsDefaultUserAsync(Roles.Leader); 
+
+            var command = new NewPasswordCommand()
+            {
+                UserName = employee.UserName,
+                NewPassword = "Thisisanewpassword"
+            };
+
+            await SendAsync(command);
+
+            var dbEmployee = await FindAsync<ApplicationUser>(employee.Id);
+
+            var passwordHasChanged = await CheckUserPassword(dbEmployee, command.NewPassword);
+
+            passwordHasChanged.Should().BeTrue();
+        }
+
+        [Test]
+        public async Task ShouldThrowForbiddenExceptionIfRoleIsForbidden()
+        {
             var user = await RunAsDefaultUserAsync(Roles.Leader);
 
             var command = new NewPasswordCommand()
@@ -42,13 +63,8 @@ namespace Application.IntegrationTests.Identity.Commands.UserTests
                 NewPassword = "Thisisanewpassword"
             };
 
-            await SendAsync(command);
-
-            var dbUser = await FindAsync<ApplicationUser>(user.Id);
-
-            var passwordHasChanged = await CheckUserPassword(dbUser, command.NewPassword);
-
-            passwordHasChanged.Should().BeTrue();
+            FluentActions.Invoking(() =>
+                SendAsync(command)).Should().Throw<ForbiddenException>();
         }
     }
 }

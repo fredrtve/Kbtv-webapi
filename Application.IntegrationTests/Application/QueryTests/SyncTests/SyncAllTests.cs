@@ -43,9 +43,6 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
 
             await AddSyncEntities();
 
-            /////** Test that children of mission in sync range is included despite itself not being in range **/
-            //await AddSqlRaw("INSERT INTO MissionImages (Id, MissionId, FileName, Deleted, CreatedAt, UpdatedAt) " +
-            //    $"VALUES ('test2','test', 'asdaa', 0, '{dateBeforeSync}', '{dateBeforeSync}')");
             await AddAsync(new Mission() { Id = "test2", Address = "test" });
             /** Test that children of mission out of sync range is not included despite itself being in range **/
             await AddAsync(new MissionDocument() { Id = "test3", MissionId = "test2", Name = "test", FileName = "test.jpg" });
@@ -64,7 +61,7 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
             });
 
             result.Arrays.Missions.Entities.Should().HaveCount(1);
-            result.Arrays.MissionImages.Entities.Should().HaveCount(2);
+            result.Arrays.MissionImages.Entities.Should().HaveCount(1);
             result.Arrays.MissionNotes.Entities.Should().HaveCount(1);
             result.Arrays.MissionDocuments.Entities.Should().HaveCount(1);
             result.Arrays.MissionTypes.Entities.Should().HaveCount(1);
