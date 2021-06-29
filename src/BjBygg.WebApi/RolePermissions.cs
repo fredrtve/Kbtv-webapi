@@ -68,6 +68,10 @@ namespace BjBygg.WebApi
             public const string Update = Roles.Admin + "," + Roles.Leader;
             public const string Read = Roles.Admin + "," + Roles.Leader;
         }
+        public static class LeaderSettingActions
+        {
+            public const string Update = Roles.Admin + "," + Roles.Leader;
+        }
     }
 }
 
