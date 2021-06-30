@@ -4,6 +4,7 @@ using BjBygg.Application.Application.Common;
 using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Application.Common;
 using BjBygg.Application.Common.Behaviours;
+using BjBygg.Application.Identity.Common;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +27,7 @@ namespace BjBygg.Application
             services.AddTransient<ICsvConverter, CsvConverter>();
 
             services.AddHostedService<TimesheetStatusUpdater>();
+            services.AddHostedService<ExpiredTokenDeleter>();
 
             services.Configure<ResourceFolders>(configuration.GetSection(nameof(ResourceFolders)));
 
