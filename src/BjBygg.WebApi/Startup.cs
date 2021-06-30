@@ -37,7 +37,7 @@ namespace BjBygg.WebApi
 
             services.AddScoped<ICurrentUserService, CurrentUserService>();
 
-            services.AddApplication();
+            services.AddApplication(Configuration);
 
             services.AddApplicationInfrastructure(Configuration);
 

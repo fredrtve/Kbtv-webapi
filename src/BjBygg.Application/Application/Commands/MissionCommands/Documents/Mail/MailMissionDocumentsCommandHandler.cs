@@ -1,12 +1,12 @@
 using BjBygg.Application.Application.Common.Interfaces;
+using BjBygg.Application.Common;
 using BjBygg.Application.Common.BaseEntityCommands.MailEntitiesCommand;
 using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Common.Interfaces;
-using BjBygg.Core;
 using BjBygg.Core.Entities;
-using BjBygg.SharedKernel;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System;
 using System.IO;
 using System.Linq;
@@ -20,12 +20,14 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Mail
         private readonly IAppDbContext _dbContext;
         private readonly IMailService _mailService;
         private readonly IFileZipper _fileZipper;
+        private readonly ResourceFolders _resourceFolders;
 
-        public MailMissionDocumentsCommandHandler(IAppDbContext dbContext, IMailService mailService, IFileZipper fileZipper)
+        public MailMissionDocumentsCommandHandler(IAppDbContext dbContext, IMailService mailService, IFileZipper fileZipper, IOptions<ResourceFolders> resourceFolders)
         {
             _dbContext = dbContext;
             _mailService = mailService;
             _fileZipper = fileZipper;
+            _resourceFolders = resourceFolders.Value;
         }
 
         public override async Task<Unit> Handle(MailMissionDocumentsCommand request, CancellationToken cancellationToken)
@@ -39,14 +41,14 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Mail
 
             try
             {
-                await _fileZipper.ZipAsync(zipStream, fileNames, ResourceFolderConstants.Document);
+                await _fileZipper.ZipAsync(zipStream, fileNames, _resourceFolders.Document);
             }
             catch (Exception ex)
             {
                 throw new BadRequestException("Noe er feil med en av dokumentene");
             }
 
-            var template = new MissionDocumentsTemplate(documents, zipStream, "dokumenter_fra_oppdrag.zip");
+            var template = new MissionDocumentsTemplate(documents, _resourceFolders, zipStream, "dokumenter_fra_oppdrag.zip");
 
             await _mailService.SendTemplateEmailAsync(request.ToEmail, template);
 

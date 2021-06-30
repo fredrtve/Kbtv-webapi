@@ -1,5 +1,6 @@
 ﻿
 using BjBygg.Application.Application.Common;
+using BjBygg.Application.Common;
 using BjBygg.Core;
 using BjBygg.Core.Entities;
 using BjBygg.Core.Interfaces;
@@ -14,7 +15,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Mail
 
     public class MissionDocumentsTemplate : IMailTemplate<MissionDocumentsTemplateData>
     {
-        public MissionDocumentsTemplate(IEnumerable<MissionDocument> documents, Stream attachment = null, string attachmentName = null)
+        public MissionDocumentsTemplate(IEnumerable<MissionDocument> documents, ResourceFolders resourceFolders, Stream attachment = null, string attachmentName = null)
         {
             Attachment = attachment;
             AttachmentName = attachmentName;
@@ -26,7 +27,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Documents.Mail
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    Url = new StorageFileUrl(x.FileName, ResourceFolderConstants.Document).FileUrl.ToString()
+                    Url = resourceFolders.GetUrl(resourceFolders.Document, x.FileName)
                 }).ToList(),
             }).ToList());
         }

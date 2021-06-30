@@ -1,9 +1,11 @@
 ﻿using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Application.Common.Interfaces;
+using BjBygg.Application.Common;
 using BjBygg.Application.Common.Interfaces;
 using BjBygg.Core;
 using BjBygg.Core.Entities;
 using BjBygg.SharedKernel;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,13 +17,16 @@ namespace BjBygg.Application.Application.Common
     {
         private readonly IIdGenerator _idGenerator;
         private readonly IBlobStorageService _storageService;
+        private readonly ResourceFolders _resourceFolders;
 
         public PdfMissionExtractor(
             IIdGenerator idGenerator,
-            IBlobStorageService storageService)
+            IBlobStorageService storageService,
+            IOptions<ResourceFolders> resourceFolders)
         {
             _idGenerator = idGenerator;
             _storageService = storageService;
+            _resourceFolders = resourceFolders.Value;
         }
 
         public async Task<Mission> TryExtractAsync(Stream pdfStream, IPdfMissionExtractionStrategy strategy)
@@ -41,7 +46,7 @@ namespace BjBygg.Application.Application.Common
             if (missionPdfDto.Image != null)
             {
                 dbMission.FileName = new AppImageFileName(missionPdfDto.Image, ".jpg").ToString();
-                await _storageService.UploadFileAsync(missionPdfDto.Image, dbMission.FileName, ResourceFolderConstants.MissionHeader);
+                await _storageService.UploadFileAsync(missionPdfDto.Image, dbMission.FileName, _resourceFolders.MissionHeader);
             }
 
             var report = new MissionDocument
@@ -52,7 +57,7 @@ namespace BjBygg.Application.Application.Common
 
             report.FileName = Guid.NewGuid() + ".pdf"; 
 
-            await _storageService.UploadFileAsync(pdfStream, report.FileName, ResourceFolderConstants.Document);
+            await _storageService.UploadFileAsync(pdfStream, report.FileName, _resourceFolders.Document);
 
             dbMission.MissionDocuments = new List<MissionDocument>();
             dbMission.MissionDocuments.Add(report); //Add input report as document in new mission

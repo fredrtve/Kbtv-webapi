@@ -1,9 +1,11 @@
 using AutoMapper;
 using BjBygg.Application.Application.Common;
 using BjBygg.Application.Application.Common.Interfaces;
+using BjBygg.Application.Common;
 using BjBygg.Core;
 using BjBygg.Core.Entities;
 using MediatR;
+using Microsoft.Extensions.Options;
 using System;
 using System.Drawing;
 using System.Threading;
@@ -16,15 +18,18 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Upload
         private readonly IAppDbContext _dbContext;
         private readonly IBlobStorageService _storageService;
         private readonly IMapper _mapper;
+        private readonly ResourceFolders _resourceFolders;
 
         public UploadMissionImageCommandHandler(
             IAppDbContext dbContext,
             IBlobStorageService storageService,
-            IMapper mapper)
+            IMapper mapper,
+            IOptions<ResourceFolders> resourceFolders)
         {
             _dbContext = dbContext;
             _storageService = storageService;
             _mapper = mapper;
+            _resourceFolders = resourceFolders.Value;
         }
        
         public async Task<Unit> Handle(UploadMissionImageCommand request, CancellationToken cancellationToken)
@@ -33,7 +38,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Upload
 
             var fileName = new AppImageFileName(request.File, request.FileExtension).ToString();
 
-            var fileURL = await _storageService.UploadFileAsync(request.File, fileName, ResourceFolderConstants.OriginalMissionImage);
+            var fileURL = await _storageService.UploadFileAsync(request.File, fileName, _resourceFolders.OriginalMissionImage);
 
             if (fileURL == null) throw new Exception("Opplasting av bilde mislyktes");
 
