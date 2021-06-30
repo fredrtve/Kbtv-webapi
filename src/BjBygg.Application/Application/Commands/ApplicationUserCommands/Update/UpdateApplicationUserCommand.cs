@@ -38,10 +38,10 @@ namespace BjBygg.Application.Application.Commands.ApplicationUserCommands.Update
         {
             var employerUser = await _dbContext.EmployerUsers.FirstOrDefaultAsync(x => x.UserName == request.UserName);
 
-            if (employerUser != null && request.Role != Roles.Employer)
+            if (employerUser != null && (request.Role != Roles.Employer || request.EmployerId == null))
                 _dbContext.EmployerUsers.Remove(employerUser);
 
-            if (request.Role == Roles.Employer && employerUser?.EmployerId != request.EmployerId)
+            if (request.Role == Roles.Employer && request.EmployerId != null && employerUser?.EmployerId != request.EmployerId)
             {
                 if (employerUser != null) _dbContext.EmployerUsers.Remove(employerUser);
 

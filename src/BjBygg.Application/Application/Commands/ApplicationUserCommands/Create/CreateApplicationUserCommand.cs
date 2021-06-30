@@ -37,7 +37,7 @@ namespace BjBygg.Application.Application.Commands.UserCommands.Create
 
         public async Task<Unit> Handle(CreateApplicationUserCommand request, CancellationToken cancellationToken)
         {
-            if (request.Role == Roles.Employer)
+            if (request.Role == Roles.Employer && request.EmployerId != null)
             {
                 var employer = await _dbContext.Employers.FindAsync(request.EmployerId);
 

@@ -39,7 +39,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries
             var isEmployer = request.User.Role == Roles.Employer;
             var isInitial = request.InitialSync;
 
-            if (isEmployer) //Only allow employers missions if role is employer
+            if (isEmployer && request.User.EmployerId != null) //Only allow employers missions if role is employer & employerId is set
                 query = query.Where(x => x.EmployerId == request.User.EmployerId);
 
             query = query.GetSyncItems(request).Include(x => x.MissionImages);
