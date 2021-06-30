@@ -39,7 +39,7 @@ namespace BjBygg.WebApi
 
             services.AddApplication();
 
-            services.AddApplicationInfrastructure();
+            services.AddApplicationInfrastructure(Configuration);
 
             services.AddControllers();
 

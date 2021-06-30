@@ -29,7 +29,7 @@ namespace BjBygg.Infrastructure
         {
 
             services.AddDbContext<AppIdentityDbContext>(options =>
-                options.UseSqlite("Data Source=data/db/identity/identitydb.sqlite")); // will be created in web project root
+                options.UseSqlite(configuration.GetValue<string>("IdentityDbConnectionString"))); // will be created in web project root
 
             services.AddScoped<IAppIdentityDbContext>(provider => provider.GetService<AppIdentityDbContext>());
 
@@ -117,12 +117,12 @@ namespace BjBygg.Infrastructure
 
             return services;
         }
-        public static IServiceCollection AddApplicationInfrastructure(this IServiceCollection services)
+        public static IServiceCollection AddApplicationInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddHttpClient();
 
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlite("Data Source=data/db/main/maindb.sqlite")); // will be created in web project root
+                options.UseSqlite(configuration.GetValue<string>("DbConnectionString"))); 
 
             services.AddScoped<IAppDbContext>(provider => provider.GetService<AppDbContext>());
 
