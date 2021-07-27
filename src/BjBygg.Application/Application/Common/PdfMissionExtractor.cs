@@ -55,8 +55,9 @@ namespace BjBygg.Application.Application.Common
                 Name = missionPdfDto.DocumentName
             };
 
-            report.FileName = Guid.NewGuid() + ".pdf"; 
+            report.FileName = Guid.NewGuid() + ".pdf";
 
+            pdfStream.Position = 0;
             await _storageService.UploadFileAsync(pdfStream, report.FileName, _resourceFolders.Document);
 
             dbMission.MissionDocuments = new List<MissionDocument>();
