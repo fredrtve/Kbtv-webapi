@@ -45,6 +45,7 @@ namespace BjBygg.WebApi
             public const string Delete = Roles.Admin + "," + Roles.Leader;
             public const string Update = Roles.Admin + "," + Roles.Leader;
             public const string UpdateHeaderImage = Roles.Admin + "," + Roles.Leader;
+            public const string DeleteHeaderImage = Roles.Admin + "," + Roles.Leader;
         }
         public static class MissionTypeActions
         {

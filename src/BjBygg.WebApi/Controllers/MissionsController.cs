@@ -1,3 +1,4 @@
+using BjBygg.Application.Application.Commands.MissionCommands;
 using BjBygg.Application.Application.Commands.MissionCommands.Create;
 using BjBygg.Application.Application.Commands.MissionCommands.CreateWithPdf;
 using BjBygg.Application.Application.Commands.MissionCommands.Delete;
@@ -118,6 +119,15 @@ namespace BjBygg.WebApi.Controllers
                 Image = stream,
                 FileExtension = Path.GetExtension(file.FileName)
             });
+            return NoContent();
+        }
+
+        [Authorize(Roles = RolePermissions.MissionActions.DeleteHeaderImage)]
+        [HttpPut]
+        [Route("api/[controller]/{Id}/[action]")]
+        public async Task<ActionResult> DeleteHeaderImage(string id)
+        {
+            await Mediator.Send( new DeleteMissionHeaderImageCommand(){ Id = id } );
             return NoContent();
         }
 
