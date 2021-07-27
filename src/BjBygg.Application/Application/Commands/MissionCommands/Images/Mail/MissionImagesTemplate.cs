@@ -22,7 +22,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Mail
             {
                 Id = x.Key.Id,
                 Address = x.Key.Address,
-                Images = x.Select(x => resourceFolders.GetUrl(resourceFolders.Document, x.FileName)).ToList(),
+                Images = x.Select(x => resourceFolders.GetUrl(resourceFolders.MissionImage, x.FileName)).ToList(),
             }).ToList());
         }
 
