@@ -23,8 +23,7 @@ namespace BjBygg.Infrastructure.Api.FileStorage
         {
             var blobContainer = await _azureBlobConnectionFactory.GetBlobContainer(folder);
 
-            Uri uri = new Uri(fileUri);
-            string filename = Path.GetFileName(uri.LocalPath);
+            string filename = Path.GetFileName(fileUri);
 
             var blob = blobContainer.GetBlockBlobReference(filename);
             await blob.DeleteIfExistsAsync();
