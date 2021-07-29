@@ -1,6 +1,7 @@
 using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Core.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading;
@@ -19,17 +20,20 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.DeleteRange
 
         public async Task<Unit> Handle(DeleteRangeMissionCommand request, CancellationToken cancellationToken)
         {
-            _dbContext.Set<Mission>().RemoveRange(
-                _dbContext.Set<Mission>().Where(x => request.Ids.Contains(x.Id)).ToList());
+            var missions = await _dbContext.Set<Mission>().Where(x => request.Ids.Contains(x.Id)).ToListAsync();
+
+            foreach (var mission in missions) mission.Position = null;
+
+            _dbContext.Set<Mission>().RemoveRange(missions);
 
             _dbContext.Set<MissionImage>().RemoveRange(
-                _dbContext.Set<MissionImage>().Where(x => request.Ids.Contains(x.MissionId)));
+                await _dbContext.Set<MissionImage>().Where(x => request.Ids.Contains(x.MissionId)).ToListAsync());
 
             _dbContext.Set<MissionNote>().RemoveRange(
-                _dbContext.Set<MissionNote>().Where(x => request.Ids.Contains(x.MissionId)));
+                await _dbContext.Set<MissionNote>().Where(x => request.Ids.Contains(x.MissionId)).ToListAsync());
 
             _dbContext.Set<MissionDocument>().RemoveRange(
-                _dbContext.Set<MissionDocument>().Where(x => request.Ids.Contains(x.MissionId)));
+                await _dbContext.Set<MissionDocument>().Where(x => request.Ids.Contains(x.MissionId)).ToListAsync());
 
             await _dbContext.SaveChangesAsync();
 
