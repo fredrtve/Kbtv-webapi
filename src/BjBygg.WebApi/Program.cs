@@ -1,14 +1,23 @@
+using BjBygg.Application.Application.Common;
+using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Application.Common.Interfaces;
 using BjBygg.Application.Identity.Common.Models;
+using BjBygg.Core;
 using BjBygg.Core.Entities;
+using BjBygg.Infrastructure.Api.FileStorage;
 using BjBygg.Infrastructure.Data;
 using BjBygg.Infrastructure.Identity;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.WindowsAzure.Storage.Blob;
+using System;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BjBygg.WebApi
@@ -25,9 +34,7 @@ namespace BjBygg.WebApi
 
                 using (var context = services.GetService<AppDbContext>())
                 {
-                    //context.Database.EnsureCreated();
-                    //var idGenerator = services.GetService<IIdGenerator>();
-                    //await AppDbContextSeed.SeedAllAsync(context, idGenerator, new SeederCount());
+                    context.Database.EnsureCreated();
                     if (await context.GetLeaderSettingsAsync() == null)
                     {
                         context.Add(new LeaderSettings() { Id = "settings", ConfirmTimesheetsMonthly = false });
@@ -35,17 +42,6 @@ namespace BjBygg.WebApi
                     }
                 }
 
-                //using (var context = services.GetService<AppIdentityDbContext>())
-                //{
-
-                //    context.Database.EnsureCreated();
-
-                //    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                //    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-                //    var idGenerator = services.GetService<IIdGenerator>();
-
-                //    await AppIdentityDbContextSeed.SeedAsync(userManager, roleManager, context, idGenerator);
-                //}
             }
 
             host.Run();

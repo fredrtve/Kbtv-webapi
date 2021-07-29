@@ -100,12 +100,12 @@ namespace BjBygg.Infrastructure.Data
             var command = "INSERT INTO Missions (Id, Address, PhoneNumber, Description, EmployerId, MissionTypeId, FileName, Deleted, CreatedAt, UpdatedAt) VALUES ";
 
             string[] images = {
-                "sample-1.jpg",
-                "sample-2.jpg",
-                "sample-3.jpg",
-                "sample-4.jpg",
-                "sample-5.jpg",
-                "sample-6.jpeg",
+                "sample1_ratio=1.9.jpg",
+                "sample2_ratio=1.67.jpg",
+                "sample3_ratio=1.jpg",
+                "sample4_ratio=1.47.jpg",
+                "sample5_ratio=1.51.jpg",
+                "sample6_ratio=1.5.jpg",
             };
 
             for (var i = 0; i < amount; i++)
@@ -125,14 +125,11 @@ namespace BjBygg.Infrastructure.Data
         {
             var command = "INSERT INTO MissionDocuments (Id, FileName, MissionId, Name, Deleted, CreatedAt, UpdatedAt) VALUES ";
             string[] documents = {
-                "1637295465913721375_8e82553f-9bea-4dbb-b870-e74b7bf12574.jpg",
-                "1637292212574152139_1904149b-57e0-4140-8b00-a32aadc982a6.jpg",
-                "1637292212573064075_b978855c-51d8-4dd9-81d7-2c3541bc555e.jpg",
-                "1637292212572236847_b9f90f4d-37b1-4345-aaa8-dcb11dadf124.jpg",
-                "1637292212571337150_db0213b8-201c-48a0-9b85-191360cc1aa5.jpg",
-                "1637292212570227149_a36078d9-caf2-4d8c-a200-aad371d06cc7.jpg",
-                "1637292212568940337_98f90a4c-ae37-4664-bf58-89677ead9706.jpg",
-                "1637292212567641069_d01fc948-e295-47c7-b787-a77b24bb0004.jpg",
+                "sample1.pdf",
+                "sample2.txt",
+                "sample3.docx",
+                "sample4.pdf",
+                "sample5.pdf"
             };
             for (var i = 0; i < amount; i++)
             {
@@ -153,14 +150,14 @@ namespace BjBygg.Infrastructure.Data
         {
             var command = "INSERT INTO MissionImages (Id, FileName, MissionId, Deleted, CreatedAt, UpdatedAt) VALUES ";
             string[] images = {
-                "1637295465913721375_8e82553f-9bea-4dbb-b870-e74b7bf12574.jpg",
-                "1637292212574152139_1904149b-57e0-4140-8b00-a32aadc982a6.jpg",
-                "1637292212573064075_b978855c-51d8-4dd9-81d7-2c3541bc555e.jpg",
-                "1637292212572236847_b9f90f4d-37b1-4345-aaa8-dcb11dadf124.jpg",
-                "1637292212571337150_db0213b8-201c-48a0-9b85-191360cc1aa5.jpg",
-                "1637292212570227149_a36078d9-caf2-4d8c-a200-aad371d06cc7.jpg",
-                "1637292212568940337_98f90a4c-ae37-4664-bf58-89677ead9706.jpg",
-                "1637292212567641069_d01fc948-e295-47c7-b787-a77b24bb0004.jpg",
+                "sample1_ratio=1.33.jpg",
+                "sample2_ratio=1.33.jpg",
+                "sample3_ratio=1.33.jpg",
+                "sample4_ratio=1.33.jpg",
+                "sample5_ratio=1.78.jpg",
+                "sample6_ratio=1.78.jpg",
+                "sample7_ratio=1.25.jpg",
+                "sample8_ratio=1.25.jpg",
             };
             for (var i = 0; i < amount; i++)
             {

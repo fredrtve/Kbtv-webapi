@@ -23,7 +23,7 @@ namespace BjBygg.Application.Identity.Common
             _timer = new Timer(
                 o => DeleteExpiredTokens(),
                 null,
-                TimeSpan.Zero,
+                TimeSpan.FromDays(14),
                 TimeSpan.FromDays(14)
             );
             return Task.CompletedTask;
