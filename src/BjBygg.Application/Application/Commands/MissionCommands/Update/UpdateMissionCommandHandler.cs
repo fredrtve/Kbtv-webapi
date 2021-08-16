@@ -7,6 +7,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -57,6 +58,11 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Update
                 {
                     dbEntity.Position = null;
                 }
+
+                var normalizedAddr = request.Address.ToUpper();
+                var existingAddresses = (await _dbContext.Set<Mission>().ToListAsync())
+                    .Where(x => x.Address.ToUpper().Contains(normalizedAddr)).Count();
+                if (existingAddresses != 0) dbEntity.Address = dbEntity.Address + " (" + ++existingAddresses + ")";
             }
             else if(request.Position != null)
             {

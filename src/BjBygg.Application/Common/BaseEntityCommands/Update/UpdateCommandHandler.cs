@@ -11,7 +11,7 @@ namespace BjBygg.Application.Common.BaseEntityCommands.Update
     public abstract class UpdateCommandHandler<TEntity, TCommand> : IRequestHandler<TCommand>
         where TEntity : BaseEntity where TCommand : UpdateCommand
     {
-        private readonly IDbContext _dbContext;
+        protected readonly IDbContext _dbContext;
 
         public UpdateCommandHandler(IDbContext dbContext)
         {

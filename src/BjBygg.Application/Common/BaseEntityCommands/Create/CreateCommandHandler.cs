@@ -10,8 +10,8 @@ namespace BjBygg.Application.Common.BaseEntityCommands.Create
     public abstract class CreateCommandHandler<TEntity, TCommand> : IRequestHandler<TCommand>
         where TEntity : BaseEntity where TCommand : CreateCommand
     {
-        private readonly IDbContext _dbContext;
-        private readonly IMapper _mapper;
+        protected readonly IDbContext _dbContext;
+        protected readonly IMapper _mapper;
 
         public CreateCommandHandler(IDbContext dbContext, IMapper mapper)
         {
