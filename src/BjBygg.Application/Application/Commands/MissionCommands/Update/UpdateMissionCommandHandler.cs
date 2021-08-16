@@ -1,4 +1,5 @@
 using AutoMapper;
+using BjBygg.Application.Application.Common;
 using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Application.Common.Exceptions;
 using BjBygg.Application.Common.Interfaces;
@@ -59,10 +60,8 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Update
                     dbEntity.Position = null;
                 }
 
-                var normalizedAddr = request.Address.ToUpper();
-                var existingAddresses = (await _dbContext.Set<Mission>().ToListAsync())
-                    .Where(x => x.Address.ToUpper().Contains(normalizedAddr)).Count();
-                if (existingAddresses != 0) dbEntity.Address = dbEntity.Address + " (" + ++existingAddresses + ")";
+                var existingAddresses = await _dbContext.Set<Mission>().Select(x => x.Address).ToListAsync();
+                dbEntity.Address = StringTagger.TagIfNotUnique(existingAddresses, request.Address);
             }
             else if(request.Position != null)
             {
