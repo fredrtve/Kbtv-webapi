@@ -11,5 +11,8 @@ namespace BjBygg.Application.Identity.Common.Models
 
         [Required]
         public int RefreshTokenLifeTimeInDays { get; set; }
+
+        [Required]
+        public string AdminPassword { get; set; }
     }
 }

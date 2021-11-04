@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System;
 using System.IO;
@@ -35,11 +36,30 @@ namespace BjBygg.WebApi
                 using (var context = services.GetService<AppDbContext>())
                 {
                     context.Database.EnsureCreated();
+                    var idGenerator = services.GetService<IIdGenerator>();
+                    await AppDbContextSeed.SeedAllAsync(context, idGenerator, new SeederCount());
+
+                    if (await context.Activities.FindAsync("default") == null)
+                    {
+                        context.Add(new Activity() { Id = "default", Name = "Annet" });
+                    }
+
                     if (await context.GetLeaderSettingsAsync() == null)
                     {
                         context.Add(new LeaderSettings() { Id = "settings", ConfirmTimesheetsMonthly = false });
-                        await context.SaveChangesAsync();
+
                     }
+
+                    await context.SaveChangesAsync();
+                }
+
+                using (var context = services.GetService<AppIdentityDbContext>())
+                {
+                    context.Database.EnsureCreated();
+                    var userManager = services.GetService<UserManager<ApplicationUser>>();
+                    var roleManager = services.GetService<RoleManager<IdentityRole>>();
+                    var authSettings = services.GetService<IOptions<AuthSettings>>().Value;
+                    await AppIdentityDbContextSeed.SeedAsync(userManager, roleManager, authSettings);
                 }
 
             }
