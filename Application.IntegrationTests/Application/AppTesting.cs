@@ -35,15 +35,16 @@ namespace Application.IntegrationTests.Application
         [OneTimeSetUp]
         public async Task RunBeforeAnyTests()
         {
+            var projectDir = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
             var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", true, true)
+                .SetBasePath(projectDir)
+                .AddJsonFile("appsettings.json", false, true)
                 .AddEnvironmentVariables();
 
             _configuration = builder.Build();
 
             var startup = new Startup(_configuration);
-
+          
             var services = new ServiceCollection();
 
             services.AddSingleton(Mock.Of<IWebHostEnvironment>(w =>
@@ -52,27 +53,7 @@ namespace Application.IntegrationTests.Application
 
             services.AddLogging();
 
-            startup.ConfigureServices(services);
-
-            var dbDescriptor = services.SingleOrDefault(
-                d => d.ServiceType == typeof(DbContextOptions<AppDbContext>));
-
-            services.Remove(dbDescriptor);
-
-            services.AddDbContext<AppDbContext>(options =>
-                     options.UseSqlite("Data Source=test.sqlite"));
-
-            services.AddScoped<IAppDbContext>(provider => provider.GetService<AppDbContext>());
-
-            var identityDescriptor = services.SingleOrDefault(
-                d => d.ServiceType == typeof(DbContextOptions<AppIdentityDbContext>));
-
-            services.Remove(identityDescriptor);
-
-            services.AddDbContext<AppIdentityDbContext>(options =>
-                options.UseSqlite("Data Source=testidentity.sqlite"));
-
-            services.AddScoped<IAppIdentityDbContext>(provider => provider.GetService<AppIdentityDbContext>());
+            startup.ConfigureServices(services); 
 
             services.AddSingleton<TestSeederCount>();
 
@@ -101,13 +82,22 @@ namespace Application.IntegrationTests.Application
             var roleManager = scope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
             await TestIdentitySeeder.SeedRolesAsync(roleManager);
         }
-        public static void EnsureAppDbAsync()
+        public static void EnsureAppDb()
         {
             using var scope = _scopeFactory.CreateScope();
 
             var context = scope.ServiceProvider.GetService<IAppDbContext>();
-            context.Database.EnsureDeleted();
-            context.Database.Migrate();
+            context.Database.EnsureCreated();
+
+            new List<string>() {
+                "MissionImages", "MissionDocuments", "MissionNotes", "Timesheets",
+                 "Missions", "EmployerUsers", "Employers", "MissionTypes", "LeaderSettings", "UserCommandStatuses"         
+            }.ForEach(table => {
+                context.Database.BeginTransaction();
+                context.Database.ExecuteSqlRaw($"DELETE FROM {table}");
+                context.Database.CommitTransaction();
+            });
+
             //var seederCount = scope.ServiceProvider.GetService<TestSeederCount>();
             //var idGenerator = scope.ServiceProvider.GetService<IIdGenerator>();
             //await AppDbContextSeed.SeedAllAsync(context, idGenerator, new SeederCount(5,5,5,5,5,5,5,5));

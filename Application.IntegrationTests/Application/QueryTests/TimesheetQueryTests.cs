@@ -18,10 +18,13 @@ namespace Application.IntegrationTests.Application.QueryTests
             await RunAsDefaultUserAsync(Roles.Leader);
 
             await AddAsync(new Mission() { Id = "test", Address = "test" });
+            await AddAsync(new Activity() { Id = "test", Name = "test" });
+            await AddAsync(new MissionActivity() { Id = "test", MissionId = "test", ActivityId = "test" });
+
             await SendAsync(new CreateTimesheetCommand()
             {
                 Id = "test",
-                MissionId = "test",
+                MissionActivityId = "test",
                 Comment = "test",
                 StartTime = 111,
                 EndTime = 112
@@ -29,7 +32,7 @@ namespace Application.IntegrationTests.Application.QueryTests
             await SendAsync(new CreateTimesheetCommand()
             {
                 Id = "test2",
-                MissionId = "test",
+                MissionActivityId = "test",
                 Comment = "test",
                 StartTime = 111,
                 EndTime = 112
@@ -45,10 +48,13 @@ namespace Application.IntegrationTests.Application.QueryTests
             var now = DateTimeHelper.Now();
 
             await AddAsync(new Mission() { Id = "test", Address = "test" });
+            await AddAsync(new Activity() { Id = "test", Name = "test" });
+            await AddAsync(new MissionActivity() { Id = "test", MissionId = "test", ActivityId = "test" });
+
             await SendAsync(new CreateTimesheetCommand()
             {
                 Id = "test",
-                MissionId = "test",
+                MissionActivityId = "test",
                 Comment = "test",
                 StartTime = 123,
                 EndTime = 155
@@ -57,7 +63,7 @@ namespace Application.IntegrationTests.Application.QueryTests
             await SendAsync(new CreateTimesheetCommand()
             {
                 Id = "test2",
-                MissionId = "test",
+                MissionActivityId = "test",
                 Comment = "test",
                 StartTime = DateTimeHelper.ConvertDateToEpoch(now.AddDays(-1).Date),
                 EndTime = DateTimeHelper.ConvertDateToEpoch(now.AddDays(-1))
@@ -79,10 +85,13 @@ namespace Application.IntegrationTests.Application.QueryTests
             await RunAsDefaultUserAsync(Roles.Management);
 
             await AddAsync(new Mission() { Id = "test", Address = "test" });
+            await AddAsync(new Activity() { Id = "test", Name = "test" });
+            await AddAsync(new MissionActivity() { Id = "test", MissionId = "test", ActivityId = "test" });
+
             await SendAsync(new CreateTimesheetCommand()
             {
                 Id = "test",
-                MissionId = "test",
+                MissionActivityId = "test",
                 Comment = "test",
                 StartTime = 111,
                 EndTime = 112
@@ -103,10 +112,12 @@ namespace Application.IntegrationTests.Application.QueryTests
             await RunAsDefaultUserAsync(Roles.Leader);
 
             await AddAsync(new Mission() { Id = "test", Address = "test" });
+            await AddAsync(new Activity() { Id = "test", Name = "test" });
+            await AddAsync(new MissionActivity() { Id = "test", MissionId = "test", ActivityId = "test" });
             await SendAsync(new CreateTimesheetCommand()
             {
                 Id = "test",
-                MissionId = "test",
+                MissionActivityId = "test",
                 Comment = "test",
                 StartTime = 111,
                 EndTime = 112

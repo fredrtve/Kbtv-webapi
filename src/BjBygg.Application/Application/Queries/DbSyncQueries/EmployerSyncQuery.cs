@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
+using BjBygg.Application.Application.Queries.DbSyncQueries.Dto;
 using BjBygg.Application.Common;
 using BjBygg.Core.Entities;
 using MediatR;
@@ -13,8 +15,11 @@ using System.Threading.Tasks;
 
 namespace BjBygg.Application.Application.Queries.DbSyncQueries
 {
-    public class EmployerSyncQuery : UserDbSyncQuery, IRequest<DbSyncArrayResponse<EmployerDto>> { }
-    public class EmployerSyncQueryHandler : IRequestHandler<EmployerSyncQuery, DbSyncArrayResponse<EmployerDto>>
+    public class EmployerSyncQuery : DbSyncQuery, IRequest<SyncEntityResponse<SyncEmployerDto>> 
+    { 
+        public EmployerSyncQuery(DbSyncQueryPayload _payload): base(_payload) { }
+    }
+    public class EmployerSyncQueryHandler : IRequestHandler<EmployerSyncQuery, SyncEntityResponse<SyncEmployerDto>>
     {
         private readonly IAppDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -28,20 +33,21 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries
             _dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
-        public async Task<DbSyncArrayResponse<EmployerDto>> Handle(EmployerSyncQuery request, CancellationToken cancellationToken)
+        public async Task<SyncEntityResponse<SyncEmployerDto>> Handle(EmployerSyncQuery request, CancellationToken cancellationToken)
         {
             var latestUpdate = _syncTimestamps.Timestamps[typeof(Employer)];
             if (!request.InitialSync && latestUpdate != null && latestUpdate <= request.Timestamp) return null;
 
-            var query = _dbContext.Set<Employer>().AsQueryable().GetSyncItems(request, true);
+            var query = _dbContext.Set<Employer>().GetSyncItems(request);
            
             if (request.User.Role == Roles.Employer)
             {
                 query = query.Where(x => x.Id == request.User.EmployerId);
             }
 
-            return (await query.ToListAsync())
-                .ToSyncArrayResponse<Employer, EmployerDto>(request.InitialSync, _mapper);
+            return await query
+                 .ProjectTo<SyncEmployerQueryDto>(_mapper.ConfigurationProvider)
+                 .ToSyncResponseAsync<SyncEmployerQueryDto, SyncEmployerDto>(request.InitialSync, _mapper);
         }
 
     }

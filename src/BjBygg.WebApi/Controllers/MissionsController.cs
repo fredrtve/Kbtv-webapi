@@ -35,7 +35,7 @@ namespace BjBygg.WebApi.Controllers
         [Authorize(Roles = RolePermissions.MissionActions.Create)]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<ActionResult<MissionDto>> Create([FromBody] CreateMissionCommand request)
+        public async Task<ActionResult> Create([FromBody] CreateMissionCommand request)
         {
             await Mediator.Send(request);
             return NoContent();

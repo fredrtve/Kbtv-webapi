@@ -30,11 +30,13 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
             await RunAsDefaultUserAsync(Roles.Leader);
 
             await AddAsync(new Mission() { Id = "test", Address = "test" });
+            await AddAsync(new Activity() { Id = "test", Name = "test" });
+            await AddAsync(new MissionActivity() { Id = "test", MissionId = "test", ActivityId = "test" });
 
             var command = new CreateTimesheetCommand()
             {
                 Id = "test",
-                MissionId = "test",
+                MissionActivityId = "test",
                 Comment = "test",
                 StartTime = 111,
                 EndTime = 112
@@ -57,11 +59,13 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
             await RunAsDefaultUserAsync(Roles.Employee);
 
             await AddAsync(new Mission() { Id = "test", Address = "test" });
+            await AddAsync(new Activity() { Id = "test", Name = "test" });
+            await AddAsync(new MissionActivity() { Id = "test", MissionId = "test", ActivityId = "test" });
 
             var command = new CreateTimesheetCommand()
             {
                 Id = "test",
-                MissionId = "test",
+                MissionActivityId = "test",
                 Comment = "test",
                 StartTime = 111,
                 EndTime = 112
@@ -91,7 +95,7 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
             var command = new CreateTimesheetCommand()
             {
                 Id = "test",
-                MissionId = "test",
+                MissionActivityId = "test",
                 Comment = "test",
                 StartTime = 111,
                 EndTime = 112
@@ -114,11 +118,13 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
             await RunAsDefaultUserAsync(Roles.Management);
 
             await AddAsync(new Mission() { Id = "test", Address = "test" });
+            await AddAsync(new Activity() { Id = "test", Name = "test" });
+            await AddAsync(new MissionActivity() { Id = "test", MissionId = "test", ActivityId = "test" });
 
             var command = new CreateTimesheetCommand()
             {
                 Id = "test",
-                MissionId = "test",
+                MissionActivityId = "test",
                 Comment = "test",
                 StartTime = 111,
                 EndTime = 112
@@ -138,12 +144,14 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
         {
             await RunAsDefaultUserAsync(Roles.Employee);
 
-            await AddAsync(new Mission() { Id = "test", Address = "test" });
+            await AddAsync(new Mission() { Id = "test", Address = "test" }); 
+            await AddAsync(new Activity() { Id = "test", Name = "test" });
+            await AddAsync(new MissionActivity() { Id = "test", MissionId = "test", ActivityId = "test" });
 
             var command = new CreateTimesheetCommand()
             {
                 Id = "test",
-                MissionId = "test",
+                MissionActivityId = "test",
                 Comment = "test",
                 StartTime = 111,
                 EndTime = 112

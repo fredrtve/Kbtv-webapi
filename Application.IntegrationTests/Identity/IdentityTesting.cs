@@ -1,9 +1,11 @@
-﻿using BjBygg.Application.Common.Interfaces;
+﻿using BjBygg.Application.Application.Common.Interfaces;
+using BjBygg.Application.Common.Interfaces;
 using BjBygg.Application.Identity.Common;
 using BjBygg.Application.Identity.Common.Interfaces;
 using BjBygg.Application.Identity.Common.Models;
 using BjBygg.Application.Identity.Queries.UserQueries.UserByUserName;
 using BjBygg.Infrastructure.Auth;
+using BjBygg.Infrastructure.Data;
 using BjBygg.Infrastructure.Identity;
 using BjBygg.WebApi;
 using MediatR;
@@ -15,6 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -34,9 +37,10 @@ namespace Application.IntegrationTests.Identity
         [OneTimeSetUp]
         public void RunBeforeAnyTests()
         {
+            var projectDir = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
             var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", true, true)
+                .SetBasePath(projectDir)
+                .AddJsonFile("appsettings.json", false, true)
                 .AddEnvironmentVariables();
 
             _configuration = builder.Build();
@@ -53,16 +57,6 @@ namespace Application.IntegrationTests.Identity
 
             startup.ConfigureServices(services);
 
-            var identityDescriptor = services.SingleOrDefault(
-                d => d.ServiceType == typeof(DbContextOptions<AppIdentityDbContext>));
-
-            services.Remove(identityDescriptor);
-
-            services.AddDbContext<AppIdentityDbContext>(options =>
-                options.UseSqlite("Data Source=testidentity.sqlite"));
-
-            services.AddScoped<IAppIdentityDbContext>(provider => provider.GetService<AppIdentityDbContext>());
-
             MockUserService(services);
 
             _scopeFactory = services.BuildServiceProvider().GetService<IServiceScopeFactory>();
@@ -72,8 +66,15 @@ namespace Application.IntegrationTests.Identity
             using var scope = _scopeFactory.CreateScope();
 
             var idContext = scope.ServiceProvider.GetService<IAppIdentityDbContext>();
-            idContext.Database.EnsureDeleted();
-            idContext.Database.Migrate();
+            idContext.Database.EnsureCreated();
+
+            new List<string>() {
+                "RefreshTokens", "AspNetUserRoles", "AspNetUsers", "InboundEmailPasswords"
+            }.ForEach(table => {
+                idContext.Database.BeginTransaction();
+                idContext.Database.ExecuteSqlRaw($"DELETE FROM {table}");
+                idContext.Database.CommitTransaction();
+            }); 
 
             var roleManager = scope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
             await TestIdentitySeeder.SeedRolesAsync(roleManager);

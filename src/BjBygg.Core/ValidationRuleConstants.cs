@@ -11,7 +11,7 @@ namespace BjBygg.Core
 
         public const int AddressMaxLength = 100;
 
-        public const int FileNameMaxLength = 40;
+        public const int FileNameMaxLength = 100;
 
         public const int MissionDescriptionMaxLength = 400;
 

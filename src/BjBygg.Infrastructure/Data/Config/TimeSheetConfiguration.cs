@@ -16,7 +16,7 @@ namespace BjBygg.Infrastructure.Data.Config
             builder.Property(t => t.StartTime).IsRequired();
             builder.Property(t => t.EndTime).IsRequired();
             builder.Property(t => t.Comment).IsRequired().HasMaxLength(ValidationRules.TimesheetCommentMaxLength);
-            builder.Property(t => t.MissionId).IsRequired();
+            builder.Property(t => t.MissionActivityId).IsRequired();
             builder.Property(t => t.Status).IsRequired()
                    .HasConversion(v =>
                         v.ToString(),

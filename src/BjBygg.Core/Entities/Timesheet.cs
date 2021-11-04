@@ -6,10 +6,6 @@ namespace BjBygg.Core.Entities
 {
     public class Timesheet : UserEntity
     {
-        public string MissionId { get; set; }
-
-        public Mission Mission { get; set; }
-
         public DateTime StartTime { get; set; }
 
         public DateTime EndTime { get; set; }
@@ -19,6 +15,8 @@ namespace BjBygg.Core.Entities
         public TimesheetStatus Status { get; set; }
 
         public string Comment { get; set; }
+        public MissionActivity MissionActivity { get; set; }
+        public string MissionActivityId { get; set; }
 
     }
 }

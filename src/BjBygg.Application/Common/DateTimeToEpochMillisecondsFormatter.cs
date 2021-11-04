@@ -11,5 +11,5 @@ namespace BjBygg.Application.Common
             return DateTimeHelper.ConvertDateToEpoch(source) * 1000;
         }
     }
-
+    
 }

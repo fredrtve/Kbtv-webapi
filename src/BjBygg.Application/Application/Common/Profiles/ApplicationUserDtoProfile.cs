@@ -9,11 +9,17 @@ namespace BjBygg.Application.Application.Common.Profiles
     {
         public ApplicationUserDtoProfile()
         {
-            CreateMap<ApplicationUserDto, UserDto>().ForSourceMember(x => x.EmployerId, v => v.DoNotValidate());
-            CreateMap<UserDto, ApplicationUserDto>().ForMember(x => x.EmployerId, v => v.Ignore());
+            CreateMap<ApplicationUserDto, UserDto>()
+                .ForSourceMember(x => x.EmployerId, v => v.DoNotValidate());
 
-            CreateMap<ApplicationUser, ApplicationUserDto>().ForMember(x => x.EmployerId, v => v.Ignore());
-            CreateMap<ApplicationUserDto, ApplicationUser>().ForSourceMember(x => x.EmployerId, v => v.DoNotValidate());
+            CreateMap<UserDto, ApplicationUserDto>()
+                .ForMember(x => x.EmployerId, v => v.Ignore());
+
+            CreateMap<ApplicationUser, ApplicationUserDto>()
+                .ForMember(x => x.EmployerId, v => v.Ignore());
+
+            CreateMap<ApplicationUserDto, ApplicationUser>()
+                .ForSourceMember(x => x.EmployerId, v => v.DoNotValidate());
         }
     }
 }

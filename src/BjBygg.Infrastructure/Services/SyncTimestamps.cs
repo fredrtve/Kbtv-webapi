@@ -12,7 +12,8 @@ namespace BjBygg.Infrastructure.Services
             { typeof(Mission), null },
             { typeof(MissionType), null },
             { typeof(Employer), null },
-            { typeof(Timesheet), null }
+            { typeof(Timesheet), null },
+            { typeof(Activity), null }
         };
     }
 }

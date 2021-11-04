@@ -22,28 +22,28 @@ namespace BjBygg.Infrastructure.Data
 
         public static async Task SeedAllAsync(IAppDbContext context, IIdGenerator idGenerator, SeederCount seederCount)
         {
-            using var ctx = context;
-
             if (!context.Employers.Any())
-                await SetEmployersAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(Employer)]);
+                await SetEmployersAsync(context, idGenerator, seederCount.SeedCounts[typeof(Employer)]);
             if (!context.EmployerUsers.Any())
                 context.EmployerUsers.Add(
                      new EmployerUser() { Id = "dasdsad", EmployerId = GetGeneratedId(typeof(Employer)), UserName = "Oppdragsgiver" }
-                 );
+                 ); 
+            if (!context.Activities.Any())
+                await SetActivitiesAsync(context, idGenerator, seederCount.SeedCounts[typeof(Activity)]);
             if (!context.MissionTypes.Any())
-                await SetMissionTypesAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(MissionType)]);
+                await SetMissionTypesAsync(context, idGenerator, seederCount.SeedCounts[typeof(MissionType)]);
             if (!context.Missions.Any())
-                await SetMissionsAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(Mission)]);
+                await SetMissionsAsync(context, idGenerator, seederCount.SeedCounts[typeof(Mission)]);
+            if (!context.MissionActivities.Any())
+                await SetMissionActivitiesAsync(context, idGenerator);
             if (!context.MissionDocuments.Any())
-                await SetMissionDocumentsAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(MissionDocument)]);
+                await SetMissionDocumentsAsync(context, idGenerator, seederCount.SeedCounts[typeof(MissionDocument)]);
             if (!context.MissionImages.Any())
-                await SetMissionImagesAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(MissionImage)]);
+                await SetMissionImagesAsync(context, idGenerator, seederCount.SeedCounts[typeof(MissionImage)]);
             if (!context.MissionNotes.Any())
-                await SetMissionNotesAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(MissionNote)]);
+                await SetMissionNotesAsync(context, idGenerator, seederCount.SeedCounts[typeof(MissionNote)]);
             if (!context.Timesheets.Any())
-                await SetTimesheetsAsync(ctx, idGenerator, seederCount.SeedCounts[typeof(Timesheet)]);
-
-            context.SaveChanges();
+                await SetTimesheetsAsync(context, idGenerator, seederCount.SeedCounts[typeof(Timesheet)]);
         }
 
         static void AddGeneratedId(string id, Type type)
@@ -56,7 +56,7 @@ namespace BjBygg.Infrastructure.Data
         {
             var ids = _generatedIds[type];
             if (ids == null || ids.Count == 0) throw new Exception($"No ids for type {type} when seeding. Check seeding order.");
-            return ids[rnd.Next(ids.Count)];
+            return ids[rnd.Next(ids.Count - 1)];
         }
 
         static async Task SetEmployersAsync(IAppDbContext context, IIdGenerator idGenerator, int amount)
@@ -68,6 +68,7 @@ namespace BjBygg.Infrastructure.Data
                 "Finsrup AS"
             };
             var command = "INSERT INTO Employers (Id, Name, Email, Address, PhoneNumber, Deleted, CreatedAt, UpdatedAt) VALUES ";
+            
             for (int i = 0; i < amount; i++)
             {
                 var id = idGenerator.Generate();
@@ -94,10 +95,25 @@ namespace BjBygg.Infrastructure.Data
             }
             await context.Database.ExecuteSqlRawAsync(command);
         }
-
+        static async Task SetActivitiesAsync(IAppDbContext context, IIdGenerator idGenerator, int amount)
+        {
+            string[] activities = { "Riving", "Legge gulv", "Rengjøre", "Administrering", "Maling", "Annet"};
+            var command = "INSERT INTO Activities (Id, Name, Deleted, CreatedAt, UpdatedAt) VALUES ";
+            for (int i = 0; i < amount; i++)
+            {
+                var id = idGenerator.Generate();
+                AddGeneratedId(id, typeof(Activity));
+                var type = activities[rnd.Next(0, activities.Length)];
+                var date = DateTimeHelper.Now().AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
+                command = String.Concat(command, $"('{id}', '{type}', 0, '{date}', '{date}')");
+                if (i < (amount - 1)) command = String.Concat(command, ",");
+            }
+            await context.Database.ExecuteSqlRawAsync(command);
+        }
         static async Task SetMissionsAsync(IAppDbContext context, IIdGenerator idGenerator, int amount)
         {
-            var command = "INSERT INTO Missions (Id, Address, PhoneNumber, Description, EmployerId, MissionTypeId, FileName, Deleted, CreatedAt, UpdatedAt) VALUES ";
+            var command = "INSERT INTO Missions (Id, Address, PhoneNumber, Description, EmployerId, MissionTypeId, " +
+                "FileName, Position_Latitude, Position_Longitude, Position_IsExact, Deleted, CreatedAt, UpdatedAt) VALUES ";
 
             string[] images = {
                 "sample1_ratio=1.9.jpg",
@@ -116,11 +132,38 @@ namespace BjBygg.Infrastructure.Data
                 var employerId = GetGeneratedId(typeof(Employer));
                 var typeId = GetGeneratedId(typeof(MissionType));
                 var date = DateTimeHelper.Now().AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
-                command = String.Concat(command, $"('{id}', '{ getAddress(i) }', '92278489', 'Røykskade i 2.etasje', '{employerId}', '{typeId}', '{image}', 0, '{date}', '{date}')");
+                var positionLatitude = 58 + rnd.NextDouble() * 4; 
+                var positionLongitude = 8 + rnd.NextDouble() * 4;
+                var isExact = i % 2 == 0 ? 0 : 1;
+                command = String.Concat(command, $"('{id}', '{ getAddress(i) }', '92278489', 'Røykskade i 2.etasje', '{employerId}', '{typeId}', '{image}'," +
+                    $"{positionLatitude}, {positionLongitude}, {isExact}, 0, '{date}', '{date}')");
                 if (i < (amount - 1)) command = String.Concat(command, ",");
+      
             }
             await context.Database.ExecuteSqlRawAsync(command);
         }
+        static async Task SetMissionActivitiesAsync(IAppDbContext context, IIdGenerator idGenerator)
+        {
+            var command = "INSERT INTO MissionActivities (Id, MissionId, ActivityId, Deleted, CreatedAt, UpdatedAt) VALUES ";
+            var missionIds = _generatedIds[typeof(Mission)];
+            for(var m = 0; m < missionIds.Count; m++)
+            {
+                var missionId = missionIds[m];
+                var count = rnd.Next(1);
+                for (int i = 0; i <= count; i++)
+                {
+                    var id = idGenerator.Generate(); 
+                    AddGeneratedId(id, typeof(MissionActivity));
+                    var activityId = GetGeneratedId(typeof(Activity));
+                    var date = DateTimeHelper.Now().AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
+                    command = String.Concat(command, $"('{id}', '{missionId}', '{activityId}', 0, '{date}', '{date}')");
+                    if (i != count) command = String.Concat(command, ",");
+                }
+                if (m != (missionIds.Count - 1)) command = String.Concat(command, ",");
+            }
+            await context.Database.ExecuteSqlRawAsync(command);
+        }
+
         static async Task SetMissionDocumentsAsync(IAppDbContext context, IIdGenerator idGenerator, int amount)
         {
             var command = "INSERT INTO MissionDocuments (Id, FileName, MissionId, Name, Deleted, CreatedAt, UpdatedAt) VALUES ";
@@ -195,7 +238,7 @@ namespace BjBygg.Infrastructure.Data
         static async Task SetTimesheetsAsync(IAppDbContext context, IIdGenerator idGenerator, int amount)
         {
             var command = "INSERT INTO Timesheets " +
-                "(Id, MissionId, StartTime, EndTime, TotalHours, Comment, UserName, Status, Deleted, CreatedAt, UpdatedAt) " +
+                "(Id, MissionActivityId, StartTime, EndTime, TotalHours, Comment, UserName, Status, Deleted, CreatedAt, UpdatedAt) " +
                 "VALUES ";
 
             var today = DateTimeHelper.Now();
@@ -212,10 +255,10 @@ namespace BjBygg.Infrastructure.Data
                 var startDateString = startDate.ToString("yyyy-MM-dd HH:mm:ss");
                 var endDateString = endDate.ToString("yyyy-MM-dd HH:mm:ss");
                 var status = i % 2 == 0 ? 1 : 2;
-                var missionId = GetGeneratedId(typeof(Mission));
+                var missionActivityId = GetGeneratedId(typeof(MissionActivity));
                 var userName = users[rnd.Next(0, users.Length)];
                 command = String.Concat(command,
-                $"('{id}', '{missionId}', '{startDateString}','{endDateString}',{totalHours}, 'test', '{userName}', {status}, 0, '{startDateString}', '{startDateString}')");
+                $"('{id}', '{missionActivityId}', '{startDateString}','{endDateString}',{totalHours}, 'test', '{userName}', {status}, 0, '{startDateString}', '{startDateString}')");
                 if (i < (amount - 1)) command = String.Concat(command, ",");
             }
 

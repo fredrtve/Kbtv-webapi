@@ -25,7 +25,7 @@ namespace BjBygg.Core.Entities
         public List<MissionImage> MissionImages { get; set; }
         public List<MissionDocument> MissionDocuments { get; set; }
         public List<MissionNote> MissionNotes { get; set; }
-        public List<Timesheet> Timesheets { get; set; }
+        public List<MissionActivity> MissionActivities { get; set; }
         public MissionType MissionType { get; set; }
         public string? MissionTypeId { get; set; }
         public Employer Employer { get; set; }

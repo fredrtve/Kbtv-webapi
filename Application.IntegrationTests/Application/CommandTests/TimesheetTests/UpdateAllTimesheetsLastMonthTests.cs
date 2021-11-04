@@ -105,10 +105,12 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
 
         private async Task CreateTimesheet(string id, DateTime date, TimeSpan length)
         {
+            await AddAsync(new Activity() { Id = "test", Name = "test" });
+            await AddAsync(new MissionActivity() { Id = "test", MissionId = "test", ActivityId = "test" });
             await SendAsync(new CreateTimesheetCommand()
             {
                 Id = id,
-                MissionId = "test",
+                MissionActivityId = "test",
                 Comment = "test",
                 StartTime = DateTimeHelper.ConvertDateToEpoch(date) * 1000,
                 EndTime = DateTimeHelper.ConvertDateToEpoch(date + length) * 1000,

@@ -108,7 +108,9 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
         private static async Task AddSyncEntities()
         {
             await AddAsync(new Mission() { Id = "test", Address = "test" });
+            await AddAsync(new Activity() { Id = "test", Name = "test" });
             await AddAsync(new MissionImage() { Id = "test", MissionId = "test", FileName = "test.jpg" });
+            await AddAsync(new MissionActivity() { Id = "test", MissionId = "test", ActivityId = "test" });
             await AddAsync(new MissionNote() { Id = "test", MissionId = "test", Content = "test" });
             await AddAsync(new MissionDocument() { Id = "test", MissionId = "test", Name = "test", FileName = "test.jpg" });
             await AddAsync(new MissionType() { Id = "test", Name = "test2" });
@@ -116,7 +118,7 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
             await AddAsync(new Timesheet()
             {
                 Id = "test",
-                MissionId = "test",
+                MissionActivityId = "test",
                 StartTime = DateTime.Now,
                 EndTime = DateTime.Now.AddHours(4),
                 Comment = "asdfd",

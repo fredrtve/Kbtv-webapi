@@ -2,6 +2,7 @@
 using BjBygg.Application.Common.Interfaces;
 using BjBygg.Application.Identity.Common.Models;
 using BjBygg.Core.Entities;
+using BjBygg.WebApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -18,13 +19,15 @@ namespace BjBygg.WebApi.Middleware
     public class OptimisticCommandMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly UserCommandStatusRepository _statusRepository;
 
-        public OptimisticCommandMiddleware(RequestDelegate next)
+        public OptimisticCommandMiddleware(RequestDelegate next, UserCommandStatusRepository statusRepository)
         {
             _next = next;
+            _statusRepository = statusRepository;
         }
 
-        public async Task Invoke(HttpContext httpContext, IAppDbContext dbContext, ICurrentUserService currentUserService)
+        public async Task Invoke(HttpContext httpContext, ICurrentUserService currentUserService)
         {
             StringValues commandQuery;
             httpContext.Request.Headers.TryGetValue("command-id", out commandQuery);
@@ -36,15 +39,13 @@ namespace BjBygg.WebApi.Middleware
                 return;
             }
 
-            var userCommandStatus = await dbContext.UserCommandStatuses.FindAsync(currentUserService.UserName);
+            var userCommandStatus = _statusRepository.GetStatusOrDefault(currentUserService.UserName);
 
             if(userCommandStatus == null)
             {
                 userCommandStatus = new UserCommandStatus { UserName = currentUserService.UserName };
-                dbContext.UserCommandStatuses.Add(userCommandStatus);
             }
-
-            if(userCommandStatus.CommandId == commandId && userCommandStatus.HasSucceeded) //If duplicate successful request
+            else if(userCommandStatus.CommandId == commandId && userCommandStatus.HasSucceeded) //If duplicate successful request
             {      
                 httpContext.Response.StatusCode = StatusCodes.Status200OK;
                 var response = JsonSerializer.Serialize(new { isDuplicate = true });
@@ -59,7 +60,7 @@ namespace BjBygg.WebApi.Middleware
             userCommandStatus.HasSucceeded = statusCode >= 200 && statusCode <= 299;
             userCommandStatus.CommandId = commandId;
 
-            await dbContext.SaveChangesAsync();
+            await _statusRepository.SetStatusAsync(userCommandStatus);
         }
 
     }

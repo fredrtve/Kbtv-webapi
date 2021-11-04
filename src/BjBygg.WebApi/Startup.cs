@@ -1,12 +1,14 @@
 using BjBygg.Application;
 using BjBygg.Application.Common.Interfaces;
 using BjBygg.Infrastructure;
+using BjBygg.Infrastructure.Data;
 using BjBygg.WebApi.Middleware;
 using BjBygg.WebApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -40,6 +42,10 @@ namespace BjBygg.WebApi
             services.AddApplication(Configuration);
 
             services.AddApplicationInfrastructure(Configuration);
+
+            var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+            optionsBuilder.UseSqlServer(Configuration.GetValue<string>("DbConnectionString"));
+            services.AddSingleton(new UserCommandStatusRepository(optionsBuilder.Options));
 
             services.AddControllers();
 

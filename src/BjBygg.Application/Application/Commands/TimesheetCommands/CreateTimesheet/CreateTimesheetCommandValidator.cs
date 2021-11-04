@@ -8,11 +8,11 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.CreateTimesh
         public CreateTimesheetCommandValidator()
         {
             RuleFor(v => v.Id)
-                 .NotEmpty();
+                 .NotEmpty(); 
 
-            RuleFor(v => v.MissionId)
-                .NotEmpty()
-                .WithName("Oppdrag");
+            RuleFor(v => v.MissionActivityId)
+               .NotEmpty()
+               .WithName("Aktivitet");
 
             RuleFor(v => v.StartTime)
                 .NotEmpty()
@@ -25,7 +25,6 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.CreateTimesh
                 .WithName("Sluttidspunkt");
 
             RuleFor(v => v.Comment)
-                .NotEmpty()
                 .MaximumLength(ValidationRules.TimesheetCommentMaxLength)
                 .WithName("Kommentar");
         }

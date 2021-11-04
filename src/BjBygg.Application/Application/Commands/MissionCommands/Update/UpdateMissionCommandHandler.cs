@@ -29,12 +29,14 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Update
 
         public async Task<Unit> Handle(UpdateMissionCommand request, CancellationToken cancellationToken)
         {
-            var dbEntity = await _dbContext.Set<Mission>().FirstOrDefaultAsync(x => x.Id == request.Id);
+            var dbEntity = await _dbContext.Set<Mission>()
+                .Include(x => x.MissionActivities)
+                .FirstOrDefaultAsync(x => x.Id == request.Id);
 
             if (dbEntity == null)
                 throw new EntityNotFoundException(nameof(Mission), request.Id);
 
-            var ignoredProps = new HashSet<string>() { "Id", "MissionType", "Employer", "Address", "Position" };
+            var ignoredProps = new HashSet<string>() { "Id", "MissionType", "Employer", "Address", "Position", "MissionActivities" };
             foreach (var property in request.GetType().GetProperties())
             {
                 if (ignoredProps.Contains(property.Name)) continue;
@@ -47,7 +49,10 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Update
             dbEntity.MissionType =
                 request.MissionType != null ? _mapper.Map<MissionType>(request.MissionType) : null;
 
-            if(request.Address != null && request.Address != dbEntity.Address && request.Position == null)
+            if(request.MissionActivities != null)
+                dbEntity.MissionActivities.AddRange(_mapper.Map<List<MissionActivity>>(request.MissionActivities));
+
+            if (request.Address != null && request.Address != dbEntity.Address && request.Position == null)
             {
                 dbEntity.Address = request.Address;
                 try
@@ -59,9 +64,8 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Update
                 {
                     dbEntity.Position = null;
                 }
-
-                var existingAddresses = await _dbContext.Set<Mission>().Select(x => x.Address).ToListAsync();
-                dbEntity.Address = StringTagger.TagIfNotUnique(existingAddresses, request.Address);
+                var addressCount = await _dbContext.Set<Mission>().AddressCountAsync(request.Address);
+                if (addressCount != 0) dbEntity.Address = request.Address + " (" + ++addressCount + ")";
             }
             else if(request.Position != null)
             {

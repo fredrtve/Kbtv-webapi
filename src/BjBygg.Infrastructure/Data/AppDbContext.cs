@@ -33,6 +33,8 @@ namespace BjBygg.Infrastructure.Data
         public DbSet<MissionImage> MissionImages { get; set; }
         public DbSet<MissionDocument> MissionDocuments { get; set; }
         public DbSet<MissionNote> MissionNotes { get; set; }
+        public DbSet<MissionActivity> MissionActivities { get; set; }
+        public DbSet<Activity> Activities { get; set; }
         public DbSet<Timesheet> Timesheets { get; set; }
         public DbSet<UserCommandStatus> UserCommandStatuses { get; set; }
         private DbSet<LeaderSettings> LeaderSettings { get; set; }
@@ -112,7 +114,11 @@ namespace BjBygg.Infrastructure.Data
 
                 if (entry.Entity is IMissionChildEntity missionChild)
                 {
-                    var mission = Missions.Find(missionChild.MissionId);
+                    var mission = Missions.Local.FirstOrDefault(x => x.Id == missionChild.MissionId);
+                    if(mission == null) { 
+                        mission = new Mission() { Id = missionChild.MissionId };
+                        Missions.Attach(mission);
+                    }
                     mission.UpdatedAt = now;
                     _syncTimestamps.Timestamps[typeof(Mission)] = DateTimeHelper.ConvertDateToEpoch(now) * 1000;
                 }

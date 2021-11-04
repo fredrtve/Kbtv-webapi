@@ -11,8 +11,6 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Images.Upload
             CreateMap<UploadMissionImageCommand, MissionImage>()
                 .ForMember(dest => dest.FileName, opt => opt.Ignore())
                 .ForSourceMember(src => src.File, dest => dest.DoNotValidate());
-
-            CreateMap<MissionImage, MissionImageDto>();
         }
     }
 }

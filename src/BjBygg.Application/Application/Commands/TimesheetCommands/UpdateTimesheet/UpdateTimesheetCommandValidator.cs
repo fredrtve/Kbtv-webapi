@@ -10,9 +10,9 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.UpdateTimesh
             RuleFor(v => v.Id)
                 .NotEmpty();
 
-            RuleFor(v => v.MissionId)
+            RuleFor(v => v.MissionActivityId)
                 .NotEmpty()
-                .WithName("Oppdrag");
+                .WithName("Aktivitet");
 
             RuleFor(v => v.StartTime)
                 .NotEmpty()
@@ -25,7 +25,6 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.UpdateTimesh
                 .WithName("Sluttidspunkt");
 
             RuleFor(v => v.Comment)
-                .NotEmpty()
                 .MaximumLength(ValidationRules.TimesheetCommentMaxLength)
                 .WithName("Kommentar");
         }

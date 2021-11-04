@@ -1,7 +1,7 @@
-using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Common.BaseEntityCommands.Update;
 using BjBygg.Core.Entities;
 using BjBygg.SharedKernel;
+using System.Collections.Generic;
 
 namespace BjBygg.Application.Application.Commands.MissionCommands.Update
 {
@@ -17,5 +17,30 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Update
         public EmployerDto Employer { get; set; }
         public string? EmployerId { get; set; }
         public Position? Position { get; set; }
+        public List<MissionActivityDto>? MissionActivities { get; set; }
+    }
+
+    public class EmployerDto
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+    }
+
+    public class MissionTypeDto
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+    }
+    public class MissionActivityDto
+    {
+        public string Id { get; set; }
+        public string? ActivityId { get; set; }
+        public ActivityDto? Activity { get; set; }
+    }
+
+    public class ActivityDto
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
     }
 }

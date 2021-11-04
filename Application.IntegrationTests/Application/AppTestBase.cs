@@ -9,7 +9,7 @@ namespace Application.IntegrationTests.Application
         [SetUp]
         public void TestSetUp()
         {
-            EnsureAppDbAsync();
+            EnsureAppDb();
         }
     }
 }

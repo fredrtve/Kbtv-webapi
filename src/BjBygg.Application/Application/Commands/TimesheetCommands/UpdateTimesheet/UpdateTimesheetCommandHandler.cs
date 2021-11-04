@@ -40,7 +40,7 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.UpdateTimesh
                 throw new BadRequestException($"Timesheet is closed for manipulation.");
 
             dbTimesheet.Comment = request.Comment;
-            dbTimesheet.MissionId = request.MissionId;
+            dbTimesheet.MissionActivityId = request.MissionActivityId;
             dbTimesheet.StartTime = DateTimeHelper.ConvertEpochToDate(request.StartTime / 1000);
             dbTimesheet.EndTime = DateTimeHelper.ConvertEpochToDate(request.EndTime / 1000);
 

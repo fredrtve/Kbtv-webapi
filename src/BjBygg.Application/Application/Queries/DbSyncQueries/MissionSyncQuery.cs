@@ -1,22 +1,24 @@
 ﻿using AutoMapper;
-using BjBygg.Application.Application.Common.Dto;
+using AutoMapper.QueryableExtensions;
 using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Application.Application.Queries.DbSyncQueries.Common;
-using BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll;
+using BjBygg.Application.Application.Queries.DbSyncQueries.Dto;
 using BjBygg.Application.Common;
 using BjBygg.Core.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace BjBygg.Application.Application.Queries.DbSyncQueries
 {
-    public class MissionSyncQuery : UserDbSyncQuery, IRequest<MissionSyncArraysResponse> { }
+    public class MissionSyncQuery : DbSyncQuery, IRequest<SyncMissionResponse>
+    {
+        public MissionSyncQuery(DbSyncQueryPayload _payload) : base(_payload) { }
+    }
 
-    public class MissionSyncQueryHandler : IRequestHandler<MissionSyncQuery, MissionSyncArraysResponse>
+    public class MissionSyncQueryHandler : IRequestHandler<MissionSyncQuery, SyncMissionResponse>
     {
         private readonly IAppDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -30,41 +32,56 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries
             _dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
-        public async Task<MissionSyncArraysResponse> Handle(MissionSyncQuery request, CancellationToken cancellationToken)
-        {
+        public async Task<SyncMissionResponse> Handle(MissionSyncQuery request, CancellationToken cancellationToken)
+        {      
             var latestUpdate = _syncTimestamps.Timestamps[typeof(Mission)];
+
             if (!request.InitialSync && latestUpdate != null && latestUpdate <= request.Timestamp) return null;
 
-            var query = _dbContext.Set<Mission>().AsQueryable();
-            var isEmployer = request.User.Role == Roles.Employer;
-            var isInitial = request.InitialSync;
+            var query = _dbContext.Set<Mission>().GetSyncItems(request);
 
-            if (isEmployer && request.User.EmployerId != null) //Only allow employers missions if role is employer & employerId is set
+            if (request.User.Role == Roles.Employer && request.User.EmployerId != null) 
                 query = query.Where(x => x.EmployerId == request.User.EmployerId);
 
-            query = query.GetSyncItems(request).Include(x => x.MissionImages);
+            var response = new SyncMissionResponse();
 
-            if (!isEmployer)
-                query = query.Include(x => x.MissionDocuments).Include(x => x.MissionNotes);
+            response.Missions = await query
+                .ProjectTo<SyncMissionQueryDto>(_mapper.ConfigurationProvider)
+                .ToSyncResponseAsync<SyncMissionQueryDto, SyncMissionDto>(request.InitialSync, _mapper);
 
-            var missions = await query.ToListAsync();
+            if (response.Missions == null || response.Missions.Entities.Count() == 0)
+                return response;
 
-            return new MissionSyncArraysResponse 
+            var missionIds = response.Missions.Entities.Select(x => x.Id).ToHashSet();
+
+            if (request.User.Role != Roles.Employer)
             {
-                Missions = missions.ToSyncArrayResponse<Mission, MissionDto>(isInitial, _mapper),
+                response.MissionDocuments = await _dbContext.MissionDocuments
+                   .GetSyncItems(request, true)
+                   .Where(x => missionIds.Contains(x.MissionId))
+                   .ProjectTo<SyncMissionDocumentQueryDto>(_mapper.ConfigurationProvider)
+                   .ToSyncResponseAsync<SyncMissionDocumentQueryDto, SyncMissionDocumentDto>(request.InitialSync, _mapper);
 
-                MissionImages =
-                    missions.SelectMany(x => x.MissionImages).GetChildSyncItems(request)
-                        .ToSyncArrayResponse<MissionImage, MissionImageDto>(isInitial, _mapper),
+                response.MissionNotes = await _dbContext.MissionNotes
+                   .GetSyncItems(request, true)
+                   .Where(x => missionIds.Contains(x.MissionId))
+                   .ProjectTo<SyncMissionNoteQueryDto>(_mapper.ConfigurationProvider)
+                   .ToSyncResponseAsync<SyncMissionNoteQueryDto, SyncMissionNoteDto>(request.InitialSync, _mapper);
+            }
 
-                MissionDocuments = isEmployer ? null :
-                    missions.SelectMany(x => x.MissionDocuments).GetChildSyncItems(request)
-                        .ToSyncArrayResponse<MissionDocument, MissionDocumentDto>(isInitial, _mapper),
+            response.MissionImages = await _dbContext.MissionImages
+                .GetSyncItems(request, true)
+                .Where(x => missionIds.Contains(x.MissionId))
+                .ProjectTo<SyncMissionImageQueryDto>(_mapper.ConfigurationProvider)
+                .ToSyncResponseAsync<SyncMissionImageQueryDto, SyncMissionImageDto>(request.InitialSync, _mapper);
 
-                MissionNotes = isEmployer ? null :
-                    missions.SelectMany(x => x.MissionNotes).GetChildSyncItems(request)
-                        .ToSyncArrayResponse<MissionNote, MissionNoteDto>(isInitial, _mapper)
-        };
+            response.MissionActivities = await _dbContext.MissionActivities
+                .GetSyncItems(request, true)
+                .Where(x => missionIds.Contains(x.MissionId))
+                .ProjectTo<SyncMissionActivityQueryDto>(_mapper.ConfigurationProvider)
+                .ToSyncResponseAsync<SyncMissionActivityQueryDto, SyncMissionActivityDto>(request.InitialSync, _mapper);
+
+            return response;
         }
 
     }

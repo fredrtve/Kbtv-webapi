@@ -12,6 +12,7 @@ using BjBygg.Infrastructure.Data;
 using BjBygg.Infrastructure.Identity;
 using BjBygg.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -27,9 +28,10 @@ namespace BjBygg.Infrastructure
     {
         public static IServiceCollection AddIdentityInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-
-            services.AddDbContext<AppIdentityDbContext>(options =>
-                options.UseSqlite(configuration.GetValue<string>("IdentityDbConnectionString"))); // will be created in web project root
+            services.AddDbContext<AppIdentityDbContext>(options =>options.UseSqlServer(
+                configuration.GetValue<string>("IdentityDbConnectionString"), 
+                sqlOptions => sqlOptions.CommandTimeout(60)
+            ));
 
             services.AddScoped<IAppIdentityDbContext>(provider => provider.GetService<AppIdentityDbContext>());
 
@@ -121,8 +123,10 @@ namespace BjBygg.Infrastructure
         {
             services.AddHttpClient();
 
-            services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlite(configuration.GetValue<string>("DbConnectionString"))); 
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
+                configuration.GetValue<string>("DbConnectionString"),
+                sqlOptions => sqlOptions.CommandTimeout(60)
+            ));
 
             services.AddScoped<IAppDbContext>(provider => provider.GetService<AppDbContext>());
 

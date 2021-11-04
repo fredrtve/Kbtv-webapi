@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using BjBygg.Application.Application.Common.Dto;
 using BjBygg.Application.Application.Common.Interfaces;
 using BjBygg.Core;
@@ -28,9 +29,6 @@ namespace BjBygg.Application.Application.Queries.TimesheetQueries
         {
             var query = _dbContext.Set<Timesheet>().AsQueryable();
 
-            if (request.MissionId != null)
-                query = query.Where(x => x.MissionId == request.MissionId);
-
             if (request.UserName != null)
                 query = query.Where(x => x.UserName == request.UserName);
 
@@ -46,7 +44,13 @@ namespace BjBygg.Application.Application.Queries.TimesheetQueries
                 query = query.Where(x => x.StartTime.Date <= endDate.Date);
             }
 
-            return _mapper.Map<List<TimesheetDto>>(await query.ToListAsync());
+            query = query.Include(x => x.MissionActivity);
+            if(request.MissionId != null) query = query.Where(x => x.MissionActivity.MissionId == request.MissionId);
+            if(request.ActivityId != null) query = query.Where(x => x.MissionActivity.ActivityId == request.ActivityId);
+
+            var queryResponse = await query.ProjectTo<TimesheetQueryDto>(_mapper.ConfigurationProvider).ToListAsync();
+
+            return _mapper.Map<List<TimesheetDto>>(queryResponse);
         }
 
     }

@@ -4,7 +4,7 @@ namespace BjBygg.Application.Application.Commands.TimesheetCommands.UpdateTimesh
 {
     public class UpdateTimesheetCommand : UpdateCommand
     {
-        public string MissionId { get; set; }
+        public string MissionActivityId { get; set; }
         public long StartTime { get; set; }
         public long EndTime { get; set; }
         public string Comment { get; set; }

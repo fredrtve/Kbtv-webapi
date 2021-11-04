@@ -29,6 +29,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Update
             RuleFor(v => v.MissionType)
                .Must(v => (v == null) || !(string.IsNullOrWhiteSpace(v.Id) || string.IsNullOrWhiteSpace(v.Name)))
                .WithName("Oppdragstype");
+
         }
     }
 }

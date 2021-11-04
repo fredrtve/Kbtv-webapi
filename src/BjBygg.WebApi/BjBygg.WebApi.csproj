@@ -26,8 +26,4 @@
     <ProjectReference Include="..\BjBygg.Infrastructure\BjBygg.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="data\db\identity\" />
-  </ItemGroup>
-
 </Project>

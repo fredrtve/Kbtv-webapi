@@ -1,63 +1,50 @@
 ﻿using AutoMapper;
+using AutoMapper.Configuration;
+using AutoMapper.QueryableExtensions;
+using BjBygg.Application.Application.Queries.DbSyncQueries.Dto;
 using BjBygg.Core;
 using BjBygg.SharedKernel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BjBygg.Application.Application.Queries.DbSyncQueries.Common
 {
     public static class SyncQueryExtensions
     {
-        public static IQueryable<TEntity> GetSyncItems<TEntity>(this IQueryable<TEntity> query, DbSyncQuery request, bool getAllOnInitial = false)
-           where TEntity : BaseEntity
+        public static async Task<SyncEntityResponse<TDto>> ToSyncResponseAsync<TEntity, TDto>(
+            this IQueryable<TEntity> query, bool isInitial, IMapper mapper
+        ) where TEntity : IDbSyncQueryResponse
         {
-            if (getAllOnInitial && request.InitialSync) return query;
+            var entities = await query.ToListAsync();
 
-            var date = DateTimeHelper.ConvertEpochToDate((request.Timestamp / 1000) ?? 0);
+            if (entities.Count() == 0) return null;
 
-            if (!request.InitialSync)
-                query = query.IgnoreQueryFilters(); //Include deleted property to check for deleted entities
-
-            return query.GetEntitiesLaterThan(date);
-        }
-
-        public static IEnumerable<TEntity> GetChildSyncItems<TEntity>(this IEnumerable<TEntity> query, UserDbSyncQuery request)
-            where TEntity : BaseEntity
-        {
-            if (request.InitialSync) return query;
-
-            var date = DateTimeHelper.ConvertEpochToDate((request.Timestamp / 1000) ?? 0);
-
-            return query.GetEntitiesLaterThan(date);
-        }
-
-        public static DbSyncArrayResponse<TDto> ToSyncArrayResponse<TEntity, TDto>(
-            this IEnumerable<TEntity> entities, bool isInitial, IMapper mapper
-        ) where TEntity : BaseEntity where TDto : DbSyncDto
-        {
-            if (!entities.Any()) return null;
             List<string> deletedEntities = new List<string>();
 
             if (!isInitial)
             {
                 deletedEntities = entities.Where(x => x.Deleted == true).Select(x => x.Id).ToList(); //Add ids from deleted entities
-                entities = entities.Where(x => x.Deleted == false); //Remove deleted entities
+                entities = entities.Where(x => x.Deleted == false).ToList(); //Remove deleted entities
             }
 
-            entities = entities.OrderByDescending(x => x.CreatedAt);
-
-            return new DbSyncArrayResponse<TDto>(mapper.Map<IEnumerable<TDto>>(entities), deletedEntities);
+            return new SyncEntityResponse<TDto>(mapper.Map<IEnumerable<TDto>>(entities), deletedEntities);
         }
 
-        private static IQueryable<T> GetEntitiesLaterThan<T>(this IQueryable<T> query, DateTime date) where T : BaseEntity
-        {
-            return query.Where(x => DateTime.Compare(x.UpdatedAt, date) >= 0);
-        }
-        private static IEnumerable<T> GetEntitiesLaterThan<T>(this IEnumerable<T> query, DateTime date) where T : BaseEntity
-        {
-            return query.Where(x => DateTime.Compare(x.UpdatedAt, date) >= 0);
+        public static IQueryable<T> GetSyncItems<T>(this IQueryable<T> query, DbSyncQuery request, bool getAllOnInitial = false) where T : BaseEntity
+        {     
+            if (getAllOnInitial && request.InitialSync) return query;
+
+            if(request.InitialSync == false)
+                query = query.IgnoreQueryFilters();
+
+            if (request.Timestamp == null || request.Timestamp == 0) return query;
+
+            var date = DateTimeHelper.ConvertEpochToDate((request.Timestamp / 1000) ?? 0);
+
+            return query.Where(x => x.UpdatedAt >= date);
         }
     }
 }
