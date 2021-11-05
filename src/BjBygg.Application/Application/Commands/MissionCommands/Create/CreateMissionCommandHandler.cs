@@ -38,7 +38,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Create
                 entity.Position = null;
             }
 
-            if (entity.MissionActivities.Count == 0)
+            if (entity.MissionActivities.FirstOrDefault(x => x.ActivityId == "default") == null)
             {
                 var missionActivity = new MissionActivity() { Id = _idGenerator.Generate(), ActivityId = "default", MissionId = entity.Id };
                 _dbContext.Set<MissionActivity>().Add(missionActivity);
