@@ -22,10 +22,6 @@ namespace BjBygg.WebApi.Services
             _dbOptions = dbOptions;
             _currentUserService = new CurrentUserService("SYSTEM", Roles.Admin);
             _syncTimestamps = new SyncTimestamps();
-            using (var context = new AppDbContext(_dbOptions, _currentUserService, _syncTimestamps))
-            {
-                _userCommandStatuses = context.UserCommandStatuses.ToDictionary(x => x.UserName);
-            };
         }
 
         public UserCommandStatus GetStatusOrDefault(string userName)
@@ -45,6 +41,14 @@ namespace BjBygg.WebApi.Services
                 if (isExisting) context.Update(status);
                 else context.Add(status);
                 await context.SaveChangesAsync();
+            };
+        }
+
+        public void FetchFromDb()
+        {
+            using (var context = new AppDbContext(_dbOptions, _currentUserService, _syncTimestamps))
+            {
+                _userCommandStatuses = context.UserCommandStatuses.ToDictionary(x => x.UserName);
             };
         }
     }
