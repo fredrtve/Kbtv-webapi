@@ -43,6 +43,8 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
             await RunAsDefaultUserAsync(Roles.Leader);
             await AddAsync(new Mission() { Id = "test", Address = "test" });
             await AddAsync(new LeaderSettings() { Id = "test", ConfirmTimesheetsMonthly = true });
+            await AddAsync(new Activity() { Id = "test", Name = "test" });
+            await AddAsync(new MissionActivity() { Id = "test", MissionId = "test", ActivityId = "test" });
 
             var lastMonth = DateTimeHelper.NowLocalTime().AddMonths(-1);
             var firstDayMonth = new DateTimeOffset(lastMonth.Year, lastMonth.Month, 1, 0, 0, 0, new TimeSpan(2, 0, 0));
@@ -53,7 +55,7 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
 
             await CreateTimesheet("test3", firstDayMonth.DateTime + new TimeSpan(5, 14, 0, 0), new TimeSpan(2, 0, 0)); //5st day @ 14:00-16:00 (+2)
 
-            await CreateTimesheet("test4", firstDayMonth.DateTime.AddMonths(1).AddHours(-1), new TimeSpan(0, 59, 0)); //Last day @ 23:00-23:59 (+2)
+            await CreateTimesheet("test4", firstDayMonth.DateTime.AddMonths(1).AddHours(-2), new TimeSpan(0, 59, 0)); //Last day @ 23:00-23:59 (+2)
 
             await SendAsync(new ConfirmAllTimesheetsLastMonthCommand());
 
@@ -105,8 +107,6 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
 
         private async Task CreateTimesheet(string id, DateTime date, TimeSpan length)
         {
-            await AddAsync(new Activity() { Id = "test", Name = "test" });
-            await AddAsync(new MissionActivity() { Id = "test", MissionId = "test", ActivityId = "test" });
             await SendAsync(new CreateTimesheetCommand()
             {
                 Id = id,

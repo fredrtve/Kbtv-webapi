@@ -55,8 +55,6 @@ namespace Application.IntegrationTests.Application
 
             startup.ConfigureServices(services); 
 
-            services.AddSingleton<TestSeederCount>();
-
             MockUserService(services);
 
             MockBlobStorage(services);
@@ -90,23 +88,18 @@ namespace Application.IntegrationTests.Application
             context.Database.EnsureCreated();
 
             new List<string>() {
-                "MissionImages", "MissionDocuments", "MissionNotes", "Timesheets",
-                 "Missions", "EmployerUsers", "Employers", "MissionTypes", "LeaderSettings", "UserCommandStatuses"         
+                "MissionImages", "MissionDocuments", "MissionNotes", "Timesheets", "MissionActivities",
+                 "Missions", "EmployerUsers", "Employers", "Activities", "LeaderSettings", "UserCommandStatuses"         
             }.ForEach(table => {
                 context.Database.BeginTransaction();
                 context.Database.ExecuteSqlRaw($"DELETE FROM {table}");
                 context.Database.CommitTransaction();
             });
 
-            //var seederCount = scope.ServiceProvider.GetService<TestSeederCount>();
-            //var idGenerator = scope.ServiceProvider.GetService<IIdGenerator>();
-            //await AppDbContextSeed.SeedAllAsync(context, idGenerator, new SeederCount(5,5,5,5,5,5,5,5));
+            context.Set<Activity>().Add(new Activity() { Id = "default", Name = "Annet" });
+            context.SaveChanges();
         }
-        public static Dictionary<Type, int> GetSeederCount()
-        {
-            using var scope = _scopeFactory.CreateScope();
-            return scope.ServiceProvider.GetService<TestSeederCount>().SeedCounts;
-        }
+
         public static async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)
         {
             using var scope = _scopeFactory.CreateScope();

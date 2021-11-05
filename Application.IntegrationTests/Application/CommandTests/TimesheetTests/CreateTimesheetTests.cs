@@ -50,6 +50,7 @@ namespace Application.IntegrationTests.Application.CommandTests.TimesheetTests
 
             dbEntity.Should().NotBeNull();
             dbEntity.Id.Should().Be(command.Id);
+            dbEntity.MissionActivityId.Should().Be(command.MissionActivityId);
             dbEntity.Comment.Should().Be(command.Comment);
             dbEntity.StartTime.Should().BeCloseTo(endDate.AddHours(-totalHours), 1000);
             dbEntity.EndTime.Should().BeCloseTo(endDate, 1000);

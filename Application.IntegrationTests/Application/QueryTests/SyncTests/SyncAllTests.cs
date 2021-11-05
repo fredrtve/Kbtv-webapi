@@ -31,7 +31,8 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
             result.Arrays.MissionImages.Entities.Should().HaveCount(1); //Min date
             result.Arrays.MissionNotes.Entities.Should().HaveCount(1); //Min date
             result.Arrays.MissionDocuments.Entities.Should().HaveCount(1); //Min date
-            result.Arrays.MissionTypes.Entities.Should().HaveCount(1);
+            result.Arrays.MissionActivities.Entities.Should().HaveCount(1);
+            result.Arrays.Activities.Entities.Should().HaveCount(1);
             result.Arrays.Employers.Entities.Should().HaveCount(1);
             result.Arrays.UserTimesheets.Entities.Should().HaveCount(1); //User spesific & min date
         }
@@ -48,6 +49,7 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
             await AddAsync(new MissionDocument() { Id = "test3", MissionId = "test2", Name = "test", FileName = "test.jpg" });
             await AddAsync(new MissionImage() { Id = "test3", MissionId = "test2", FileName = "test.jpg" });
             await AddAsync(new MissionNote() { Id = "test3", MissionId = "test2", Content = "test.jdsadapg" });
+            await AddAsync(new MissionActivity() { Id = "test3", MissionId = "test2", ActivityId = "test" });
 
             var timestamp = DateTimeHelper.ConvertDateToEpoch(DateTimeHelper.Now().AddMinutes(-10)) * 1000;
 
@@ -64,9 +66,10 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
             result.Arrays.MissionImages.Entities.Should().HaveCount(1);
             result.Arrays.MissionNotes.Entities.Should().HaveCount(1);
             result.Arrays.MissionDocuments.Entities.Should().HaveCount(1);
-            result.Arrays.MissionTypes.Entities.Should().HaveCount(1);
             result.Arrays.Employers.Entities.Should().HaveCount(1);
             result.Arrays.UserTimesheets.Entities.Should().HaveCount(1);
+            result.Arrays.Activities.Entities.Should().HaveCount(1);
+            result.Arrays.MissionActivities.Entities.Should().HaveCount(1);
         }
 
         [Test]
@@ -93,7 +96,9 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
             await AddAsync(new MissionImage() { Id = "test", MissionId = "test", FileName = "test.jpg" });
             await AddAsync(new MissionNote() { Id = "test", MissionId = "test", Content = "test" });
             await AddAsync(new MissionDocument() { Id = "test", MissionId = "test2", Name = "test", FileName = "test.jpg" });
-            await AddAsync(new MissionType() { Id = "test", Name = "test2" });
+            await AddAsync(new Activity() { Id = "test", Name = "test" });
+            await AddAsync(new MissionActivity() { Id = "test", ActivityId = "test", MissionId = "test2" });
+            await AddAsync(new MissionActivity() { Id = "test2", ActivityId = "test", MissionId = "test" });
 
 
             var result = await SendAsync(new SyncAllQuery() { });
@@ -103,6 +108,8 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
             result.Arrays.MissionNotes.Should().BeNull(); //Shouldnt include mission notes for employer
             result.Arrays.MissionDocuments.Should().BeNull();
             result.Arrays.Employers.Entities.Should().HaveCount(1); //Only current employer should be returned
+            result.Arrays.MissionActivities.Entities.Should().HaveCount(1);
+            result.Arrays.Activities.Entities.Should().HaveCount(2); //Should include new activity & default
         }
 
         private static async Task AddSyncEntities()
@@ -113,7 +120,6 @@ namespace Application.IntegrationTests.Application.QueryTests.SyncTests
             await AddAsync(new MissionActivity() { Id = "test", MissionId = "test", ActivityId = "test" });
             await AddAsync(new MissionNote() { Id = "test", MissionId = "test", Content = "test" });
             await AddAsync(new MissionDocument() { Id = "test", MissionId = "test", Name = "test", FileName = "test.jpg" });
-            await AddAsync(new MissionType() { Id = "test", Name = "test2" });
             await AddAsync(new Employer() { Id = "test", Name = "test2" });
             await AddAsync(new Timesheet()
             {
