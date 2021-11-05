@@ -11,19 +11,11 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Create
         public string Email { get; set; }
         public string Description { get; set; }
         public string EmployerId { get; set; }
-        public string MissionTypeId { get; set; }
-        public MissionTypeDto? MissionType { get; set; }
         public EmployerDto? Employer { get; set; }
         public List<MissionActivityDto>? MissionActivities { get; set; }
     }
 
     public class EmployerDto
-    {
-        public string Id { get; set; }
-        public string Name { get; set; }
-    }
-
-    public class MissionTypeDto
     {
         public string Id { get; set; }
         public string Name { get; set; }

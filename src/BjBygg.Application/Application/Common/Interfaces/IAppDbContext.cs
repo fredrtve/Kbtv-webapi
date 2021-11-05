@@ -12,7 +12,6 @@ namespace BjBygg.Application.Application.Common.Interfaces
         DbSet<Activity> Activities { get; set; }
         DbSet<Mission> Missions { get; set; }
         DbSet<MissionActivity> MissionActivities { get; set; }
-        DbSet<MissionType> MissionTypes { get; set; }
         DbSet<MissionImage> MissionImages { get; set; }
         DbSet<MissionDocument> MissionDocuments { get; set; }
         DbSet<MissionNote> MissionNotes { get; set; }

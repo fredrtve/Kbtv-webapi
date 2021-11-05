@@ -30,8 +30,6 @@ namespace BjBygg.Infrastructure.Data
                  ); 
             if (!context.Activities.Any())
                 await SetActivitiesAsync(context, idGenerator, seederCount.SeedCounts[typeof(Activity)]);
-            if (!context.MissionTypes.Any())
-                await SetMissionTypesAsync(context, idGenerator, seederCount.SeedCounts[typeof(MissionType)]);
             if (!context.Missions.Any())
                 await SetMissionsAsync(context, idGenerator, seederCount.SeedCounts[typeof(Mission)]);
             if (!context.MissionActivities.Any())
@@ -80,21 +78,6 @@ namespace BjBygg.Infrastructure.Data
             }
             await context.Database.ExecuteSqlRawAsync(command);
         }
-        static async Task SetMissionTypesAsync(IAppDbContext context, IIdGenerator idGenerator, int amount)
-        {
-            string[] types = { "Riving", "Oppbygging" };
-            var command = "INSERT INTO MissionTypes (Id, Name, Deleted, CreatedAt, UpdatedAt) VALUES ";
-            for (int i = 0; i < amount; i++)
-            {
-                var id = idGenerator.Generate();
-                AddGeneratedId(id, typeof(MissionType));
-                var type = types[rnd.Next(0, types.Length)];
-                var date = DateTimeHelper.Now().AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
-                command = String.Concat(command, $"('{id}', '{type}', 0, '{date}', '{date}')");
-                if (i < (amount - 1)) command = String.Concat(command, ",");
-            }
-            await context.Database.ExecuteSqlRawAsync(command);
-        }
         static async Task SetActivitiesAsync(IAppDbContext context, IIdGenerator idGenerator, int amount)
         {
             string[] activities = { "Riving", "Legge gulv", "Rengjøre", "Administrering", "Maling", "Annet"};
@@ -112,7 +95,7 @@ namespace BjBygg.Infrastructure.Data
         }
         static async Task SetMissionsAsync(IAppDbContext context, IIdGenerator idGenerator, int amount)
         {
-            var command = "INSERT INTO Missions (Id, Address, PhoneNumber, Description, EmployerId, MissionTypeId, " +
+            var command = "INSERT INTO Missions (Id, Address, PhoneNumber, Description, EmployerId, " +
                 "FileName, Position_Latitude, Position_Longitude, Position_IsExact, Deleted, CreatedAt, UpdatedAt) VALUES ";
 
             string[] images = {
@@ -130,12 +113,11 @@ namespace BjBygg.Infrastructure.Data
                 AddGeneratedId(id, typeof(Mission));
                 var image = images[rnd.Next(0, images.Length)];
                 var employerId = GetGeneratedId(typeof(Employer));
-                var typeId = GetGeneratedId(typeof(MissionType));
                 var date = DateTimeHelper.Now().AddDays(-i).ToString("yyyy-MM-dd HH:mm:ss");
                 var positionLatitude = 58 + rnd.NextDouble() * 4; 
                 var positionLongitude = 8 + rnd.NextDouble() * 4;
                 var isExact = i % 2 == 0 ? 0 : 1;
-                command = String.Concat(command, $"('{id}', '{ getAddress(i) }', '92278489', 'Røykskade i 2.etasje', '{employerId}', '{typeId}', '{image}'," +
+                command = String.Concat(command, $"('{id}', '{ getAddress(i) }', '92278489', 'Røykskade i 2.etasje', '{employerId}', '{image}'," +
                     $"{positionLatitude}, {positionLongitude}, {isExact}, 0, '{date}', '{date}')");
                 if (i < (amount - 1)) command = String.Concat(command, ",");
       

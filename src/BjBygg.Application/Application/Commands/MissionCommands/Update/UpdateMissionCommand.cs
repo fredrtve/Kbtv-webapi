@@ -12,8 +12,6 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Update
         public string? Email { get; set; }
         public string? Description { get; set; }
         public bool? Finished { get; set; }
-        public MissionTypeDto MissionType { get; set; }
-        public string? MissionTypeId { get; set; }
         public EmployerDto Employer { get; set; }
         public string? EmployerId { get; set; }
         public Position? Position { get; set; }
@@ -21,12 +19,6 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Update
     }
 
     public class EmployerDto
-    {
-        public string Id { get; set; }
-        public string Name { get; set; }
-    }
-
-    public class MissionTypeDto
     {
         public string Id { get; set; }
         public string Name { get; set; }

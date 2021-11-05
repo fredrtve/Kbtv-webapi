@@ -36,7 +36,7 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Update
             if (dbEntity == null)
                 throw new EntityNotFoundException(nameof(Mission), request.Id);
 
-            var ignoredProps = new HashSet<string>() { "Id", "MissionType", "Employer", "Address", "Position", "MissionActivities" };
+            var ignoredProps = new HashSet<string>() { "Id", "Employer", "Address", "Position", "MissionActivities" };
             foreach (var property in request.GetType().GetProperties())
             {
                 if (ignoredProps.Contains(property.Name)) continue;
@@ -45,9 +45,6 @@ namespace BjBygg.Application.Application.Commands.MissionCommands.Update
 
             dbEntity.Employer =
                 request.Employer != null ? _mapper.Map<Employer>(request.Employer) : null;
-
-            dbEntity.MissionType =
-                request.MissionType != null ? _mapper.Map<MissionType>(request.MissionType) : null;
 
             if(request.MissionActivities != null)
                 dbEntity.MissionActivities.AddRange(_mapper.Map<List<MissionActivity>>(request.MissionActivities));

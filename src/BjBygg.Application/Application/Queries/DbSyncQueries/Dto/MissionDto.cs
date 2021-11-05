@@ -16,8 +16,6 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.Dto
 
         public string? Description { get; set; }
 
-        public string MissionTypeId { get; set; }
-
         public string EmployerId { get; set; }
 
         public string? FileName { get; set; }

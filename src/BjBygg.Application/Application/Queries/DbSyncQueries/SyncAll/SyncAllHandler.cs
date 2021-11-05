@@ -67,7 +67,6 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.SyncAll
                     MissionImages = missionSyncResponse?.MissionImages,
                     MissionActivities = missionSyncResponse?.MissionActivities,
                     Employers = await _mediator.Send(new EmployerSyncQuery(queryPayload)),
-                    MissionTypes = await _mediator.Send(new MissionTypeSyncQuery(queryPayload)),
                     UserTimesheets = await _mediator.Send(new UserTimesheetSyncQuery(queryPayload)),
                     Activities = await _mediator.Send(new ActivitySyncQuery(queryPayload))
                 }

@@ -8,7 +8,6 @@ namespace BjBygg.Infrastructure.Data
     {
         public SeederCount(
             int missions = 200,
-            int missionTypes = 30,
             int missionNotes = 500,
             int missionDocuments = 500,
             int missionImages = 500,
@@ -19,7 +18,6 @@ namespace BjBygg.Infrastructure.Data
             SeedCounts = new Dictionary<Type, int>()
             {
                 [typeof(Mission)] = missions,
-                [typeof(MissionType)] = missionTypes,
                 [typeof(MissionNote)] = missionNotes,
                 [typeof(MissionDocument)] = missionDocuments,
                 [typeof(MissionImage)] = missionImages,
