@@ -11,8 +11,6 @@ namespace BjBygg.Infrastructure.Data
             int missionNotes = 500,
             int missionDocuments = 500,
             int missionImages = 500,
-            int employers = 30,
-            int activities = 30,
             int timesheets = 500)
         {
             SeedCounts = new Dictionary<Type, int>()
@@ -21,9 +19,7 @@ namespace BjBygg.Infrastructure.Data
                 [typeof(MissionNote)] = missionNotes,
                 [typeof(MissionDocument)] = missionDocuments,
                 [typeof(MissionImage)] = missionImages,
-                [typeof(Employer)] = employers,
                 [typeof(Timesheet)] = timesheets,
-                [typeof(Activity)] = activities,
             };
         }
 
