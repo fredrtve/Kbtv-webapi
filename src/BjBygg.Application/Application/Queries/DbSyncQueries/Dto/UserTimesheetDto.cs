@@ -13,7 +13,7 @@ namespace BjBygg.Application.Application.Queries.DbSyncQueries.Dto
     {
         public string Id { get; set; }
 
-        public string MissionId { get; set; }
+        public string MissionActivityId { get; set; }
 
         public double TotalHours { get; set; }
 
